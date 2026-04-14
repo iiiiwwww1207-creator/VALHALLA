@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 300 18% 4%;
+    --foreground: 42 48% 92%;
+    --card: 300 14% 8%;
+    --card-foreground: 42 48% 92%;
+    --border: 42 58% 28%;
+    --input: 300 14% 12%;
+    --ring: 42 70% 58%;
+    --primary: 42 70% 58%;
+    --primary-foreground: 300 18% 6%;
+    --secondary: 277 42% 22%;
+    --secondary-foreground: 42 48% 92%;
+    --muted: 300 10% 14%;
+    --muted-foreground: 39 22% 70%;
+    --accent: 278 44% 28%;
+    --accent-foreground: 42 48% 92%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply min-h-dvh bg-background bg-halo font-body text-foreground antialiased;
+    background-color: #070509;
+    background-attachment: fixed;
+  }
+
+  a {
+    @apply transition-colors;
+  }
+}
+
+@layer utilities {
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #fff2bf 0%, #d4af37 40%, #f7df96 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .panel-sheen {
+    background:
+      linear-gradient(160deg, rgba(255, 255, 255, 0.06), transparent 35%),
+      linear-gradient(180deg, rgba(64, 20, 84, 0.55), rgba(7, 5, 9, 0.9));
+  }
+}

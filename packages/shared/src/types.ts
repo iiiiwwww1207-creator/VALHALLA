@@ -23,6 +23,7 @@ export interface Host {
   hobbies: string[];
   musicGenres: string[];
   coreValue: string;
+  gapText?: string; // 仮面と素顔の隙間テキスト
 }
 
 // 見た目 — 顔の系統

@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #faf7f5;
+  --color-foreground: #2d2330;
+  --color-primary: #e85d75;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #c4b5fd;
+  --color-secondary-foreground: #2d2330;
+  --color-card: #ffffff;
+  --color-card-foreground: #2d2330;
+  --color-accent: #fbbf24;
+  --color-accent-foreground: #2d2330;
+  --color-muted: #f0ebe6;
+  --color-muted-foreground: #8a7f75;
+  --color-border: #e8e0d8;
+
+  --font-display: "M PLUS Rounded 1c", sans-serif;
+  --font-body: "Noto Sans JP", sans-serif;
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100dvh;
+  background-color: var(--color-background);
+  font-family: var(--font-body);
+  color: var(--color-foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Card flip animation for tarot */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
