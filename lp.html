@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VALHALLA App — あなただけのホストが、毎日そばに</title>
+  <link rel="stylesheet" href="lp.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-orb hero-orb1"></div>
+    <div class="hero-orb hero-orb2"></div>
+    <div class="hero-orb hero-orb3"></div>
+    <canvas id="starsCanvas"></canvas>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">🔮 App 事前登録 受付中</div>
+    <p class="hero-eyebrow">Group Yggdrasill presents</p>
+    <h1 class="hero-logo">VALHALLA<span class="hero-logo-app">App</span></h1>
+    <p class="hero-tagline">あなただけのホストが、<br>毎日そばにいる。</p>
+    <p class="hero-sub">タロット占い × 優しい言葉 × 安心予算管理<br>新感覚ホストマッチングアプリ</p>
+    <a href="#line-cta" class="cta-btn cta-btn--hero">
+      <span class="cta-line-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.145 2 11.243c0 3.016 1.646 5.687 4.148 7.398-.143.512-.542 1.894-.622 2.184-.1.362.133.358.277.26.114-.076 1.817-1.218 2.549-1.713.549.076 1.111.115 1.648.115 5.523 0 10-4.145 10-9.244C22 6.145 17.523 2 12 2z"/></svg>
+      </span>
+      LINE で事前登録する <span class="cta-arrow">→</span>
+    </a>
+    <p class="hero-note">※登録無料・通知のみ・セールスなし</p>
+    <div class="hero-cast-preview">
+      <div class="cast-avatars">
+        <img src="images/cast/2512val_右京遊戯01_00.jpg" alt="">
+        <img src="images/cast/2510val_桜木凌1_00.jpg" alt="">
+        <img src="images/cast/2509val_冬島水月0100.jpg" alt="">
+        <img src="images/cast/2603val_れおんまんtop00.jpg" alt="">
+        <img src="images/cast/2510val_カルマ00.jpeg" alt="">
+      </div>
+      <p class="cast-avatars-text">在籍<strong>100名以上</strong>のホストからあなたの運命の人を</p>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">
+    <span>SCROLL</span>
+    <div class="scroll-dot"></div>
+  </div>
+</section>
+
+<!-- ========== PROBLEM ========== -->
+<section class="problem">
+  <div class="container">
+    <div class="problem-grid">
+      <div class="problem-item">
+        <span class="problem-icon">😰</span>
+        <p>ホストクラブって<br><strong>予算が怖い…</strong></p>
+      </div>
+      <div class="problem-item">
+        <span class="problem-icon">😶</span>
+        <p>どのホストが<br><strong>自分に合うかわからない</strong></p>
+      </div>
+      <div class="problem-item">
+        <span class="problem-icon">🥺</span>
+        <p>話しかけてほしいけど<br><strong>一歩が踏み出せない</strong></p>
+      </div>
+    </div>
+    <div class="problem-arrow">↓</div>
+    <div class="problem-solution">
+      <p class="problem-solution-text">そのすべてを<strong>VALHALLAアプリ</strong>が解決します</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FEATURES ========== -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="section-label">FEATURES</div>
+    <h2 class="section-title">4つの特別な体験</h2>
+
+    <!-- Feature 1 -->
+    <div class="feature-block feature-block--reverse">
+      <div class="feature-visual">
+        <div class="feature-card-mock tarot-mock">
+          <div class="mock-header">
+            <img src="images/cast/2512val_右京遊戯01_00.jpg" alt="" class="mock-avatar">
+            <div>
+              <p class="mock-name">右京遊戯</p>
+              <p class="mock-role">VALHALLA No.1</p>
+            </div>
+          </div>
+          <div class="tarot-card-display">
+            <div class="tarot-card tarot-card--main">
+              <div class="tarot-inner">
+                <span class="tarot-symbol">★</span>
+                <p class="tarot-name">THE STAR</p>
+                <p class="tarot-jp">星</p>
+              </div>
+            </div>
+          </div>
+          <div class="mock-message">
+            <p>「今日の星は希望を示している。<br>君の選択は間違っていない。」</p>
+          </div>
+          <p class="mock-time">毎朝 8:00 配信</p>
+        </div>
+      </div>
+      <div class="feature-text">
+        <div class="feature-number">01</div>
+        <h3 class="feature-title">毎日タロット占い</h3>
+        <p class="feature-desc">担当ホストが毎朝あなたのためだけにタロットを引き、今日の運勢と一言メッセージをお届け。朝目覚めるたびに、あの人の声が聞こえる。</p>
+        <ul class="feature-list">
+          <li>✦ 毎朝8時に自動配信</li>
+          <li>✦ 12星座 × タロット組み合わせ</li>
+          <li>✦ ホストごとの個性ある解釈</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Feature 2 -->
+    <div class="feature-block">
+      <div class="feature-visual">
+        <div class="feature-card-mock chat-mock">
+          <div class="chat-bubble chat-bubble--host">
+            <img src="images/cast/2510val_桜木凌1_00.jpg" alt="" class="chat-avatar">
+            <div class="chat-text">「最近どう？無理してない？<br>俺はいつでも話聞くよ☆」</div>
+          </div>
+          <div class="chat-bubble chat-bubble--host chat-bubble--2">
+            <img src="images/cast/2603val_れおんまんtop00.jpg" alt="" class="chat-avatar">
+            <div class="chat-text">「今日も一日お疲れさま。<br>ゆっくり休んでね🌙」</div>
+          </div>
+          <div class="chat-bubble chat-bubble--me">
+            <div class="chat-text">ありがとう😊</div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-text">
+        <div class="feature-number">02</div>
+        <h3 class="feature-title">ホストからの<br>優しい言葉</h3>
+        <p class="feature-desc">担当ホストがあなたの生活リズムを覚えて、朝・昼・夜に合わせた言葉をかけてくれる。疲れた日も、嬉しい日も、いつもそばに。</p>
+        <ul class="feature-list">
+          <li>✦ 時間帯別メッセージ配信</li>
+          <li>✦ キャラ × 気分別バリエーション</li>
+          <li>✦ 誕生日や記念日サプライズ</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Feature 3 -->
+    <div class="feature-block feature-block--reverse">
+      <div class="feature-visual">
+        <div class="feature-card-mock budget-mock">
+          <h4 class="budget-title">💰 予算ロック機能</h4>
+          <div class="budget-bar-wrap">
+            <div class="budget-label">
+              <span>今月の上限</span>
+              <span class="budget-amount">¥30,000</span>
+            </div>
+            <div class="budget-bar">
+              <div class="budget-fill" style="width:58%"></div>
+            </div>
+            <div class="budget-label">
+              <span>使用済み</span>
+              <span>¥17,500 <small>(58%)</small></span>
+            </div>
+          </div>
+          <div class="budget-alert">
+            <span>🔔</span>
+            <p>上限の80%に近づいたら<br>事前にお知らせします</p>
+          </div>
+          <div class="budget-safe-badge">✅ 安心プレイ認定</div>
+        </div>
+      </div>
+      <div class="feature-text">
+        <div class="feature-number">03</div>
+        <h3 class="feature-title">予算ロック機能</h3>
+        <p class="feature-desc">ホストクラブで「気づいたらお金を使いすぎていた」という不安を解消。事前に予算を設定すれば、超過しそうになったら通知が来るから安心。</p>
+        <ul class="feature-list">
+          <li>✦ 月・回別の予算設定</li>
+          <li>✦ 80%・100%アラート通知</li>
+          <li>✦ 来店履歴の自動記録</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Feature 4 -->
+    <div class="feature-block">
+      <div class="feature-visual">
+        <div class="feature-card-mock type-mock">
+          <h4 class="type-title">💜 タイプ別診断</h4>
+          <div class="type-result">
+            <div class="type-icon-big">🌙</div>
+            <p class="type-result-name">「ミステリアス癒し系」</p>
+            <p class="type-result-sub">あなたにぴったりなのは…</p>
+          </div>
+          <div class="type-matches">
+            <div class="type-match-card">
+              <img src="images/cast/2509val_冬島水月0100.jpg" alt="">
+              <p>冬島水月</p>
+              <span class="match-pct">98%</span>
+            </div>
+            <div class="type-match-card">
+              <img src="images/cast/2604val_月神ルイ00.jpeg" alt="">
+              <p>月神ルイ</p>
+              <span class="match-pct">94%</span>
+            </div>
+            <div class="type-match-card">
+              <img src="images/cast/2510val_カルマ00.jpeg" alt="">
+              <p>カルマ</p>
+              <span class="match-pct">91%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-text">
+        <div class="feature-number">04</div>
+        <h3 class="feature-title">キャストタイプ<br>別診断</h3>
+        <p class="feature-desc">20問の質問に答えるだけで、あなたの「求めているホスト像」を分析。相性ランキングで最適なキャストを提案するから、初めてでも迷わない。</p>
+        <ul class="feature-list">
+          <li>✦ 心理テスト × AIマッチング</li>
+          <li>✦ 相性スコア表示</li>
+          <li>✦ ホストのプロフィール詳細確認</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CAST ========== -->
+<section class="cast-section" id="cast">
+  <div class="container">
+    <div class="section-label">CAST</div>
+    <h2 class="section-title">あなたを待っているホストたち</h2>
+    <p class="cast-section-sub">Group Yggdrasill VALHALLAの精鋭キャストが、アプリを通じて毎日あなたに会いに来る。</p>
+    <div class="cast-lp-grid">
+      <div class="cast-lp-card">
+        <div class="cast-lp-img"><img src="images/cast/2512val_右京遊戯01_00.jpg" alt="右京遊戯" loading="lazy"></div>
+        <div class="cast-lp-info">
+          <p class="cast-lp-name">右京遊戯</p>
+          <p class="cast-lp-type">🏆 No.1 / クール王道系</p>
+        </div>
+      </div>
+      <div class="cast-lp-card">
+        <div class="cast-lp-img"><img src="images/cast/2510val_桜木凌1_00.jpg" alt="桜木 凌" loading="lazy"></div>
+        <div class="cast-lp-info">
+          <p class="cast-lp-name">桜木 凌</p>
+          <p class="cast-lp-type">💙 No.2 / 爽やか甘え系</p>
+        </div>
+      </div>
+      <div class="cast-lp-card">
+        <div class="cast-lp-img"><img src="images/cast/2509val_冬島水月0100.jpg" alt="冬島水月" loading="lazy"></div>
+        <div class="cast-lp-info">
+          <p class="cast-lp-name">冬島水月</p>
+          <p class="cast-lp-type">🌙 No.3 / ミステリアス系</p>
+        </div>
+      </div>
+      <div class="cast-lp-card">
+        <div class="cast-lp-img"><img src="images/cast/2603val_れおんまんtop00.jpg" alt="れおんまん" loading="lazy"></div>
+        <div class="cast-lp-info">
+          <p class="cast-lp-name">れおんまん</p>
+          <p class="cast-lp-type">😄 No.4 / 元気盛り上げ系</p>
+        </div>
+      </div>
+      <div class="cast-lp-card">
+        <div class="cast-lp-img"><img src="images/cast/2604val_苺愛ロマ00.jpg" alt="苺愛ロマ" loading="lazy"></div>
+        <div class="cast-lp-info">
+          <p class="cast-lp-name">苺愛ロマ</p>
+          <p class="cast-lp-type">🌸 / 個性派アート系</p>
+        </div>
+      </div>
+      <div class="cast-lp-card">
+        <div class="cast-lp-img"><img src="images/cast/2510val_カルマ00.jpeg" alt="カルマ" loading="lazy"></div>
+        <div class="cast-lp-info">
+          <p class="cast-lp-name">カルマ</p>
+          <p class="cast-lp-type">🔥 / ワイルドかっこいい系</p>
+        </div>
+      </div>
+    </div>
+    <p class="cast-more-note">+ 在籍100名以上のキャストが続々参加予定</p>
+  </div>
+</section>
+
+<!-- ========== FLOW ========== -->
+<section class="flow">
+  <div class="container">
+    <div class="section-label">HOW TO USE</div>
+    <h2 class="section-title">たった3ステップで始まる</h2>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="flow-num">1</div>
+        <div class="flow-icon">📱</div>
+        <h4>LINEで事前登録</h4>
+        <p>まずは下のボタンからLINE公式アカウントを友達追加。リリース時に真っ先にお知らせが届きます。</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-num">2</div>
+        <div class="flow-icon">💜</div>
+        <h4>タイプ診断で<br>担当ホストを決定</h4>
+        <p>20問の簡単な質問に答えるだけ。あなたに最もマッチするホストが見つかります。</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-num">3</div>
+        <div class="flow-icon">🔮</div>
+        <h4>毎日タロット＆<br>メッセージを受け取る</h4>
+        <p>毎朝あなた専用のタロット占いと、担当ホストからのメッセージが届きます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SAFETY ========== -->
+<section class="safety">
+  <div class="container">
+    <div class="section-label">SAFETY</div>
+    <h2 class="section-title">安心して楽しむために</h2>
+    <div class="safety-grid">
+      <div class="safety-item">
+        <div class="safety-icon">🔒</div>
+        <h4>予算ロックで<br>使いすぎ防止</h4>
+        <p>自分で設定した予算を超えないようアプリが管理。超過前に必ずアラートで通知します。</p>
+      </div>
+      <div class="safety-item">
+        <div class="safety-icon">🛡️</div>
+        <h4>プライバシー<br>完全保護</h4>
+        <p>個人情報は暗号化して管理。ホスト側に実名・連絡先が漏れることは一切ありません。</p>
+      </div>
+      <div class="safety-item">
+        <div class="safety-icon">📊</div>
+        <h4>来店履歴・<br>支出の見える化</h4>
+        <p>いつ・どこに・いくら使ったかを自動記録。振り返りで賢く楽しむサポートをします。</p>
+      </div>
+      <div class="safety-item">
+        <div class="safety-icon">💬</div>
+        <h4>24時間<br>サポート対応</h4>
+        <p>不安なことがあればいつでもサポートに相談OK。初めての方も安心して始められます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== LINE CTA ========== -->
+<section class="line-cta" id="line-cta">
+  <div class="line-cta-bg">
+    <div class="cta-orb cta-orb1"></div>
+    <div class="cta-orb cta-orb2"></div>
+  </div>
+  <div class="container">
+    <div class="line-cta-inner">
+      <div class="line-cta-cast-row">
+        <img src="images/cast/2512val_右京遊戯01_00.jpg" alt="">
+        <img src="images/cast/2510val_桜木凌1_00.jpg" alt="">
+        <img src="images/cast/2512val_朝日奈優1.jpg" alt="">
+        <img src="images/cast/2604val_苺愛ロマ00.jpg" alt="">
+        <img src="images/cast/2509val_きなり00.jpg" alt="">
+      </div>
+      <div class="line-cta-badge">🎁 事前登録限定特典あり</div>
+      <h2 class="line-cta-title">リリースを<br>一番に知りたい方へ</h2>
+      <p class="line-cta-desc">
+        LINEで友達追加するだけで、<br>
+        アプリリリースと同時に<strong>最速通知</strong>が届きます。<br>
+        事前登録者には<strong>特別コンテンツ</strong>をプレゼント予定。
+      </p>
+      <div class="line-benefits">
+        <div class="line-benefit">🔮 タロット先行体験</div>
+        <div class="line-benefit">💌 限定メッセージ</div>
+        <div class="line-benefit">🎟️ 初月プレミアム無料</div>
+      </div>
+      <a href="https://lin.ee/XXXXXXXX" class="cta-btn cta-btn--line" target="_blank">
+        <span class="cta-line-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.145 2 11.243c0 3.016 1.646 5.687 4.148 7.398-.143.512-.542 1.894-.622 2.184-.1.362.133.358.277.26.114-.076 1.817-1.218 2.549-1.713.549.076 1.111.115 1.648.115 5.523 0 10-4.145 10-9.244C22 6.145 17.523 2 12 2z"/></svg>
+        </span>
+        LINE で今すぐ事前登録する
+      </a>
+      <p class="line-cta-note">※ 完全無料 ／ いつでも退会OK ／ セールス一切なし</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FAQ ========== -->
+<section class="faq">
+  <div class="container">
+    <div class="section-label">FAQ</div>
+    <h2 class="section-title">よくある質問</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>アプリは無料ですか？</summary>
+        <p>基本機能は無料でご利用いただけます。タロット占いや毎日のメッセージは無料プランでもお楽しみいただけます。より充実した機能をご希望の場合はプレミアムプランもご用意予定です。</p>
+      </details>
+      <details class="faq-item">
+        <summary>本物のホストと話せますか？</summary>
+        <p>アプリ内のメッセージはホストが監修したオリジナルコンテンツです。実際の来店予約もアプリから可能になる予定です。</p>
+      </details>
+      <details class="faq-item">
+        <summary>予算ロック機能はどう使いますか？</summary>
+        <p>マイページで月間・1回あたりの上限金額を設定するだけ。来店記録を入力すると自動的に集計・管理してくれます。</p>
+      </details>
+      <details class="faq-item">
+        <summary>タイプ診断は何度でもできますか？</summary>
+        <p>はい、何度でも受診可能です。気分や状況に合わせて担当ホストを変えることもできます。</p>
+      </details>
+      <details class="faq-item">
+        <summary>個人情報は安全ですか？</summary>
+        <p>SSL暗号化通信を採用し、個人情報は厳重に管理しています。ホスト側に個人情報が開示されることはありません。</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="lp-footer">
+  <div class="container">
+    <img src="images/logo.png" alt="Group Yggdrasill" class="footer-logo">
+    <p class="footer-app-name">VALHALLA App</p>
+    <p class="footer-tagline">あなただけのホストが、毎日そばにいる。</p>
+    <div class="footer-links">
+      <a href="#">プライバシーポリシー</a>
+      <a href="#">利用規約</a>
+      <a href="#">お問い合わせ</a>
+    </div>
+    <p class="footer-copy">&copy; 2025 Group Yggdrasill / VALHALLA App. All Rights Reserved.</p>
+  </div>
+</footer>
+
+<!-- 固定LINE CTA (スマホ) -->
+<div class="fixed-cta">
+  <a href="#line-cta" class="fixed-cta-btn">
+    <span>🔮 LINE で事前登録する</span>
+  </a>
+</div>
+
+<script>
+// Stars canvas
+const canvas = document.getElementById('starsCanvas');
+const ctx = canvas.getContext('2d');
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+let stars = [];
+function initStars() {
+  stars = Array.from({length: 180}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.2 + 0.1,
+    alpha: Math.random() * 0.7 + 0.1,
+    speed: Math.random() * 0.3 + 0.05,
+    pulse: Math.random() * Math.PI * 2
+  }));
+}
+function drawStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const t = Date.now() * 0.001;
+  stars.forEach(s => {
+    const a = s.alpha * (0.6 + 0.4 * Math.sin(t * s.speed + s.pulse));
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(220,200,255,${a})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(drawStars);
+}
+window.addEventListener('resize', () => { resizeCanvas(); initStars(); });
+resizeCanvas(); initStars(); drawStars();
+
+// FAQ accordion
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.querySelector('summary').addEventListener('click', e => {
+    e.preventDefault();
+    const isOpen = item.hasAttribute('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.removeAttribute('open'));
+    if (!isOpen) item.setAttribute('open', '');
+  });
+});
+
+// Scroll animation
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.15 });
+document.querySelectorAll('.feature-block, .safety-item, .flow-step, .cast-lp-card').forEach(el => {
+  el.classList.add('fade-up');
+  observer.observe(el);
+});
+</script>
+</body>
+</html>

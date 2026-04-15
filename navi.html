@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ユグドラシル初回ナビ | Group Yggdrasill 公式ガイド</title>
+  <link rel="stylesheet" href="navi.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="navi-hero">
+    <canvas id="naviCanvas"></canvas>
+    <div class="navi-hero-inner">
+      <img src="images/logo.png" alt="Group Yggdrasill" class="navi-logo">
+      <p class="navi-hero-label">OFFICIAL GUIDE</p>
+      <h1 class="navi-hero-title">ユグドラシル<br>初回ナビ</h1>
+      <p class="navi-hero-sub">はじめてでも安心。<br>Group Yggdrasillのすべてがわかる、あなただけのガイド。</p>
+      <a href="#stores" class="navi-hero-btn">店舗を選ぶ ↓</a>
+    </div>
+  </section>
+
+  <!-- WHAT IS YGG -->
+  <section class="navi-about">
+    <div class="container">
+      <p class="navi-section-label">ABOUT</p>
+      <h2 class="navi-section-title">Group Yggdrasillとは</h2>
+      <p class="navi-about-text">
+        歌舞伎町を代表するホストクラブグループ。<br>
+        個性豊かな6店舗が歌舞伎町・大阪・札幌に展開し、<br>
+        それぞれ異なる世界観と雰囲気で最高の夜を演出します。<br>
+        初めての方でも安心してお越しいただけるよう、<br>
+        このナビがご案内します。
+      </p>
+      <div class="navi-stats">
+        <div class="navi-stat">
+          <span class="navi-stat-num">6<small>+</small></span>
+          <span class="navi-stat-label">店舗展開</span>
+        </div>
+        <div class="navi-stat">
+          <span class="navi-stat-num">100<small>+</small></span>
+          <span class="navi-stat-label">在籍キャスト</span>
+        </div>
+        <div class="navi-stat">
+          <span class="navi-stat-num">24<small>h</small></span>
+          <span class="navi-stat-label">LINE対応</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLOW: 初回の流れ -->
+  <section class="navi-flow">
+    <div class="container">
+      <p class="navi-section-label">FLOW</p>
+      <h2 class="navi-section-title">初回ご来店の流れ</h2>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-num">01</div>
+          <div class="flow-icon">💬</div>
+          <h3>LINEで事前相談</h3>
+          <p>お好みのキャストや予算など、事前にLINEでご相談いただけます。初めての方でも丁寧にご案内します。</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-num">02</div>
+          <div class="flow-icon">🏠</div>
+          <h3>ご来店・ご着席</h3>
+          <p>受付スタッフがご案内。ご希望のキャストのご指名も、ご来店当日に承ります。</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-num">03</div>
+          <div class="flow-icon">🥂</div>
+          <h3>楽しいひととき</h3>
+          <p>キャストとのトークやシャンパンタワーなど、最高のエンターテイメントをお楽しみください。</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-num">04</div>
+          <div class="flow-icon">✨</div>
+          <h3>お会計・お見送り</h3>
+          <p>明朗会計で安心。次回のご予約もその場でOK。スタッフ一同笑顔でお見送りします。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAST MESSAGES VIDEO -->
+  <section class="navi-messages" id="messages">
+    <div class="container">
+      <p class="navi-section-label">CAST MESSAGE</p>
+      <h2 class="navi-section-title">キャストからひとこと</h2>
+      <p class="navi-messages-sub">アプリリリースを楽しみにしているキャストたちから、あなたへメッセージ。</p>
+
+      <div class="msg-grid" id="msgGrid">
+
+        <!-- ▼▼▼ キャスト動画カード — video_url に YouTube URL を入れると再生されます ▼▼▼ -->
+
+        <div class="msg-card" data-video="">
+          <div class="msg-thumb-wrap">
+            <img src="images/cast/2512val_右京遊戯01_00.jpg" alt="右京遊戯" class="msg-thumb">
+            <div class="msg-overlay">
+              <div class="msg-play-btn">
+                <svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="white" stroke-opacity=".7" stroke-width="1.5"/><path d="M24 20L42 30L24 40V20Z" fill="white"/></svg>
+              </div>
+              <span class="msg-coming">COMING SOON</span>
+            </div>
+          </div>
+          <div class="msg-info">
+            <p class="msg-store">VALHALLA</p>
+            <p class="msg-name">右京遊戯</p>
+            <p class="msg-quote">「アプリ、楽しみにしててね」</p>
+          </div>
+        </div>
+
+        <div class="msg-card" data-video="">
+          <div class="msg-thumb-wrap">
+            <img src="images/cast/2510val_桜木凌1_00.jpg" alt="桜木凌" class="msg-thumb">
+            <div class="msg-overlay">
+              <div class="msg-play-btn">
+                <svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="white" stroke-opacity=".7" stroke-width="1.5"/><path d="M24 20L42 30L24 40V20Z" fill="white"/></svg>
+              </div>
+              <span class="msg-coming">COMING SOON</span>
+            </div>
+          </div>
+          <div class="msg-info">
+            <p class="msg-store">VALHALLA</p>
+            <p class="msg-name">桜木 凌</p>
+            <p class="msg-quote">「絶対チェックしてね！」</p>
+          </div>
+        </div>
+
+        <div class="msg-card" data-video="">
+          <div class="msg-thumb-wrap">
+            <img src="images/cast/2509val_冬島水月0100.jpg" alt="冬島水月" class="msg-thumb">
+            <div class="msg-overlay">
+              <div class="msg-play-btn">
+                <svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="white" stroke-opacity=".7" stroke-width="1.5"/><path d="M24 20L42 30L24 40V20Z" fill="white"/></svg>
+              </div>
+              <span class="msg-coming">COMING SOON</span>
+            </div>
+          </div>
+          <div class="msg-info">
+            <p class="msg-store">VALHALLA</p>
+            <p class="msg-name">冬島水月</p>
+            <p class="msg-quote">「待ってるよ〜！」</p>
+          </div>
+        </div>
+
+        <div class="msg-card" data-video="">
+          <div class="msg-thumb-wrap">
+            <img src="images/cast/2603val_れおんまんtop00.jpg" alt="れおんまん" class="msg-thumb">
+            <div class="msg-overlay">
+              <div class="msg-play-btn">
+                <svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="white" stroke-opacity=".7" stroke-width="1.5"/><path d="M24 20L42 30L24 40V20Z" fill="white"/></svg>
+              </div>
+              <span class="msg-coming">COMING SOON</span>
+            </div>
+          </div>
+          <div class="msg-info">
+            <p class="msg-store">VALHALLA</p>
+            <p class="msg-name">れおんまん</p>
+            <p class="msg-quote">「リリース待ってて！」</p>
+          </div>
+        </div>
+
+        <div class="msg-card" data-video="">
+          <div class="msg-thumb-wrap">
+            <img src="images/cast_YGGDRASILL/動城ハウル.jpg" alt="動城ハウル" class="msg-thumb">
+            <div class="msg-overlay">
+              <div class="msg-play-btn">
+                <svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="white" stroke-opacity=".7" stroke-width="1.5"/><path d="M24 20L42 30L24 40V20Z" fill="white"/></svg>
+              </div>
+              <span class="msg-coming">COMING SOON</span>
+            </div>
+          </div>
+          <div class="msg-info">
+            <p class="msg-store">YGGDRASILL</p>
+            <p class="msg-name">動城 ハウル</p>
+            <p class="msg-quote">「楽しみにしてるよ」</p>
+          </div>
+        </div>
+
+        <div class="msg-card" data-video="">
+          <div class="msg-thumb-wrap">
+            <img src="images/cast_YGGDRASILL/ジャングク.jpg" alt="ジャングク" class="msg-thumb">
+            <div class="msg-overlay">
+              <div class="msg-play-btn">
+                <svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="white" stroke-opacity=".7" stroke-width="1.5"/><path d="M24 20L42 30L24 40V20Z" fill="white"/></svg>
+              </div>
+              <span class="msg-coming">COMING SOON</span>
+            </div>
+          </div>
+          <div class="msg-info">
+            <p class="msg-store">YGGDRASILL</p>
+            <p class="msg-name">ジャン グク</p>
+            <p class="msg-quote">「絶対使ってね！」</p>
+          </div>
+        </div>
+
+        <div class="msg-card" data-video="">
+          <div class="msg-thumb-wrap">
+            <img src="images/cast_YGD/神代葉王.jpg" alt="神代葉王" class="msg-thumb">
+            <div class="msg-overlay">
+              <div class="msg-play-btn">
+                <svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="white" stroke-opacity=".7" stroke-width="1.5"/><path d="M24 20L42 30L24 40V20Z" fill="white"/></svg>
+              </div>
+              <span class="msg-coming">COMING SOON</span>
+            </div>
+          </div>
+          <div class="msg-info">
+            <p class="msg-store">YGD</p>
+            <p class="msg-name">神代 葉王</p>
+            <p class="msg-quote">「楽しみにしてるぜ」</p>
+          </div>
+        </div>
+
+        <div class="msg-card" data-video="">
+          <div class="msg-thumb-wrap">
+            <img src="images/cast_LIFDRASIR/仁.jpg" alt="仁" class="msg-thumb">
+            <div class="msg-overlay">
+              <div class="msg-play-btn">
+                <svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="white" stroke-opacity=".7" stroke-width="1.5"/><path d="M24 20L42 30L24 40V20Z" fill="white"/></svg>
+              </div>
+              <span class="msg-coming">COMING SOON</span>
+            </div>
+          </div>
+          <div class="msg-info">
+            <p class="msg-store">LIFDRASIR</p>
+            <p class="msg-name">仁</p>
+            <p class="msg-quote">「一緒に楽しもう」</p>
+          </div>
+        </div>
+
+        <div class="msg-card" data-video="">
+          <div class="msg-thumb-wrap">
+            <img src="images/cast_Celeste/柊レオ.jpg" alt="柊レオ" class="msg-thumb">
+            <div class="msg-overlay">
+              <div class="msg-play-btn">
+                <svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="white" stroke-opacity=".7" stroke-width="1.5"/><path d="M24 20L42 30L24 40V20Z" fill="white"/></svg>
+              </div>
+              <span class="msg-coming">COMING SOON</span>
+            </div>
+          </div>
+          <div class="msg-info">
+            <p class="msg-store">Celeste</p>
+            <p class="msg-name">柊 レオ</p>
+            <p class="msg-quote">「リリース楽しみ！」</p>
+          </div>
+        </div>
+
+        <div class="msg-card" data-video="">
+          <div class="msg-thumb-wrap">
+            <img src="images/cast_AVALON/小鳥遊霧翔.jpg" alt="小鳥遊霧翔" class="msg-thumb">
+            <div class="msg-overlay">
+              <div class="msg-play-btn">
+                <svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="29" stroke="white" stroke-opacity=".7" stroke-width="1.5"/><path d="M24 20L42 30L24 40V20Z" fill="white"/></svg>
+              </div>
+              <span class="msg-coming">COMING SOON</span>
+            </div>
+          </div>
+          <div class="msg-info">
+            <p class="msg-store">AVALON</p>
+            <p class="msg-name">小鳥遊 霧翔</p>
+            <p class="msg-quote">「待ってるよ！」</p>
+          </div>
+        </div>
+
+        <!-- ▲▲▲ カードはここに追加していけます ▲▲▲ -->
+
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDEO MODAL -->
+  <div class="msg-modal" id="msgModal" onclick="closeMsgVideo()">
+    <div class="msg-modal-inner" onclick="event.stopPropagation()">
+      <button class="msg-modal-close" onclick="closeMsgVideo()">✕</button>
+      <div class="msg-modal-frame">
+        <iframe id="msgIframe" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      </div>
+      <div class="msg-modal-info">
+        <p id="msgModalStore" class="msg-modal-store"></p>
+        <p id="msgModalName" class="msg-modal-name"></p>
+        <p id="msgModalQuote" class="msg-modal-quote"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- STORES -->
+  <section class="navi-stores" id="stores">
+    <div class="container">
+      <p class="navi-section-label">STORES</p>
+      <h2 class="navi-section-title">店舗を選ぶ</h2>
+      <p class="navi-stores-sub">あなたの好みに合った店舗を見つけてください</p>
+
+      <!-- VALHALLA -->
+      <div class="store-block" id="store-valhalla">
+        <div class="store-header">
+          <div class="store-badge-wrap"><span class="store-tag new">NEW OPEN</span></div>
+          <h3 class="store-name">VALHALLA <span class="store-name-jp">ヴァルハラ</span></h3>
+          <p class="store-catch">150坪50席の超大箱。伝説が、ここから始まる。</p>
+          <div class="store-meta">
+            <span>📍 歌舞伎町2-28-2 東松ビルB1F</span>
+            <span>📞 03-6233-9876</span>
+            <span>🕐 20:00〜LAST</span>
+          </div>
+        </div>
+        <div class="cast-scroll-wrap">
+          <div class="cast-scroll">
+            <div class="navi-cast-card">
+              <img src="images/cast/2512val_右京遊戯01_00.jpg" alt="右京遊戯">
+              <p class="navi-cast-name">右京遊戯</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast/2510val_桜木凌1_00.jpg" alt="桜木凌">
+              <p class="navi-cast-name">桜木 凌</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast/2509val_冬島水月0100.jpg" alt="冬島水月">
+              <p class="navi-cast-name">冬島水月</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast/2603val_れおんまんtop00.jpg" alt="れおんまん">
+              <p class="navi-cast-name">れおんまん</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast/2510val_カルマ00.jpeg" alt="カルマ">
+              <p class="navi-cast-name">カルマ</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast/2512val_朝日奈優1.jpg" alt="朝日奈優">
+              <p class="navi-cast-name">朝日奈優</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast/2604val_苺愛ロマ00.jpg" alt="苺愛ロマ">
+              <p class="navi-cast-name">苺愛ロマ</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast/2509val_きなり00.jpg" alt="きなり">
+              <p class="navi-cast-name">きなり</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast/2604val_月神ルイ00.jpeg" alt="月神ルイ">
+              <p class="navi-cast-name">月神ルイ</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast/2510val_場地圭介1_00.jpg" alt="場地圭介">
+              <p class="navi-cast-name">場地圭介</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast/2510val_篁十亜2_00.jpg" alt="篁十亜">
+              <p class="navi-cast-name">篁 十亜</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast/2509val_泉貴羅00.jpg" alt="泉貴羅">
+              <p class="navi-cast-name">泉 貴羅</p>
+            </div>
+          </div>
+        </div>
+        <a href="index.html" class="store-link-btn">VALHALLAを詳しく見る →</a>
+      </div>
+
+      <!-- YGGDRASILL -->
+      <div class="store-block" id="store-yggdrasill">
+        <div class="store-header">
+          <h3 class="store-name">YGGDRASILL <span class="store-name-jp">ユグドラシル</span></h3>
+          <p class="store-catch">グループの旗艦店。歌舞伎町に君臨する本店。</p>
+          <div class="store-meta">
+            <span>📍 歌舞伎町エリア</span>
+            <span>🌐 ygggroup.jp</span>
+          </div>
+        </div>
+        <div class="cast-scroll-wrap">
+          <div class="cast-scroll">
+            <div class="navi-cast-card">
+              <img src="images/cast_YGGDRASILL/動城ハウル.jpg" alt="動城ハウル">
+              <p class="navi-cast-name">動城 ハウル</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_YGGDRASILL/ジャングク.jpg" alt="ジャングク">
+              <p class="navi-cast-name">ジャン グク</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_YGGDRASILL/櫻井瑛紫.jpg" alt="櫻井瑛紫">
+              <p class="navi-cast-name">櫻井 瑛紫</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_YGGDRASILL/Genki.jpg" alt="Genki">
+              <p class="navi-cast-name">Genki</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_YGGDRASILL/九条音弥.jpg" alt="九条音弥">
+              <p class="navi-cast-name">九条 音弥</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_YGGDRASILL/真髄狐白.jpg" alt="真髄狐白">
+              <p class="navi-cast-name">真髄 狐白</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_YGGDRASILL/桜咲愛蘭.jpg" alt="桜咲愛蘭">
+              <p class="navi-cast-name">桜咲 愛蘭</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_YGGDRASILL/道枝響.jpg" alt="道枝響">
+              <p class="navi-cast-name">道枝 響</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- YGD -->
+      <div class="store-block" id="store-ygd">
+        <div class="store-header">
+          <h3 class="store-name">YGD <span class="store-name-jp">ジャンヌダルク</span></h3>
+          <p class="store-catch">個性派揃いの第3店舗。唯一無二の存在感。</p>
+          <div class="store-meta">
+            <span>📍 歌舞伎町エリア</span>
+            <span>🌐 ygggroup.jp</span>
+          </div>
+        </div>
+        <div class="cast-scroll-wrap">
+          <div class="cast-scroll">
+            <div class="navi-cast-card">
+              <img src="images/cast_YGD/神代葉王.jpg" alt="神代葉王">
+              <p class="navi-cast-name">神代 葉王</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_YGD/夢咲千秋.jpg" alt="夢咲千秋">
+              <p class="navi-cast-name">夢咲 千秋</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_YGD/橘マオ.jpg" alt="橘マオ">
+              <p class="navi-cast-name">橘 マオ</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_YGD/夜桜春.jpg" alt="夜桜春">
+              <p class="navi-cast-name">夜桜 春</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_YGD/煉獄えんま.jpg" alt="煉獄えんま">
+              <p class="navi-cast-name">煉獄 えんま</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_YGD/麗羽.jpg" alt="麗羽">
+              <p class="navi-cast-name">麗羽</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_YGD/朔夜恋.jpg" alt="朔夜恋">
+              <p class="navi-cast-name">朔夜 恋</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_YGD/御雷キルア.jpg" alt="御雷キルア">
+              <p class="navi-cast-name">御雷 キルア</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LIFDRASIR -->
+      <div class="store-block" id="store-lifdrasir">
+        <div class="store-header">
+          <h3 class="store-name">LIFDRASIR <span class="store-name-jp">リーヴスラシル</span></h3>
+          <p class="store-catch">洗練されたムードと知的な会話。大人の空間。</p>
+          <div class="store-meta">
+            <span>📍 歌舞伎町エリア</span>
+            <span>🌐 ygggroup.jp</span>
+          </div>
+        </div>
+        <div class="cast-scroll-wrap">
+          <div class="cast-scroll">
+            <div class="navi-cast-card">
+              <img src="images/cast_LIFDRASIR/仁.jpg" alt="仁">
+              <p class="navi-cast-name">仁</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_LIFDRASIR/羽偉.jpg" alt="羽偉">
+              <p class="navi-cast-name">羽偉</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_LIFDRASIR/柊木ハルト.jpg" alt="柊木ハルト">
+              <p class="navi-cast-name">柊木 ハルト</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_LIFDRASIR/七星.jpg" alt="七星">
+              <p class="navi-cast-name">七星</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_LIFDRASIR/怜.jpg" alt="怜">
+              <p class="navi-cast-name">怜</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_LIFDRASIR/柊木翔.jpg" alt="柊木翔">
+              <p class="navi-cast-name">柊木 翔</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_LIFDRASIR/櫻庭有馬.jpg" alt="櫻庭有馬">
+              <p class="navi-cast-name">櫻庭 有馬</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_LIFDRASIR/朝比奈珀.jpg" alt="朝比奈珀">
+              <p class="navi-cast-name">朝比奈 珀</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Celeste -->
+      <div class="store-block" id="store-celeste">
+        <div class="store-header">
+          <h3 class="store-name">Celeste <span class="store-name-jp">セレステ</span></h3>
+          <p class="store-catch">やさしさと笑顔に包まれる、温かい時間。</p>
+          <div class="store-meta">
+            <span>📍 歌舞伎町エリア</span>
+            <span>🌐 ygggroup.jp</span>
+          </div>
+        </div>
+        <div class="cast-scroll-wrap">
+          <div class="cast-scroll">
+            <div class="navi-cast-card">
+              <img src="images/cast_Celeste/柊レオ.jpg" alt="柊レオ">
+              <p class="navi-cast-name">柊 レオ</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_Celeste/鬼塚颯太.jpg" alt="鬼塚颯太">
+              <p class="navi-cast-name">鬼塚 颯太</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_Celeste/天宮幸太郎.jpg" alt="天宮幸太郎">
+              <p class="navi-cast-name">天宮 幸太郎</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_Celeste/芝田麻呂.jpg" alt="芝田麻呂">
+              <p class="navi-cast-name">芝田 麻呂</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AVALON -->
+      <div class="store-block" id="store-avalon">
+        <div class="store-header">
+          <h3 class="store-name">AVALON <span class="store-name-jp">アヴァロン</span></h3>
+          <p class="store-catch">非日常の王国。圧倒的な存在感のキャスト陣。</p>
+          <div class="store-meta">
+            <span>📍 歌舞伎町エリア</span>
+            <span>🌐 ygggroup.jp</span>
+          </div>
+        </div>
+        <div class="cast-scroll-wrap">
+          <div class="cast-scroll">
+            <div class="navi-cast-card">
+              <img src="images/cast_AVALON/小鳥遊霧翔.jpg" alt="小鳥遊霧翔">
+              <p class="navi-cast-name">小鳥遊 霧翔</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_AVALON/成宮乃亜.jpg" alt="成宮乃亜">
+              <p class="navi-cast-name">成宮 乃亜</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_AVALON/LilBK.jpg" alt="LilBK">
+              <p class="navi-cast-name">Lil BK</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_AVALON/HAL.jpg" alt="HAL">
+              <p class="navi-cast-name">HAL</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_AVALON/帝リキヤ.jpg" alt="帝リキヤ">
+              <p class="navi-cast-name">帝 リキヤ</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_AVALON/練紅覇.jpg" alt="練紅覇">
+              <p class="navi-cast-name">練 紅覇</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_AVALON/桜威優希斗.jpg" alt="桜威優希斗">
+              <p class="navi-cast-name">桜威 優希斗</p>
+            </div>
+            <div class="navi-cast-card">
+              <img src="images/cast_AVALON/馬渕愛也.jpg" alt="馬渕愛也">
+              <p class="navi-cast-name">馬渕 愛也</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="navi-faq">
+    <div class="container">
+      <p class="navi-section-label">FAQ</p>
+      <h2 class="navi-section-title">よくある質問</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span>初めてでも一人でも大丈夫ですか？</span>
+            <span class="faq-icon">＋</span>
+          </button>
+          <div class="faq-a">
+            <p>もちろん大歓迎です！初回のお客様も一人でご来店される方も多くいらっしゃいます。受付スタッフが丁寧にご案内しますのでご安心ください。</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span>予算はどれくらい必要ですか？</span>
+            <span class="faq-icon">＋</span>
+          </button>
+          <div class="faq-a">
+            <p>初回は1〜2万円程度を目安にされる方が多いです。事前にLINEでご予算をお伝えいただくと、スタッフが最適なプランをご提案します。追加注文は強制ではありません。</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span>どの店舗に行けばいいかわかりません</span>
+            <span class="faq-icon">＋</span>
+          </button>
+          <div class="faq-a">
+            <p>LINEでご相談いただければ、お好みや雰囲気に合わせて最適な店舗・キャストをご提案します。このページの店舗紹介も参考にしてみてください。</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span>ドレスコードはありますか？</span>
+            <span class="faq-icon">＋</span>
+          </button>
+          <div class="faq-a">
+            <p>特に厳しいドレスコードは設けていません。普段着でもお越しいただけます。ただし、あまりにカジュアルすぎる服装（サンダル・ショートパンツなど）はご遠慮いただく場合があります。</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span>事前予約は必要ですか？</span>
+            <span class="faq-icon">＋</span>
+          </button>
+          <div class="faq-a">
+            <p>予約なしでもご来店いただけますが、ご希望のキャストへのご指名や特別なおもてなしをご希望の場合は、事前にLINEでご予約いただくことをおすすめします。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LINE CTA -->
+  <section class="navi-cta">
+    <div class="container">
+      <div class="cta-inner">
+        <img src="images/logo.png" alt="Group Yggdrasill" class="cta-logo">
+        <h2 class="cta-title">まずはLINEで<br>気軽にご相談を</h2>
+        <p class="cta-text">どの店舗に行けばいいか、予算は、一人でも大丈夫か——<br>どんな小さな疑問でもお気軽にどうぞ。<br>スタッフが24時間対応します。</p>
+        <a href="https://lin.ee/XXXXXXXX" class="cta-line-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.02 2 11c0 3.19 1.66 6.01 4.23 7.77-.1.36-.38 1.32-.44 1.53-.08.28.1.28.21.2.09-.06 1.42-.97 2-.37.37.24.82.37 1.3.37C15.52 20.5 22 16.19 22 11c0-4.98-4.48-9-10-9zm-3.5 13H7v-5h1.5v5zm3.25 0h-1.5v-5h1.5v5zm3.25 0H13.5v-5H15v5z"/></svg>
+          LINE@で無料相談する
+        </a>
+        <p class="cta-note">＊完全無料。しつこい勧誘は一切ありません。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="navi-footer">
+    <div class="container">
+      <img src="images/logo.png" alt="Group Yggdrasill" class="footer-logo">
+      <nav class="footer-nav">
+        <a href="index.html">VALHALLA</a>
+        <a href="lp.html">アプリ事前登録</a>
+        <a href="https://ygggroup.jp" target="_blank">公式サイト</a>
+      </nav>
+      <p class="footer-copy">&copy; 2025 Group Yggdrasill. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <!-- 固定LINE CTA (モバイル) -->
+  <div class="fixed-cta">
+    <a href="https://lin.ee/XXXXXXXX" class="fixed-cta-btn">
+      LINE@で無料相談する
+    </a>
+  </div>
+
+<script>
+// Canvas stars
+const canvas = document.getElementById('naviCanvas');
+const ctx = canvas.getContext('2d');
+let stars = [];
+function resize() { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }
+function mkStar() {
+  return { x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+    r: Math.random()*1.2+0.3, alpha: Math.random()*0.5+0.2,
+    hue: 260+Math.random()*60, vx:(Math.random()-.5)*.2, vy:-.1-Math.random()*.3,
+    life: 150+Math.random()*200, age:0 };
+}
+function init() { stars = Array.from({length:80}, mkStar); }
+function draw() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  stars.forEach((s,i) => {
+    s.x+=s.vx; s.y+=s.vy; s.age++;
+    const f = s.age<30?s.age/30:s.age>s.life-30?(s.life-s.age)/30:1;
+    ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fillStyle=`hsla(${s.hue},80%,80%,${s.alpha*f})`; ctx.fill();
+    if(s.age>=s.life) stars[i]=mkStar();
+  });
+  requestAnimationFrame(draw);
+}
+window.addEventListener('resize',()=>{resize();init();});
+resize(); init(); draw();
+
+// Cast message video cards
+document.querySelectorAll('.msg-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const videoUrl = card.dataset.video;
+    const store = card.querySelector('.msg-store').textContent;
+    const name  = card.querySelector('.msg-name').textContent;
+    const quote = card.querySelector('.msg-quote').textContent;
+    if (videoUrl) {
+      document.getElementById('msgIframe').src = videoUrl + (videoUrl.includes('?') ? '&' : '?') + 'autoplay=1';
+      document.getElementById('msgModalStore').textContent = store;
+      document.getElementById('msgModalName').textContent  = name;
+      document.getElementById('msgModalQuote').textContent = quote;
+      document.getElementById('msgModal').classList.add('active');
+    } else {
+      // Show "coming soon" shake
+      card.classList.add('shake');
+      setTimeout(() => card.classList.remove('shake'), 500);
+    }
+  });
+});
+function closeMsgVideo() {
+  document.getElementById('msgModal').classList.remove('active');
+  document.getElementById('msgIframe').src = '';
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeMsgVideo(); });
+
+// FAQ accordion
+function toggleFaq(btn) {
+  const item = btn.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(el => {
+    el.classList.remove('open');
+    el.querySelector('.faq-icon').textContent = '＋';
+  });
+  if (!isOpen) {
+    item.classList.add('open');
+    btn.querySelector('.faq-icon').textContent = '－';
+  }
+}
+
+// Scroll fade-in
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.store-block, .flow-step, .faq-item, .navi-stat').forEach(el => {
+  el.classList.add('fade-up');
+  observer.observe(el);
+});
+</script>
+</body>
+</html>

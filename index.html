@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VALHALLA - Group Yggdrasill | 歌舞伎町ホストクラブ</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Noto+Serif+JP:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="logo-wrap">
+        <img src="images/logo.png" alt="Group Yggdrasill" class="hero-logo">
+      </div>
+      <p class="hero-group">GROUP YGGDRASILL presents</p>
+      <h1 class="hero-title">VALHALLA</h1>
+      <p class="hero-sub">ヴァルハラ</p>
+      <div class="hero-divider"></div>
+      <p class="hero-catch">伝説が、ここから始まる。</p>
+      <a href="#info" class="hero-btn">詳しく見る</a>
+    </div>
+    <div class="hero-scroll">
+      <span>SCROLL</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="section-label">ABOUT</div>
+      <h2 class="section-title">VALHALLAとは</h2>
+      <p class="about-text">
+        『VALHALLA』が150坪50席の超大箱より堂々の誕生！<br>
+        右京遊戯を筆頭に、歌舞伎町屈指の個性派達が、<br>
+        最高級のエンターテイメントを提供します。<br><br>
+        Group Yggdrasill の新たな神話、ここに始まる。
+      </p>
+      <div class="about-tags">
+        <span class="tag">150坪50席の超大箱</span>
+        <span class="tag">歌舞伎町屈指の個性派</span>
+        <span class="tag">Group Yggdrasill</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOVIE -->
+  <section class="movie" id="movie">
+    <canvas class="movie-canvas" id="movieCanvas"></canvas>
+    <div class="movie-inner">
+      <div class="movie-label-wrap">
+        <div class="section-label" style="color:rgba(200,168,255,0.7)">MOVIE</div>
+        <h2 class="movie-title">VALHALLA<br>TEASER<br>FILM</h2>
+        <p class="movie-desc">歌舞伎町、伝説の幕開け。<br>150坪の神話がいま動き出す。</p>
+      </div>
+      <div class="movie-player-wrap">
+        <div class="movie-glow"></div>
+        <div class="movie-player" id="moviePlayer">
+          <div class="movie-placeholder">
+            <div class="movie-placeholder-bg"></div>
+            <button class="play-btn" onclick="openVideo()">
+              <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="30" cy="30" r="29" stroke="white" stroke-opacity="0.6" stroke-width="1"/>
+                <path d="M24 20L42 30L24 40V20Z" fill="white"/>
+              </svg>
+            </button>
+            <p class="movie-coming">COMING SOON</p>
+          </div>
+        </div>
+        <div class="movie-ticker">
+          <span>VALHALLA &nbsp;×&nbsp; GROUP YGGDRASILL &nbsp;×&nbsp; 歌舞伎町 &nbsp;×&nbsp; VALHALLA &nbsp;×&nbsp; GROUP YGGDRASILL &nbsp;×&nbsp; 歌舞伎町 &nbsp;×&nbsp; VALHALLA &nbsp;×&nbsp; GROUP YGGDRASILL &nbsp;×&nbsp; 歌舞伎町 &nbsp;</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDEO MODAL -->
+  <div class="video-modal" id="videoModal" onclick="closeVideo()">
+    <div class="video-modal-inner" onclick="event.stopPropagation()">
+      <button class="video-close" onclick="closeVideo()">✕</button>
+      <div class="video-frame">
+        <iframe id="videoIframe" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAST -->
+  <section class="cast" id="cast">
+    <div class="container">
+      <div class="section-label">CAST</div>
+      <h2 class="section-title">在籍キャスト</h2>
+      <div class="cast-grid">
+        <div class="cast-card">
+          <div class="cast-img-wrap">
+            <img src="images/cast/2512val_右京遊戯01_00.jpg" alt="右京遊戯" loading="lazy">
+          </div>
+          <div class="cast-info">
+            <p class="cast-name">右京遊戯</p>
+            <p class="cast-role">VALHALLA</p>
+          </div>
+        </div>
+        <div class="cast-card">
+          <div class="cast-img-wrap">
+            <img src="images/cast/2510val_桜木凌1_00.jpg" alt="桜木凌" loading="lazy">
+          </div>
+          <div class="cast-info">
+            <p class="cast-name">桜木 凌</p>
+            <p class="cast-role">VALHALLA</p>
+          </div>
+        </div>
+        <div class="cast-card">
+          <div class="cast-img-wrap">
+            <img src="images/cast/2509val_冬島水月0100.jpg" alt="冬島水月" loading="lazy">
+          </div>
+          <div class="cast-info">
+            <p class="cast-name">冬島水月</p>
+            <p class="cast-role">VALHALLA</p>
+          </div>
+        </div>
+        <div class="cast-card">
+          <div class="cast-img-wrap">
+            <img src="images/cast/2603val_れおんまんtop00.jpg" alt="れおんまん" loading="lazy">
+          </div>
+          <div class="cast-info">
+            <p class="cast-name">れおんまん</p>
+            <p class="cast-role">VALHALLA</p>
+          </div>
+        </div>
+        <div class="cast-card">
+          <div class="cast-img-wrap">
+            <img src="images/cast/2510val_カルマ00.jpeg" alt="カルマ" loading="lazy">
+          </div>
+          <div class="cast-info">
+            <p class="cast-name">カルマ</p>
+            <p class="cast-role">VALHALLA</p>
+          </div>
+        </div>
+        <div class="cast-card">
+          <div class="cast-img-wrap">
+            <img src="images/cast/2512val_朝日奈優1.jpg" alt="朝日奈優" loading="lazy">
+          </div>
+          <div class="cast-info">
+            <p class="cast-name">朝日奈優</p>
+            <p class="cast-role">VALHALLA</p>
+          </div>
+        </div>
+        <div class="cast-card">
+          <div class="cast-img-wrap">
+            <img src="images/cast/2604val_苺愛ロマ00.jpg" alt="苺愛ロマ" loading="lazy">
+          </div>
+          <div class="cast-info">
+            <p class="cast-name">苺愛ロマ</p>
+            <p class="cast-role">VALHALLA</p>
+          </div>
+        </div>
+        <div class="cast-card">
+          <div class="cast-img-wrap">
+            <img src="images/cast/2509val_きなり00.jpg" alt="きなり" loading="lazy">
+          </div>
+          <div class="cast-info">
+            <p class="cast-name">きなり</p>
+            <p class="cast-role">VALHALLA</p>
+          </div>
+        </div>
+        <div class="cast-card">
+          <div class="cast-img-wrap">
+            <img src="images/cast/2604val_月神ルイ00.jpeg" alt="月神ルイ" loading="lazy">
+          </div>
+          <div class="cast-info">
+            <p class="cast-name">月神ルイ</p>
+            <p class="cast-role">VALHALLA</p>
+          </div>
+        </div>
+        <div class="cast-card">
+          <div class="cast-img-wrap">
+            <img src="images/cast/2510val_場地圭介1_00.jpg" alt="場地圭介" loading="lazy">
+          </div>
+          <div class="cast-info">
+            <p class="cast-name">場地圭介</p>
+            <p class="cast-role">VALHALLA</p>
+          </div>
+        </div>
+        <div class="cast-card">
+          <div class="cast-img-wrap">
+            <img src="images/cast/2510val_篁十亜2_00.jpg" alt="篁十亜" loading="lazy">
+          </div>
+          <div class="cast-info">
+            <p class="cast-name">篁 十亜</p>
+            <p class="cast-role">VALHALLA</p>
+          </div>
+        </div>
+        <div class="cast-card">
+          <div class="cast-img-wrap">
+            <img src="images/cast/2509val_泉貴羅00.jpg" alt="泉貴羅" loading="lazy">
+          </div>
+          <div class="cast-info">
+            <p class="cast-name">泉 貴羅</p>
+            <p class="cast-role">VALHALLA</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INFO -->
+  <section class="info" id="info">
+    <div class="container">
+      <div class="section-label">INFO</div>
+      <h2 class="section-title">店舗情報</h2>
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-icon">📍</div>
+          <h3>アクセス</h3>
+          <p>東京都新宿区歌舞伎町<br>2-28-2<br>東松ビル B1F</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">📞</div>
+          <h3>電話番号</h3>
+          <p><a href="tel:0362339876">03-6233-9876</a></p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">🕐</div>
+          <h3>営業時間</h3>
+          <p>20:00 〜 LAST</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">🌐</div>
+          <h3>公式サイト</h3>
+          <p><a href="https://ygggroup.jp" target="_blank">ygggroup.jp</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GROUP -->
+  <section class="group">
+    <div class="container">
+      <div class="section-label">GROUP</div>
+      <h2 class="section-title">Group Yggdrasill</h2>
+      <div class="group-shops">
+        <span class="shop-badge active">VALHALLA</span>
+        <span class="shop-badge">YGGDRASILL</span>
+        <span class="shop-badge">YGD</span>
+        <span class="shop-badge">LIFDRASIR</span>
+        <span class="shop-badge">Celeste</span>
+        <span class="shop-badge">AVALON</span>
+        <span class="shop-badge">札幌店</span>
+        <span class="shop-badge">大阪店</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <img src="images/logo.png" alt="Group Yggdrasill" class="footer-logo">
+      <p class="footer-name">VALHALLA</p>
+      <p class="footer-copy">&copy; 2025 Group Yggdrasill. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+<script>
+// ---- パーティクルキャンバス ----
+const canvas = document.getElementById('movieCanvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resizeCanvas() {
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+}
+
+function createParticle() {
+  return {
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.5 + 0.2,
+    vx: (Math.random() - 0.5) * 0.3,
+    vy: -Math.random() * 0.5 - 0.1,
+    alpha: Math.random() * 0.6 + 0.1,
+    life: Math.random() * 200 + 100,
+    age: 0,
+    hue: 260 + Math.random() * 40
+  };
+}
+
+function initParticles() {
+  particles = Array.from({length: 120}, createParticle);
+}
+
+function animateCanvas() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach((p, i) => {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.age++;
+    const fade = p.age < 30 ? p.age / 30 : p.age > p.life - 30 ? (p.life - p.age) / 30 : 1;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `hsla(${p.hue}, 80%, 75%, ${p.alpha * fade})`;
+    ctx.fill();
+    if (p.age >= p.life) particles[i] = createParticle();
+  });
+  requestAnimationFrame(animateCanvas);
+}
+
+window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
+resizeCanvas();
+initParticles();
+animateCanvas();
+
+// ---- 動画モーダル ----
+function openVideo() {
+  // ← ここにYouTubeのURLを入れてください
+  // 例: const videoUrl = 'https://www.youtube.com/embed/XXXXXXXXXXX?autoplay=1';
+  const videoUrl = '';
+  const modal = document.getElementById('videoModal');
+  if (videoUrl) {
+    document.getElementById('videoIframe').src = videoUrl;
+    modal.classList.add('active');
+  } else {
+    alert('動画は近日公開予定です。');
+  }
+}
+
+function closeVideo() {
+  document.getElementById('videoModal').classList.remove('active');
+  document.getElementById('videoIframe').src = '';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVideo(); });
+</script>
+</body>
+</html>
