@@ -7,6 +7,12 @@ import type { Host } from '@yggdra/shared';
 import { characters } from '@/data/characters';
 import { loadOshi } from '@/lib/storage';
 import { AvatarPlaceholder } from '@/components/avatar-placeholder';
+import {
+  getLevelProgress,
+  getMoodLabel,
+  OSHI_FALLBACK_STATE,
+  type NurtureStats,
+} from '@/lib/nurture';
 
 const personalityLabels: Record<string, string> = {
   tsundere: 'ツンデレ',
@@ -41,6 +47,7 @@ export default function OshiPage() {
   const [character, setCharacter] = useState<Host | null>(null);
   const [showComingSoon, setShowComingSoon] = useState(false);
   const [isReady, setIsReady] = useState(false);
+  const [nurtureStats, setNurtureStats] = useState<NurtureStats>(OSHI_FALLBACK_STATE);
 
   useEffect(() => {
     const oshiId = loadOshi();
@@ -56,6 +63,41 @@ export default function OshiPage() {
     setCharacter(found);
     setIsReady(true);
   }, [router]);
+
+  useEffect(() => {
+    if (!character) return;
+
+    const selectedCharacter = character;
+    const controller = new AbortController();
+
+    async function loadNurtureStats() {
+      try {
+        const response = await fetch(`/api/nurture?characterId=${selectedCharacter.id}`, {
+          cache: 'no-store',
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          return;
+        }
+
+        const data = (await response.json()) as {
+          state?: NurtureStats;
+          databaseAvailable?: boolean;
+        };
+
+        if (data.databaseAvailable && data.state) {
+          setNurtureStats(data.state);
+        }
+      } catch {
+        // Keep the static preview when DB is not available.
+      }
+    }
+
+    void loadNurtureStats();
+
+    return () => controller.abort();
+  }, [character]);
 
   if (!isReady || !character) {
     return (
@@ -126,26 +168,42 @@ export default function OshiPage() {
             <div>
               <div className="flex justify-between text-sm mb-1.5">
                 <span className="text-muted-foreground">育成度</span>
-                <span className="text-foreground font-medium">Lv. 1</span>
+                <span className="text-foreground font-medium">Lv. {nurtureStats.level}</span>
               </div>
               <div className="w-full h-2 rounded-full bg-muted overflow-hidden">
-                <div className="h-full rounded-full bg-primary" style={{ width: '15%' }} />
+                <div
+                  className="h-full rounded-full bg-primary"
+                  style={{ width: `${getLevelProgress(nurtureStats.level)}%` }}
+                />
               </div>
             </div>
             <div>
               <div className="flex justify-between text-sm mb-1.5">
                 <span className="text-muted-foreground">親密度</span>
-                <span className="text-foreground font-medium">12 / 100</span>
+                <span className="text-foreground font-medium">
+                  {nurtureStats.intimacy} / 100
+                </span>
               </div>
               <div className="w-full h-2 rounded-full bg-muted overflow-hidden">
-                <div className="h-full rounded-full bg-accent" style={{ width: '12%' }} />
+                <div
+                  className="h-full rounded-full bg-accent"
+                  style={{ width: `${nurtureStats.intimacy}%` }}
+                />
               </div>
             </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">特技</span>
-              <span className="text-foreground font-medium">
-                {character.hobbies[0] ?? '---'}
-              </span>
+            <div>
+              <div className="flex justify-between text-sm mb-1.5">
+                <span className="text-muted-foreground">機嫌</span>
+                <span className="text-foreground font-medium">
+                  {getMoodLabel(nurtureStats.mood)}
+                </span>
+              </div>
+              <div className="w-full h-2 rounded-full bg-muted overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-secondary"
+                  style={{ width: `${nurtureStats.mood}%` }}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -173,17 +231,23 @@ export default function OshiPage() {
 
         {/* CTA Buttons */}
         <div className="flex flex-col gap-3 mb-8">
+          <Link
+            href="/nurture"
+            className="w-full py-3.5 rounded-full bg-primary text-primary-foreground font-bold text-base text-center transition-transform duration-200 active:scale-95"
+          >
+            育成する
+          </Link>
           <button
             type="button"
             onClick={() => setShowComingSoon(true)}
-            className="w-full py-3.5 rounded-full bg-primary text-primary-foreground font-bold text-base transition-transform duration-200 active:scale-95"
+            className="w-full py-3.5 rounded-full border-2 border-primary text-primary font-bold text-base transition-transform duration-200 active:scale-95"
           >
             もっと見たい！
           </button>
           <button
             type="button"
             onClick={() => setShowComingSoon(true)}
-            className="w-full py-3.5 rounded-full border-2 border-primary text-primary font-bold text-base transition-transform duration-200 active:scale-95"
+            className="w-full py-3.5 rounded-full border-2 border-accent text-foreground font-bold text-base transition-transform duration-200 active:scale-95"
           >
             店舗予約
           </button>

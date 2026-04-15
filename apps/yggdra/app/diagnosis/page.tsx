@@ -35,7 +35,8 @@ export default function DiagnosisPage() {
 
   useEffect(() => {
     if (!isReady) return;
-    saveDiagnosisState({ answers });
+    const existing = loadDiagnosisState();
+    saveDiagnosisState({ answers, completedAt: existing?.completedAt });
   }, [answers, isReady]);
 
   const question = DIAGNOSIS_QUESTIONS[step];

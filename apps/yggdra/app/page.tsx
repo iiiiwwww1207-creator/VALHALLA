@@ -1,8 +1,26 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { loadOshi } from '@/lib/storage';
 
 export default function HomePage() {
+  const [oshi, setOshi] = useState<string | null>(null);
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    setOshi(loadOshi());
+    setIsReady(true);
+  }, []);
+
+  if (!isReady) {
+    return (
+      <main className="min-h-dvh bg-background flex items-center justify-center">
+        <div className="text-muted-foreground text-sm">読み込み中...</div>
+      </main>
+    );
+  }
+
   return (
     <main className="min-h-dvh bg-background flex flex-col items-center justify-center px-6 py-12">
       <div className="w-full max-w-sm flex flex-col items-center gap-10">
@@ -17,25 +35,43 @@ export default function HomePage() {
             ユグドラ
           </h1>
           <p className="text-base text-muted-foreground text-pretty text-center">
-            あなたの推しアイドルを見つけよう
+            {oshi ? 'おかえり！推しに会いに行こう' : 'あなたの推しアイドルを見つけよう'}
           </p>
         </div>
 
         {/* CTA Buttons */}
         <div className="w-full flex flex-col gap-4">
-          <Link
-            href="/diagnosis"
-            className="flex items-center justify-center w-full py-4 rounded-full bg-primary text-primary-foreground font-bold text-lg transition-transform duration-200 active:scale-95"
-          >
-            診断スタート
-          </Link>
-
-          <Link
-            href="/tarot"
-            className="flex items-center justify-center w-full py-3.5 rounded-full border-2 border-primary text-primary font-bold text-base transition-transform duration-200 active:scale-95"
-          >
-            毎日のタロット占い
-          </Link>
+          {oshi ? (
+            <>
+              <Link
+                href="/oshi"
+                className="flex items-center justify-center w-full py-4 rounded-full bg-primary text-primary-foreground font-bold text-lg transition-transform duration-200 active:scale-95"
+              >
+                推しに会いに行く
+              </Link>
+              <Link
+                href="/tarot"
+                className="flex items-center justify-center w-full py-3.5 rounded-full border-2 border-primary text-primary font-bold text-base transition-transform duration-200 active:scale-95"
+              >
+                毎日のタロット占い
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/diagnosis"
+                className="flex items-center justify-center w-full py-4 rounded-full bg-primary text-primary-foreground font-bold text-lg transition-transform duration-200 active:scale-95"
+              >
+                診断スタート
+              </Link>
+              <Link
+                href="/tarot"
+                className="flex items-center justify-center w-full py-3.5 rounded-full border-2 border-primary text-primary font-bold text-base transition-transform duration-200 active:scale-95"
+              >
+                毎日のタロット占い
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Decorative elements */}
