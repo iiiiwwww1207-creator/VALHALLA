@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { Host } from '@yggdra/shared';
 import { AvatarPlaceholder } from '@/components/avatar-placeholder';
-import { VRMAvatar } from '@/components/vrm-avatar';
+import { IdolCardAvatar } from '@/components/idol-card-avatar';
 import { characters } from '@/data/characters';
 import { useSpeechRecognition } from '@/hooks/use-speech-recognition';
 import { useSpeechSynthesis } from '@/hooks/use-speech-synthesis';
@@ -24,23 +24,9 @@ import {
 
 const ITEM_ORDER = ['snack', 'present', 'training', 'champagne'] as const;
 
-function getAvatarMood(mood: number): 'happy' | 'neutral' | 'sad' {
-  if (mood >= 72) {
-    return 'happy';
-  }
-
-  if (mood < 35) {
-    return 'sad';
-  }
-
-  return 'neutral';
-}
-
 export default function NurturePage() {
   const router = useRouter();
   const chatViewportRef = useRef<HTMLDivElement>(null);
-  const lastSpokenMessageIdRef = useRef<string | null>(null);
-  const hasHydratedMessagesRef = useRef(false);
   const [character, setCharacter] = useState<Host | null>(null);
   const [state, setState] = useState<NurtureStats>(DEFAULT_NURTURE_STATE);
   const [messages, setMessages] = useState<NurtureChatMessage[]>([]);
@@ -174,36 +160,6 @@ export default function NurturePage() {
     cancel();
   }, [cancel, speechSynthesisSupported, ttsEnabled]);
 
-  useEffect(() => {
-    if (isBooting || messages.length === 0) {
-      return;
-    }
-
-    const latestMessage = messages[messages.length - 1];
-
-    if (!hasHydratedMessagesRef.current) {
-      hasHydratedMessagesRef.current = true;
-      lastSpokenMessageIdRef.current = latestMessage.id;
-      return;
-    }
-
-    if (latestMessage.role !== 'character') {
-      lastSpokenMessageIdRef.current = latestMessage.id;
-      return;
-    }
-
-    if (
-      !speechSynthesisSupported ||
-      !ttsEnabled ||
-      latestMessage.id === lastSpokenMessageIdRef.current
-    ) {
-      return;
-    }
-
-    lastSpokenMessageIdRef.current = latestMessage.id;
-    speak(latestMessage.content);
-  }, [isBooting, messages, speak, speechSynthesisSupported, ttsEnabled]);
-
   if (!character || isBooting) {
     return (
       <main className="flex min-h-dvh items-center justify-center bg-background px-6">
@@ -226,8 +182,6 @@ export default function NurturePage() {
   const renderedMessages = pendingUserMessage
     ? [...messages, pendingUserMessage]
     : messages;
-
-  const avatarMood = getAvatarMood(state.mood);
 
   async function submitAction(actionType: NurtureActionType, content?: string) {
     if (!character || pendingAction) {
@@ -277,6 +231,17 @@ export default function NurturePage() {
       setState(data.state);
       setMessages(data.messages);
 
+      const latestReply = data.messages[data.messages.length - 1];
+      if (
+        latestReply?.role === 'character' &&
+        latestReply.content.trim() &&
+        speechSynthesisSupported &&
+        ttsEnabled
+      ) {
+        cancel();
+        speak(latestReply.content);
+      }
+
       if (data.leveledUp) {
         setLevelUpModal({ level: data.state.level });
       }
@@ -322,10 +287,10 @@ export default function NurturePage() {
         </div>
 
         <section className="rounded-[28px] border border-white/70 bg-card/88 p-4 shadow-[0_20px_60px_rgba(232,93,117,0.12)] backdrop-blur">
-          <VRMAvatar
+          <IdolCardAvatar
             characterId={character.id}
             name={character.displayName}
-            mood={avatarMood}
+            catchCopy={character.catchCopy}
             isSpeaking={isSpeaking}
           />
 

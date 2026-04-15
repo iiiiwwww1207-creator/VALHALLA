@@ -376,14 +376,10 @@ function normalizeFallbackState(state: NurtureStats): NurtureStats {
 }
 
 function parseStatsFromResponse(content: string, actionType: NurtureActionType) {
-  const strictMatch = content.match(/\[STATS\]\s*(\{[\s\S]*?\})\s*\[\/STATS\]/);
-  const lenientMatch =
-    strictMatch ??
-    content.match(/\[STATS\]\s*(\{[\s\S]*?\})\s*\[?\/?STATS?\]?/) ??
-    content.match(/(\{\s*"(?:intimacy|mood)"[\s\S]*?\})/);
+  const statsPayload = extractStatsPayload(content);
   const plainReply = stripStatsArtifacts(content);
 
-  if (!lenientMatch) {
+  if (!statsPayload) {
     return {
       reply: plainReply,
       stats: randomizeStats(actionType),
@@ -391,7 +387,7 @@ function parseStatsFromResponse(content: string, actionType: NurtureActionType) 
   }
 
   try {
-    const parsed = JSON.parse(lenientMatch[1]) as {
+    const parsed = JSON.parse(statsPayload) as {
       intimacy?: number;
       mood?: number;
     };
@@ -411,13 +407,30 @@ function parseStatsFromResponse(content: string, actionType: NurtureActionType) 
   }
 }
 
+function extractStatsPayload(content: string) {
+  const strictMatch = content.match(/\[STATS\]\s*(\{[^{}]*\})\s*\[\/STATS\]/i);
+  if (strictMatch) {
+    return strictMatch[1];
+  }
+
+  const taggedMatch = content.match(/\[STATS\]\s*(\{[^{}]*\})/i);
+  if (taggedMatch) {
+    return taggedMatch[1];
+  }
+
+  const trailingJsonMatch = content.match(
+    /(\{[^{}]*"(?:intimacy|mood)"[^{}]*\})\s*(?:\(Note:[\s\S]*?\))?\s*$/i
+  );
+  return trailingJsonMatch?.[1] ?? null;
+}
+
 function stripStatsArtifacts(content: string) {
   return content
-    .replace(/\[STATS\]\s*(\{[\s\S]*?\})\s*\[\/STATS\]/gi, ' ')
-    .replace(/\[STATS\]\s*(\{[\s\S]*?\})\s*\[?\/?STATS?\]?/gi, ' ')
-    .replace(/\[\/?STATS?\]/gi, ' ')
-    .replace(/(?:^|\s)(\{\s*"(?:intimacy|mood)"[\s\S]*?\})(?=\s|$)/gi, ' ')
-    .replace(/\[\]/g, ' ')
+    .replace(/\s*\(Note:[\s\S]*?\)\s*$/gi, ' ')
+    .replace(/\s*\[STATS\][\s\S]*?\[\/STATS\]\s*/gi, ' ')
+    .replace(/\s*\[STATS\][\s\S]*$/gi, ' ')
+    .replace(/\s*(\{[^{}]*"(?:intimacy|mood)"[^{}]*\})\s*$/gi, ' ')
+    .replace(/\s*\[\]\s*$/g, ' ')
     .replace(/[ \t]+\n/g, '\n')
     .replace(/\n{3,}/g, '\n\n')
     .replace(/[ \t]{2,}/g, ' ')

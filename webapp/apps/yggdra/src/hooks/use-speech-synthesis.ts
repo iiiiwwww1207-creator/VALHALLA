@@ -53,16 +53,21 @@ export function useSpeechSynthesis({
     setSupported(true);
 
     const synth = window.speechSynthesis;
-
     const updateVoices = () => {
-      setVoices(synth.getVoices());
+      const nextVoices = synth.getVoices();
+      setVoices(nextVoices);
+    };
+    const previousHandler = synth.onvoiceschanged;
+    const handleVoicesChanged = () => {
+      updateVoices();
+      previousHandler?.call(synth, new Event('voiceschanged'));
     };
 
     updateVoices();
-    synth.addEventListener('voiceschanged', updateVoices);
+    synth.onvoiceschanged = handleVoicesChanged;
 
     return () => {
-      synth.removeEventListener('voiceschanged', updateVoices);
+      synth.onvoiceschanged = previousHandler ?? null;
       synth.cancel();
       activeUtteranceRef.current = null;
       setIsSpeaking(false);
@@ -86,9 +91,16 @@ export function useSpeechSynthesis({
 
     const synth = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(text);
-    const selectedVoice = pickJapaneseVoice(voices);
+    const availableVoices = synth.getVoices();
+    const nextVoices = availableVoices.length > 0 ? availableVoices : voices;
+    const selectedVoice = pickJapaneseVoice(nextVoices);
+
+    if (availableVoices.length > 0) {
+      setVoices(availableVoices);
+    }
 
     synth.cancel();
+    synth.resume();
 
     utterance.lang = selectedVoice?.lang ?? lang;
     utterance.voice = selectedVoice;
@@ -107,9 +119,14 @@ export function useSpeechSynthesis({
       onEndRef.current?.(text);
     };
 
-    utterance.onerror = () => {
+    utterance.onerror = (event) => {
       activeUtteranceRef.current = null;
       setIsSpeaking(false);
+
+      if (event.error === 'interrupted' || event.error === 'canceled') {
+        return;
+      }
+
       onErrorRef.current?.('音声の再生に失敗しました');
     };
 
