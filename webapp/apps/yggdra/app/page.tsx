@@ -42,7 +42,7 @@ export default function HomePage() {
       {/* Full-screen hero image */}
       <div className="absolute inset-0">
         <Image
-          src="/images/ygd7-hero.jpg"
+          src="/images/ygd7-hero-2x.jpg"
           alt="YGD7 YGGDRA"
           fill
           priority
