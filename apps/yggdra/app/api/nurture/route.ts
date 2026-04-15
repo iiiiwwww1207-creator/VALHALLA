@@ -54,6 +54,8 @@ export async function GET(request: NextRequest) {
 
   try {
     const { userId } = await getOrCreateAnonymousUser();
+    // DB keeps the full chat history for analytics; this GET response is intentionally
+    // limited to the latest 20 messages because the current UI only renders a recent window.
     const snapshot = await getNurtureSnapshot(userId, characterId);
     return NextResponse.json(snapshot);
   } catch (error) {

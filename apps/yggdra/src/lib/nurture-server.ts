@@ -376,10 +376,14 @@ function normalizeFallbackState(state: NurtureStats): NurtureStats {
 }
 
 function parseStatsFromResponse(content: string, actionType: NurtureActionType) {
-  const match = content.match(/\[STATS\]\s*(\{[\s\S]*?\})\s*\[\/STATS\]/);
-  const plainReply = content.replace(/\[STATS\][\s\S]*?\[\/STATS\]/, '').trim();
+  const strictMatch = content.match(/\[STATS\]\s*(\{[\s\S]*?\})\s*\[\/STATS\]/);
+  const lenientMatch =
+    strictMatch ??
+    content.match(/\[STATS\]\s*(\{[\s\S]*?\})\s*\[?\/?STATS?\]?/) ??
+    content.match(/(\{\s*"(?:intimacy|mood)"[\s\S]*?\})/);
+  const plainReply = stripStatsArtifacts(content);
 
-  if (!match) {
+  if (!lenientMatch) {
     return {
       reply: plainReply,
       stats: randomizeStats(actionType),
@@ -387,7 +391,7 @@ function parseStatsFromResponse(content: string, actionType: NurtureActionType) 
   }
 
   try {
-    const parsed = JSON.parse(match[1]) as {
+    const parsed = JSON.parse(lenientMatch[1]) as {
       intimacy?: number;
       mood?: number;
     };
@@ -405,6 +409,19 @@ function parseStatsFromResponse(content: string, actionType: NurtureActionType) 
       stats: randomizeStats(actionType),
     };
   }
+}
+
+function stripStatsArtifacts(content: string) {
+  return content
+    .replace(/\[STATS\]\s*(\{[\s\S]*?\})\s*\[\/STATS\]/gi, ' ')
+    .replace(/\[STATS\]\s*(\{[\s\S]*?\})\s*\[?\/?STATS?\]?/gi, ' ')
+    .replace(/\[\/?STATS?\]/gi, ' ')
+    .replace(/(?:^|\s)(\{\s*"(?:intimacy|mood)"[\s\S]*?\})(?=\s|$)/gi, ' ')
+    .replace(/\[\]/g, ' ')
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .replace(/[ \t]{2,}/g, ' ')
+    .trim();
 }
 
 function clampToActionRange(
