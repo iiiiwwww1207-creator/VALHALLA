@@ -2,6 +2,10 @@ import { notFound } from 'next/navigation';
 import { HostProfile } from '@/components/hosts/host-profile';
 import { hosts } from '@/data/hosts';
 
+export function generateStaticParams() {
+  return hosts.map((host) => ({ id: host.id }));
+}
+
 export default async function HostProfilePage({
   params,
 }: {

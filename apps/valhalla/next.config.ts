@@ -1,14 +1,10 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  output: 'export',
   transpilePackages: ['@yggdra/shared'],
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'placehold.co',
-      },
-    ],
+    unoptimized: true,
   },
 };
 
