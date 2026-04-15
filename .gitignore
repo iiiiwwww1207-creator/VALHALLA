@@ -1,8 +1,13 @@
 node_modules/
 .next/
+out/
 dist/
 .turbo/
 .env
 .env.local
+.env*.local
 .vercel
 *.tsbuildinfo
+codex-review-*/
+drizzle/*.sql
+drizzle/meta/
