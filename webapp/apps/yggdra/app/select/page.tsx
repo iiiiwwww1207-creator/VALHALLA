@@ -1,10 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { getTopMatches } from '@yggdra/shared';
 import type { DiagnosisResult } from '@yggdra/shared';
-import { characters, CHARACTER_COLORS } from '@/data/characters';
+import { characters } from '@/data/characters';
 import { loadDiagnosisState, saveOshi } from '@/lib/storage';
 import { AvatarPlaceholder } from '@/components/avatar-placeholder';
 
@@ -79,12 +80,32 @@ export default function SelectPage() {
           </p>
         </div>
 
+        <div className="relative mb-8 overflow-hidden rounded-[28px] border border-white/70 shadow-[0_24px_60px_rgba(196,181,253,0.18)]">
+          <div className="relative aspect-[16/9]">
+            <Image
+              src="/images/ygd7-hero.jpg"
+              alt="YGD7 group hero"
+              fill
+              className="object-cover"
+              sizes="(max-width: 640px) 100vw, 384px"
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(135deg,_rgba(45,35,48,0.42)_0%,_rgba(45,35,48,0.08)_55%,_rgba(232,93,117,0.18)_100%)]" />
+            <div className="absolute inset-x-0 bottom-0 p-5 text-white">
+              <p className="font-display text-[1.65rem] font-extrabold tracking-[0.08em]">
+                YGD7!! YGGDRA
+              </p>
+              <p className="mt-1 text-sm text-white/88">
+                あなたの推し候補たちをチェック
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* Result cards */}
         <div className="flex flex-col gap-5">
           {results.map((result, index) => {
             const character = characters.find((c) => c.id === result.hostId);
             if (!character) return null;
-            const colors = CHARACTER_COLORS[character.id];
 
             return (
               <div

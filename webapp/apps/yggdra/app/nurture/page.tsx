@@ -5,7 +5,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { Host } from '@yggdra/shared';
 import { AvatarPlaceholder } from '@/components/avatar-placeholder';
+import { VRMAvatar } from '@/components/vrm-avatar';
 import { characters } from '@/data/characters';
+import { useSpeechRecognition } from '@/hooks/use-speech-recognition';
+import { useSpeechSynthesis } from '@/hooks/use-speech-synthesis';
 import { loadOshi } from '@/lib/storage';
 import {
   ACTION_ICON,
@@ -21,9 +24,23 @@ import {
 
 const ITEM_ORDER = ['snack', 'present', 'training', 'champagne'] as const;
 
+function getAvatarMood(mood: number): 'happy' | 'neutral' | 'sad' {
+  if (mood >= 72) {
+    return 'happy';
+  }
+
+  if (mood < 35) {
+    return 'sad';
+  }
+
+  return 'neutral';
+}
+
 export default function NurturePage() {
   const router = useRouter();
   const chatViewportRef = useRef<HTMLDivElement>(null);
+  const lastSpokenMessageIdRef = useRef<string | null>(null);
+  const hasHydratedMessagesRef = useRef(false);
   const [character, setCharacter] = useState<Host | null>(null);
   const [state, setState] = useState<NurtureStats>(DEFAULT_NURTURE_STATE);
   const [messages, setMessages] = useState<NurtureChatMessage[]>([]);
@@ -33,6 +50,42 @@ export default function NurturePage() {
   const [isBooting, setIsBooting] = useState(true);
   const [error, setError] = useState('');
   const [levelUpModal, setLevelUpModal] = useState<{ level: number } | null>(null);
+  const [ttsEnabled, setTtsEnabled] = useState(true);
+
+  const {
+    supported: speechRecognitionSupported,
+    isListening,
+    startListening,
+    stopListening,
+  } = useSpeechRecognition({
+    lang: 'ja-JP',
+    silenceDelayMs: 1500,
+    onResult: (text) => {
+      setError('');
+      setDraft(text);
+    },
+    onSilence: (text) => {
+      setDraft(text);
+      void submitAction('message', text);
+    },
+    onError: (message) => {
+      setError(message);
+    },
+  });
+
+  const {
+    supported: speechSynthesisSupported,
+    isSpeaking,
+    speak,
+    cancel,
+  } = useSpeechSynthesis({
+    lang: 'ja-JP',
+    pitch: 1.18,
+    rate: 1.03,
+    onError: (message) => {
+      setError(message);
+    },
+  });
 
   useEffect(() => {
     const selectedId = loadOshi();
@@ -103,13 +156,53 @@ export default function NurturePage() {
 
   useEffect(() => {
     const node = chatViewportRef.current;
-    if (!node) return;
+    if (!node) {
+      return;
+    }
 
     node.scrollTo({
       top: node.scrollHeight,
       behavior: 'smooth',
     });
   }, [messages, pendingAction]);
+
+  useEffect(() => {
+    if (!speechSynthesisSupported || ttsEnabled) {
+      return;
+    }
+
+    cancel();
+  }, [cancel, speechSynthesisSupported, ttsEnabled]);
+
+  useEffect(() => {
+    if (isBooting || messages.length === 0) {
+      return;
+    }
+
+    const latestMessage = messages[messages.length - 1];
+
+    if (!hasHydratedMessagesRef.current) {
+      hasHydratedMessagesRef.current = true;
+      lastSpokenMessageIdRef.current = latestMessage.id;
+      return;
+    }
+
+    if (latestMessage.role !== 'character') {
+      lastSpokenMessageIdRef.current = latestMessage.id;
+      return;
+    }
+
+    if (
+      !speechSynthesisSupported ||
+      !ttsEnabled ||
+      latestMessage.id === lastSpokenMessageIdRef.current
+    ) {
+      return;
+    }
+
+    lastSpokenMessageIdRef.current = latestMessage.id;
+    speak(latestMessage.content);
+  }, [isBooting, messages, speak, speechSynthesisSupported, ttsEnabled]);
 
   if (!character || isBooting) {
     return (
@@ -134,9 +227,15 @@ export default function NurturePage() {
     ? [...messages, pendingUserMessage]
     : messages;
 
+  const avatarMood = getAvatarMood(state.mood);
+
   async function submitAction(actionType: NurtureActionType, content?: string) {
     if (!character || pendingAction) {
       return;
+    }
+
+    if (isListening) {
+      stopListening();
     }
 
     const resolvedContent =
@@ -198,14 +297,21 @@ export default function NurturePage() {
   }
 
   return (
-    <main className="min-h-dvh bg-[radial-gradient(circle_at_top,_rgba(232,93,117,0.14),_transparent_32%),linear-gradient(180deg,_#fff8f3_0%,_#faf7f5_45%,_#f9f2ff_100%)] px-4 py-6">
+    <main className="min-h-dvh bg-[radial-gradient(circle_at_top,_rgba(232,93,117,0.16),_transparent_32%),linear-gradient(180deg,_#fff8f3_0%,_#faf7f5_42%,_#f9f2ff_100%)] px-4 py-5">
       <div className="mx-auto flex w-full max-w-md flex-col gap-4">
         <div className="flex items-center justify-between">
           <Link
             href="/oshi"
             className="flex items-center gap-1 text-sm text-muted-foreground"
           >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
               <path d="M10 12L6 8L10 4" />
             </svg>
             推しページへ
@@ -215,24 +321,45 @@ export default function NurturePage() {
           </span>
         </div>
 
-        <section className="rounded-[28px] border border-white/70 bg-card/90 p-5 shadow-[0_20px_60px_rgba(232,93,117,0.12)] backdrop-blur">
-          <div className="flex items-center gap-4">
-            <AvatarPlaceholder
-              characterId={character.id}
-              name={character.displayName}
-              size="md"
-            />
-            <div className="min-w-0 flex-1">
+        <section className="rounded-[28px] border border-white/70 bg-card/88 p-4 shadow-[0_20px_60px_rgba(232,93,117,0.12)] backdrop-blur">
+          <VRMAvatar
+            characterId={character.id}
+            name={character.displayName}
+            mood={avatarMood}
+            isSpeaking={isSpeaking}
+          />
+
+          <div className="mt-4 flex items-start justify-between gap-3">
+            <div className="min-w-0">
               <h1 className="font-display text-2xl font-bold text-foreground">
                 {character.displayName}
               </h1>
               <p className="mt-1 text-sm text-muted-foreground">
-                気分: {getMoodLabel(state.mood)}
+                {character.catchCopy}
               </p>
             </div>
+            <div className="shrink-0 rounded-full bg-accent/20 px-3 py-1 text-xs font-semibold text-accent-foreground">
+              {isSpeaking ? 'おしゃべり中' : pendingAction ? '考え中' : 'スタンバイ'}
+            </div>
+          </div>
+        </section>
+
+        <section className="rounded-[28px] border border-white/70 bg-card/92 p-5 shadow-[0_18px_50px_rgba(196,181,253,0.16)] backdrop-blur">
+          <div className="mb-4 flex flex-wrap items-center gap-2">
+            <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+              Mood: {getMoodLabel(state.mood)}
+            </span>
+            <span className="rounded-full bg-secondary/20 px-3 py-1 text-xs font-semibold text-secondary-foreground">
+              Lv. {state.level}
+            </span>
+            {isListening && (
+              <span className="rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
+                音声入力中...
+              </span>
+            )}
           </div>
 
-          <div className="mt-5 flex flex-col gap-4">
+          <div className="flex flex-col gap-4">
             <div>
               <div className="mb-1.5 flex items-center justify-between text-sm">
                 <span className="text-muted-foreground">育成度</span>
@@ -279,7 +406,7 @@ export default function NurturePage() {
         <section className="overflow-hidden rounded-[28px] border border-white/70 bg-card/95 shadow-[0_20px_50px_rgba(196,181,253,0.16)]">
           <div
             ref={chatViewportRef}
-            className="flex h-[46dvh] flex-col gap-3 overflow-y-auto px-4 py-5"
+            className="flex h-[38dvh] min-h-[260px] flex-col gap-3 overflow-y-auto px-4 py-5"
           >
             {renderedMessages.length === 0 && (
               <div className="rounded-2xl bg-muted px-4 py-3 text-sm text-muted-foreground">
@@ -338,59 +465,139 @@ export default function NurturePage() {
                 />
                 <div className="rounded-[22px] rounded-bl-md bg-muted px-4 py-3">
                   <div className="flex items-center gap-1.5">
-                    <span className="h-2 w-2 rounded-full bg-secondary animate-pulse" />
-                    <span className="h-2 w-2 rounded-full bg-secondary animate-pulse [animation-delay:120ms]" />
-                    <span className="h-2 w-2 rounded-full bg-secondary animate-pulse [animation-delay:240ms]" />
+                    <span className="h-2 w-2 animate-pulse rounded-full bg-secondary" />
+                    <span className="h-2 w-2 animate-pulse rounded-full bg-secondary [animation-delay:120ms]" />
+                    <span className="h-2 w-2 animate-pulse rounded-full bg-secondary [animation-delay:240ms]" />
                   </div>
                 </div>
               </div>
             )}
           </div>
+        </section>
 
-          <div className="border-t border-border/80 bg-background/70 px-4 py-4">
-            <div className="grid grid-cols-4 gap-2">
-              {ITEM_ORDER.map((itemKey) => (
-                <button
-                  key={itemKey}
-                  type="button"
-                  disabled={Boolean(pendingAction)}
-                  onClick={() => void submitAction(itemKey)}
-                  className="rounded-2xl bg-white px-2 py-3 text-center text-xs font-semibold text-foreground shadow-sm ring-1 ring-border transition-transform duration-200 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                  <div className="text-lg">{ITEM_OPTIONS[itemKey].icon}</div>
-                  <div className="mt-1">{ITEM_OPTIONS[itemKey].label}</div>
-                </button>
-              ))}
+        <section className="rounded-[28px] border border-white/70 bg-card/92 p-4 shadow-[0_20px_50px_rgba(232,93,117,0.1)] backdrop-blur">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="font-display text-lg font-bold text-foreground">
+                ふれあいアクション
+              </p>
+              <p className="text-xs text-muted-foreground">
+                アイテムやメッセージで絆を深めよう
+              </p>
             </div>
+            {speechSynthesisSupported && (
+              <button
+                type="button"
+                onClick={() => setTtsEnabled((current) => !current)}
+                className={`rounded-full px-4 py-2 text-xs font-bold transition-transform duration-200 active:scale-95 ${
+                  ttsEnabled
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted text-muted-foreground'
+                }`}
+              >
+                {ttsEnabled ? '読み上げON' : '読み上げOFF'}
+              </button>
+            )}
+          </div>
 
-            <form
-              className="mt-3 flex items-end gap-2"
-              onSubmit={(event) => {
-                event.preventDefault();
-                void submitAction('message', draft);
-              }}
-            >
+          <div className="mt-4 grid grid-cols-4 gap-2">
+            {ITEM_ORDER.map((itemKey) => (
+              <button
+                key={itemKey}
+                type="button"
+                disabled={Boolean(pendingAction)}
+                onClick={() => void submitAction(itemKey)}
+                className="rounded-2xl bg-white px-2 py-3 text-center text-xs font-semibold text-foreground shadow-sm ring-1 ring-border transition-transform duration-200 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                <div className="text-lg">{ITEM_OPTIONS[itemKey].icon}</div>
+                <div className="mt-1">{ITEM_OPTIONS[itemKey].label}</div>
+              </button>
+            ))}
+          </div>
+
+          <form
+            className="mt-4"
+            onSubmit={(event) => {
+              event.preventDefault();
+              void submitAction('message', draft);
+            }}
+          >
+            <div className="flex items-end gap-2">
               <textarea
                 value={draft}
                 onChange={(event) => setDraft(event.target.value)}
                 placeholder="やさしく話しかけてみる..."
                 rows={2}
                 disabled={Boolean(pendingAction)}
-                className="min-h-20 flex-1 resize-none rounded-3xl border border-border bg-card px-4 py-3 text-sm text-foreground outline-none transition focus:border-primary"
+                className="min-h-20 flex-1 resize-none rounded-[28px] border border-border bg-card px-4 py-3 text-sm text-foreground outline-none transition focus:border-primary"
               />
+
+              {speechRecognitionSupported && (
+                <button
+                  type="button"
+                  disabled={Boolean(pendingAction)}
+                  onClick={() => {
+                    setError('');
+
+                    if (isListening) {
+                      stopListening();
+                      return;
+                    }
+
+                    cancel();
+                    startListening();
+                  }}
+                  className={`relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full border transition-transform duration-200 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60 ${
+                    isListening
+                      ? 'border-primary bg-primary text-primary-foreground'
+                      : 'border-border bg-white text-foreground'
+                  }`}
+                  aria-label={isListening ? '音声入力を停止' : '音声入力を開始'}
+                >
+                  {isListening && (
+                    <>
+                      <span className="absolute inset-0 animate-ping rounded-full bg-primary/35" />
+                      <span className="absolute inset-1 animate-pulse rounded-full border border-white/70" />
+                    </>
+                  )}
+                  <svg
+                    className="relative z-10"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M10 13a3 3 0 0 0 3-3V7a3 3 0 1 0-6 0v3a3 3 0 0 0 3 3Z" />
+                    <path d="M5.5 10.5a4.5 4.5 0 0 0 9 0" />
+                    <path d="M10 15v2.5" />
+                    <path d="M7.5 17.5h5" />
+                  </svg>
+                </button>
+              )}
+
               <button
                 type="submit"
                 disabled={Boolean(pendingAction) || draft.trim().length === 0}
-                className="rounded-full bg-primary px-5 py-3 font-bold text-primary-foreground transition-transform duration-200 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
+                className="h-12 shrink-0 rounded-full bg-primary px-5 font-bold text-primary-foreground transition-transform duration-200 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 送信
               </button>
-            </form>
+            </div>
 
-            {error && (
-              <p className="mt-3 text-sm text-primary">{error}</p>
+            {speechRecognitionSupported && (
+              <p className="mt-2 text-xs text-muted-foreground">
+                {isListening
+                  ? '話し終えて1.5秒たつと、自動でメッセージを送信します。'
+                  : 'マイクで話すとテキスト入力に反映されます。'}
+              </p>
             )}
-          </div>
+          </form>
+
+          {error && <p className="mt-3 text-sm text-primary">{error}</p>}
         </section>
       </div>
 

@@ -1,21 +1,8 @@
 import type { Metadata, Viewport } from 'next';
-import { M_PLUS_Rounded_1c, Noto_Sans_JP } from 'next/font/google';
 import './globals.css';
 
-const display = M_PLUS_Rounded_1c({
-  subsets: ['latin'],
-  variable: '--font-display',
-  weight: ['400', '500', '700', '800'],
-});
-
-const body = Noto_Sans_JP({
-  subsets: ['latin'],
-  variable: '--font-body',
-  weight: ['400', '500', '700'],
-});
-
 export const metadata: Metadata = {
-  title: 'ユグドラ - あなたの推しアイドルを見つけよう',
+  title: 'ゆぐどら!! - あなたの推しアイドルを見つけよう',
   description: 'アイドルマッチング＆育成デモアプリ',
 };
 
@@ -31,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className={`${display.variable} ${body.variable}`}>
+      <body>
         {children}
       </body>
     </html>

@@ -95,7 +95,7 @@ export default function TarotPage() {
 
         <div className="text-center mb-8">
           <h1 className="font-display text-3xl font-bold text-foreground text-balance mb-2">
-            今日のタロット占い
+            占いのお部屋
           </h1>
           <p className="text-sm text-muted-foreground text-pretty">
             カードを1枚選んでタップしてね

@@ -10,12 +10,18 @@
     "db:push": "drizzle-kit push --config drizzle.config.ts"
   },
   "dependencies": {
+    "@fontsource/m-plus-rounded-1c": "^5.2.10",
+    "@fontsource/noto-sans-jp": "^5.2.9",
+    "@pixiv/three-vrm": "^3.5.1",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.6.0",
     "@vercel/postgres": "^0.10.0",
     "@yggdra/shared": "workspace:*",
     "drizzle-orm": "^0.45.2",
     "next": "^15.3.1",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "three": "^0.183.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.0.0",

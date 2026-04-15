@@ -256,7 +256,7 @@ export default function OshiPage() {
         {/* Bottom links */}
         <div className="flex justify-center gap-6 text-sm">
           <Link href="/tarot" className="text-primary font-medium">
-            タロット占い
+            占いのお部屋
           </Link>
           <Link href="/diagnosis" className="text-muted-foreground">
             再診断

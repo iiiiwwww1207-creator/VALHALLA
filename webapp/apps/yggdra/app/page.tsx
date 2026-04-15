@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { loadOshi } from '@/lib/storage';
 
 export default function HomePage() {
@@ -22,8 +23,8 @@ export default function HomePage() {
   }
 
   return (
-    <main className="min-h-dvh bg-background flex flex-col items-center justify-center px-6 py-12">
-      <div className="w-full max-w-sm flex flex-col items-center gap-10">
+    <main className="min-h-dvh bg-background flex flex-col items-center justify-center px-6 py-10">
+      <div className="w-full max-w-sm flex flex-col items-center gap-8">
         {/* Logo / App Name */}
         <div className="flex flex-col items-center gap-3">
           <div className="flex items-center justify-center w-20 h-20 rounded-full bg-primary">
@@ -32,11 +33,33 @@ export default function HomePage() {
             </svg>
           </div>
           <h1 className="font-display text-5xl font-bold text-foreground text-balance text-center">
-            ユグドラ
+            ゆぐどら!!
           </h1>
           <p className="text-base text-muted-foreground text-pretty text-center">
             {oshi ? 'おかえり！推しに会いに行こう' : 'あなたの推しアイドルを見つけよう'}
           </p>
+        </div>
+
+        <div className="relative w-full overflow-hidden rounded-[30px] border border-white/70 shadow-[0_24px_60px_rgba(232,93,117,0.16)]">
+          <div className="relative aspect-[16/10]">
+            <Image
+              src="/images/ygd7-hero.jpg"
+              alt="YGD7 hero"
+              fill
+              priority
+              className="object-cover"
+              sizes="(max-width: 640px) 100vw, 384px"
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,_rgba(45,35,48,0.1)_0%,_rgba(45,35,48,0.48)_100%)]" />
+            <div className="absolute inset-x-0 bottom-0 p-5 text-white">
+              <p className="font-display text-[1.8rem] font-extrabold tracking-[0.08em]">
+                YGD7!! YGGDRA
+              </p>
+              <p className="mt-1 text-sm text-white/88">
+                bright pop idol matching experience
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* CTA Buttons */}
@@ -53,7 +76,7 @@ export default function HomePage() {
                 href="/tarot"
                 className="flex items-center justify-center w-full py-3.5 rounded-full border-2 border-primary text-primary font-bold text-base transition-transform duration-200 active:scale-95"
               >
-                毎日のタロット占い
+                占いのお部屋
               </Link>
             </>
           ) : (
@@ -62,13 +85,13 @@ export default function HomePage() {
                 href="/diagnosis"
                 className="flex items-center justify-center w-full py-4 rounded-full bg-primary text-primary-foreground font-bold text-lg transition-transform duration-200 active:scale-95"
               >
-                診断スタート
+                カップル診断スタート
               </Link>
               <Link
                 href="/tarot"
                 className="flex items-center justify-center w-full py-3.5 rounded-full border-2 border-primary text-primary font-bold text-base transition-transform duration-200 active:scale-95"
               >
-                毎日のタロット占い
+                占いのお部屋
               </Link>
             </>
           )}
