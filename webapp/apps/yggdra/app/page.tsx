@@ -5,109 +5,159 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { loadOshi } from '@/lib/storage';
 
+function Sparkle({ className, delay }: { className?: string; delay?: string }) {
+  return (
+    <svg
+      width="16" height="16" viewBox="0 0 16 16" fill="currentColor"
+      className={className}
+      style={{ animationDelay: delay }}
+    >
+      <path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" />
+    </svg>
+  );
+}
+
 export default function HomePage() {
   const [oshi, setOshi] = useState<string | null>(null);
   const [isReady, setIsReady] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     setOshi(loadOshi());
     setIsReady(true);
+    const t = setTimeout(() => setIsVisible(true), 100);
+    return () => clearTimeout(t);
   }, []);
 
   if (!isReady) {
     return (
-      <main className="min-h-dvh bg-background flex items-center justify-center">
-        <div className="text-muted-foreground text-sm">読み込み中...</div>
+      <main className="min-h-dvh bg-black flex items-center justify-center">
+        <div className="text-white/40 text-sm">...</div>
       </main>
     );
   }
 
   return (
-    <main className="min-h-dvh bg-background flex flex-col items-center justify-center px-6 py-10">
-      <div className="w-full max-w-sm flex flex-col items-center gap-8">
-        {/* Logo / App Name */}
-        <div className="flex flex-col items-center gap-3">
-          <div className="flex items-center justify-center w-20 h-20 rounded-full bg-primary">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" className="text-primary-foreground">
-              <path d="M20 4L24 14L34 14L26 21L29 32L20 25L11 32L14 21L6 14L16 14Z" fill="currentColor" />
-            </svg>
-          </div>
-          <h1 className="font-display text-5xl font-bold text-foreground text-balance text-center">
-            ゆぐどら!!
-          </h1>
-          <p className="text-base text-muted-foreground text-pretty text-center">
-            {oshi ? 'おかえり！推しに会いに行こう' : 'あなたの推しアイドルを見つけよう'}
-          </p>
-        </div>
+    <main className="relative min-h-dvh flex flex-col overflow-hidden bg-black">
+      {/* Full-screen hero image */}
+      <div className="absolute inset-0">
+        <Image
+          src="/images/ygd7-hero.jpg"
+          alt="YGD7 YGGDRA"
+          fill
+          priority
+          className="object-cover object-top scale-105"
+          sizes="100vw"
+        />
+        {/* Dreamy pink-purple overlay */}
+        <div className="absolute inset-0 bg-[rgba(180,100,200,0.12)]" />
+        {/* Bottom fade for text readability */}
+        <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(10,0,15,0.92)_0%,rgba(10,0,15,0.6)_35%,rgba(10,0,15,0.05)_60%,transparent_100%)]" />
+      </div>
 
-        <div className="relative w-full overflow-hidden rounded-[30px] border border-white/70 shadow-[0_24px_60px_rgba(232,93,117,0.16)]">
-          <div className="relative aspect-[16/10]">
-            <Image
-              src="/images/ygd7-hero.jpg"
-              alt="YGD7 hero"
-              fill
-              priority
-              className="object-cover"
-              sizes="(max-width: 640px) 100vw, 384px"
-            />
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,_rgba(45,35,48,0.1)_0%,_rgba(45,35,48,0.48)_100%)]" />
-            <div className="absolute inset-x-0 bottom-0 p-5 text-white">
-              <p className="font-display text-[1.8rem] font-extrabold tracking-[0.08em]">
-                YGD7!! YGGDRA
+      {/* Floating sparkles */}
+      <div className="absolute inset-0 z-10 pointer-events-none">
+        <Sparkle
+          className="absolute top-[12%] left-[8%] text-pink-300/50 w-3 h-3 animate-[float_4s_ease-in-out_infinite]"
+          delay="0s"
+        />
+        <Sparkle
+          className="absolute top-[18%] right-[12%] text-white/40 w-2 h-2 animate-[float_3.5s_ease-in-out_infinite]"
+          delay="0.8s"
+        />
+        <Sparkle
+          className="absolute top-[45%] left-[15%] text-purple-300/40 w-2.5 h-2.5 animate-[float_5s_ease-in-out_infinite]"
+          delay="1.5s"
+        />
+        <Sparkle
+          className="absolute top-[35%] right-[20%] text-pink-200/30 w-2 h-2 animate-[float_4.5s_ease-in-out_infinite]"
+          delay="2s"
+        />
+        <Sparkle
+          className="absolute bottom-[30%] left-[25%] text-white/25 w-1.5 h-1.5 animate-[float_3s_ease-in-out_infinite]"
+          delay="0.5s"
+        />
+      </div>
+
+      {/* Content — pinned to bottom */}
+      <div className="relative z-20 flex flex-col flex-1 justify-end">
+        <div className="px-7 pb-10 pt-24">
+          <div className="w-full max-w-sm mx-auto flex flex-col gap-7">
+            {/* Logo / Title group */}
+            <div
+              className={`flex flex-col gap-2 transition-all duration-700 ease-out ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+              }`}
+            >
+              <p className="text-sm font-bold text-pink-300/90 uppercase">
+                Welcome Style
               </p>
-              <p className="mt-1 text-sm text-white/88">
-                bright pop idol matching experience
+              <h1 className="font-display text-[3.2rem] leading-[0.95] font-extrabold text-white drop-shadow-[0_4px_24px_rgba(236,72,153,0.3)]">
+                <span className="text-balance">ゆぐどら!!</span>
+              </h1>
+              <p className="text-base text-white/75 text-pretty mt-1">
+                {oshi ? 'おかえり！推しに会いに行こう' : 'あなたの推しアイドルを見つけよう'}
               </p>
             </div>
+
+            {/* CTA Buttons */}
+            <div
+              className={`flex flex-col gap-3 transition-all duration-700 ease-out delay-200 ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+              }`}
+              style={{ transitionDelay: '200ms' }}
+            >
+              {oshi ? (
+                <>
+                  <Link
+                    href="/oshi"
+                    className="flex items-center justify-center w-full py-4 rounded-full bg-white/95 backdrop-blur text-foreground font-bold text-lg transition-transform duration-200 active:scale-95 shadow-[0_8px_32px_rgba(236,72,153,0.25)]"
+                  >
+                    推しに会いに行く
+                  </Link>
+                  <Link
+                    href="/tarot"
+                    className="flex items-center justify-center w-full py-3.5 rounded-full border border-white/30 bg-white/10 backdrop-blur text-white font-bold text-base transition-transform duration-200 active:scale-95"
+                  >
+                    占いのお部屋
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/diagnosis"
+                    className="flex items-center justify-center w-full py-4 rounded-full bg-white/95 backdrop-blur text-foreground font-bold text-lg transition-transform duration-200 active:scale-95 shadow-[0_8px_32px_rgba(236,72,153,0.25)]"
+                  >
+                    カップル診断スタート
+                  </Link>
+                  <Link
+                    href="/tarot"
+                    className="flex items-center justify-center w-full py-3.5 rounded-full border border-white/30 bg-white/10 backdrop-blur text-white font-bold text-base transition-transform duration-200 active:scale-95"
+                  >
+                    占いのお部屋
+                  </Link>
+                </>
+              )}
+            </div>
+
+            {/* Bottom accent */}
+            <div
+              className={`flex items-center justify-center gap-3 transition-all duration-700 ease-out ${
+                isVisible ? 'opacity-100' : 'opacity-0'
+              }`}
+              style={{ transitionDelay: '500ms' }}
+            >
+              <div className="h-px flex-1 bg-white/15" />
+              <div className="flex items-center gap-1.5 text-pink-300/60">
+                <Sparkle className="w-2.5 h-2.5" />
+                <span className="text-[10px] font-bold text-white/30 uppercase">
+                  YGD7
+                </span>
+                <Sparkle className="w-2.5 h-2.5" />
+              </div>
+              <div className="h-px flex-1 bg-white/15" />
+            </div>
           </div>
-        </div>
-
-        {/* CTA Buttons */}
-        <div className="w-full flex flex-col gap-4">
-          {oshi ? (
-            <>
-              <Link
-                href="/oshi"
-                className="flex items-center justify-center w-full py-4 rounded-full bg-primary text-primary-foreground font-bold text-lg transition-transform duration-200 active:scale-95"
-              >
-                推しに会いに行く
-              </Link>
-              <Link
-                href="/tarot"
-                className="flex items-center justify-center w-full py-3.5 rounded-full border-2 border-primary text-primary font-bold text-base transition-transform duration-200 active:scale-95"
-              >
-                占いのお部屋
-              </Link>
-            </>
-          ) : (
-            <>
-              <Link
-                href="/diagnosis"
-                className="flex items-center justify-center w-full py-4 rounded-full bg-primary text-primary-foreground font-bold text-lg transition-transform duration-200 active:scale-95"
-              >
-                カップル診断スタート
-              </Link>
-              <Link
-                href="/tarot"
-                className="flex items-center justify-center w-full py-3.5 rounded-full border-2 border-primary text-primary font-bold text-base transition-transform duration-200 active:scale-95"
-              >
-                占いのお部屋
-              </Link>
-            </>
-          )}
-        </div>
-
-        {/* Decorative elements */}
-        <div className="flex items-center gap-2 text-accent">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" />
-          </svg>
-          <svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" />
-          </svg>
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" />
-          </svg>
         </div>
       </div>
     </main>
