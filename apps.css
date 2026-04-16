@@ -665,6 +665,7 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   transform-style:preserve-3d;
   transform:rotateY(0deg);
   z-index:1;
+  /* Floor glow: now handled per-figure */
 }
 
 .ygd-av {
@@ -672,7 +673,7 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   top:0;left:0;
   width:154px;height:264px;
   transform-style:preserve-3d;
-  transform:rotateY(calc(var(--i,0) * 60deg)) translateZ(295px);
+  transform:rotateY(calc(var(--i,0) * 60deg)) translateZ(310px);
   transition:opacity .4s,filter .4s;
   overflow:visible;
 }
@@ -696,11 +697,13 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   50%      { transform:translateY(-10px); }
 }
 
-/* =================================================
-   TRUE 3D FIGURE  (box: 130×186×20 + plinth: 148×44×14)
-   Body positioned  top:4  left:12  (centered in 154px)
-   Plinth positioned top:190 left:3  (centered in 154px)
-   ================================================= */
+/* ═══════════════════════════════════════════════════════
+   TRUE 3D PVC FIGURINE
+   Body:  130×186px  depth=40px   top:4   left:12
+   Plinth:148×46px   depth=40px   top:190 left:3
+   6 faces: front / back(imagined) / left / right / top / plinth
+   ═══════════════════════════════════════════════════════ */
+
 .fig3d {
   position:absolute;
   top:4px;left:12px;
@@ -709,82 +712,165 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   cursor:pointer;
 }
 
-/* BACK FACE — z=0 */
+/* ── BACK FACE (z=0, faces viewer)
+   When carousel rotates 180° the element is viewed from behind
+   → CSS renders it MIRRORED = plausible imagined back-of-character  ── */
 .fig3d-back {
-  position:absolute;inset:0;
-  background:#04000e;
-  border-radius:16px 16px 2px 2px;
-}
-
-/* RIGHT SIDE FACE — folds from right edge, depth 20px */
-.fig3d-side-r {
-  position:absolute;
-  left:130px;top:0;
-  width:20px;height:186px;
-  transform-origin:0% 50%;
-  transform:rotateY(90deg);
-  background:linear-gradient(180deg,rgba(var(--cc),.92) 0%,rgba(var(--cc),.6) 100%);
-}
-
-/* LEFT SIDE FACE — folds from left edge, depth 20px */
-.fig3d-side-l {
-  position:absolute;
-  left:-20px;top:0;
-  width:20px;height:186px;
-  transform-origin:100% 50%;
-  transform:rotateY(-90deg);
-  background:linear-gradient(180deg,rgba(var(--cc),.7) 0%,rgba(var(--cc),.4) 100%);
-}
-
-/* TOP FACE — folds from top edge */
-.fig3d-top-face {
-  position:absolute;
-  left:0;top:-20px;
-  width:130px;height:20px;
-  transform-origin:50% 100%;
-  transform:rotateX(90deg);
-  background:linear-gradient(90deg,rgba(var(--cc),.65),rgba(var(--cc),.4));
-  border-radius:16px 16px 0 0;
-}
-
-/* FRONT FACE — pushed forward translateZ(20px) */
-.fig3d-front {
   position:absolute;inset:0;
   border-radius:16px 16px 2px 2px;
   overflow:hidden;
-  transform:translateZ(20px);
-  border:1.5px solid rgba(var(--cc),.6);
-  box-shadow:
-    0 0 22px rgba(var(--cc),.28),
-    0 8px 28px rgba(0,0,0,.55);
-  /* Dark gradient backdrop — character stands against it */
-  background:
-    radial-gradient(ellipse 70% 55% at 50% 85%, rgba(var(--cc),.22) 0%, transparent 65%),
-    linear-gradient(180deg, #0a0120 0%, #120230 55%, #0d0128 100%);
-}
-
-/* Character art — individual transparent PNG per character */
-.fig3d-art {
-  position:absolute;inset:0;
+  /* Imagined back: character art, darkened */
   background-image:var(--char);
   background-size:auto 92%;
   background-position:center bottom;
   background-repeat:no-repeat;
-  background-color:#0d0128;
-  /* Subtle inner glow matching character color */
-  box-shadow:inset 0 -40px 60px rgba(var(--cc),.18);
+  background-color:#06000f;
+  filter:brightness(.32) saturate(.55);
+}
+/* Overlay: suggest "back of hair + costume" */
+.fig3d-back::after {
+  content:'';
+  position:absolute;inset:0;
+  background:
+    /* Hair gradient top */
+    linear-gradient(180deg,
+      rgba(var(--cc),.45) 0%,
+      rgba(0,0,0,.55)     18%,
+      rgba(var(--cc),.12) 45%,
+      rgba(0,0,0,.25)     72%,
+      rgba(var(--cc),.3)  100%
+    );
+  pointer-events:none;
 }
 
-/* Prismatic holographic overlay */
+/* ── RIGHT SIDE FACE  (depth 40px, lit from right) ── */
+.fig3d-side-r {
+  position:absolute;
+  left:130px;top:0;
+  width:40px;height:186px;
+  transform-origin:0% 50%;
+  transform:rotateY(90deg);
+  overflow:hidden;
+  /* Character art zoomed into center slice for silhouette hint */
+  background-image:var(--char);
+  background-size:auto 90%;
+  background-position:60% bottom;
+  background-repeat:no-repeat;
+  background-color:#0a0020;
+  filter:brightness(.55) saturate(.7);
+}
+/* PVC specular highlight on side surface */
+.fig3d-side-r::after {
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(to right,
+    rgba(0,0,0,.4)         0%,
+    rgba(255,255,255,.18)  28%,
+    rgba(255,255,255,.08)  48%,
+    rgba(0,0,0,.35)        100%
+  );
+}
+
+/* ── LEFT SIDE FACE  (darker, shadow side) ── */
+.fig3d-side-l {
+  position:absolute;
+  left:-40px;top:0;
+  width:40px;height:186px;
+  transform-origin:100% 50%;
+  transform:rotateY(-90deg);
+  overflow:hidden;
+  background-image:var(--char);
+  background-size:auto 90%;
+  background-position:40% bottom;
+  background-repeat:no-repeat;
+  background-color:#060012;
+  filter:brightness(.38) saturate(.55);
+}
+.fig3d-side-l::after {
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(to right,
+    rgba(0,0,0,.45)       0%,
+    rgba(255,255,255,.1)  55%,
+    rgba(0,0,0,.2)        100%
+  );
+}
+
+/* ── TOP FACE (head/crown view) ── */
+.fig3d-top-face {
+  position:absolute;
+  left:0;top:-40px;
+  width:130px;height:40px;
+  transform-origin:50% 100%;
+  transform:rotateX(90deg);
+  overflow:hidden;
+  /* Top of head: show top portion of character */
+  background-image:var(--char);
+  background-size:auto 600%;
+  background-position:center 2%;
+  background-repeat:no-repeat;
+  background-color:#08001a;
+  filter:brightness(.5) saturate(.6);
+  border-radius:16px 16px 0 0;
+}
+.fig3d-top-face::after {
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,
+    rgba(255,255,255,.14) 0%,
+    rgba(0,0,0,.4)        100%
+  );
+}
+
+/* ── FRONT FACE (translateZ=40px, full character) ── */
+.fig3d-front {
+  position:absolute;inset:0;
+  border-radius:16px 16px 2px 2px;
+  overflow:hidden;
+  transform:translateZ(40px);
+  border:1.5px solid rgba(var(--cc),.55);
+  box-shadow:0 0 22px rgba(var(--cc),.25), 0 8px 28px rgba(0,0,0,.5);
+  /* Scene backdrop: spotlight + floor glow */
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 88%, rgba(var(--cc),.28) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 60% at 50% 0%,  rgba(255,255,255,.04) 0%, transparent 60%),
+    linear-gradient(180deg, #090118 0%, #110228 50%, #0c0120 100%);
+}
+
+/* ── CHARACTER ART (transparent PNG stands in scene) ── */
+.fig3d-art {
+  position:absolute;inset:0;
+  background-image:var(--char);
+  background-size:auto 94%;
+  background-position:center bottom;
+  background-repeat:no-repeat;
+}
+
+/* ── PVC SURFACE SHEEN (simulates plastic gloss) ── */
+.fig3d-art::after {
+  content:'';
+  position:absolute;inset:0;
+  /* Fresnel-like edge glow on character silhouette */
+  background:
+    linear-gradient(135deg,
+      rgba(255,255,255,.12) 0%,
+      transparent           35%,
+      rgba(255,255,255,.04) 65%,
+      transparent           100%
+    );
+  pointer-events:none;
+}
+
+/* Prismatic holo overlay */
 .fig3d-holo {
   position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(
     135deg,
-    rgba(255,100,200,.05) 0%,
-    rgba(100,200,255,.08) 30%,
-    rgba(200,100,255,.05) 55%,
-    rgba(255,200,100,.08) 80%,
-    rgba(100,255,200,.05) 100%
+    rgba(255,80,200,.05)  0%,
+    rgba(80,200,255,.08)  28%,
+    rgba(200,80,255,.05)  55%,
+    rgba(255,200,80,.08)  80%,
+    rgba(80,255,200,.05)  100%
   );
   mix-blend-mode:overlay;
 }
@@ -794,10 +880,10 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(
     115deg,
-    transparent 20%,
-    rgba(255,255,255,.24) 46%,
+    transparent          20%,
+    rgba(255,255,255,.26) 46%,
     rgba(255,255,255,.07) 52%,
-    transparent 70%
+    transparent          70%
   );
   background-size:200% 200%;
   animation:avShine 4s ease-in-out infinite;
@@ -808,97 +894,115 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   100% { background-position:200% 0% }
 }
 
-/* Inner rim light */
+/* Inner rim light (edge of plastic casing) */
 .fig3d-frame {
   position:absolute;inset:0;
   border-radius:inherit;pointer-events:none;
   box-shadow:
-    inset 2px 0 0 rgba(255,255,255,.22),
-    inset -2px 0 0 rgba(255,255,255,.09),
-    inset 0 2px 0 rgba(255,255,255,.28);
+    inset 2px  0  0 rgba(255,255,255,.24),
+    inset -2px 0  0 rgba(255,255,255,.10),
+    inset  0   2px 0 rgba(255,255,255,.30),
+    inset  0  -1px 0 rgba(0,0,0,.3);
 }
 
-/* =================================================
-   PLINTH / BASE  (148×44px, depth 14px)
-   ================================================= */
+/* ═══════════════════════════════════════════════════════
+   PLINTH / BASE  (148×46px, depth=40px — same as body)
+   ═══════════════════════════════════════════════════════ */
 .fig3d-plinth {
   position:absolute;
   top:190px;left:3px;
-  width:148px;height:44px;
+  width:148px;height:46px;
   transform-style:preserve-3d;
 }
 
-/* Plinth back */
 .fig3d-plinth-back {
   position:absolute;inset:0;
-  background:rgba(var(--cc),.22);
-  border-radius:0 0 7px 7px;
+  background:rgba(var(--cc),.18);
+  border-radius:0 0 8px 8px;
 }
 
-/* Plinth right side */
 .fig3d-plinth-sr {
   position:absolute;
   left:148px;top:0;
-  width:14px;height:44px;
+  width:40px;height:46px;
   transform-origin:0% 50%;
   transform:rotateY(90deg);
-  background:rgba(var(--cc),.45);
+  background:linear-gradient(180deg,rgba(var(--cc),.55),rgba(var(--cc),.3));
+}
+.fig3d-plinth-sr::after {
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to right,rgba(255,255,255,.14),transparent 60%);
 }
 
-/* Plinth left side */
 .fig3d-plinth-sl {
   position:absolute;
-  left:-14px;top:0;
-  width:14px;height:44px;
+  left:-40px;top:0;
+  width:40px;height:46px;
   transform-origin:100% 50%;
   transform:rotateY(-90deg);
-  background:rgba(var(--cc),.35);
+  background:linear-gradient(180deg,rgba(var(--cc),.42),rgba(var(--cc),.2));
 }
 
-/* Plinth top face */
 .fig3d-plinth-top {
   position:absolute;
-  left:0;top:-14px;
-  width:148px;height:14px;
+  left:0;top:-40px;
+  width:148px;height:40px;
   transform-origin:50% 100%;
   transform:rotateX(90deg);
-  background:linear-gradient(90deg,rgba(var(--cc),.6),rgba(var(--cc),.38));
+  background:
+    linear-gradient(135deg,rgba(var(--cc),.7) 0%,rgba(var(--cc),.4) 100%);
+}
+/* Top face detail: figure number/logo */
+.fig3d-plinth-top::after {
+  content:'';
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 40% 60% at 50% 50%,rgba(255,255,255,.18) 0%,transparent 70%);
 }
 
-/* Plinth front face — trapezoid, pushed translateZ(14px) */
+/* Plinth front — trapezoid with name */
 .fig3d-plinth-front {
   position:absolute;inset:0;
-  transform:translateZ(14px);
-  background:linear-gradient(180deg,rgba(var(--cc),.88) 0%,rgba(var(--cc),.55) 100%);
-  border-radius:0 0 7px 7px;
+  transform:translateZ(40px);
+  background:linear-gradient(180deg,rgba(var(--cc),.92) 0%,rgba(var(--cc),.6) 100%);
+  border-radius:0 0 8px 8px;
   clip-path:polygon(2% 0%,98% 0%,100% 100%,0% 100%);
   display:flex;flex-direction:column;
   align-items:center;justify-content:center;
-  gap:2px;padding-top:3px;
+  gap:2px;padding-top:2px;
+  overflow:hidden;
+}
+/* Plinth front sheen */
+.fig3d-plinth-front::before {
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,
+    rgba(255,255,255,.22) 0%,transparent 50%);
+  pointer-events:none;
 }
 
-/* Plinth text */
 .fig3d-name {
   font-family:'Cormorant Garamond',serif;
-  font-size:.86rem;font-weight:700;
-  color:#fff;font-style:italic;letter-spacing:.07em;
-  text-shadow:0 1px 5px rgba(0,0,0,.55);
+  font-size:.88rem;font-weight:700;
+  color:#fff;font-style:italic;letter-spacing:.08em;
+  text-shadow:0 1px 6px rgba(0,0,0,.6);
+  position:relative;z-index:1;
 }
-.fig3d-stars { font-size:.38rem;color:#ffe060; }
+.fig3d-stars { font-size:.4rem;color:#ffe060;position:relative;z-index:1; }
 .fig3d-type  {
-  font-size:.43rem;color:rgba(255,255,255,.9);
-  letter-spacing:.18em;text-transform:uppercase;
+  font-size:.44rem;color:rgba(255,255,255,.92);
+  letter-spacing:.18em;text-transform:uppercase;position:relative;z-index:1;
 }
 
-/* FRONT CARD — brighter, stronger glow */
+/* ── FRONT CARD: spotlight treatment ── */
 .ygd-av--front .fig3d-front {
   border-color:rgba(var(--cc),.95);
   box-shadow:
-    0 0 0 2px rgba(var(--cc),.6),
-    0 0 30px rgba(var(--cc),.5),
-    0 0 65px rgba(var(--cc),.24),
+    0 0 0 2px  rgba(var(--cc),.65),
+    0 0 28px   rgba(var(--cc),.5),
+    0 0 60px   rgba(var(--cc),.22),
     0 12px 40px rgba(0,0,0,.5);
-  filter:brightness(1.12);
+  filter:brightness(1.14);
 }
 .ygd-av--front .fig3d-holo {
   animation:avHuePulse 3s linear infinite;
@@ -908,8 +1012,6 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   50%  { filter:hue-rotate(180deg); }
   100% { filter:hue-rotate(360deg); }
 }
-
-/* (old .ygd-av-card / .ygd-fig-panel classes removed — see above) */
 
 /* Floor spotlight glow below cylinder */
 .ygd-3d-cylinder::after {
