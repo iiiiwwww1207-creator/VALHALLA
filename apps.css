@@ -698,13 +698,14 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
 }
 
 /* ═══════════════════════════════════════════════════════
-   CHARACTER SILHOUETTE 3D STACK
-   Same transparent PNG stacked 10× at different Z depths
-   → Exact character shape becomes the 3D solid
+   CHARACTER 3D FIGURE — Real multi-face box
+   Front face  : character front view  (var(--char))
+   Back face   : imagined back view    (var(--char-back))
+   Side faces  : imagined side profile (var(--char-side))
    ═══════════════════════════════════════════════════════ */
 
-/* Container: 130×220px, centered in 154px .ygd-av */
-.char-stack {
+/* Container — 130×220×40px box, centred in 154px .ygd-av */
+.char-fig {
   position:absolute;
   top:2px;left:12px;
   width:130px;height:220px;
@@ -712,7 +713,7 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   cursor:pointer;
 }
 
-/* Colored aura disc behind the figure (ground glow) */
+/* Ground aura glow */
 .char-aura {
   position:absolute;
   bottom:-6px;left:50%;
@@ -724,33 +725,17 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   pointer-events:none;
 }
 
-/* All depth layers share these base styles */
-.char-img {
+/* ── FRONT FACE  (translateZ +20 → faces viewer) ── */
+.char-face-front {
   position:absolute;inset:0;
   background-image:var(--char);
   background-size:auto 97%;
   background-position:center bottom;
   background-repeat:no-repeat;
+  transform:translateZ(20px);
 }
-
-/* ── 10 layers: back (z=0,dark) → front (z=45,full) ── */
-.char-img:nth-child(2)  { transform:translateZ(0px);  filter:brightness(.08) saturate(.2); }
-.char-img:nth-child(3)  { transform:translateZ(5px);  filter:brightness(.14) saturate(.3); }
-.char-img:nth-child(4)  { transform:translateZ(10px); filter:brightness(.22) saturate(.45); }
-.char-img:nth-child(5)  { transform:translateZ(15px); filter:brightness(.32) saturate(.55); }
-.char-img:nth-child(6)  { transform:translateZ(20px); filter:brightness(.44) saturate(.68); }
-.char-img:nth-child(7)  { transform:translateZ(25px); filter:brightness(.56) saturate(.78); }
-.char-img:nth-child(8)  { transform:translateZ(30px); filter:brightness(.70) saturate(.88); }
-.char-img:nth-child(9)  { transform:translateZ(35px); filter:brightness(.84) saturate(.94); }
-.char-img:nth-child(10) { transform:translateZ(40px); filter:brightness(.95) saturate(.98); }
-
-/* Front face — full color + rim light effect */
-.char-img.char-front {
-  transform:translateZ(45px);
-  filter:brightness(1.05) saturate(1.05);
-}
-/* Rim light: color glow around silhouette edges on front layer */
-.char-img.char-front::after {
+/* Rim-light glow around silhouette */
+.char-face-front::after {
   content:'';
   position:absolute;inset:0;
   background-image:var(--char);
@@ -765,17 +750,16 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   opacity:.55;
   pointer-events:none;
 }
-
-/* Shine sweep on front layer */
-.char-img.char-front::before {
+/* Shine-sweep */
+.char-face-front::before {
   content:'';
   position:absolute;inset:0;
   background:linear-gradient(
     115deg,
-    transparent          20%,
-    rgba(255,255,255,.28) 46%,
-    rgba(255,255,255,.08) 52%,
-    transparent          70%
+    transparent           20%,
+    rgba(255,255,255,.28)  46%,
+    rgba(255,255,255,.08)  52%,
+    transparent           70%
   );
   background-size:200% 200%;
   animation:avShine 4s ease-in-out infinite;
@@ -786,6 +770,55 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   0%   { background-position:200% 0% }
   50%  { background-position:0% 100% }
   100% { background-position:200% 0% }
+}
+
+/* ── BACK FACE  (rotateY 180° then push forward → faces AWAY) ── */
+/* Visible when the carousel rotates this figure to the far side  */
+.char-face-back {
+  position:absolute;inset:0;
+  background-image:var(--char-back);
+  background-size:auto 97%;
+  background-position:center bottom;
+  background-repeat:no-repeat;
+  transform:rotateY(180deg) translateZ(20px);
+}
+
+/* ── RIGHT SIDE FACE (fold from right edge outward) ── */
+.char-side-r {
+  position:absolute;
+  top:0;left:130px;
+  width:40px;height:220px;
+  transform-origin:0% 50%;
+  transform:rotateY(90deg);
+  background-image:var(--char-side);
+  background-size:40px auto;
+  background-position:left bottom;
+  background-repeat:no-repeat;
+  filter:brightness(.72) saturate(.8);
+}
+/* Ambient occlusion tint */
+.char-side-r::after {
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to left,rgba(0,0,0,.18),transparent 60%);
+}
+
+/* ── LEFT SIDE FACE (fold from left edge outward, shadow side) ── */
+.char-side-l {
+  position:absolute;
+  top:0;left:-40px;
+  width:40px;height:220px;
+  transform-origin:100% 50%;
+  transform:rotateY(-90deg);
+  background-image:var(--char-side);
+  background-size:40px auto;
+  background-position:right bottom;
+  background-repeat:no-repeat;
+  filter:brightness(.5) saturate(.6);  /* left side darker — shadow side */
+}
+/* Ambient shadow on left */
+.char-side-l::after {
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to right,rgba(0,0,0,.25),transparent 70%);
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -877,16 +910,16 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   letter-spacing:.18em;text-transform:uppercase;position:relative;z-index:1;
 }
 
-/* ── FRONT CARD: amplified glow ── */
-.ygd-av--front .char-img.char-front {
-  filter:brightness(1.15) saturate(1.1);
+/* ── FRONT FIGURE: amplified glow ── */
+.ygd-av--front .char-face-front {
+  filter:brightness(1.1) saturate(1.08);
 }
 .ygd-av--front .char-aura {
   filter:blur(10px) brightness(1.4);
   opacity:1.2;
 }
-/* Rainbow hue pulse on front figure */
-.ygd-av--front .char-img.char-front::after {
+/* Rainbow hue pulse rim on front figure */
+.ygd-av--front .char-face-front::after {
   animation:avHuePulse 3s linear infinite;
 }
 @keyframes avHuePulse {
