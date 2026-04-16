@@ -329,6 +329,53 @@ body {
 .phone-glow1 { width: 300px; height: 300px; background: rgba(160,100,255,.3); top: 50%; left: 50%; transform: translate(-50%,-50%); }
 .phone-glow2 { width: 300px; height: 300px; background: rgba(210,80,170,.25); top: 50%; left: 50%; transform: translate(-50%,-50%); }
 
+/* ========== DEMO BUTTONS ========== */
+.demo-btn-wrap {
+  display: flex; flex-direction: column; gap: 8px; margin-top: 8px;
+}
+.demo-btn {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 16px 28px; border-radius: 50px;
+  text-decoration: none; font-size: .95rem; font-weight: 700;
+  transition: transform .3s, box-shadow .3s;
+  width: fit-content;
+}
+.demo-btn-01 {
+  background: linear-gradient(135deg, #2a0860, #6a22cc);
+  color: var(--white);
+  border: 1px solid rgba(200,168,255,.3);
+  box-shadow: 0 6px 30px rgba(100,40,200,.35);
+}
+.demo-btn-02 {
+  background: linear-gradient(135deg, #400828, #cc2280);
+  color: var(--white);
+  border: 1px solid rgba(240,168,212,.3);
+  box-shadow: 0 6px 30px rgba(200,40,140,.3);
+}
+.demo-btn:hover { transform: translateY(-3px); }
+.demo-btn-label {
+  font-size: .6rem; letter-spacing: .2em;
+  background: rgba(255,255,255,.2); padding: 3px 8px;
+  border-radius: 20px;
+}
+.demo-note { font-size: .72rem; color: rgba(200,170,255,.4); }
+
+/* Hero pill link & demo hint */
+.a-hero-app-pill-link {
+  text-decoration: none; color: inherit;
+  transition: background .3s, border-color .3s, transform .3s;
+}
+.a-hero-app-pill-link:hover {
+  background: rgba(255,255,255,.12);
+  border-color: rgba(200,168,255,.5);
+  transform: translateY(-3px);
+}
+.a-hero-app-pill small { font-size: .65rem; opacity: .6; display: block; margin-top: 2px; }
+.a-hero-demo-hint {
+  font-size: .72rem; color: rgba(200,170,255,.45);
+  letter-spacing: .05em; margin-top: -8px;
+}
+
 /* ========== CAST MARQUEE ========== */
 .a-cast {
   padding: 100px 0;
