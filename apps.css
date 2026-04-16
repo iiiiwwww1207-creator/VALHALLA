@@ -685,8 +685,9 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
 
 /* Float animation — staggered by --i */
 .ygd-av-float {
+  position:relative;
   width:100%;height:100%;
-  display:flex;flex-direction:column;align-items:center;
+  transform-style:preserve-3d;  /* propagate 3D to all children */
   animation:avFloat 3.2s ease-in-out infinite;
   animation-delay:calc(var(--i,0) * 0.48s);
 }
@@ -695,30 +696,72 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   50%      { transform:translateY(-10px); }
 }
 
-/* ============================================
-   FIGURE CARD STRUCTURE
-   ============================================ */
-
-/* Main figure display panel */
-.ygd-fig-panel {
-  width:140px;
-  height:204px;
-  border-radius:20px 20px 3px 3px;
-  overflow:hidden;
-  position:relative;
-  background:#0d0128;
-  border:2px solid rgba(var(--cc),.55);
-  box-shadow:
-    0 0 0 1px rgba(var(--cc),.22),
-    inset 0 0 30px rgba(var(--cc),.1),
-    0 0 24px rgba(var(--cc),.22),
-    0 10px 30px rgba(0,0,0,.55);
-  cursor:pointer;
+/* =================================================
+   TRUE 3D FIGURE  (box: 130×186×20 + plinth: 148×44×14)
+   Body positioned  top:4  left:12  (centered in 154px)
+   Plinth positioned top:190 left:3  (centered in 154px)
+   ================================================= */
+.fig3d {
+  position:absolute;
+  top:4px;left:12px;
+  width:130px;height:186px;
   transform-style:preserve-3d;
+  cursor:pointer;
 }
 
-/* Character artwork — correctly positioned per --bx */
-.ygd-fig-art {
+/* BACK FACE — z=0 */
+.fig3d-back {
+  position:absolute;inset:0;
+  background:#04000e;
+  border-radius:16px 16px 2px 2px;
+}
+
+/* RIGHT SIDE FACE — folds from right edge, depth 20px */
+.fig3d-side-r {
+  position:absolute;
+  left:130px;top:0;
+  width:20px;height:186px;
+  transform-origin:0% 50%;
+  transform:rotateY(90deg);
+  background:linear-gradient(180deg,rgba(var(--cc),.92) 0%,rgba(var(--cc),.6) 100%);
+}
+
+/* LEFT SIDE FACE — folds from left edge, depth 20px */
+.fig3d-side-l {
+  position:absolute;
+  left:-20px;top:0;
+  width:20px;height:186px;
+  transform-origin:100% 50%;
+  transform:rotateY(-90deg);
+  background:linear-gradient(180deg,rgba(var(--cc),.7) 0%,rgba(var(--cc),.4) 100%);
+}
+
+/* TOP FACE — folds from top edge */
+.fig3d-top-face {
+  position:absolute;
+  left:0;top:-20px;
+  width:130px;height:20px;
+  transform-origin:50% 100%;
+  transform:rotateX(90deg);
+  background:linear-gradient(90deg,rgba(var(--cc),.65),rgba(var(--cc),.4));
+  border-radius:16px 16px 0 0;
+}
+
+/* FRONT FACE — pushed forward translateZ(20px) */
+.fig3d-front {
+  position:absolute;inset:0;
+  border-radius:16px 16px 2px 2px;
+  overflow:hidden;
+  transform:translateZ(20px);
+  border:1.5px solid rgba(var(--cc),.6);
+  box-shadow:
+    0 0 22px rgba(var(--cc),.28),
+    0 8px 28px rgba(0,0,0,.55);
+  background:#0d0128;
+}
+
+/* Character art inside front face */
+.fig3d-art {
   position:absolute;inset:0;
   background-image:url('images/ygd7_anime.jpg');
   background-size:1050px auto;
@@ -728,28 +771,28 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   background-color:#0d0128;
 }
 
-/* Prismatic holo overlay */
-.ygd-av-holo {
+/* Prismatic holographic overlay */
+.fig3d-holo {
   position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(
     135deg,
-    rgba(255,100,200,.04) 0%,
-    rgba(100,200,255,.07) 30%,
-    rgba(200,100,255,.04) 55%,
-    rgba(255,200,100,.07) 80%,
-    rgba(100,255,200,.04) 100%
+    rgba(255,100,200,.05) 0%,
+    rgba(100,200,255,.08) 30%,
+    rgba(200,100,255,.05) 55%,
+    rgba(255,200,100,.08) 80%,
+    rgba(100,255,200,.05) 100%
   );
   mix-blend-mode:overlay;
 }
 
 /* Shine sweep */
-.ygd-av-shine {
+.fig3d-shine {
   position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(
     115deg,
     transparent 20%,
-    rgba(255,255,255,.22) 46%,
-    rgba(255,255,255,.06) 52%,
+    rgba(255,255,255,.24) 46%,
+    rgba(255,255,255,.07) 52%,
     transparent 70%
   );
   background-size:200% 200%;
@@ -761,72 +804,99 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   100% { background-position:200% 0% }
 }
 
-/* Acrylic inner edge highlight */
-.ygd-fig-edge {
+/* Inner rim light */
+.fig3d-frame {
   position:absolute;inset:0;
-  border-radius:inherit;
-  pointer-events:none;
+  border-radius:inherit;pointer-events:none;
   box-shadow:
-    inset 2px 0 0 rgba(255,255,255,.2),
-    inset -2px 0 0 rgba(255,255,255,.08),
-    inset 0 2px 0 rgba(255,255,255,.28),
-    inset 0 -1px 0 rgba(0,0,0,.25);
+    inset 2px 0 0 rgba(255,255,255,.22),
+    inset -2px 0 0 rgba(255,255,255,.09),
+    inset 0 2px 0 rgba(255,255,255,.28);
 }
 
-/* Name strip — solid band between panel and base */
-.ygd-fig-namestrip {
-  width:140px;
-  height:26px;flex-shrink:0;
-  background:linear-gradient(90deg,rgba(var(--cc),.95) 0%,rgba(var(--cc),.7) 100%);
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 9px;
-  box-shadow:0 2px 8px rgba(0,0,0,.4);
-}
-.ygd-fig-name {
-  font-family:'Cormorant Garamond',serif;
-  font-size:.9rem;font-weight:700;
-  color:#fff;font-style:italic;
-  letter-spacing:.07em;
-  text-shadow:0 1px 5px rgba(0,0,0,.5);
-}
-.ygd-fig-stars { font-size:.42rem;color:#ffe060; }
-
-/* Trapezoidal pedestal base */
-.ygd-fig-base {
-  width:154px;height:30px;flex-shrink:0;
-  background:linear-gradient(180deg,rgba(var(--cc),.6) 0%,rgba(var(--cc),.28) 100%);
-  clip-path:polygon(3% 0%,97% 0%,100% 100%,0% 100%);
-  display:flex;align-items:center;justify-content:center;
-  position:relative;
-}
-.ygd-fig-base::after {
-  content:'';
+/* =================================================
+   PLINTH / BASE  (148×44px, depth 14px)
+   ================================================= */
+.fig3d-plinth {
   position:absolute;
-  bottom:-12px;left:50%;
-  transform:translateX(-50%);
-  width:120px;height:12px;
-  background:radial-gradient(ellipse 55% 45% at 50% 0%,rgba(var(--cc),.35),transparent 80%);
-  filter:blur(4px);
-  pointer-events:none;
-}
-.ygd-fig-type {
-  font-size:.48rem;
-  color:rgba(255,255,255,.88);
-  letter-spacing:.2em;text-transform:uppercase;
+  top:190px;left:3px;
+  width:148px;height:44px;
+  transform-style:preserve-3d;
 }
 
-/* Front-card full treatment */
-.ygd-av--front .ygd-fig-panel {
-  border-color:rgba(var(--cc),.9);
+/* Plinth back */
+.fig3d-plinth-back {
+  position:absolute;inset:0;
+  background:rgba(var(--cc),.22);
+  border-radius:0 0 7px 7px;
+}
+
+/* Plinth right side */
+.fig3d-plinth-sr {
+  position:absolute;
+  left:148px;top:0;
+  width:14px;height:44px;
+  transform-origin:0% 50%;
+  transform:rotateY(90deg);
+  background:rgba(var(--cc),.45);
+}
+
+/* Plinth left side */
+.fig3d-plinth-sl {
+  position:absolute;
+  left:-14px;top:0;
+  width:14px;height:44px;
+  transform-origin:100% 50%;
+  transform:rotateY(-90deg);
+  background:rgba(var(--cc),.35);
+}
+
+/* Plinth top face */
+.fig3d-plinth-top {
+  position:absolute;
+  left:0;top:-14px;
+  width:148px;height:14px;
+  transform-origin:50% 100%;
+  transform:rotateX(90deg);
+  background:linear-gradient(90deg,rgba(var(--cc),.6),rgba(var(--cc),.38));
+}
+
+/* Plinth front face — trapezoid, pushed translateZ(14px) */
+.fig3d-plinth-front {
+  position:absolute;inset:0;
+  transform:translateZ(14px);
+  background:linear-gradient(180deg,rgba(var(--cc),.88) 0%,rgba(var(--cc),.55) 100%);
+  border-radius:0 0 7px 7px;
+  clip-path:polygon(2% 0%,98% 0%,100% 100%,0% 100%);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:2px;padding-top:3px;
+}
+
+/* Plinth text */
+.fig3d-name {
+  font-family:'Cormorant Garamond',serif;
+  font-size:.86rem;font-weight:700;
+  color:#fff;font-style:italic;letter-spacing:.07em;
+  text-shadow:0 1px 5px rgba(0,0,0,.55);
+}
+.fig3d-stars { font-size:.38rem;color:#ffe060; }
+.fig3d-type  {
+  font-size:.43rem;color:rgba(255,255,255,.9);
+  letter-spacing:.18em;text-transform:uppercase;
+}
+
+/* FRONT CARD — brighter, stronger glow */
+.ygd-av--front .fig3d-front {
+  border-color:rgba(var(--cc),.95);
   box-shadow:
-    0 0 0 2px rgba(var(--cc),.65),
-    0 0 28px rgba(var(--cc),.5),
-    0 0 60px rgba(var(--cc),.25),
-    0 14px 40px rgba(0,0,0,.5);
+    0 0 0 2px rgba(var(--cc),.6),
+    0 0 30px rgba(var(--cc),.5),
+    0 0 65px rgba(var(--cc),.24),
+    0 12px 40px rgba(0,0,0,.5);
   filter:brightness(1.12);
 }
-/* Rainbow hue pulse on front card holo */
-.ygd-av--front .ygd-av-holo {
+.ygd-av--front .fig3d-holo {
   animation:avHuePulse 3s linear infinite;
 }
 @keyframes avHuePulse {
@@ -834,6 +904,8 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   50%  { filter:hue-rotate(180deg); }
   100% { filter:hue-rotate(360deg); }
 }
+
+/* (old .ygd-av-card / .ygd-fig-panel classes removed — see above) */
 
 /* Floor spotlight glow below cylinder */
 .ygd-3d-cylinder::after {
