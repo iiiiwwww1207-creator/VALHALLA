@@ -698,195 +698,89 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
 }
 
 /* ═══════════════════════════════════════════════════════
-   TRUE 3D PVC FIGURINE
-   Body:  130×186px  depth=40px   top:4   left:12
-   Plinth:148×46px   depth=40px   top:190 left:3
-   6 faces: front / back(imagined) / left / right / top / plinth
+   CHARACTER SILHOUETTE 3D STACK
+   Same transparent PNG stacked 10× at different Z depths
+   → Exact character shape becomes the 3D solid
    ═══════════════════════════════════════════════════════ */
 
-.fig3d {
+/* Container: 130×220px, centered in 154px .ygd-av */
+.char-stack {
   position:absolute;
-  top:4px;left:12px;
-  width:130px;height:186px;
+  top:2px;left:12px;
+  width:130px;height:220px;
   transform-style:preserve-3d;
   cursor:pointer;
 }
 
-/* ── BACK FACE (z=0, faces viewer)
-   When carousel rotates 180° the element is viewed from behind
-   → CSS renders it MIRRORED = plausible imagined back-of-character  ── */
-.fig3d-back {
-  position:absolute;inset:0;
-  border-radius:16px 16px 2px 2px;
-  overflow:hidden;
-  /* Imagined back: character art, darkened */
-  background-image:var(--char);
-  background-size:auto 92%;
-  background-position:center bottom;
-  background-repeat:no-repeat;
-  background-color:#06000f;
-  filter:brightness(.32) saturate(.55);
-}
-/* Overlay: suggest "back of hair + costume" */
-.fig3d-back::after {
-  content:'';
-  position:absolute;inset:0;
-  background:
-    /* Hair gradient top */
-    linear-gradient(180deg,
-      rgba(var(--cc),.45) 0%,
-      rgba(0,0,0,.55)     18%,
-      rgba(var(--cc),.12) 45%,
-      rgba(0,0,0,.25)     72%,
-      rgba(var(--cc),.3)  100%
-    );
+/* Colored aura disc behind the figure (ground glow) */
+.char-aura {
+  position:absolute;
+  bottom:-6px;left:50%;
+  width:110px;height:30px;
+  transform:translateX(-50%) translateZ(-2px);
+  background:radial-gradient(ellipse 60% 55% at 50% 40%,
+    rgba(var(--cc),.5) 0%, transparent 75%);
+  filter:blur(8px);
   pointer-events:none;
 }
 
-/* ── RIGHT SIDE FACE  (depth 40px, lit from right) ── */
-.fig3d-side-r {
-  position:absolute;
-  left:130px;top:0;
-  width:40px;height:186px;
-  transform-origin:0% 50%;
-  transform:rotateY(90deg);
-  overflow:hidden;
-  /* Character art zoomed into center slice for silhouette hint */
-  background-image:var(--char);
-  background-size:auto 90%;
-  background-position:60% bottom;
-  background-repeat:no-repeat;
-  background-color:#0a0020;
-  filter:brightness(.55) saturate(.7);
-}
-/* PVC specular highlight on side surface */
-.fig3d-side-r::after {
-  content:'';
-  position:absolute;inset:0;
-  background:linear-gradient(to right,
-    rgba(0,0,0,.4)         0%,
-    rgba(255,255,255,.18)  28%,
-    rgba(255,255,255,.08)  48%,
-    rgba(0,0,0,.35)        100%
-  );
-}
-
-/* ── LEFT SIDE FACE  (darker, shadow side) ── */
-.fig3d-side-l {
-  position:absolute;
-  left:-40px;top:0;
-  width:40px;height:186px;
-  transform-origin:100% 50%;
-  transform:rotateY(-90deg);
-  overflow:hidden;
-  background-image:var(--char);
-  background-size:auto 90%;
-  background-position:40% bottom;
-  background-repeat:no-repeat;
-  background-color:#060012;
-  filter:brightness(.38) saturate(.55);
-}
-.fig3d-side-l::after {
-  content:'';
-  position:absolute;inset:0;
-  background:linear-gradient(to right,
-    rgba(0,0,0,.45)       0%,
-    rgba(255,255,255,.1)  55%,
-    rgba(0,0,0,.2)        100%
-  );
-}
-
-/* ── TOP FACE (head/crown view) ── */
-.fig3d-top-face {
-  position:absolute;
-  left:0;top:-40px;
-  width:130px;height:40px;
-  transform-origin:50% 100%;
-  transform:rotateX(90deg);
-  overflow:hidden;
-  /* Top of head: show top portion of character */
-  background-image:var(--char);
-  background-size:auto 600%;
-  background-position:center 2%;
-  background-repeat:no-repeat;
-  background-color:#08001a;
-  filter:brightness(.5) saturate(.6);
-  border-radius:16px 16px 0 0;
-}
-.fig3d-top-face::after {
-  content:'';
-  position:absolute;inset:0;
-  background:linear-gradient(180deg,
-    rgba(255,255,255,.14) 0%,
-    rgba(0,0,0,.4)        100%
-  );
-}
-
-/* ── FRONT FACE (translateZ=40px, full character) ── */
-.fig3d-front {
-  position:absolute;inset:0;
-  border-radius:16px 16px 2px 2px;
-  overflow:hidden;
-  transform:translateZ(40px);
-  border:1.5px solid rgba(var(--cc),.55);
-  box-shadow:0 0 22px rgba(var(--cc),.25), 0 8px 28px rgba(0,0,0,.5);
-  /* Scene backdrop: spotlight + floor glow */
-  background:
-    radial-gradient(ellipse 60% 40% at 50% 88%, rgba(var(--cc),.28) 0%, transparent 65%),
-    radial-gradient(ellipse 50% 60% at 50% 0%,  rgba(255,255,255,.04) 0%, transparent 60%),
-    linear-gradient(180deg, #090118 0%, #110228 50%, #0c0120 100%);
-}
-
-/* ── CHARACTER ART (transparent PNG stands in scene) ── */
-.fig3d-art {
+/* All depth layers share these base styles */
+.char-img {
   position:absolute;inset:0;
   background-image:var(--char);
-  background-size:auto 94%;
+  background-size:auto 97%;
   background-position:center bottom;
   background-repeat:no-repeat;
 }
 
-/* ── PVC SURFACE SHEEN (simulates plastic gloss) ── */
-.fig3d-art::after {
+/* ── 10 layers: back (z=0,dark) → front (z=45,full) ── */
+.char-img:nth-child(2)  { transform:translateZ(0px);  filter:brightness(.08) saturate(.2); }
+.char-img:nth-child(3)  { transform:translateZ(5px);  filter:brightness(.14) saturate(.3); }
+.char-img:nth-child(4)  { transform:translateZ(10px); filter:brightness(.22) saturate(.45); }
+.char-img:nth-child(5)  { transform:translateZ(15px); filter:brightness(.32) saturate(.55); }
+.char-img:nth-child(6)  { transform:translateZ(20px); filter:brightness(.44) saturate(.68); }
+.char-img:nth-child(7)  { transform:translateZ(25px); filter:brightness(.56) saturate(.78); }
+.char-img:nth-child(8)  { transform:translateZ(30px); filter:brightness(.70) saturate(.88); }
+.char-img:nth-child(9)  { transform:translateZ(35px); filter:brightness(.84) saturate(.94); }
+.char-img:nth-child(10) { transform:translateZ(40px); filter:brightness(.95) saturate(.98); }
+
+/* Front face — full color + rim light effect */
+.char-img.char-front {
+  transform:translateZ(45px);
+  filter:brightness(1.05) saturate(1.05);
+}
+/* Rim light: color glow around silhouette edges on front layer */
+.char-img.char-front::after {
   content:'';
   position:absolute;inset:0;
-  /* Fresnel-like edge glow on character silhouette */
-  background:
-    linear-gradient(135deg,
-      rgba(255,255,255,.12) 0%,
-      transparent           35%,
-      rgba(255,255,255,.04) 65%,
-      transparent           100%
-    );
+  background-image:var(--char);
+  background-size:auto 97%;
+  background-position:center bottom;
+  background-repeat:no-repeat;
+  filter:
+    drop-shadow(0 0 6px rgba(var(--cc),.7))
+    drop-shadow(0 0 12px rgba(var(--cc),.4))
+    brightness(0) invert(1);
+  mix-blend-mode:screen;
+  opacity:.55;
   pointer-events:none;
 }
 
-/* Prismatic holo overlay */
-.fig3d-holo {
-  position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(
-    135deg,
-    rgba(255,80,200,.05)  0%,
-    rgba(80,200,255,.08)  28%,
-    rgba(200,80,255,.05)  55%,
-    rgba(255,200,80,.08)  80%,
-    rgba(80,255,200,.05)  100%
-  );
-  mix-blend-mode:overlay;
-}
-
-/* Shine sweep */
-.fig3d-shine {
-  position:absolute;inset:0;pointer-events:none;
+/* Shine sweep on front layer */
+.char-img.char-front::before {
+  content:'';
+  position:absolute;inset:0;
   background:linear-gradient(
     115deg,
     transparent          20%,
-    rgba(255,255,255,.26) 46%,
-    rgba(255,255,255,.07) 52%,
+    rgba(255,255,255,.28) 46%,
+    rgba(255,255,255,.08) 52%,
     transparent          70%
   );
   background-size:200% 200%;
   animation:avShine 4s ease-in-out infinite;
+  pointer-events:none;
+  mix-blend-mode:overlay;
 }
 @keyframes avShine {
   0%   { background-position:200% 0% }
@@ -894,23 +788,12 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   100% { background-position:200% 0% }
 }
 
-/* Inner rim light (edge of plastic casing) */
-.fig3d-frame {
-  position:absolute;inset:0;
-  border-radius:inherit;pointer-events:none;
-  box-shadow:
-    inset 2px  0  0 rgba(255,255,255,.24),
-    inset -2px 0  0 rgba(255,255,255,.10),
-    inset  0   2px 0 rgba(255,255,255,.30),
-    inset  0  -1px 0 rgba(0,0,0,.3);
-}
-
 /* ═══════════════════════════════════════════════════════
    PLINTH / BASE  (148×46px, depth=40px — same as body)
    ═══════════════════════════════════════════════════════ */
 .fig3d-plinth {
   position:absolute;
-  top:190px;left:3px;
+  top:222px;left:3px;
   width:148px;height:46px;
   transform-style:preserve-3d;
 }
@@ -994,23 +877,22 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   letter-spacing:.18em;text-transform:uppercase;position:relative;z-index:1;
 }
 
-/* ── FRONT CARD: spotlight treatment ── */
-.ygd-av--front .fig3d-front {
-  border-color:rgba(var(--cc),.95);
-  box-shadow:
-    0 0 0 2px  rgba(var(--cc),.65),
-    0 0 28px   rgba(var(--cc),.5),
-    0 0 60px   rgba(var(--cc),.22),
-    0 12px 40px rgba(0,0,0,.5);
-  filter:brightness(1.14);
+/* ── FRONT CARD: amplified glow ── */
+.ygd-av--front .char-img.char-front {
+  filter:brightness(1.15) saturate(1.1);
 }
-.ygd-av--front .fig3d-holo {
+.ygd-av--front .char-aura {
+  filter:blur(10px) brightness(1.4);
+  opacity:1.2;
+}
+/* Rainbow hue pulse on front figure */
+.ygd-av--front .char-img.char-front::after {
   animation:avHuePulse 3s linear infinite;
 }
 @keyframes avHuePulse {
-  0%   { filter:hue-rotate(0deg); }
-  50%  { filter:hue-rotate(180deg); }
-  100% { filter:hue-rotate(360deg); }
+  0%   { filter:drop-shadow(0 0 6px rgba(var(--cc),.7)) drop-shadow(0 0 12px rgba(var(--cc),.4)) brightness(0) invert(1) hue-rotate(0deg); }
+  50%  { filter:drop-shadow(0 0 6px rgba(var(--cc),.7)) drop-shadow(0 0 12px rgba(var(--cc),.4)) brightness(0) invert(1) hue-rotate(180deg); }
+  100% { filter:drop-shadow(0 0 6px rgba(var(--cc),.7)) drop-shadow(0 0 12px rgba(var(--cc),.4)) brightness(0) invert(1) hue-rotate(360deg); }
 }
 
 /* Floor spotlight glow below cylinder */
