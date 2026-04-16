@@ -313,10 +313,24 @@
     <p class="ygd-intro-desc">ホストたちがあなただけのアイドルに——毎日の交流でレベルアップ、解放される特別ストーリー。<br>アイドルゲームとホストクラブが融合した、全く新しい体験がここから始まる。</p>
   </div>
 
-  <!-- ③ 3D AVATAR CAROUSEL -->
+  <!-- ③ 3D AVATAR AD BANNER -->
   <div class="ygd-3d-stage">
-    <p class="ygd-lineup-label">✦ 3D CHARACTER ✦</p>
-    <p class="ygd-3d-hint">✦ ドラッグ＆スワイプで回転 ✦</p>
+
+    <!-- === AD BACKGROUND LAYERS === -->
+    <div class="ygd-ad-bg" aria-hidden="true">
+      <div class="ygd-ad-burst"></div>
+      <div class="ygd-ad-grid"></div>
+      <div class="ygd-ad-scanline"></div>
+    </div>
+
+    <!-- === AD HEADER === -->
+    <div class="ygd-ad-header">
+      <span class="ygd-ad-badge">◆ NEW APP ◆</span>
+      <h2 class="ygd-ad-title" data-text="ゆぐどら!!">ゆぐどら!!</h2>
+      <p class="ygd-ad-tagline">推しホストをアイドルに育てる<br>ガチャ×育成 新感覚アプリ</p>
+    </div>
+
+    <!-- === CAROUSEL === -->
     <div class="ygd-carousel-scene">
       <canvas id="ygdSparks"></canvas>
       <div class="ygd-3d-cylinder" id="ygdCylinder">
@@ -427,7 +441,18 @@
       </div>
 
     </div><!-- /ygd-carousel-scene -->
-  </div>
+
+    <!-- === CTA === -->
+    <div class="ygd-ad-cta">
+      <a href="https://lin.ee/XXXXXXXX" class="ygd-ad-btn">
+        <span class="ygd-ad-btn-icon">📲</span>
+        <span class="ygd-ad-btn-text">無料ダウンロード</span>
+        <span class="ygd-ad-btn-arrow">▶</span>
+      </a>
+      <p class="ygd-ad-stores">App Store &amp; Google Play 対応</p>
+    </div>
+
+  </div><!-- /ygd-3d-stage -->
 
   <!-- ④ IDOL CARDS: YGD7!! メンバーのみ -->
   <div class="container ygd-idol-section">
