@@ -446,23 +446,125 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   color:#9040b0;font-style:italic;
 }
 
-/* ---- 3D AVATAR CARDS ---- */
+/* ---- 3D AVATAR CAROUSEL ---- */
 .ygd-3d-stage {
   position:relative;z-index:1;
-  padding:8px 16px 36px;
+  padding:8px 16px 88px;
   text-align:center;
 }
 .ygd-3d-hint {
   font-size:.74rem;color:rgba(140,80,160,.5);
-  margin-bottom:28px;letter-spacing:.05em;
+  margin-bottom:20px;letter-spacing:.08em;
 }
-.ygd-3d-cards {
-  display:flex;gap:14px;justify-content:center;
-  flex-wrap:wrap;
-  perspective:1200px;
+
+/* === CYLINDER CAROUSEL === */
+.ygd-carousel-scene {
+  position:relative;
+  width:100%;
+  height:380px;
+  perspective:900px;
+  perspective-origin:50% 46%;
+  overflow:visible;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  cursor:grab;
 }
+.ygd-carousel-scene:active { cursor:grabbing; }
+
+#ygdSparks {
+  position:absolute;
+  top:-60px;left:-60px;
+  width:calc(100% + 120px);
+  height:calc(100% + 120px);
+  pointer-events:none;
+  z-index:0;
+}
+
+.ygd-3d-cylinder {
+  position:relative;
+  width:150px;
+  height:248px;
+  transform-style:preserve-3d;
+  transform:rotateY(0deg);
+  z-index:1;
+}
+
 .ygd-av {
-  position:relative;flex-shrink:0;
+  position:absolute;
+  top:0;left:0;
+  width:150px;height:248px;
+  transform-style:preserve-3d;
+  transform:rotateY(calc(var(--i,0) * 60deg)) translateZ(285px);
+  transition:opacity .4s,filter .4s;
+}
+
+/* Non-front cards slightly dimmed */
+.ygd-av:not(.ygd-av--front) {
+  opacity:.72;
+  filter:brightness(.82) saturate(.75);
+}
+
+/* Float animation — staggered by --i */
+.ygd-av-float {
+  width:100%;height:100%;
+  animation:avFloat 3.2s ease-in-out infinite;
+  animation-delay:calc(var(--i,0) * 0.48s);
+}
+@keyframes avFloat {
+  0%,100% { transform:translateY(0px); }
+  50%      { transform:translateY(-11px); }
+}
+
+/* Front-card highlight */
+.ygd-av--front .ygd-av-card {
+  box-shadow:
+    0 0 0 2px rgba(var(--cc),.7),
+    0 0 32px rgba(var(--cc),.55),
+    0 20px 56px rgba(var(--cc),.35);
+  border-color:rgba(var(--cc),.9);
+  filter:brightness(1.1);
+}
+/* Rainbow hue pulse on front card */
+.ygd-av--front .ygd-av-holo {
+  animation:avHuePulse 3s linear infinite;
+}
+@keyframes avHuePulse {
+  0%   { filter:hue-rotate(0deg)   opacity(1); }
+  50%  { filter:hue-rotate(180deg) opacity(1); }
+  100% { filter:hue-rotate(360deg) opacity(1); }
+}
+
+/* Carousel nav */
+.ygd-carousel-nav {
+  position:absolute;
+  bottom:-44px;
+  left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:12px;
+  z-index:10;
+}
+.ygd-cnav {
+  width:32px;height:32px;
+  background:rgba(var(--p3-rgb,160,100,220),.15);
+  border:1px solid rgba(160,80,200,.35);
+  border-radius:50%;
+  color:rgba(160,100,220,.8);
+  font-size:1.2rem;line-height:1;
+  cursor:pointer;
+  transition:background .2s,transform .15s;
+  display:flex;align-items:center;justify-content:center;
+}
+.ygd-cnav:hover { background:rgba(160,80,200,.28);transform:scale(1.1); }
+.ygd-cdots { display:flex;gap:6px;align-items:center; }
+.ygd-cdot {
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(160,80,200,.25);
+  transition:background .3s,transform .3s;
+}
+.ygd-cdot.active {
+  background:rgba(160,80,200,.85);
+  transform:scale(1.35);
 }
 .ygd-av-card {
   width:150px;height:248px;

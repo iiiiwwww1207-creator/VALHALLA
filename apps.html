@@ -313,91 +313,120 @@
     <p class="ygd-intro-desc">ホストたちがあなただけのアイドルに——毎日の交流でレベルアップ、解放される特別ストーリー。<br>アイドルゲームとホストクラブが融合した、全く新しい体験がここから始まる。</p>
   </div>
 
-  <!-- ③ 3D AVATAR CARDS -->
+  <!-- ③ 3D AVATAR CAROUSEL -->
   <div class="ygd-3d-stage">
     <p class="ygd-lineup-label">✦ 3D CHARACTER ✦</p>
-    <p class="ygd-3d-hint">✨ カードに触れると動くよ</p>
-    <div class="ygd-3d-cards">
+    <p class="ygd-3d-hint">✦ ドラッグ＆スワイプで回転 ✦</p>
+    <div class="ygd-carousel-scene">
+      <canvas id="ygdSparks"></canvas>
+      <div class="ygd-3d-cylinder" id="ygdCylinder">
 
-      <div class="ygd-av" style="--cc:128,48,204;--bx:2%">
-        <div class="ygd-av-card">
-          <div class="ygd-av-art"></div>
-          <div class="ygd-av-holo"></div>
-          <div class="ygd-av-shine"></div>
-          <div class="ygd-av-info">
-            <p class="ygd-av-char">Genki</p>
-            <p class="ygd-av-stars">★★★★★</p>
-            <p class="ygd-av-type">エネルギー全開</p>
+        <div class="ygd-av" style="--i:0;--cc:128,48,204;--bx:2%">
+          <div class="ygd-av-float">
+            <div class="ygd-av-card">
+              <div class="ygd-av-art"></div>
+              <div class="ygd-av-holo"></div>
+              <div class="ygd-av-shine"></div>
+              <div class="ygd-av-info">
+                <p class="ygd-av-char">Genki</p>
+                <p class="ygd-av-stars">★★★★★</p>
+                <p class="ygd-av-type">エネルギー全開</p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="ygd-av" style="--cc:204,52,120;--bx:19%">
-        <div class="ygd-av-card">
-          <div class="ygd-av-art"></div>
-          <div class="ygd-av-holo"></div>
-          <div class="ygd-av-shine"></div>
-          <div class="ygd-av-info">
-            <p class="ygd-av-char">Otoya</p>
-            <p class="ygd-av-stars">★★★★☆</p>
-            <p class="ygd-av-type">王子様系</p>
+        <div class="ygd-av" style="--i:1;--cc:204,52,120;--bx:19%">
+          <div class="ygd-av-float">
+            <div class="ygd-av-card">
+              <div class="ygd-av-art"></div>
+              <div class="ygd-av-holo"></div>
+              <div class="ygd-av-shine"></div>
+              <div class="ygd-av-info">
+                <p class="ygd-av-char">Otoya</p>
+                <p class="ygd-av-stars">★★★★☆</p>
+                <p class="ygd-av-type">王子様系</p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="ygd-av" style="--cc:48,136,204;--bx:36%">
-        <div class="ygd-av-card">
-          <div class="ygd-av-art"></div>
-          <div class="ygd-av-holo"></div>
-          <div class="ygd-av-shine"></div>
-          <div class="ygd-av-info">
-            <p class="ygd-av-char">Mio</p>
-            <p class="ygd-av-stars">★★★★★</p>
-            <p class="ygd-av-type">ミステリアス</p>
+        <div class="ygd-av" style="--i:2;--cc:48,136,204;--bx:36%">
+          <div class="ygd-av-float">
+            <div class="ygd-av-card">
+              <div class="ygd-av-art"></div>
+              <div class="ygd-av-holo"></div>
+              <div class="ygd-av-shine"></div>
+              <div class="ygd-av-info">
+                <p class="ygd-av-char">Mio</p>
+                <p class="ygd-av-stars">★★★★★</p>
+                <p class="ygd-av-type">ミステリアス</p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="ygd-av" style="--cc:140,140,180;--bx:53%">
-        <div class="ygd-av-card">
-          <div class="ygd-av-art"></div>
-          <div class="ygd-av-holo"></div>
-          <div class="ygd-av-shine"></div>
-          <div class="ygd-av-info">
-            <p class="ygd-av-char">Eiji</p>
-            <p class="ygd-av-stars">★★★★★</p>
-            <p class="ygd-av-type">カリスマ系</p>
+        <div class="ygd-av" style="--i:3;--cc:140,140,180;--bx:53%">
+          <div class="ygd-av-float">
+            <div class="ygd-av-card">
+              <div class="ygd-av-art"></div>
+              <div class="ygd-av-holo"></div>
+              <div class="ygd-av-shine"></div>
+              <div class="ygd-av-info">
+                <p class="ygd-av-char">Eiji</p>
+                <p class="ygd-av-stars">★★★★★</p>
+                <p class="ygd-av-type">カリスマ系</p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="ygd-av" style="--cc:48,160,96;--bx:70%">
-        <div class="ygd-av-card">
-          <div class="ygd-av-art"></div>
-          <div class="ygd-av-holo"></div>
-          <div class="ygd-av-shine"></div>
-          <div class="ygd-av-info">
-            <p class="ygd-av-char">Romi</p>
-            <p class="ygd-av-stars">★★★★☆</p>
-            <p class="ygd-av-type">クールビューティ</p>
+        <div class="ygd-av" style="--i:4;--cc:48,160,96;--bx:70%">
+          <div class="ygd-av-float">
+            <div class="ygd-av-card">
+              <div class="ygd-av-art"></div>
+              <div class="ygd-av-holo"></div>
+              <div class="ygd-av-shine"></div>
+              <div class="ygd-av-info">
+                <p class="ygd-av-char">Romi</p>
+                <p class="ygd-av-stars">★★★★☆</p>
+                <p class="ygd-av-type">クールビューティ</p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="ygd-av" style="--cc:200,160,32;--bx:87%">
-        <div class="ygd-av-card">
-          <div class="ygd-av-art"></div>
-          <div class="ygd-av-holo"></div>
-          <div class="ygd-av-shine"></div>
-          <div class="ygd-av-info">
-            <p class="ygd-av-char">Yurika</p>
-            <p class="ygd-av-stars">★★★★☆</p>
-            <p class="ygd-av-type">太陽系アイドル</p>
+        <div class="ygd-av" style="--i:5;--cc:200,160,32;--bx:87%">
+          <div class="ygd-av-float">
+            <div class="ygd-av-card">
+              <div class="ygd-av-art"></div>
+              <div class="ygd-av-holo"></div>
+              <div class="ygd-av-shine"></div>
+              <div class="ygd-av-info">
+                <p class="ygd-av-char">Yurika</p>
+                <p class="ygd-av-stars">★★★★☆</p>
+                <p class="ygd-av-type">太陽系アイドル</p>
+              </div>
+            </div>
           </div>
         </div>
+
+      </div><!-- /ygd-3d-cylinder -->
+
+      <div class="ygd-carousel-nav">
+        <button class="ygd-cnav ygd-cnav-prev" aria-label="前へ">‹</button>
+        <div class="ygd-cdots" id="ygdDots">
+          <span class="ygd-cdot"></span>
+          <span class="ygd-cdot"></span>
+          <span class="ygd-cdot"></span>
+          <span class="ygd-cdot"></span>
+          <span class="ygd-cdot"></span>
+          <span class="ygd-cdot"></span>
+        </div>
+        <button class="ygd-cnav ygd-cnav-next" aria-label="次へ">›</button>
       </div>
 
-    </div>
+    </div><!-- /ygd-carousel-scene -->
   </div>
 
   <!-- ④ IDOL CARDS: YGD7!! メンバーのみ -->
@@ -622,46 +651,217 @@ if (strip) {
 const obs = new IntersectionObserver(es => es.forEach(e => {
   if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
 }), { threshold: 0, rootMargin: '0px 0px -40px 0px' });
-document.querySelectorAll('.shared-item,.ad-v-feat,.ygd-feat-item,.benefit,.ygd-ic,.ygd-av').forEach(el => {
+document.querySelectorAll('.shared-item,.ad-v-feat,.ygd-feat-item,.benefit,.ygd-ic').forEach(el => {
   el.classList.add('reveal'); obs.observe(el);
 });
 
-/* ---- 3D Avatar tilt ---- */
-document.querySelectorAll('.ygd-av-card').forEach(card => {
-  const av = card.closest('.ygd-av');
-  const shine = card.querySelector('.ygd-av-shine');
-  let isHover = false;
+/* ================================================================
+   3D CYLINDER CAROUSEL + SPARKLES
+   ================================================================ */
+(function(){
+  const cylinder  = document.getElementById('ygdCylinder');
+  const avEls     = cylinder ? Array.from(cylinder.querySelectorAll('.ygd-av')) : [];
+  const dotsWrap  = document.getElementById('ygdDots');
+  const dots      = dotsWrap ? Array.from(dotsWrap.querySelectorAll('.ygd-cdot')) : [];
+  const N         = avEls.length;   // 6
+  const STEP      = 360 / N;        // 60 deg per card
 
-  card.addEventListener('mouseenter', () => {
-    isHover = true;
-    card.style.transition = 'transform 0.06s ease, box-shadow 0.25s ease';
-    if (av) av.style.zIndex = '20';
-  });
+  let angle       = 0;      // current rotation (deg)
+  let autoOn      = true;   // auto-rotate flag
+  let autoSpeed   = 0.22;   // deg/frame
+  let isDrag      = false;
+  let dragX0      = 0;
+  let angle0      = 0;
+  let vx          = 0;
+  let lastX       = 0;
+  let resumeTimer = null;
 
-  card.addEventListener('mousemove', e => {
-    if (!isHover) return;
-    const r = card.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - 0.5;   // -0.5 ~ 0.5
-    const y = (e.clientY - r.top)  / r.height - 0.5;
-    card.style.transform =
-      `rotateY(${x * 32}deg) rotateX(${-y * 32}deg) translateZ(28px) scale(1.07)`;
-    // Dynamic shine direction based on mouse
-    if (shine) {
-      const deg = Math.atan2(y, x) * (180 / Math.PI) + 90;
-      shine.style.background =
-        `linear-gradient(${deg}deg, transparent 25%, rgba(255,255,255,.32) 48%, rgba(255,255,255,.08) 54%, transparent 72%)`;
-      shine.style.animation = 'none';
+  /* --- helpers --- */
+  function frontIdx() {
+    const n = ((-angle % 360) + 360) % 360;
+    return Math.round(n / STEP) % N;
+  }
+
+  function render() {
+    if (!cylinder) return;
+    cylinder.style.transform = `rotateY(${angle}deg)`;
+    const fi = frontIdx();
+    avEls.forEach((av, i) => av.classList.toggle('ygd-av--front', i === fi));
+    dots.forEach((d, i) => d.classList.toggle('active', i === fi));
+  }
+
+  function resumeAuto() {
+    resumeTimer = setTimeout(() => { autoOn = true; }, 2600);
+  }
+  function pauseAuto() {
+    autoOn = false;
+    if (resumeTimer) clearTimeout(resumeTimer);
+  }
+
+  /* --- RAF loop --- */
+  (function tick() {
+    if (autoOn) {
+      angle += autoSpeed;
+    } else if (!isDrag) {
+      angle += vx;
+      vx    *= 0.90;
     }
+    render();
+    requestAnimationFrame(tick);
+  })();
+
+  /* --- drag (mouse) --- */
+  if (cylinder) {
+    cylinder.addEventListener('mousedown', e => {
+      pauseAuto(); isDrag = true;
+      dragX0 = e.clientX; angle0 = angle; vx = 0; lastX = e.clientX;
+      e.preventDefault();
+    });
+    window.addEventListener('mousemove', e => {
+      if (!isDrag) return;
+      vx    = (e.clientX - lastX) * 0.38;
+      lastX = e.clientX;
+      angle = angle0 + (e.clientX - dragX0) * 0.38;
+      render();
+    });
+    window.addEventListener('mouseup', () => {
+      if (!isDrag) return;
+      isDrag = false;
+      resumeAuto();
+    });
+
+    /* --- touch --- */
+    cylinder.addEventListener('touchstart', e => {
+      pauseAuto(); isDrag = true;
+      dragX0 = e.touches[0].clientX; angle0 = angle; vx = 0;
+      lastX  = e.touches[0].clientX;
+    }, {passive:true});
+    window.addEventListener('touchmove', e => {
+      if (!isDrag) return;
+      const cx = e.touches[0].clientX;
+      vx    = (cx - lastX) * 0.38;
+      lastX = cx;
+      angle = angle0 + (cx - dragX0) * 0.38;
+      render();
+    }, {passive:true});
+    window.addEventListener('touchend', () => {
+      if (!isDrag) return;
+      isDrag = false;
+      resumeAuto();
+    });
+  }
+
+  /* --- nav buttons --- */
+  document.querySelector('.ygd-cnav-prev')?.addEventListener('click', () => {
+    pauseAuto(); vx = 0;
+    angle -= STEP;
+    render();
+    resumeAuto();
+  });
+  document.querySelector('.ygd-cnav-next')?.addEventListener('click', () => {
+    pauseAuto(); vx = 0;
+    angle += STEP;
+    render();
+    resumeAuto();
   });
 
-  card.addEventListener('mouseleave', () => {
-    isHover = false;
-    card.style.transition = 'transform 0.5s ease, box-shadow 0.25s ease';
-    card.style.transform = '';
-    if (av) av.style.zIndex = '';
-    if (shine) { shine.style.background = ''; shine.style.animation = ''; }
+  /* --- card shine tilt on hover --- */
+  document.querySelectorAll('.ygd-av-card').forEach(card => {
+    const shine = card.querySelector('.ygd-av-shine');
+    card.addEventListener('mousemove', e => {
+      const r   = card.getBoundingClientRect();
+      const x   = (e.clientX - r.left) / r.width  - 0.5;
+      const y   = (e.clientY - r.top)  / r.height - 0.5;
+      const deg = Math.atan2(y, x) * (180 / Math.PI) + 90;
+      if (shine) {
+        shine.style.background =
+          `linear-gradient(${deg}deg,transparent 22%,rgba(255,255,255,.42) 46%,rgba(255,255,255,.12) 53%,transparent 70%)`;
+        shine.style.animation = 'none';
+      }
+    });
+    card.addEventListener('mouseleave', () => {
+      if (shine) { shine.style.background = ''; shine.style.animation = ''; }
+    });
   });
-});
+
+  /* =============================================================
+     CANVAS SPARKLES
+  =============================================================== */
+  const canvas = document.getElementById('ygdSparks');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  function resizeCanvas() {
+    const scene = canvas.parentElement;
+    canvas.width  = (scene.offsetWidth  || 600) + 120;
+    canvas.height = (scene.offsetHeight || 380) + 120;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  const PALETTE = [
+    [180,120,255],[255,140,220],[100,200,255],[255,220,80],[120,255,190]
+  ];
+
+  function mkSpark() {
+    const [r,g,b] = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+    return {
+      x:     Math.random() * canvas.width,
+      y:     canvas.height + 8,
+      r:     Math.random() * 2.4 + 0.5,
+      vx:    (Math.random() - 0.5) * 0.5,
+      vy:    -(Math.random() * 1.1 + 0.3),
+      alpha: Math.random() * 0.55 + 0.25,
+      col:   `${r},${g},${b}`,
+      tw:    Math.random() * Math.PI * 2,
+      twS:   Math.random() * 0.055 + 0.018,
+    };
+  }
+
+  const sparks = Array.from({length: 50}, () => {
+    const s = mkSpark();
+    s.y = Math.random() * canvas.height; // scatter on load
+    return s;
+  });
+
+  function drawStar(x, y, rOuter, col, alpha) {
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    const pts = 4, inner = rOuter * 0.38;
+    ctx.beginPath();
+    for (let p = 0; p < pts * 2; p++) {
+      const a   = (p * Math.PI) / pts - Math.PI / 2;
+      const rad = p % 2 === 0 ? rOuter : inner;
+      p === 0
+        ? ctx.moveTo(x + Math.cos(a)*rad, y + Math.sin(a)*rad)
+        : ctx.lineTo(x + Math.cos(a)*rad, y + Math.sin(a)*rad);
+    }
+    ctx.closePath();
+    ctx.fillStyle = `rgba(${col},${alpha})`;
+    ctx.fill();
+    /* soft glow */
+    ctx.globalAlpha = alpha * 0.4;
+    ctx.shadowColor  = `rgba(${col},0.9)`;
+    ctx.shadowBlur   = rOuter * 3;
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function animSparks() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (const s of sparks) {
+      s.x  += s.vx;
+      s.y  += s.vy;
+      s.tw += s.twS;
+      const a = s.alpha * (0.55 + 0.45 * Math.sin(s.tw));
+      drawStar(s.x, s.y, s.r, s.col, a);
+      if (s.y < -12) Object.assign(s, mkSpark());
+    }
+    requestAnimationFrame(animSparks);
+  }
+  animSparks();
+
+})();
 </script>
 </body>
 </html>
