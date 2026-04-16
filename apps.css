@@ -636,16 +636,16 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   position:relative;
   z-index:2;
   width:100%;
-  height:380px;
+  height:420px;
   perspective:900px;
-  perspective-origin:50% 46%;
+  perspective-origin:50% 42%;
   overflow:visible;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   cursor:grab;
-  margin-top:12px;
+  margin-top:8px;
 }
 .ygd-carousel-scene:active { cursor:grabbing; }
 
@@ -660,8 +660,8 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
 
 .ygd-3d-cylinder {
   position:relative;
-  width:150px;
-  height:248px;
+  width:154px;
+  height:264px;
   transform-style:preserve-3d;
   transform:rotateY(0deg);
   z-index:1;
@@ -670,46 +670,169 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
 .ygd-av {
   position:absolute;
   top:0;left:0;
-  width:150px;height:248px;
+  width:154px;height:264px;
   transform-style:preserve-3d;
-  transform:rotateY(calc(var(--i,0) * 60deg)) translateZ(285px);
+  transform:rotateY(calc(var(--i,0) * 60deg)) translateZ(295px);
   transition:opacity .4s,filter .4s;
+  overflow:visible;
 }
 
 /* Non-front cards slightly dimmed */
 .ygd-av:not(.ygd-av--front) {
-  opacity:.72;
-  filter:brightness(.82) saturate(.75);
+  opacity:.68;
+  filter:brightness(.78) saturate(.65);
 }
 
 /* Float animation — staggered by --i */
 .ygd-av-float {
   width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:center;
   animation:avFloat 3.2s ease-in-out infinite;
   animation-delay:calc(var(--i,0) * 0.48s);
 }
 @keyframes avFloat {
   0%,100% { transform:translateY(0px); }
-  50%      { transform:translateY(-11px); }
+  50%      { transform:translateY(-10px); }
 }
 
-/* Front-card highlight */
-.ygd-av--front .ygd-av-card {
+/* ============================================
+   FIGURE CARD STRUCTURE
+   ============================================ */
+
+/* Main figure display panel */
+.ygd-fig-panel {
+  width:140px;
+  height:204px;
+  border-radius:20px 20px 3px 3px;
+  overflow:hidden;
+  position:relative;
+  background:#0d0128;
+  border:2px solid rgba(var(--cc),.55);
   box-shadow:
-    0 0 0 2px rgba(var(--cc),.7),
-    0 0 32px rgba(var(--cc),.55),
-    0 20px 56px rgba(var(--cc),.35);
-  border-color:rgba(var(--cc),.9);
-  filter:brightness(1.1);
+    0 0 0 1px rgba(var(--cc),.22),
+    inset 0 0 30px rgba(var(--cc),.1),
+    0 0 24px rgba(var(--cc),.22),
+    0 10px 30px rgba(0,0,0,.55);
+  cursor:pointer;
+  transform-style:preserve-3d;
 }
-/* Rainbow hue pulse on front card */
+
+/* Character artwork — correctly positioned per --bx */
+.ygd-fig-art {
+  position:absolute;inset:0;
+  background-image:url('images/ygd7_anime.jpg');
+  background-size:1050px auto;
+  background-position-x:var(--bx);
+  background-position-y:0%;
+  background-repeat:no-repeat;
+  background-color:#0d0128;
+}
+
+/* Prismatic holo overlay */
+.ygd-av-holo {
+  position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(
+    135deg,
+    rgba(255,100,200,.04) 0%,
+    rgba(100,200,255,.07) 30%,
+    rgba(200,100,255,.04) 55%,
+    rgba(255,200,100,.07) 80%,
+    rgba(100,255,200,.04) 100%
+  );
+  mix-blend-mode:overlay;
+}
+
+/* Shine sweep */
+.ygd-av-shine {
+  position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(
+    115deg,
+    transparent 20%,
+    rgba(255,255,255,.22) 46%,
+    rgba(255,255,255,.06) 52%,
+    transparent 70%
+  );
+  background-size:200% 200%;
+  animation:avShine 4s ease-in-out infinite;
+}
+@keyframes avShine {
+  0%   { background-position:200% 0% }
+  50%  { background-position:0% 100% }
+  100% { background-position:200% 0% }
+}
+
+/* Acrylic inner edge highlight */
+.ygd-fig-edge {
+  position:absolute;inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  box-shadow:
+    inset 2px 0 0 rgba(255,255,255,.2),
+    inset -2px 0 0 rgba(255,255,255,.08),
+    inset 0 2px 0 rgba(255,255,255,.28),
+    inset 0 -1px 0 rgba(0,0,0,.25);
+}
+
+/* Name strip — solid band between panel and base */
+.ygd-fig-namestrip {
+  width:140px;
+  height:26px;flex-shrink:0;
+  background:linear-gradient(90deg,rgba(var(--cc),.95) 0%,rgba(var(--cc),.7) 100%);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 9px;
+  box-shadow:0 2px 8px rgba(0,0,0,.4);
+}
+.ygd-fig-name {
+  font-family:'Cormorant Garamond',serif;
+  font-size:.9rem;font-weight:700;
+  color:#fff;font-style:italic;
+  letter-spacing:.07em;
+  text-shadow:0 1px 5px rgba(0,0,0,.5);
+}
+.ygd-fig-stars { font-size:.42rem;color:#ffe060; }
+
+/* Trapezoidal pedestal base */
+.ygd-fig-base {
+  width:154px;height:30px;flex-shrink:0;
+  background:linear-gradient(180deg,rgba(var(--cc),.6) 0%,rgba(var(--cc),.28) 100%);
+  clip-path:polygon(3% 0%,97% 0%,100% 100%,0% 100%);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.ygd-fig-base::after {
+  content:'';
+  position:absolute;
+  bottom:-12px;left:50%;
+  transform:translateX(-50%);
+  width:120px;height:12px;
+  background:radial-gradient(ellipse 55% 45% at 50% 0%,rgba(var(--cc),.35),transparent 80%);
+  filter:blur(4px);
+  pointer-events:none;
+}
+.ygd-fig-type {
+  font-size:.48rem;
+  color:rgba(255,255,255,.88);
+  letter-spacing:.2em;text-transform:uppercase;
+}
+
+/* Front-card full treatment */
+.ygd-av--front .ygd-fig-panel {
+  border-color:rgba(var(--cc),.9);
+  box-shadow:
+    0 0 0 2px rgba(var(--cc),.65),
+    0 0 28px rgba(var(--cc),.5),
+    0 0 60px rgba(var(--cc),.25),
+    0 14px 40px rgba(0,0,0,.5);
+  filter:brightness(1.12);
+}
+/* Rainbow hue pulse on front card holo */
 .ygd-av--front .ygd-av-holo {
   animation:avHuePulse 3s linear infinite;
 }
 @keyframes avHuePulse {
-  0%   { filter:hue-rotate(0deg)   opacity(1); }
-  50%  { filter:hue-rotate(180deg) opacity(1); }
-  100% { filter:hue-rotate(360deg) opacity(1); }
+  0%   { filter:hue-rotate(0deg); }
+  50%  { filter:hue-rotate(180deg); }
+  100% { filter:hue-rotate(360deg); }
 }
 
 /* Floor spotlight glow below cylinder */
@@ -755,76 +878,7 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   background:rgba(160,80,200,.85);
   transform:scale(1.35);
 }
-.ygd-av-card {
-  width:150px;height:248px;
-  border-radius:18px;overflow:hidden;
-  position:relative;
-  transform-style:preserve-3d;
-  transition:transform 0.08s ease,box-shadow 0.25s ease;
-  cursor:pointer;will-change:transform;
-  border:2px solid rgba(var(--cc),.32);
-  box-shadow:0 8px 24px rgba(var(--cc),.18),0 0 0 0 rgba(var(--cc),0);
-  background:#f8f2ff;
-}
-.ygd-av-card:hover {
-  box-shadow:0 24px 56px rgba(var(--cc),.4),0 0 24px rgba(var(--cc),.2);
-}
-.ygd-av-art {
-  position:absolute;top:0;left:0;right:0;height:78%;
-  background-image:url('images/ygd7_anime.jpg');
-  background-size:1100px auto;
-  background-position-x:var(--bx);
-  background-position-y:2%;
-  background-repeat:no-repeat;
-  background-color:#1a0840;
-}
-/* Prismatic holographic overlay */
-.ygd-av-holo {
-  position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(
-    135deg,
-    rgba(255,100,200,.04) 0%,
-    rgba(100,200,255,.07) 30%,
-    rgba(200,100,255,.04) 55%,
-    rgba(255,200,100,.07) 80%,
-    rgba(100,255,200,.04) 100%
-  );
-  mix-blend-mode:overlay;
-}
-/* Shine sweep animation */
-.ygd-av-shine {
-  position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(
-    115deg,
-    transparent 20%,
-    rgba(255,255,255,.28) 46%,
-    rgba(255,255,255,.08) 52%,
-    transparent 70%
-  );
-  background-size:200% 200%;
-  animation:avShine 4s ease-in-out infinite;
-}
-@keyframes avShine {
-  0%   { background-position:200% 0% }
-  50%  { background-position:0% 100% }
-  100% { background-position:200% 0% }
-}
-/* Card info footer */
-.ygd-av-info {
-  position:absolute;bottom:0;left:0;right:0;
-  background:linear-gradient(transparent,rgba(var(--cc),.88) 38%,rgba(var(--cc),.96));
-  padding:28px 8px 11px;
-  text-align:center;
-  display:flex;flex-direction:column;gap:2px;
-}
-.ygd-av-char {
-  font-family:'Cormorant Garamond',serif;
-  font-size:.98rem;font-weight:700;color:#fff;
-  letter-spacing:.08em;font-style:italic;
-  text-shadow:0 1px 6px rgba(0,0,0,.3);
-}
-.ygd-av-stars { font-size:.55rem;color:#ffe060; }
-.ygd-av-type  { font-size:.58rem;color:rgba(255,255,255,.82); }
+/* (old .ygd-av-card classes replaced by .ygd-fig-panel structure above) */
 
 /* ---- IDOL SECTION ---- */
 .ygd-idol-section {
