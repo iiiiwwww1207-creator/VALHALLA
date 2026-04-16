@@ -446,6 +446,95 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   color:#9040b0;font-style:italic;
 }
 
+/* ---- 3D AVATAR CARDS ---- */
+.ygd-3d-stage {
+  position:relative;z-index:1;
+  padding:8px 16px 36px;
+  text-align:center;
+}
+.ygd-3d-hint {
+  font-size:.74rem;color:rgba(140,80,160,.5);
+  margin-bottom:28px;letter-spacing:.05em;
+}
+.ygd-3d-cards {
+  display:flex;gap:14px;justify-content:center;
+  flex-wrap:wrap;
+  perspective:1200px;
+}
+.ygd-av {
+  position:relative;flex-shrink:0;
+}
+.ygd-av-card {
+  width:150px;height:248px;
+  border-radius:18px;overflow:hidden;
+  position:relative;
+  transform-style:preserve-3d;
+  transition:transform 0.08s ease,box-shadow 0.25s ease;
+  cursor:pointer;will-change:transform;
+  border:2px solid rgba(var(--cc),.32);
+  box-shadow:0 8px 24px rgba(var(--cc),.18),0 0 0 0 rgba(var(--cc),0);
+  background:#f8f2ff;
+}
+.ygd-av-card:hover {
+  box-shadow:0 24px 56px rgba(var(--cc),.4),0 0 24px rgba(var(--cc),.2);
+}
+.ygd-av-art {
+  position:absolute;top:0;left:0;right:0;height:78%;
+  background-image:url('images/ygd7_anime.jpg');
+  background-size:1100px auto;
+  background-position-x:var(--bx);
+  background-position-y:2%;
+  background-repeat:no-repeat;
+  background-color:#f4eeff;
+}
+/* Prismatic holographic overlay */
+.ygd-av-holo {
+  position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(
+    135deg,
+    rgba(255,100,200,.04) 0%,
+    rgba(100,200,255,.07) 30%,
+    rgba(200,100,255,.04) 55%,
+    rgba(255,200,100,.07) 80%,
+    rgba(100,255,200,.04) 100%
+  );
+  mix-blend-mode:overlay;
+}
+/* Shine sweep animation */
+.ygd-av-shine {
+  position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(
+    115deg,
+    transparent 20%,
+    rgba(255,255,255,.28) 46%,
+    rgba(255,255,255,.08) 52%,
+    transparent 70%
+  );
+  background-size:200% 200%;
+  animation:avShine 4s ease-in-out infinite;
+}
+@keyframes avShine {
+  0%   { background-position:200% 0% }
+  50%  { background-position:0% 100% }
+  100% { background-position:200% 0% }
+}
+/* Card info footer */
+.ygd-av-info {
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(transparent,rgba(var(--cc),.88) 38%,rgba(var(--cc),.96));
+  padding:28px 8px 11px;
+  text-align:center;
+  display:flex;flex-direction:column;gap:2px;
+}
+.ygd-av-char {
+  font-family:'Cormorant Garamond',serif;
+  font-size:.98rem;font-weight:700;color:#fff;
+  letter-spacing:.08em;font-style:italic;
+  text-shadow:0 1px 6px rgba(0,0,0,.3);
+}
+.ygd-av-stars { font-size:.55rem;color:#ffe060; }
+.ygd-av-type  { font-size:.58rem;color:rgba(255,255,255,.82); }
+
 /* ---- IDOL SECTION ---- */
 .ygd-idol-section {
   position:relative;z-index:1;padding:0 28px 32px;text-align:center;

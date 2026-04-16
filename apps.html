@@ -313,13 +313,90 @@
     <p class="ygd-intro-desc">ホストたちがあなただけのアイドルに——毎日の交流でレベルアップ、解放される特別ストーリー。<br>アイドルゲームとホストクラブが融合した、全く新しい体験がここから始まる。</p>
   </div>
 
-  <!-- ③ ANIME CHARACTER LINEUP -->
-  <div class="ygd-lineup-wrap">
-    <p class="ygd-lineup-label">✦ CHARACTER DESIGN ✦</p>
-    <img src="images/ygd7_anime.jpg" alt="YGD7!! キャラクターデザイン" class="ygd-lineup-img">
-    <div class="ygd-lineup-names">
-      <span>Genki</span><span>Otoya</span><span>Mio</span>
-      <span>Eiji</span><span>Romi</span><span>Yurika</span>
+  <!-- ③ 3D AVATAR CARDS -->
+  <div class="ygd-3d-stage">
+    <p class="ygd-lineup-label">✦ 3D CHARACTER ✦</p>
+    <p class="ygd-3d-hint">✨ カードに触れると動くよ</p>
+    <div class="ygd-3d-cards">
+
+      <div class="ygd-av" style="--cc:128,48,204;--bx:2%">
+        <div class="ygd-av-card">
+          <div class="ygd-av-art"></div>
+          <div class="ygd-av-holo"></div>
+          <div class="ygd-av-shine"></div>
+          <div class="ygd-av-info">
+            <p class="ygd-av-char">Genki</p>
+            <p class="ygd-av-stars">★★★★★</p>
+            <p class="ygd-av-type">エネルギー全開</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ygd-av" style="--cc:204,52,120;--bx:19%">
+        <div class="ygd-av-card">
+          <div class="ygd-av-art"></div>
+          <div class="ygd-av-holo"></div>
+          <div class="ygd-av-shine"></div>
+          <div class="ygd-av-info">
+            <p class="ygd-av-char">Otoya</p>
+            <p class="ygd-av-stars">★★★★☆</p>
+            <p class="ygd-av-type">王子様系</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ygd-av" style="--cc:48,136,204;--bx:36%">
+        <div class="ygd-av-card">
+          <div class="ygd-av-art"></div>
+          <div class="ygd-av-holo"></div>
+          <div class="ygd-av-shine"></div>
+          <div class="ygd-av-info">
+            <p class="ygd-av-char">Mio</p>
+            <p class="ygd-av-stars">★★★★★</p>
+            <p class="ygd-av-type">ミステリアス</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ygd-av" style="--cc:140,140,180;--bx:53%">
+        <div class="ygd-av-card">
+          <div class="ygd-av-art"></div>
+          <div class="ygd-av-holo"></div>
+          <div class="ygd-av-shine"></div>
+          <div class="ygd-av-info">
+            <p class="ygd-av-char">Eiji</p>
+            <p class="ygd-av-stars">★★★★★</p>
+            <p class="ygd-av-type">カリスマ系</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ygd-av" style="--cc:48,160,96;--bx:70%">
+        <div class="ygd-av-card">
+          <div class="ygd-av-art"></div>
+          <div class="ygd-av-holo"></div>
+          <div class="ygd-av-shine"></div>
+          <div class="ygd-av-info">
+            <p class="ygd-av-char">Romi</p>
+            <p class="ygd-av-stars">★★★★☆</p>
+            <p class="ygd-av-type">クールビューティ</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ygd-av" style="--cc:200,160,32;--bx:87%">
+        <div class="ygd-av-card">
+          <div class="ygd-av-art"></div>
+          <div class="ygd-av-holo"></div>
+          <div class="ygd-av-shine"></div>
+          <div class="ygd-av-info">
+            <p class="ygd-av-char">Yurika</p>
+            <p class="ygd-av-stars">★★★★☆</p>
+            <p class="ygd-av-type">太陽系アイドル</p>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -544,9 +621,46 @@ if (strip) {
 /* ---- Scroll reveal ---- */
 const obs = new IntersectionObserver(es => es.forEach(e => {
   if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
-}), { threshold: 0.1 });
-document.querySelectorAll('.shared-item,.ad-v-feat,.ygd-feat-item,.benefit,.ygd-ic').forEach(el => {
+}), { threshold: 0, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.shared-item,.ad-v-feat,.ygd-feat-item,.benefit,.ygd-ic,.ygd-av').forEach(el => {
   el.classList.add('reveal'); obs.observe(el);
+});
+
+/* ---- 3D Avatar tilt ---- */
+document.querySelectorAll('.ygd-av-card').forEach(card => {
+  const av = card.closest('.ygd-av');
+  const shine = card.querySelector('.ygd-av-shine');
+  let isHover = false;
+
+  card.addEventListener('mouseenter', () => {
+    isHover = true;
+    card.style.transition = 'transform 0.06s ease, box-shadow 0.25s ease';
+    if (av) av.style.zIndex = '20';
+  });
+
+  card.addEventListener('mousemove', e => {
+    if (!isHover) return;
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;   // -0.5 ~ 0.5
+    const y = (e.clientY - r.top)  / r.height - 0.5;
+    card.style.transform =
+      `rotateY(${x * 32}deg) rotateX(${-y * 32}deg) translateZ(28px) scale(1.07)`;
+    // Dynamic shine direction based on mouse
+    if (shine) {
+      const deg = Math.atan2(y, x) * (180 / Math.PI) + 90;
+      shine.style.background =
+        `linear-gradient(${deg}deg, transparent 25%, rgba(255,255,255,.32) 48%, rgba(255,255,255,.08) 54%, transparent 72%)`;
+      shine.style.animation = 'none';
+    }
+  });
+
+  card.addEventListener('mouseleave', () => {
+    isHover = false;
+    card.style.transition = 'transform 0.5s ease, box-shadow 0.25s ease';
+    card.style.transform = '';
+    if (av) av.style.zIndex = '';
+    if (shine) { shine.style.background = ''; shine.style.animation = ''; }
+  });
 });
 </script>
 </body>
