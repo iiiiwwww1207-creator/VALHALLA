@@ -381,34 +381,200 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   padding-top:48px;padding-bottom:0;
 }
 
-/* ---- KEY VISUAL ---- */
+/* ---- KEY VISUAL  (フルスクリーン — 実アプリのウェルカム画面に忠実) ---- */
 .ygd-keyvis {
   position:relative;z-index:1;overflow:hidden;
-  max-height:520px;
+  min-height:100svh;       /* 実アプリと同じフルスクリーン高さ */
+  display:flex;flex-direction:column;
 }
 .ygd-kv-img {
-  width:100%;max-height:520px;object-fit:cover;object-position:top center;
+  position:absolute;inset:0;
+  width:100%;height:100%;object-fit:cover;object-position:top center;
   display:block;
 }
+/* ホログラフィックレイヤー — 実アプリのレインボーレンズフレア */
+.ygd-kv-holo {
+  position:absolute;inset:0;pointer-events:none;
+  mix-blend-mode:screen;
+}
+.ygd-holo-ray {
+  position:absolute;
+  border-radius:50%;
+  filter:blur(40px);
+  opacity:.45;
+}
+.ygd-hr1 {
+  width:520px;height:520px;
+  background:conic-gradient(from 0deg,#ff8cc8,#c8e8ff,#b8ffd8,#ffe8a8,#ffb0d8,#c8a8ff,#ff8cc8);
+  top:-120px;right:-80px;
+  animation:holoSpin1 12s linear infinite;
+}
+.ygd-hr2 {
+  width:380px;height:380px;
+  background:conic-gradient(from 120deg,#a8e0ff,#ffd8f0,#d8ffa8,#ffc8a8,#c8b8ff,#a8e0ff);
+  bottom:-60px;left:-60px;
+  animation:holoSpin1 18s linear infinite reverse;
+}
+.ygd-hr3 {
+  width:260px;height:260px;
+  background:radial-gradient(circle,rgba(255,200,240,.6),rgba(200,220,255,.4),transparent 70%);
+  top:20%;right:10%;
+  animation:holoF 6s ease-in-out infinite;
+}
+.ygd-holo-orb {
+  position:absolute;border-radius:50%;
+  filter:blur(60px);opacity:.35;
+}
+.ygd-ho1 {
+  width:320px;height:320px;
+  background:radial-gradient(circle,rgba(255,160,220,1),rgba(180,140,255,.8),transparent 70%);
+  top:5%;left:5%;
+  animation:holoF 9s ease-in-out infinite 1s;
+}
+.ygd-ho2 {
+  width:220px;height:220px;
+  background:radial-gradient(circle,rgba(160,240,220,1),rgba(200,180,255,.8),transparent 70%);
+  bottom:20%;right:8%;
+  animation:holoF 7s ease-in-out infinite 3s;
+}
+@keyframes holoSpin1 { to { transform:rotate(360deg); } }
+
+/* Overlay gradient + content */
 .ygd-kv-overlay {
-  position:absolute;inset:0;
-  background:linear-gradient(to bottom,transparent 30%,rgba(248,240,255,.92) 100%);
+  position:relative;z-index:2;
+  flex:1;
+  background:linear-gradient(
+    to bottom,
+    rgba(0,0,0,.05) 0%,
+    transparent 35%,
+    rgba(0,0,0,.08) 65%,
+    rgba(10,2,25,.72) 100%
+  );
   display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
-  padding:40px 24px;text-align:center;
+  padding:0 24px 48px;text-align:center;min-height:100svh;
 }
-.ygd-kv-title { line-height:1.1;margin-bottom:8px; }
+/* "WELCOME STYLE" label */
+.ygd-kv-welcome-label {
+  font-family:'Cormorant Garamond',serif;
+  font-size:.72rem;letter-spacing:.4em;color:rgba(255,180,220,.9);
+  text-transform:uppercase;margin-bottom:6px;
+  text-shadow:0 0 12px rgba(255,140,200,.5);
+}
+.ygd-kv-title { line-height:1.05;margin-bottom:8px; }
 .ygd-kv-t1 {
-  display:block;font-size:clamp(2.8rem,7vw,5rem);font-weight:900;letter-spacing:.06em;
-  background:linear-gradient(135deg,#cc3488 0%,#8030cc 55%,#3088cc 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  filter:drop-shadow(0 2px 12px rgba(180,80,200,.2));
+  display:block;font-size:clamp(3.2rem,10vw,5.5rem);font-weight:900;letter-spacing:.04em;
+  color:#fff;
+  text-shadow:
+    0 0 40px rgba(255,180,220,.6),
+    0 0 80px rgba(200,140,255,.3),
+    0 2px 4px rgba(0,0,0,.4);
 }
-.ygd-kv-t2 {
-  display:block;font-size:clamp(1.4rem,3.5vw,2.2rem);font-weight:700;letter-spacing:.1em;
-  background:linear-gradient(135deg,#9930cc,#cc3088);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+.ygd-kv-sub {
+  font-size:clamp(.88rem,2.5vw,1rem);
+  color:rgba(255,230,240,.88);font-weight:500;
+  text-shadow:0 1px 8px rgba(0,0,0,.5);
+  margin-bottom:24px;
 }
-.ygd-kv-sub { font-size:1rem;color:#5a2e80;font-weight:600; }
+/* CTA buttons — 実アプリと同じ2ボタン */
+.ygd-kv-btns {
+  display:flex;flex-direction:column;gap:12px;
+  width:100%;max-width:340px;margin-bottom:20px;
+}
+.ygd-kv-btn-primary {
+  background:rgba(255,255,255,.95);
+  color:#3d1a6a;font-weight:800;font-size:1rem;
+  padding:16px 24px;border-radius:50px;
+  text-decoration:none;
+  box-shadow:0 6px 28px rgba(0,0,0,.25);
+  transition:transform .2s,box-shadow .2s;
+}
+.ygd-kv-btn-primary:hover { transform:translateY(-3px);box-shadow:0 10px 36px rgba(0,0,0,.3); }
+.ygd-kv-btn-secondary {
+  background:rgba(255,255,255,.15);
+  color:#fff;font-weight:600;font-size:.95rem;
+  padding:14px 24px;border-radius:50px;
+  text-decoration:none;
+  border:1.5px solid rgba(255,255,255,.5);
+  backdrop-filter:blur(8px);
+  transition:background .2s;
+}
+.ygd-kv-btn-secondary:hover { background:rgba(255,255,255,.25); }
+.ygd-kv-ygd7-badge {
+  font-family:'Cormorant Garamond',serif;
+  font-size:.7rem;letter-spacing:.35em;color:rgba(255,210,240,.5);
+}
+
+/* ======================================================
+   PHONE MOCKUP — ホストマッチング ウェルカム画面スタイル
+   (実アプリ: 黒×金×深紫)
+   ====================================================== */
+.apv-screen1 {
+  background:linear-gradient(180deg,#0c0228 0%,#1c0550 55%,#08012a 100%);
+  display:flex;flex-direction:column;
+  padding:20px 16px 18px;height:100%;
+}
+.apv-valhalla-top {
+  display:flex;align-items:center;gap:7px;
+  padding-bottom:14px;
+  border-bottom:1px solid rgba(200,160,40,.2);
+  margin-bottom:20px;
+}
+.apv-crown { font-size:1rem;color:#c8a040; }
+.apv-brand {
+  font-size:.52rem;letter-spacing:.14em;
+  color:rgba(200,160,40,.8);font-weight:700;
+}
+.apv-hero-content {
+  flex:1;display:flex;flex-direction:column;justify-content:center;gap:12px;
+}
+.apv-hero-eyebrow {
+  font-family:'Cormorant Garamond',serif;
+  font-size:.58rem;font-style:italic;letter-spacing:.08em;
+  color:rgba(200,160,80,.7);
+}
+.apv-hero-title {
+  font-size:1.55rem;font-weight:900;line-height:1.28;
+  color:#c8a040;
+  text-shadow:0 2px 20px rgba(200,160,40,.45);
+}
+.apv-hero-desc {
+  font-size:.6rem;color:rgba(200,180,240,.65);line-height:1.65;
+}
+.apv-diagnosis-btn {
+  background:linear-gradient(135deg,#c8a040,#e8c860);
+  color:#080118;font-weight:800;font-size:.72rem;
+  padding:11px 18px;border-radius:50px;
+  letter-spacing:.04em;width:fit-content;
+  box-shadow:0 6px 20px rgba(200,160,40,.4);
+  cursor:pointer;
+}
+.apv-bottom-note {
+  border-top:1px solid rgba(200,160,40,.12);
+  padding-top:12px;margin-top:8px;
+}
+.apv-tarot-badge {
+  font-size:.5rem;letter-spacing:.12em;
+  color:rgba(200,160,80,.55);display:block;margin-bottom:7px;
+}
+.apv-tarot-mini-row {
+  display:flex;gap:10px;align-items:center;
+}
+.apv-tarot-mini-card {
+  width:28px;height:44px;
+  background:linear-gradient(135deg,#1a0840,#3a1880);
+  border-radius:4px;border:1px solid rgba(200,168,255,.3);
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:2px;flex-shrink:0;
+}
+.apv-tarot-mini-card span:first-child {
+  font-family:'Cormorant Garamond',serif;font-size:.7rem;color:var(--p1);
+}
+.apv-tarot-mini-card span:last-child {
+  font-size:.28rem;color:var(--p3);letter-spacing:.04em;
+}
+.apv-tarot-mini-msg {
+  font-size:.54rem;color:rgba(220,200,255,.75);line-height:1.55;
+}
 
 /* ---- INTRO TEXT ---- */
 .ygd-intro-text {
@@ -1219,7 +1385,7 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   .worlds-divider { height:140px; }
   .wd-app-name { font-size:1rem; }
   .wd-app-tag { display:none; }
-  .ygd-keyvis { max-height:360px; }
+  .ygd-keyvis { min-height:80svh; }
   .ygd-lineup-names span { font-size:.7rem; }
   /* carousel height adjusted for smaller scale */
   .ygd-carousel-scene { height:340px; }
@@ -1284,10 +1450,10 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   /* ゆぐどら ad phone */
   .ygd-ad-phone { width:190px;height:400px; }
 
-  /* Key visual full-width on mobile */
-  .ygd-keyvis { max-height:300px; }
-  .ygd-kv-t1 { font-size:2.6rem; }
-  .ygd-kv-t2 { font-size:1.4rem; }
+  /* Key visual — keep full-height on mobile too */
+  .ygd-keyvis { min-height:100svh; }
+  .ygd-kv-t1 { font-size:3rem; }
+  .ygd-kv-overlay { padding-bottom:40px; }
 }
 
 /* ── 480px: phone ── */
