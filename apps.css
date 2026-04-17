@@ -1364,158 +1364,249 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
 .reveal.in { opacity:1;transform:translateY(0); }
 
 /* ================================================================ */
-/*  RESPONSIVE — MOBILE-FIRST OVERHAUL                              */
+/*  RESPONSIVE — MOBILE OVERHAUL (完全版)                           */
 /* ================================================================ */
 
 /* ── 900px: tablet landscape ── */
 @media (max-width:900px) {
+  /* AD section layouts → flex column, centered */
   .ad-v-layout,.ad-ygd-layout {
-    grid-template-columns:1fr;
-    gap:40px;
-    text-align:center;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    gap:36px;
+    padding-top:32px;
+    padding-bottom:48px;
   }
-  .ad-v-phones { order:-1;justify-content:center; }
-  .ad-ygd-phone-wrap { order:-1; }
-  .ad-v-copy,.ad-ygd-copy { align-items:center; }
-  .ad-v-features,.ygd-feature-list { max-width:480px;margin:0 auto; }
-  .ad-cta-group { align-items:center; }
-  .ad-phone-main { width:200px;height:400px; }
-  .ad-phone-back { width:170px;height:340px;right:-30px; }
-  .ygd-idol-grid { grid-template-columns:repeat(3,1fr); }
-  .worlds-divider { height:140px; }
-  .wd-app-name { font-size:1rem; }
+
+  /* Phone mockup area: show phone first, centered, hide back */
+  .ad-v-phones {
+    order:-1;
+    justify-content:center!important;
+    width:100%;
+    position:relative;
+    overflow:visible;
+  }
+  .ad-phone-back { display:none!important; }
+  .ad-phone-main { width:min(200px,55vw);height:min(400px,112vw); }
+
+  /* ゆぐどら phone wrap: show first */
+  .ad-ygd-phone-wrap { order:-1;width:100%;display:flex;justify-content:center; }
+
+  /* Copy columns: centered */
+  .ad-v-copy,.ad-ygd-copy {
+    align-items:center!important;
+    text-align:center!important;
+    width:100%;
+  }
+  .ad-copy-sub,.ad-ygd-tagline,
+  .ad-v-desc,.ad-v-title,
+  .ad-ygd-copy p { text-align:center!important; }
+
+  /* Feature lists: centered block, items stay left-aligned internally */
+  .ad-v-features,.ygd-feature-list {
+    width:100%;
+    max-width:480px;
+    margin:0 auto;
+  }
+
+  /* CTA group: centered */
+  .ad-cta-group {
+    align-items:center!important;
+    width:100%;
+  }
+
+  /* Idol grid: 3 col → 2 col */
+  .ygd-idol-grid { grid-template-columns:repeat(2,1fr)!important;gap:10px; }
+
+  /* Worlds divider */
+  .worlds-divider { height:130px; }
+  .wd-app-name { font-size:.95rem; }
   .wd-app-tag { display:none; }
-  .ygd-keyvis { min-height:80svh; }
+
+  /* Key visual */
+  .ygd-keyvis { min-height:100svh; }
   .ygd-lineup-names span { font-size:.7rem; }
-  /* carousel height adjusted for smaller scale */
+
+  /* Carousel */
   .ygd-carousel-scene { height:340px; }
 }
 
 /* ── 768px: tablet portrait / large phone ── */
 @media (max-width:768px) {
   /* Global */
-  .container { padding:0 18px; }
+  .container { padding:0 16px; }
 
   /* Hero */
-  .a-hero-inner { padding:56px 20px 90px; }
-  .a-hero-title { font-size:clamp(1.8rem,8vw,2.8rem);text-align:center; }
-  .a-hero-sub { font-size:.88rem;text-align:center; }
-  .a-shared,.a-cta { padding:72px 0; }
-  .a-cta { padding-bottom:110px; }
-  .shared-duo { grid-template-columns:1fr;gap:20px; }
-  .hero-app-duo { flex-direction:column;align-items:center;gap:14px; }
-  .hero-app-card { width:280px; }
+  .a-hero-inner { padding:56px 20px 90px;gap:16px; }
+  .a-hero-title { font-size:clamp(1.8rem,8vw,2.8rem);text-align:center!important; }
+  .a-hero-sub { font-size:.88rem;text-align:center!important; }
+  .a-shared,.a-cta { padding:60px 0; }
+  .a-cta { padding-bottom:100px; }
+  .shared-duo { grid-template-columns:1fr!important;gap:20px; }
+  .hero-app-duo { flex-direction:column!important;align-items:center;gap:14px; }
+  .hero-app-card { width:min(280px,80vw); }
 
   /* Badge rows */
-  .ad-badge-row { padding:28px 18px 0;flex-wrap:wrap;gap:10px; }
+  .ad-badge-row { padding:24px 16px 0;flex-wrap:wrap;gap:10px; }
 
-  /* AD layouts */
+  /* AD layouts (reinforce) */
   .ad-v-layout,.ad-ygd-layout {
-    padding:28px 0 40px;
-    gap:32px;
-    text-align:center;
+    padding:24px 0 36px;
+    gap:28px;
   }
-  .ad-v-copy { align-items:center; }
-  .ad-v-feat { text-align:left; }
-  .ad-copy-sub,.ad-ygd-tagline { text-align:center; }
 
-  /* Phone mockups */
-  .ad-v-phones { justify-content:center;flex-direction:row; }
-  .ad-phone-main { width:190px;height:380px; }
-  .ad-phone-back { width:150px;height:300px;right:-20px; }
+  /* Headings */
+  .ad-v-title { font-size:clamp(1.8rem,7vw,2.6rem);text-align:center!important; }
+  .ad-copy-sub { font-size:.8rem;text-align:center!important; }
+  .ad-ygd-tagline { text-align:center!important; }
+
+  /* Feature items */
+  .ad-v-feat,.ygd-fl-item {
+    text-align:left;
+    padding:10px 14px;
+  }
+
+  /* Phone mockup sizes */
+  .ad-phone-main { width:min(190px,52vw);height:min(380px,108vw); }
+  .ygd-ad-phone { width:min(190px,52vw);height:min(400px,110vw); }
 
   /* Idol grid */
-  .ygd-idol-grid { grid-template-columns:repeat(2,1fr);gap:10px; }
-  .ygd-feat-strip { grid-template-columns:repeat(2,1fr);padding:20px 20px 40px; }
+  .ygd-idol-grid { grid-template-columns:repeat(2,1fr)!important;gap:10px; }
+  .ygd-feat-strip { grid-template-columns:repeat(2,1fr)!important;padding:20px 16px 36px; }
 
-  /* CTA */
-  .cta-app-links { flex-direction:column;align-items:center; }
-  .cta-line-big { padding:18px 36px;font-size:1rem; }
+  /* CTA (LINE section) */
+  .cta-app-links { flex-direction:column!important;align-items:center;gap:12px; }
+  .cta-line-big { padding:16px 32px;font-size:1rem; }
   .a-fixed-cta { display:block; }
 
-  /* 3D Carousel — JS handles scale, just adjust height */
-  .ygd-carousel-scene { height:310px;perspective:700px; }
+  /* 3D Carousel */
+  .ygd-carousel-scene { height:300px;perspective:700px; }
 
-  /* Worlds divider simplified on mobile */
+  /* Worlds divider — stack vertically */
   .worlds-divider {
-    height:auto;flex-direction:column;
-    clip-path:none;
+    height:auto!important;
+    flex-direction:column!important;
+    clip-path:none!important;
   }
   .wd-half {
-    width:100%;clip-path:none!important;margin:0!important;
-    padding:22px 24px;align-items:center;text-align:center;
+    width:100%!important;
+    clip-path:none!important;
+    margin:0!important;
+    padding:20px 24px;
+    align-items:center!important;
+    text-align:center!important;
   }
-  .wd-center { display:none; }
+  .wd-half-dark { padding-right:24px!important; }
+  .wd-half-light { padding-left:24px!important;margin-left:0!important; }
+  .wd-center { display:none!important; }
 
-  /* ゆぐどら ad phone */
-  .ygd-ad-phone { width:190px;height:400px; }
-
-  /* Key visual — keep full-height on mobile too */
-  .ygd-keyvis { min-height:100svh; }
-  .ygd-kv-t1 { font-size:3rem; }
-  .ygd-kv-overlay { padding-bottom:40px; }
+  /* Key visual overlay */
+  .ygd-kv-t1 { font-size:clamp(2.5rem,10vw,3.5rem); }
+  .ygd-kv-overlay { padding:32px 20px 48px; }
+  .ygd-kv-btns { flex-direction:column;align-items:center;gap:12px; }
+  .ygd-kv-btn-primary,.ygd-kv-btn-secondary {
+    width:min(280px,80vw);
+    text-align:center;
+  }
 }
 
 /* ── 480px: phone ── */
 @media (max-width:480px) {
   /* Hero */
-  .a-hero-title { font-size:1.8rem; }
-  .a-hero-inner { gap:16px; }
+  .a-hero-title { font-size:1.75rem!important; }
+  .a-hero-inner { gap:14px; }
 
   /* AD titles */
-  .ad-v-title { font-size:2.2rem; }
-  .ygd-title-main,.ygd-ad-title { font-size:2.2rem; }
+  .ad-v-title { font-size:1.9rem!important;text-align:center!important; }
+  .ygd-title-main,.ygd-ad-title { font-size:2rem!important;text-align:center!important; }
+  .ygd-ad-tagline { text-align:center!important; }
+  .ygd-ad-header { text-align:center; }
 
-  /* Phone: hide back phone, show only main centered */
-  .ad-phone-back { display:none; }
-  .ad-phone-main { width:200px;height:400px; }
-  .ad-v-phones { justify-content:center; }
+  /* Phone mockup */
+  .ad-phone-back { display:none!important; }
+  .ad-phone-main { width:min(185px,50vw)!important;height:min(370px,100vw)!important; }
+  .ad-v-phones { justify-content:center!important; }
+  .ygd-ad-phone { width:min(175px,48vw)!important;height:min(368px,100vw)!important; }
 
-  /* Carousel height at 480px */
-  .ygd-carousel-scene { height:280px;perspective:600px; }
+  /* Carousel */
+  .ygd-carousel-scene { height:270px;perspective:600px; }
+  .ygd-carousel-nav { bottom:-38px; }
+
+  /* CTA buttons: full width centered */
+  .ad-demo-cta {
+    width:calc(100% - 0px)!important;
+    max-width:340px!important;
+    justify-content:center!important;
+    text-align:center!important;
+  }
+  .a-hero-cta {
+    width:min(280px,78vw);
+    justify-content:center!important;
+    text-align:center!important;
+  }
+  .ygd-ad-btn {
+    width:100%!important;
+    max-width:320px!important;
+    justify-content:center!important;
+  }
+  .ygd-ad-cta { align-items:center!important;text-align:center; }
 
   /* Idol */
-  .ygd-idol-grid { gap:8px; }
+  .ygd-idol-grid { gap:8px!important; }
   .ygd-ic img { height:100px; }
 
-  /* Badge row stacked */
+  /* Badge row */
   .ad-badge-row { gap:8px; }
   .ad-badge-line { display:none; }
 
-  /* Cast strip items smaller */
-  .acs-item { width:74px; }
-  .acs-item img { width:74px;height:92px; }
-  .acs-item span { font-size:.6rem; }
+  /* Cast strip: compact */
+  .acs-item { width:70px; }
+  .acs-item img { width:70px;height:88px; }
+  .acs-item span { font-size:.58rem; }
 
-  /* Feature blocks: compact */
-  .ad-v-feat { padding:10px 12px; }
+  /* Feature items: compact */
+  .ad-v-feat { padding:9px 12px; }
   .ad-v-feat strong { font-size:.82rem; }
   .ad-v-feat p { font-size:.72rem; }
+  .ygd-fl-item { padding:9px 12px; }
 
-  /* CTA buttons: full width */
-  .ad-demo-cta,.a-hero-cta { width:100%;justify-content:center;max-width:320px; }
-  .ygd-ad-btn { width:100%;max-width:320px;justify-content:center; }
+  /* Copy: ensure center */
+  .ad-v-copy,.ad-ygd-copy {
+    align-items:center!important;
+    text-align:center!important;
+  }
+  .ad-v-desc { font-size:.84rem;text-align:center!important; }
+  .ad-v-copy br,.ad-ygd-copy br { display:none; }
 
-  /* Text alignment: all centered on phone */
-  .ad-v-desc,.ad-ygd-desc { font-size:.85rem;text-align:center; }
-  .ad-v-copy,.ad-ygd-copy { align-items:center; }
+  /* Worlds divider: minimal */
+  .wd-half { padding:16px 16px!important; }
+  .wd-app-name { font-size:1rem!important; }
 
-  /* Carousel nav: move higher */
-  .ygd-carousel-nav { bottom:-36px; }
+  /* Lineup names */
+  .ygd-lineup-names { flex-wrap:wrap!important;gap:4px; }
+  .ygd-lineup-names span { flex:none;width:calc(100%/6 - 4px)!important;font-size:.58rem; }
 
-  /* Worlds divider minimal */
-  .wd-half { padding:16px 20px; }
-  .wd-app-name { font-size:1.1rem; }
+  /* Key visual */
+  .ygd-kv-t1 { font-size:2.4rem!important; }
+  .ygd-kv-welcome-label { font-size:.65rem; }
+  .ygd-kv-sub { font-size:.82rem; }
 
-  /* Lineup names fit on small screen */
-  .ygd-lineup-names { flex-wrap:wrap;gap:4px; }
-  .ygd-lineup-names span { flex:none;width:calc(100%/6 - 4px);font-size:.6rem; }
+  /* Idol section label */
+  .ygd-idol-section-label { font-size:.7rem; }
+  .ygd-idol-section { padding-top:32px; }
 }
 
 /* ── 375px: smallest common phone ── */
 @media (max-width:375px) {
-  .ygd-carousel-scene { height:260px; }
-  .ad-phone-main { width:180px;height:360px; }
-  .a-hero-title { font-size:1.6rem; }
-  .ygd-idol-grid { grid-template-columns:repeat(2,1fr); }
+  .ygd-carousel-scene { height:250px!important; }
+  .ad-phone-main { width:min(170px,46vw)!important;height:min(340px,90vw)!important; }
+  .a-hero-title { font-size:1.55rem!important; }
+  .ad-v-title { font-size:1.75rem!important; }
+  .ygd-idol-grid { grid-template-columns:repeat(2,1fr)!important;gap:6px; }
+  .container { padding:0 12px!important; }
+  .ygd-kv-t1 { font-size:2rem!important; }
+  .ygd-kv-btn-primary,.ygd-kv-btn-secondary { width:90vw!important; }
+  .ad-v-feat { padding:8px 10px; }
+  .hero-app-card { width:88vw; }
 }
