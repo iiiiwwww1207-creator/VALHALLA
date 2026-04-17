@@ -42,20 +42,22 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
    ================================================================ */
 .hsf-wrap {
   position:relative;z-index:1;
-  display:flex;align-items:stretch;
+  display:grid;
+  grid-template-columns:1fr 1fr;
   flex:1;min-height:0;
+  width:100%;
 }
 
 /* ── 共通パネル ── */
 .hsf-half {
-  flex:1;
   display:flex;align-items:center;justify-content:center;
   text-decoration:none;
   position:relative;overflow:hidden;
-  transition:flex .45s cubic-bezier(.4,0,.2,1);
+  transition:transform .3s ease, box-shadow .3s ease;
   padding:40px 28px;
+  min-height:100svh;
 }
-.hsf-half:hover { flex:1.25; }
+.hsf-half:hover { transform:scale(1.01); }
 
 /* ── APP01 ダーク×ゴールド ── */
 .hsf-dark {
@@ -1806,11 +1808,11 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   .a-hero-title { font-size:clamp(1.6rem,7vw,2.6rem);text-align:center!important; }
   .a-hero-sub { font-size:.88rem;text-align:center!important; }
 
-  /* Fullsplit hero → 常に横並び（縦積みにしない） */
-  .hsf-wrap { flex-direction:row!important; }
-  .hsf-half { padding:24px 10px;min-height:100svh; }
-  .hsf-half:hover { flex:1; }
-  /* 中央マーク: 常に縦ライン（絶対配置維持） */
+  /* Fullsplit hero → grid 1fr 1fr で常に左右2分割 */
+  .hsf-wrap { grid-template-columns:1fr 1fr!important; }
+  .hsf-half { padding:20px 10px!important;min-height:100svh!important; }
+  .hsf-half:hover { transform:none!important; }
+  /* 中央マーク: 縦ライン維持 */
   .hsf-center-mark {
     position:absolute!important;
     left:50%!important;top:0!important;bottom:0!important;
@@ -1820,24 +1822,18 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
     background:none!important;
   }
   .hsf-split-line {
-    position:absolute!important;
-    top:0!important;bottom:0!important;
-    width:1.5px!important;height:100%!important;
-    transform:none!important;
-    background:linear-gradient(to bottom,
-      transparent 0%,rgba(200,168,255,.5) 15%,
-      rgba(255,180,220,.85) 45%,rgba(200,168,255,.85) 55%,
-      rgba(255,180,220,.5) 85%,transparent 100%)!important;
+    position:absolute!important;top:0!important;bottom:0!important;
+    width:1.5px!important;height:100%!important;transform:none!important;
   }
-  .hsf-emblem { width:56px!important;height:56px!important; }
-  .hsf-emblem-logo { width:20px!important; }
-  .hsf-emblem-label { font-size:.3rem!important; }
-  .hsf-emblem-badge { font-size:.3rem!important; }
-  .hsf-app-title { font-size:clamp(.95rem,4.5vw,1.5rem)!important; }
-  .hsf-crown,.hsf-star { font-size:2rem!important; }
-  .hsf-app-catch { font-size:clamp(.6rem,2.5vw,.8rem)!important; }
-  .hsf-cta { padding:8px 14px!important;font-size:.72rem!important; }
-  .hsf-content { gap:8px!important;max-width:none!important;width:100%!important; }
+  .hsf-emblem { width:52px!important;height:52px!important; }
+  .hsf-emblem-logo { width:18px!important; }
+  .hsf-emblem-label { font-size:.28rem!important; }
+  .hsf-emblem-badge { font-size:.28rem!important; }
+  .hsf-app-title { font-size:clamp(.85rem,4.5vw,1.4rem)!important; }
+  .hsf-crown,.hsf-star { font-size:1.8rem!important; }
+  .hsf-app-catch { font-size:clamp(.55rem,2.3vw,.78rem)!important; }
+  .hsf-cta { padding:8px 12px!important;font-size:.68rem!important; }
+  .hsf-content { gap:7px!important;max-width:none!important;width:100%!important; }
   .hsf-bottom { padding:12px 16px 24px; }
   .a-shared,.a-cta { padding:60px 0; }
   .a-cta { padding-bottom:100px; }
@@ -1909,15 +1905,15 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
 
 /* ── 480px: phone ── */
 @media (max-width:480px) {
-  /* Hero split — 常に横並び維持 */
-  .hsf-wrap { flex-direction:row!important; }
-  .hsf-half { padding:20px 8px!important;min-height:100svh!important; }
-  .hsf-app-title { font-size:clamp(.85rem,4vw,1.2rem)!important; }
-  .hsf-app-catch { font-size:clamp(.55rem,2.2vw,.72rem)!important; }
-  .hsf-crown,.hsf-star { font-size:1.7rem!important; }
-  .hsf-cta { padding:7px 10px!important;font-size:.65rem!important; }
-  .hsf-emblem { width:48px!important;height:48px!important; }
-  .hsf-emblem-logo { width:16px!important; }
+  /* Hero split — grid 1fr 1fr 維持 */
+  .hsf-wrap { grid-template-columns:1fr 1fr!important; }
+  .hsf-half { padding:16px 6px!important;min-height:100svh!important; }
+  .hsf-app-title { font-size:clamp(.78rem,3.8vw,1.1rem)!important; }
+  .hsf-app-catch { font-size:clamp(.5rem,2vw,.68rem)!important; }
+  .hsf-crown,.hsf-star { font-size:1.5rem!important; }
+  .hsf-cta { padding:6px 8px!important;font-size:.6rem!important; }
+  .hsf-emblem { width:44px!important;height:44px!important; }
+  .hsf-emblem-logo { width:14px!important; }
 
   /* Hero */
   .a-hero-title { font-size:1.75rem!important; }
