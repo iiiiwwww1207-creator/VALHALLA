@@ -21,10 +21,13 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
 /*  HERO                                                             */
 /* ================================================================ */
 .a-hero {
-  position:relative; min-height:100svh;
-  display:flex; align-items:center; justify-content:center;
-  overflow:hidden; text-align:center;
-  background:linear-gradient(160deg,#07011a 0%,#150450 55%,#050d30 100%);
+  position:relative;
+  overflow:hidden;
+  background:#07011a;
+}
+.a-hero-fullsplit {
+  display:flex;flex-direction:column;
+  min-height:100svh;
 }
 #heroCanvas { position:absolute;inset:0;width:100%;height:100%;pointer-events:none; }
 .a-hero-orbs { position:absolute;inset:0;pointer-events:none; }
@@ -32,25 +35,201 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
 .orb1{width:500px;height:500px;background:#6a22d0;top:-120px;left:-100px;}
 .orb2{width:400px;height:400px;background:#1a3acc;bottom:-80px;right:-60px;}
 .orb3{width:280px;height:280px;background:#d022aa;top:50%;left:50%;transform:translate(-50%,-50%);}
-.orb4{width:420px;height:420px;background:radial-gradient(circle,#ff70c8,#cc44aa);top:-60px;right:-80px;opacity:.18;}
+.orb4{width:420px;height:420px;background:radial-gradient(circle,#ff70c8,#cc44aa);top:-60px;right:-80px;opacity:.15;}
 
-.a-hero-inner {
-  position:relative;z-index:1;padding:60px 24px 100px;
-  display:flex;flex-direction:column;align-items:center;gap:20px;
+/* ================================================================
+   HERO FULLSPLIT — フルスクリーン左右分割
+   ================================================================ */
+.hsf-wrap {
+  position:relative;z-index:1;
+  display:flex;align-items:stretch;
+  flex:1;min-height:0;
 }
+
+/* ── 共通パネル ── */
+.hsf-half {
+  flex:1;
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;
+  position:relative;overflow:hidden;
+  transition:flex .45s cubic-bezier(.4,0,.2,1);
+  padding:40px 28px;
+}
+.hsf-half:hover { flex:1.25; }
+
+/* ── APP01 ダーク×ゴールド ── */
+.hsf-dark {
+  background:linear-gradient(160deg,#070118 0%,#180650 55%,#040010 100%);
+}
+.hsf-dark-layer {
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 60% at 30% 40%, rgba(200,160,40,.07) 0%, transparent 70%),
+    linear-gradient(135deg,rgba(200,160,40,.04) 0%,transparent 60%);
+}
+/* ── APP02 パステル×アイドル ── */
+.hsf-idol {
+  background:linear-gradient(160deg,#fff8fd 0%,#efe0ff 50%,#fde8f8 100%);
+}
+
+/* キラキラ */
+.hsf-sp {
+  position:absolute;pointer-events:none;
+  font-size:1rem;color:rgba(200,100,180,.45);
+  animation:hsfSparkle 3.5s ease-in-out infinite;
+}
+.hsf-sp1{top:12%;left:12%;animation-delay:0s;font-size:.75rem;}
+.hsf-sp2{top:10%;right:14%;animation-delay:1s;font-size:1.1rem;color:rgba(160,80,220,.4);}
+.hsf-sp3{bottom:20%;left:10%;animation-delay:2s;font-size:.65rem;}
+.hsf-sp4{bottom:15%;right:12%;animation-delay:1.5s;font-size:.9rem;color:rgba(200,120,200,.35);}
+@keyframes hsfSparkle {
+  0%,100%{opacity:.35;transform:scale(1) translateY(0);}
+  50%{opacity:1;transform:scale(1.3) translateY(-4px);}
+}
+
+/* ── コンテンツ ── */
+.hsf-content {
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;gap:10px;
+  max-width:340px;
+}
+.hsf-app-num {
+  font-family:'Cormorant Garamond',serif;
+  font-size:.7rem;letter-spacing:.35em;
+  color:rgba(200,168,255,.45);margin-bottom:2px;
+}
+.hsf-app-num-idol { color:rgba(160,80,160,.45); }
+
+.hsf-icon-wrap { margin:4px 0; }
+.hsf-crown {
+  font-size:3rem;
+  color:#c8a040;-webkit-text-fill-color:#c8a040;
+  filter:drop-shadow(0 0 18px rgba(200,160,40,.7));
+  animation:crownPulse 2.8s ease-in-out infinite;
+  display:block;
+}
+@keyframes crownPulse {
+  0%,100%{filter:drop-shadow(0 0 10px rgba(200,160,40,.5));}
+  50%{filter:drop-shadow(0 0 28px rgba(200,160,40,.9));}
+}
+.hsf-star {
+  font-size:3rem;display:block;
+  animation:starBounce 2.5s ease-in-out infinite;
+}
+@keyframes starBounce {
+  0%,100%{transform:scale(1) rotate(0deg);}
+  50%{transform:scale(1.18) rotate(15deg);}
+}
+
+/* アプリタイトル */
+.hsf-app-title {
+  font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:900;
+  letter-spacing:.04em;line-height:1.15;margin:0;
+}
+.hsf-dark .hsf-app-title { color:#c8a040;text-shadow:0 0 30px rgba(200,160,40,.35); }
+.hsf-app-title-idol {
+  background:linear-gradient(135deg,#d42090,#8020d4);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+/* キャッチコピー */
+.hsf-app-catch {
+  font-size:clamp(.82rem,1.6vw,1rem);font-weight:700;
+  margin:0;
+}
+.hsf-dark .hsf-app-catch { color:rgba(220,200,255,.8); }
+.hsf-app-catch-idol { color:rgba(160,60,130,.9); }
+
+/* 説明文 */
+.hsf-app-desc {
+  font-size:clamp(.7rem,1.3vw,.84rem);line-height:1.65;margin:0;
+}
+.hsf-dark .hsf-app-desc { color:rgba(200,180,255,.5); }
+.hsf-app-desc-idol { color:rgba(130,70,120,.6); }
+
+/* フィーチャータグ */
+.hsf-features {
+  display:flex;flex-direction:column;gap:5px;
+  width:100%;margin:4px 0;
+}
+.hsf-features span {
+  font-size:.72rem;padding:6px 14px;border-radius:10px;
+}
+.hsf-features-dark span {
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(200,168,255,.12);
+  color:rgba(200,180,255,.6);
+}
+.hsf-features-idol span {
+  background:rgba(200,100,180,.09);
+  border:1px solid rgba(200,120,180,.22);
+  color:rgba(140,60,120,.85);
+}
+
+/* CTAボタン */
+.hsf-cta {
+  display:inline-block;padding:11px 28px;border-radius:24px;
+  font-size:.82rem;font-weight:800;letter-spacing:.04em;
+  transition:transform .2s,box-shadow .2s;
+  margin-top:4px;
+}
+.hsf-cta-dark {
+  background:linear-gradient(135deg,#c8a040,#e8c860);
+  color:#080118;
+  box-shadow:0 6px 22px rgba(200,160,40,.4);
+}
+.hsf-cta-dark:hover { transform:translateY(-3px);box-shadow:0 12px 32px rgba(200,160,40,.6); }
+.hsf-cta-idol {
+  background:linear-gradient(135deg,#cc2280,#7020cc);
+  color:#fff;
+  box-shadow:0 6px 22px rgba(180,40,140,.4);
+}
+.hsf-cta-idol:hover { transform:translateY(-3px);box-shadow:0 12px 32px rgba(180,40,140,.6); }
+
+/* ── CENTER SPINE ── */
+.hsf-spine {
+  width:72px;flex-shrink:0;
+  display:flex;flex-direction:column;align-items:center;
+  background:linear-gradient(180deg,#0c0230 0%,#1e0860 50%,#0c0230 100%);
+  position:relative;z-index:10;
+  padding:20px 0;box-shadow:0 0 40px rgba(80,20,160,.4);
+}
+.hsf-spine-line {
+  flex:1;width:1px;
+  background:linear-gradient(to bottom,transparent,rgba(200,168,255,.3),transparent);
+}
+.hsf-spine-core {
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  padding:16px 0;
+}
+.hsf-spine-logo { width:38px;filter:brightness(1.5);opacity:.9; }
+.hsf-spine-brand {
+  font-family:'Cormorant Garamond',serif;
+  font-size:.52rem;letter-spacing:.15em;
+  color:rgba(200,168,255,.6);text-align:center;line-height:1.5;
+  writing-mode:vertical-rl;text-orientation:mixed;
+  letter-spacing:.2em;
+}
+.hsf-spine-badge {
+  background:linear-gradient(135deg,#c8a040,#e8c860);
+  color:#080118;font-weight:900;
+  font-size:.48rem;letter-spacing:.08em;text-align:center;line-height:1.4;
+  padding:5px 6px;border-radius:8px;
+}
+
+/* ── BOTTOM BAR ── */
+.hsf-bottom {
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  padding:16px 20px 28px;
+  background:linear-gradient(to bottom,transparent,rgba(7,1,26,.85));
+}
+
+/* ── 旧スタイル維持 (他箇所で参照) ── */
 .a-hero-logo { width:70px;opacity:.9;filter:brightness(1.4); }
 .a-hero-title {
   font-size:clamp(1.8rem,5.5vw,3.6rem);font-weight:900;line-height:1.3;
-}
-/* 2トーンタイトル — ホスト側とアイドル側で色分け */
-.a-hero-title-split { display:flex;flex-direction:column;align-items:center;gap:2px; }
-.aht-dark {
-  background:linear-gradient(135deg,#fff 0%,#c8a040 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.aht-idol {
-  background:linear-gradient(135deg,#ff88d0 0%,#cc44ff 60%,#ffaaee 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
 .a-hero-sub { font-size:clamp(.85rem,2.2vw,1rem);color:rgba(220,200,255,.75);line-height:1.9; }
 
@@ -1595,23 +1774,38 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   .a-hero-title { font-size:clamp(1.6rem,7vw,2.6rem);text-align:center!important; }
   .a-hero-sub { font-size:.88rem;text-align:center!important; }
 
-  /* Split panels → 縦積み on tablet */
-  .hero-app-split { flex-direction:column;max-width:400px; }
-  .has-panel { padding:28px 24px 24px; }
-  .has-panel:hover { flex:1; }
-  .has-divider {
-    flex-direction:row;height:44px;width:100%;
-    background:linear-gradient(90deg,#0e0230 0%,#2a0a50 50%,#fff4fc 100%);
+  /* Fullsplit hero → 縦積み on tablet */
+  .hsf-wrap { flex-direction:column; }
+  .hsf-half { padding:32px 20px;min-height:42svh; }
+  .hsf-half:hover { flex:1; }
+  .hsf-spine {
+    width:100%;height:56px;flex-direction:row;
+    background:linear-gradient(90deg,#0c0230 0%,#1e0860 50%,#0c0230 100%);
+    padding:0 20px;
   }
-  .has-div-line { flex:1;height:1px;width:auto; }
-  .has-div-vs { padding:0 12px; }
+  .hsf-spine-line { flex:1;width:auto;height:1px; }
+  .hsf-spine-core { flex-direction:row;padding:0 12px;gap:10px; }
+  .hsf-spine-logo { width:28px; }
+  .hsf-spine-brand { writing-mode:horizontal-tb;font-size:.5rem; }
+  .hsf-spine-badge { writing-mode:horizontal-tb;font-size:.45rem;padding:4px 8px;line-height:1.2; }
+  .hsf-app-title { font-size:clamp(1.5rem,6vw,2rem); }
+  .hsf-crown,.hsf-star { font-size:2.4rem; }
   .a-shared,.a-cta { padding:60px 0; }
   .a-cta { padding-bottom:100px; }
   .shared-duo { grid-template-columns:1fr!important;gap:20px; }
-  .hero-app-split { flex-direction:column!important;max-width:min(400px,90vw); }
-  .has-panel { padding:24px 20px 20px; }
-  .has-divider { flex-direction:row;height:40px;width:100%;background:linear-gradient(90deg,#0e0230 50%,#fff4fc 50%); }
-  .has-div-line { flex:1;height:1px;width:auto; }
+  .hsf-wrap { flex-direction:column!important; }
+  .hsf-half { padding:28px 16px;min-height:40svh; }
+  .hsf-spine { width:100%!important;height:50px;flex-direction:row;padding:0 16px; }
+  .hsf-spine-line { flex:1;width:auto!important;height:1px!important; }
+  .hsf-spine-core { flex-direction:row;padding:0 10px;gap:8px; }
+  .hsf-spine-logo { width:26px; }
+  .hsf-spine-brand { writing-mode:horizontal-tb!important;font-size:.48rem; }
+  .hsf-spine-badge { writing-mode:horizontal-tb!important;font-size:.44rem;padding:3px 7px;line-height:1.2; }
+  .hsf-app-title { font-size:clamp(1.4rem,5.5vw,1.8rem)!important; }
+  .hsf-crown,.hsf-star { font-size:2.2rem; }
+  .hsf-features { gap:4px; }
+  .hsf-features span { font-size:.68rem;padding:5px 10px; }
+  .hsf-bottom { padding:12px 16px 24px; }
 
   /* Badge rows */
   .ad-badge-row { padding:24px 16px 0;flex-wrap:wrap;gap:10px; }

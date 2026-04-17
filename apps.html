@@ -10,77 +10,81 @@
 <body>
 
 <!-- ========== HERO ========== -->
-<section class="a-hero">
+<section class="a-hero a-hero-fullsplit">
   <canvas id="heroCanvas"></canvas>
   <div class="a-hero-orbs">
     <div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
     <div class="orb orb4"></div>
   </div>
-  <div class="a-hero-inner">
-    <img src="images/logo.png" alt="Group Yggdrasill" class="a-hero-logo">
-    <p class="a-eyebrow">GROUP YGGDRASILL × 2 NEW APPS</p>
-    <h1 class="a-hero-title a-hero-title-split">
-      <span class="aht-dark">ホストと出会い、</span>
-      <span class="aht-idol">推しを育てる。</span>
-    </h1>
-    <p class="a-hero-sub">2つのアプリが、あなたとグループヤグドラシルの<br>まったく新しい物語を始める。</p>
 
-    <!-- 大型分割パネル -->
-    <div class="hero-app-split">
+  <!-- ===== フルスクリーン 左右分割 ===== -->
+  <div class="hsf-wrap">
 
-      <!-- APP 01 : ホストマッチング — ダーク×ゴールド -->
-      <a href="#ad-valhalla" class="has-panel has-panel-dark">
-        <div class="has-shine"></div>
-        <div class="has-top">
-          <span class="has-num">APP 01</span>
-          <span class="has-badge-dark">HOST MATCHING</span>
+    <!-- ── LEFT: APP 01 ホストマッチング ── -->
+    <a href="#ad-valhalla" class="hsf-half hsf-dark">
+      <div class="hsf-dark-layer"></div>
+      <div class="hsf-content">
+        <span class="hsf-app-num">APP 01</span>
+        <div class="hsf-icon-wrap">
+          <span class="hsf-crown">♛</span>
         </div>
-        <div class="has-crown">♛</div>
-        <h2 class="has-title">ホストマッチング</h2>
-        <p class="has-catch">運命の夜を、指名する。</p>
-        <ul class="has-tags">
-          <li>🔮 6問マッチング診断</li>
-          <li>💰 予算ロック機能</li>
-          <li>🎴 毎日タロット</li>
-        </ul>
-        <span class="has-cta has-cta-dark">詳しく見る ↓</span>
-      </a>
-
-      <!-- 中央区切り -->
-      <div class="has-divider">
-        <div class="has-div-line"></div>
-        <span class="has-div-vs">×</span>
-        <div class="has-div-line"></div>
+        <h2 class="hsf-app-title">ホストマッチング</h2>
+        <p class="hsf-app-catch">運命の夜を、指名する。</p>
+        <p class="hsf-app-desc">6つの質問であなたの<br>運命のホストが見つかる</p>
+        <div class="hsf-features hsf-features-dark">
+          <span>🔮 マッチング診断</span>
+          <span>🎴 毎日タロット</span>
+          <span>💰 予算ロック</span>
+        </div>
+        <span class="hsf-cta hsf-cta-dark">詳しく見る ↓</span>
       </div>
+    </a>
 
-      <!-- APP 02 : ゆぐどら!! — パステル×アイドル -->
-      <a href="#ad-ygd" class="has-panel has-panel-idol">
-        <div class="has-sparkle has-sp1">✦</div>
-        <div class="has-sparkle has-sp2">★</div>
-        <div class="has-sparkle has-sp3">✦</div>
-        <div class="has-top">
-          <span class="has-num has-num-idol">APP 02</span>
-          <span class="has-badge-idol">IDOL APP</span>
-        </div>
-        <div class="has-idol-icon">⭐</div>
-        <h2 class="has-title has-title-idol">ゆぐどら!!</h2>
-        <p class="has-catch has-catch-idol">推しをアイドルに育てる。</p>
-        <ul class="has-tags has-tags-idol">
-          <li>🌟 育成×ガチャシステム</li>
-          <li>💌 親密度ストーリー</li>
-          <li>🎯 デイリーミッション</li>
-        </ul>
-        <span class="has-cta has-cta-idol">詳しく見る ↓</span>
-      </a>
-
+    <!-- ── CENTER: ブランド脊柱 ── -->
+    <div class="hsf-spine">
+      <div class="hsf-spine-line"></div>
+      <div class="hsf-spine-core">
+        <img src="images/logo.png" alt="Group Yggdrasill" class="hsf-spine-logo">
+        <p class="hsf-spine-brand">GROUP<br>YGGDRASILL</p>
+        <div class="hsf-spine-badge">2<br>NEW<br>APPS</div>
+      </div>
+      <div class="hsf-spine-line"></div>
     </div>
 
+    <!-- ── RIGHT: APP 02 ゆぐどら!! ── -->
+    <a href="#ad-ygd" class="hsf-half hsf-idol">
+      <div class="hsf-sp hsf-sp1">✦</div>
+      <div class="hsf-sp hsf-sp2">★</div>
+      <div class="hsf-sp hsf-sp3">✦</div>
+      <div class="hsf-sp hsf-sp4">✧</div>
+      <div class="hsf-content">
+        <span class="hsf-app-num hsf-app-num-idol">APP 02</span>
+        <div class="hsf-icon-wrap">
+          <span class="hsf-star">⭐</span>
+        </div>
+        <h2 class="hsf-app-title hsf-app-title-idol">ゆぐどら!!</h2>
+        <p class="hsf-app-catch hsf-app-catch-idol">推しをアイドルに育てる。</p>
+        <p class="hsf-app-desc hsf-app-desc-idol">ガチャ×育成×ストーリー<br>新感覚アイドルアプリ</p>
+        <div class="hsf-features hsf-features-idol">
+          <span>🌟 育成システム</span>
+          <span>💌 親密度ストーリー</span>
+          <span>🎯 デイリーミッション</span>
+        </div>
+        <span class="hsf-cta hsf-cta-idol">詳しく見る ↓</span>
+      </div>
+    </a>
+
+  </div><!-- /hsf-wrap -->
+
+  <!-- ── BOTTOM BAR ── -->
+  <div class="hsf-bottom">
     <a href="#line-cta" class="a-hero-cta">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.02 2 11c0 3.19 1.66 6.01 4.23 7.77-.1.36-.38 1.32-.44 1.53-.08.28.1.28.21.2.09-.06 1.42-.97 2-.37.37.24.82.37 1.3.37C15.52 20.5 22 16.19 22 11c0-4.98-4.48-9-10-9z"/></svg>
       LINE@で無料登録する
     </a>
     <p class="a-hero-note">先行登録者限定の特典あり</p>
   </div>
+
   <div class="a-hero-scroll"><span>SCROLL</span><div class="scroll-bar"></div></div>
 </section>
 
