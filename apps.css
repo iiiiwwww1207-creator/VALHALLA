@@ -187,35 +187,67 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
 }
 .hsf-cta-idol:hover { transform:translateY(-3px);box-shadow:0 12px 32px rgba(180,40,140,.6); }
 
-/* ── CENTER SPINE ── */
-.hsf-spine {
-  width:72px;flex-shrink:0;
-  display:flex;flex-direction:column;align-items:center;
-  background:linear-gradient(180deg,#0c0230 0%,#1e0860 50%,#0c0230 100%);
-  position:relative;z-index:10;
-  padding:20px 0;box-shadow:0 0 40px rgba(80,20,160,.4);
+/* ── CENTER MARK (中央分割線 + ブランドエンブレム) ── */
+.hsf-center-mark {
+  position:absolute;
+  left:50%;top:0;bottom:0;
+  transform:translateX(-50%);
+  width:0;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  z-index:20;pointer-events:none;
 }
-.hsf-spine-line {
-  flex:1;width:1px;
-  background:linear-gradient(to bottom,transparent,rgba(200,168,255,.3),transparent);
+
+/* 縦の光る分割線 */
+.hsf-split-line {
+  position:absolute;
+  top:0;bottom:0;
+  width:1.5px;
+  background:linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(200,168,255,.5) 15%,
+    rgba(255,180,220,.85) 45%,
+    rgba(200,168,255,.85) 55%,
+    rgba(255,180,220,.5) 85%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 8px rgba(200,168,255,.5),
+    0 0 20px rgba(255,140,200,.3),
+    0 0 40px rgba(160,80,220,.15);
 }
-.hsf-spine-core {
-  display:flex;flex-direction:column;align-items:center;gap:8px;
-  padding:16px 0;
+
+/* ブランドエンブレム（円形） */
+.hsf-emblem {
+  position:relative;z-index:2;
+  width:80px;height:80px;
+  border-radius:50%;
+  background:linear-gradient(145deg,#100438,#1e0860);
+  border:1.5px solid rgba(200,168,255,.35);
+  box-shadow:
+    0 0 0 4px rgba(200,168,255,.08),
+    0 0 0 8px rgba(200,168,255,.04),
+    0 0 40px rgba(120,40,200,.5),
+    0 0 80px rgba(200,100,180,.2);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:3px;
+  animation:emblemPulse 3s ease-in-out infinite;
 }
-.hsf-spine-logo { width:38px;filter:brightness(1.5);opacity:.9; }
-.hsf-spine-brand {
+@keyframes emblemPulse {
+  0%,100%{ box-shadow:0 0 0 4px rgba(200,168,255,.08),0 0 0 8px rgba(200,168,255,.04),0 0 40px rgba(120,40,200,.5),0 0 80px rgba(200,100,180,.2); }
+  50%{ box-shadow:0 0 0 6px rgba(200,168,255,.14),0 0 0 12px rgba(200,168,255,.06),0 0 60px rgba(120,40,200,.7),0 0 100px rgba(200,100,180,.3); }
+}
+.hsf-emblem-logo { width:30px;filter:brightness(1.6);opacity:.95; }
+.hsf-emblem-label {
   font-family:'Cormorant Garamond',serif;
-  font-size:.52rem;letter-spacing:.15em;
-  color:rgba(200,168,255,.6);text-align:center;line-height:1.5;
-  writing-mode:vertical-rl;text-orientation:mixed;
-  letter-spacing:.2em;
+  font-size:.38rem;letter-spacing:.18em;
+  color:rgba(200,168,255,.7);
 }
-.hsf-spine-badge {
+.hsf-emblem-badge {
+  font-size:.38rem;font-weight:900;letter-spacing:.1em;
   background:linear-gradient(135deg,#c8a040,#e8c860);
-  color:#080118;font-weight:900;
-  font-size:.48rem;letter-spacing:.08em;text-align:center;line-height:1.4;
-  padding:5px 6px;border-radius:8px;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
 
 /* ── BOTTOM BAR ── */
@@ -1778,16 +1810,22 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   .hsf-wrap { flex-direction:column; }
   .hsf-half { padding:32px 20px;min-height:42svh; }
   .hsf-half:hover { flex:1; }
-  .hsf-spine {
-    width:100%;height:56px;flex-direction:row;
+  /* 縦積み時: 中央マークを水平に */
+  .hsf-center-mark {
+    position:relative;left:auto;top:auto;bottom:auto;
+    transform:none;
+    width:100%;height:56px;
+    flex-direction:row;
     background:linear-gradient(90deg,#0c0230 0%,#1e0860 50%,#0c0230 100%);
-    padding:0 20px;
+    pointer-events:none;
   }
-  .hsf-spine-line { flex:1;width:auto;height:1px; }
-  .hsf-spine-core { flex-direction:row;padding:0 12px;gap:10px; }
-  .hsf-spine-logo { width:28px; }
-  .hsf-spine-brand { writing-mode:horizontal-tb;font-size:.5rem; }
-  .hsf-spine-badge { writing-mode:horizontal-tb;font-size:.45rem;padding:4px 8px;line-height:1.2; }
+  .hsf-split-line {
+    width:100%;height:1.5px;
+    top:50%;bottom:auto;transform:translateY(-50%);
+    background:linear-gradient(to right,transparent,rgba(200,168,255,.6) 30%,rgba(255,180,220,.8) 50%,rgba(200,168,255,.6) 70%,transparent);
+  }
+  .hsf-emblem { width:64px;height:64px; }
+  .hsf-emblem-logo { width:24px; }
   .hsf-app-title { font-size:clamp(1.5rem,6vw,2rem); }
   .hsf-crown,.hsf-star { font-size:2.4rem; }
   .a-shared,.a-cta { padding:60px 0; }
@@ -1795,12 +1833,21 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   .shared-duo { grid-template-columns:1fr!important;gap:20px; }
   .hsf-wrap { flex-direction:column!important; }
   .hsf-half { padding:28px 16px;min-height:40svh; }
-  .hsf-spine { width:100%!important;height:50px;flex-direction:row;padding:0 16px; }
-  .hsf-spine-line { flex:1;width:auto!important;height:1px!important; }
-  .hsf-spine-core { flex-direction:row;padding:0 10px;gap:8px; }
-  .hsf-spine-logo { width:26px; }
-  .hsf-spine-brand { writing-mode:horizontal-tb!important;font-size:.48rem; }
-  .hsf-spine-badge { writing-mode:horizontal-tb!important;font-size:.44rem;padding:3px 7px;line-height:1.2; }
+  .hsf-center-mark {
+    position:relative!important;left:auto!important;top:auto!important;bottom:auto!important;
+    transform:none!important;
+    width:100%!important;height:50px;
+    flex-direction:row!important;
+    background:linear-gradient(90deg,#0c0230 0%,#1e0860 50%,#0c0230 100%);
+  }
+  .hsf-split-line {
+    width:100%!important;height:1.5px!important;
+    top:50%!important;bottom:auto!important;transform:translateY(-50%)!important;
+    background:linear-gradient(to right,transparent,rgba(200,168,255,.6) 30%,rgba(255,180,220,.8) 50%,rgba(200,168,255,.6) 70%,transparent)!important;
+    box-shadow:none!important;
+  }
+  .hsf-emblem { width:58px!important;height:58px!important; }
+  .hsf-emblem-logo { width:22px; }
   .hsf-app-title { font-size:clamp(1.4rem,5.5vw,1.8rem)!important; }
   .hsf-crown,.hsf-star { font-size:2.2rem; }
   .hsf-features { gap:4px; }
