@@ -276,44 +276,43 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
 
 /* ── ホスト側 (ダーク) ── */
 .hsf-dark .hsf-face {
-  opacity:.25;
+  opacity:.45;
   mix-blend-mode:luminosity;
-  filter:contrast(1.1) brightness(1.1) sepia(15%);
-  border:1.5px solid rgba(200,168,255,.22);
-  box-shadow:0 0 14px rgba(120,60,220,.35);
+  filter:contrast(1.15) brightness(1.2);
+  border:2px solid rgba(200,168,255,.4);
+  box-shadow:0 0 18px rgba(120,60,220,.5);
 }
 
 /* ── アイドル側 (ライト) ── */
 .hsf-idol .hsf-face {
-  opacity:.3;
+  opacity:.5;
   object-position:top center;
-  border:2px solid rgba(220,100,180,.35);
-  box-shadow:0 0 14px rgba(200,80,180,.25);
-  filter:saturate(1.2) brightness(1.05);
+  border:2px solid rgba(220,100,180,.5);
+  box-shadow:0 0 14px rgba(200,80,180,.35);
+  filter:saturate(1.3) brightness(1.0);
 }
 
 /* HOST 個別配置 */
-.hf1  { width:clamp(34px,5vw,72px);height:clamp(34px,5vw,72px); top:5%;  left:7%;  --r:-8deg;  --dur:5.5s; }
-.hf2  { width:clamp(28px,4vw,56px);height:clamp(28px,4vw,56px); top:3%;  left:56%; --r:10deg;  --dur:4.8s; --delay:1s; }
-.hf3  { width:clamp(30px,4.5vw,62px);height:clamp(30px,4.5vw,62px); top:22%; left:4%;  --r:-14deg; --dur:6.2s; --delay:2s; }
-.hf4  { width:clamp(24px,3.5vw,48px);height:clamp(24px,3.5vw,48px); top:28%; left:64%; --r:5deg;   --dur:5s;   --delay:.5s; }
-.hf5  { width:clamp(28px,4.5vw,60px);height:clamp(28px,4.5vw,60px); top:48%; left:5%;  --r:-6deg;  --dur:4.5s; --delay:3s; }
-.hf6  { width:clamp(26px,4vw,52px);height:clamp(26px,4vw,52px); top:53%; left:61%; --r:12deg;  --dur:5.8s; --delay:1.5s; }
-.hf7  { width:clamp(32px,5vw,68px);height:clamp(32px,5vw,68px); top:70%; left:8%;  --r:-10deg; --dur:6s;   --delay:2.5s; }
-.hf8  { width:clamp(26px,4vw,54px);height:clamp(26px,4vw,54px); top:74%; left:62%; --r:7deg;   --dur:5.2s; --delay:.8s; }
-.hf9  { width:clamp(22px,3.5vw,46px);height:clamp(22px,3.5vw,46px); top:13%; left:32%; --r:-5deg;  --dur:7s;   --delay:1.8s; }
-.hf10 { width:clamp(28px,4vw,58px);height:clamp(28px,4vw,58px); top:87%; left:28%; --r:3deg;   --dur:5.5s; --delay:3.5s; }
+.hf1  { width:clamp(48px,7vw,90px);height:clamp(48px,7vw,90px); top:5%;  left:7%;  --r:-8deg;  --dur:5.5s; }
+.hf2  { width:clamp(40px,5.5vw,72px);height:clamp(40px,5.5vw,72px); top:3%;  left:56%; --r:10deg;  --dur:4.8s; --delay:1s; }
+.hf3  { width:clamp(44px,6.5vw,84px);height:clamp(44px,6.5vw,84px); top:22%; left:4%;  --r:-14deg; --dur:6.2s; --delay:2s; }
+.hf4  { width:clamp(36px,5vw,64px);height:clamp(36px,5vw,64px); top:28%; left:64%; --r:5deg;   --dur:5s;   --delay:.5s; }
+.hf5  { width:clamp(42px,6vw,78px);height:clamp(42px,6vw,78px); top:48%; left:5%;  --r:-6deg;  --dur:4.5s; --delay:3s; }
+.hf6  { width:clamp(38px,5.5vw,70px);height:clamp(38px,5.5vw,70px); top:53%; left:61%; --r:12deg;  --dur:5.8s; --delay:1.5s; }
+.hf7  { width:clamp(46px,6.5vw,86px);height:clamp(46px,6.5vw,86px); top:70%; left:8%;  --r:-10deg; --dur:6s;   --delay:2.5s; }
+.hf8  { width:clamp(38px,5.5vw,72px);height:clamp(38px,5.5vw,72px); top:74%; left:62%; --r:7deg;   --dur:5.2s; --delay:.8s; }
+.hf9  { width:clamp(32px,4.5vw,60px);height:clamp(32px,4.5vw,60px); top:13%; left:32%; --r:-5deg;  --dur:7s;   --delay:1.8s; }
+.hf10 { width:clamp(40px,5.5vw,74px);height:clamp(40px,5.5vw,74px); top:87%; left:28%; --r:3deg;   --dur:5.5s; --delay:3.5s; }
 
 /* IDOL 個別配置 */
-.if1  { width:clamp(34px,5vw,72px);height:clamp(34px,5vw,72px); top:4%;  left:5%;  --r:8deg;   --dur:5.2s; }
-.if2  { width:clamp(30px,4.5vw,64px);height:clamp(30px,4.5vw,64px); top:6%;  left:55%; --r:-12deg; --dur:4.8s; --delay:1.2s; }
-.if3  { width:clamp(26px,4vw,56px);height:clamp(26px,4vw,56px); top:25%; left:66%; --r:6deg;   --dur:6s;   --delay:.6s; }
-.if4  { width:clamp(28px,4.5vw,62px);height:clamp(28px,4.5vw,62px); top:23%; left:6%;  --r:-9deg;  --dur:5.5s; --delay:2.2s; }
-.if5  { width:clamp(30px,5vw,68px);height:clamp(30px,5vw,68px); top:50%; left:61%; --r:14deg;  --dur:4.5s; --delay:1.8s; }
-.if6  { width:clamp(26px,4vw,54px);height:clamp(26px,4vw,54px); top:48%; left:4%;  --r:-10deg; --dur:5.8s; --delay:3.2s; }
-.if7  { width:clamp(28px,4.5vw,60px);height:clamp(28px,4.5vw,60px); top:68%; left:12%; --r:5deg;   --dur:6.2s; --delay:.4s; }
-.if8  { width:clamp(24px,4vw,52px);height:clamp(24px,4vw,52px); top:73%; left:62%; --r:-7deg;  --dur:5s;   --delay:2.8s; }
-.if9  { width:clamp(22px,3.5vw,46px);height:clamp(22px,3.5vw,46px); top:88%; left:34%; --r:10deg;  --dur:6.5s; --delay:1.5s; }
+.if1  { width:clamp(48px,7vw,90px);height:clamp(48px,7vw,90px); top:4%;  left:5%;  --r:8deg;   --dur:5.2s; }
+.if2  { width:clamp(44px,6.5vw,84px);height:clamp(44px,6.5vw,84px); top:6%;  left:55%; --r:-12deg; --dur:4.8s; --delay:1.2s; }
+.if3  { width:clamp(38px,5.5vw,72px);height:clamp(38px,5.5vw,72px); top:25%; left:66%; --r:6deg;   --dur:6s;   --delay:.6s; }
+.if4  { width:clamp(42px,6vw,80px);height:clamp(42px,6vw,80px); top:23%; left:6%;  --r:-9deg;  --dur:5.5s; --delay:2.2s; }
+.if5  { width:clamp(44px,6.5vw,84px);height:clamp(44px,6.5vw,84px); top:50%; left:61%; --r:14deg;  --dur:4.5s; --delay:1.8s; }
+.if6  { width:clamp(38px,5.5vw,72px);height:clamp(38px,5.5vw,72px); top:48%; left:4%;  --r:-10deg; --dur:5.8s; --delay:3.2s; }
+.if7  { width:clamp(42px,6vw,78px);height:clamp(42px,6vw,78px); top:68%; left:12%; --r:5deg;   --dur:6.2s; --delay:.4s; }
+.if8  { width:clamp(36px,5vw,68px);height:clamp(36px,5vw,68px); top:73%; left:62%; --r:-7deg;  --dur:5s;   --delay:2.8s; }
 
 /* ── BOTTOM BAR ── */
 .hsf-bottom {
