@@ -755,9 +755,18 @@ document.querySelectorAll('.shared-item,.ad-v-feat,.ygd-feat-item,.benefit,.ygd-
     return Math.round(n / STEP) % N;
   }
 
+  function cylScale() {
+    const w = window.innerWidth;
+    if (w <= 375) return .48;
+    if (w <= 480) return .54;
+    if (w <= 768) return .66;
+    if (w <= 900) return .78;
+    return 1;
+  }
   function render() {
     if (!cylinder) return;
-    cylinder.style.transform = `rotateY(${angle}deg)`;
+    const s = cylScale();
+    cylinder.style.transform = `rotateY(${angle}deg) scale(${s})`;
     const fi = frontIdx();
     avEls.forEach((av, i) => av.classList.toggle('ygd-av--front', i === fi));
     dots.forEach((d, i) => d.classList.toggle('active', i === fi));

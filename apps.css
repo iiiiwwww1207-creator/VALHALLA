@@ -1198,43 +1198,158 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
 .reveal.in { opacity:1;transform:translateY(0); }
 
 /* ================================================================ */
-/*  RESPONSIVE                                                       */
+/*  RESPONSIVE — MOBILE-FIRST OVERHAUL                              */
 /* ================================================================ */
+
+/* ── 900px: tablet landscape ── */
 @media (max-width:900px) {
-  .ad-v-layout,.ad-ygd-layout { grid-template-columns:1fr;gap:48px; }
-  .ad-v-phones { order:2; }
+  .ad-v-layout,.ad-ygd-layout {
+    grid-template-columns:1fr;
+    gap:40px;
+    text-align:center;
+  }
+  .ad-v-phones { order:-1;justify-content:center; }
   .ad-ygd-phone-wrap { order:-1; }
+  .ad-v-copy,.ad-ygd-copy { align-items:center; }
+  .ad-v-features,.ygd-feature-list { max-width:480px;margin:0 auto; }
+  .ad-cta-group { align-items:center; }
   .ad-phone-main { width:200px;height:400px; }
   .ad-phone-back { width:170px;height:340px;right:-30px; }
   .ygd-idol-grid { grid-template-columns:repeat(3,1fr); }
-  .worlds-divider { height:160px; }
+  .worlds-divider { height:140px; }
   .wd-app-name { font-size:1rem; }
   .wd-app-tag { display:none; }
-  .ygd-keyvis { max-height:380px; }
+  .ygd-keyvis { max-height:360px; }
   .ygd-lineup-names span { font-size:.7rem; }
+  /* carousel height adjusted for smaller scale */
+  .ygd-carousel-scene { height:340px; }
 }
+
+/* ── 768px: tablet portrait / large phone ── */
 @media (max-width:768px) {
-  .a-shared,.a-cta { padding:80px 0; }
-  .a-cta { padding-bottom:120px; }
-  .shared-duo { grid-template-columns:1fr; }
-  .hero-app-duo { flex-direction:column;align-items:center; }
-  .hero-app-card { width:260px; }
-  .ad-badge-row { padding:32px 20px 0; }
-  .ad-v-layout,.ad-ygd-layout { padding:32px 0; }
-  .ad-v-phones { justify-content:center; }
-  .ygd-idol-grid { grid-template-columns:repeat(2,1fr); }
-  .ygd-feat-strip { grid-template-columns:repeat(2,1fr);padding:24px 24px 48px; }
+  /* Global */
+  .container { padding:0 18px; }
+
+  /* Hero */
+  .a-hero-inner { padding:56px 20px 90px; }
+  .a-hero-title { font-size:clamp(1.8rem,8vw,2.8rem);text-align:center; }
+  .a-hero-sub { font-size:.88rem;text-align:center; }
+  .a-shared,.a-cta { padding:72px 0; }
+  .a-cta { padding-bottom:110px; }
+  .shared-duo { grid-template-columns:1fr;gap:20px; }
+  .hero-app-duo { flex-direction:column;align-items:center;gap:14px; }
+  .hero-app-card { width:280px; }
+
+  /* Badge rows */
+  .ad-badge-row { padding:28px 18px 0;flex-wrap:wrap;gap:10px; }
+
+  /* AD layouts */
+  .ad-v-layout,.ad-ygd-layout {
+    padding:28px 0 40px;
+    gap:32px;
+    text-align:center;
+  }
+  .ad-v-copy { align-items:center; }
+  .ad-v-feat { text-align:left; }
+  .ad-copy-sub,.ad-ygd-tagline { text-align:center; }
+
+  /* Phone mockups */
+  .ad-v-phones { justify-content:center;flex-direction:row; }
+  .ad-phone-main { width:190px;height:380px; }
+  .ad-phone-back { width:150px;height:300px;right:-20px; }
+
+  /* Idol grid */
+  .ygd-idol-grid { grid-template-columns:repeat(2,1fr);gap:10px; }
+  .ygd-feat-strip { grid-template-columns:repeat(2,1fr);padding:20px 20px 40px; }
+
+  /* CTA */
   .cta-app-links { flex-direction:column;align-items:center; }
   .cta-line-big { padding:18px 36px;font-size:1rem; }
   .a-fixed-cta { display:block; }
-  .ygd-ad-phone { width:200px;height:420px; }
+
+  /* 3D Carousel — JS handles scale, just adjust height */
+  .ygd-carousel-scene { height:310px;perspective:700px; }
+
+  /* Worlds divider simplified on mobile */
+  .worlds-divider {
+    height:auto;flex-direction:column;
+    clip-path:none;
+  }
+  .wd-half {
+    width:100%;clip-path:none!important;margin:0!important;
+    padding:22px 24px;align-items:center;text-align:center;
+  }
+  .wd-center { display:none; }
+
+  /* ゆぐどら ad phone */
+  .ygd-ad-phone { width:190px;height:400px; }
+
+  /* Key visual full-width on mobile */
+  .ygd-keyvis { max-height:300px; }
+  .ygd-kv-t1 { font-size:2.6rem; }
+  .ygd-kv-t2 { font-size:1.4rem; }
 }
+
+/* ── 480px: phone ── */
 @media (max-width:480px) {
-  .a-hero-title { font-size:1.9rem; }
-  .ad-v-title,.ygd-title-main { font-size:2.4rem; }
+  /* Hero */
+  .a-hero-title { font-size:1.8rem; }
+  .a-hero-inner { gap:16px; }
+
+  /* AD titles */
+  .ad-v-title { font-size:2.2rem; }
+  .ygd-title-main,.ygd-ad-title { font-size:2.2rem; }
+
+  /* Phone: hide back phone, show only main centered */
+  .ad-phone-back { display:none; }
+  .ad-phone-main { width:200px;height:400px; }
+  .ad-v-phones { justify-content:center; }
+
+  /* Carousel height at 480px */
+  .ygd-carousel-scene { height:280px;perspective:600px; }
+
+  /* Idol */
   .ygd-idol-grid { gap:8px; }
   .ygd-ic img { height:100px; }
-  .ygd-feat-strip { grid-template-columns:1fr 1fr; }
+
+  /* Badge row stacked */
+  .ad-badge-row { gap:8px; }
+  .ad-badge-line { display:none; }
+
+  /* Cast strip items smaller */
+  .acs-item { width:74px; }
+  .acs-item img { width:74px;height:92px; }
+  .acs-item span { font-size:.6rem; }
+
+  /* Feature blocks: compact */
+  .ad-v-feat { padding:10px 12px; }
+  .ad-v-feat strong { font-size:.82rem; }
+  .ad-v-feat p { font-size:.72rem; }
+
+  /* CTA buttons: full width */
+  .ad-demo-cta,.a-hero-cta { width:100%;justify-content:center;max-width:320px; }
+  .ygd-ad-btn { width:100%;max-width:320px;justify-content:center; }
+
+  /* Text alignment: all centered on phone */
+  .ad-v-desc,.ad-ygd-desc { font-size:.85rem;text-align:center; }
+  .ad-v-copy,.ad-ygd-copy { align-items:center; }
+
+  /* Carousel nav: move higher */
+  .ygd-carousel-nav { bottom:-36px; }
+
+  /* Worlds divider minimal */
+  .wd-half { padding:16px 20px; }
+  .wd-app-name { font-size:1.1rem; }
+
+  /* Lineup names fit on small screen */
+  .ygd-lineup-names { flex-wrap:wrap;gap:4px; }
+  .ygd-lineup-names span { flex:none;width:calc(100%/6 - 4px);font-size:.6rem; }
+}
+
+/* ── 375px: smallest common phone ── */
+@media (max-width:375px) {
+  .ygd-carousel-scene { height:260px; }
   .ad-phone-main { width:180px;height:360px; }
-  .ad-phone-back { display:none; }
+  .a-hero-title { font-size:1.6rem; }
+  .ygd-idol-grid { grid-template-columns:repeat(2,1fr); }
 }
