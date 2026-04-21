@@ -11,3 +11,7 @@ dist/
 codex-review-*/
 drizzle/*.sql
 drizzle/meta/
+gigafile_images/
+.DS_Store
+download_cast.sh
+serve.py
