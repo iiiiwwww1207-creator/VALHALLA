@@ -1,11 +1,12 @@
 /* ===== APPS LP — COMPLETE REWRITE ===== */
 :root {
-  --dark:  #07011a;
-  --dark2: #0c0226;
+  --dark:  #000000;
+  --dark2: #0a0a0a;
   --white: #ffffff;
   --p1: #f0e8ff; --p2: #dfc8ff; --p3: #c9a8f0; --p4: #a67dd4; --p5: #7c4fa8;
   --line: #06c755;
   --gold: #c8a040;
+  --silver: #b8b8b8;
   --radius: 16px;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -23,7 +24,7 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
 .a-hero {
   position:relative;
   overflow:hidden;
-  background:#07011a;
+  background:#000000;
 }
 .a-hero-fullsplit {
   display:flex;flex-direction:column;
@@ -31,47 +32,56 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
 }
 #heroCanvas { position:absolute;inset:0;width:100%;height:100%;pointer-events:none; }
 .a-hero-orbs { position:absolute;inset:0;pointer-events:none; }
-.orb { position:absolute;border-radius:50%;filter:blur(80px);opacity:.22; }
-.orb1{width:500px;height:500px;background:#6a22d0;top:-120px;left:-100px;}
-.orb2{width:400px;height:400px;background:#1a3acc;bottom:-80px;right:-60px;}
-.orb3{width:280px;height:280px;background:#d022aa;top:50%;left:50%;transform:translate(-50%,-50%);}
-.orb4{width:420px;height:420px;background:radial-gradient(circle,#ff70c8,#cc44aa);top:-60px;right:-80px;opacity:.15;}
+.orb { position:absolute;border-radius:50%;filter:blur(80px);opacity:0; }
+.orb1{width:500px;height:500px;background:#6a22d0;top:-120px;left:-100px;display:none;}
+.orb2{width:400px;height:400px;background:#1a3acc;bottom:-80px;right:-60px;display:none;}
+.orb3{width:280px;height:280px;background:#d022aa;top:50%;left:50%;transform:translate(-50%,-50%);display:none;}
+.orb4{width:420px;height:420px;background:radial-gradient(circle,#ff70c8,#cc44aa);top:-60px;right:-80px;display:none;}
 
 /* ================================================================
    HERO FULLSPLIT — フルスクリーン左右分割
    ================================================================ */
 .hsf-wrap {
   position:relative;z-index:1;
-  display:grid;
-  grid-template-columns:1fr 1fr;
+  overflow:hidden;
   flex:1;min-height:0;
   width:100%;
+  height:100svh;
 }
 
 /* ── 共通パネル ── */
 .hsf-half {
   display:flex;align-items:center;justify-content:center;
   text-decoration:none;
-  position:relative;overflow:hidden;
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  overflow:hidden;
   transition:transform .3s ease, box-shadow .3s ease;
   padding:40px 28px;
-  min-height:100svh;
 }
 .hsf-half:hover { transform:scale(1.01); }
 
-/* ── APP01 ダーク×ゴールド ── */
+/* ── APP01 ホストマッチング: 漆黒×ゴールド 重厚感 ── */
 .hsf-dark {
-  background:linear-gradient(160deg,#070118 0%,#180650 55%,#040010 100%);
+  background: radial-gradient(ellipse 80% 80% at 30% 50%, #1a1200 0%, #000000 70%);
 }
 .hsf-dark-layer {
   position:absolute;inset:0;pointer-events:none;
   background:
-    radial-gradient(ellipse 60% 60% at 30% 40%, rgba(200,160,40,.07) 0%, transparent 70%),
-    linear-gradient(135deg,rgba(200,160,40,.04) 0%,transparent 60%);
+    radial-gradient(ellipse 50% 70% at 20% 60%, rgba(200,160,40,.10) 0%, transparent 65%),
+    linear-gradient(160deg, rgba(200,160,40,.06) 0%, transparent 50%),
+    linear-gradient(to right, rgba(0,0,0,.6) 0%, transparent 100%);
 }
-/* ── APP02 パステル×アイドル ── */
+
+/* ── APP02 ゆぐどら!!: パステルカラー 可愛い ── */
 .hsf-idol {
-  background:linear-gradient(160deg,#fff8fd 0%,#efe0ff 50%,#fde8f8 100%);
+  background: linear-gradient(160deg, #fce4f6 0%, #ede0ff 40%, #fde8f8 70%, #f8e6ff 100%);
+}
+/* 背景写真の上にパステルオーバーレイ */
+.hsf-idol .hsf-bg-photo {
+  opacity: .25 !important;
+  mix-blend-mode: multiply;
+  filter: saturate(0.5) brightness(1.2);
 }
 
 /* キラキラ */
@@ -80,10 +90,10 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   font-size:1rem;color:rgba(200,100,180,.45);
   animation:hsfSparkle 3.5s ease-in-out infinite;
 }
-.hsf-sp1{top:12%;left:12%;animation-delay:0s;font-size:.75rem;}
-.hsf-sp2{top:10%;right:14%;animation-delay:1s;font-size:1.1rem;color:rgba(160,80,220,.4);}
-.hsf-sp3{bottom:20%;left:10%;animation-delay:2s;font-size:.65rem;}
-.hsf-sp4{bottom:15%;right:12%;animation-delay:1.5s;font-size:.9rem;color:rgba(200,120,200,.35);}
+.hsf-sp1{top:12%;left:12%;animation-delay:0s;font-size:.9rem;color:rgba(236,72,153,.6);}
+.hsf-sp2{top:10%;right:14%;animation-delay:1s;font-size:1.3rem;color:rgba(147,51,234,.5);}
+.hsf-sp3{bottom:20%;left:10%;animation-delay:2s;font-size:.8rem;color:rgba(236,72,153,.5);}
+.hsf-sp4{bottom:15%;right:12%;animation-delay:1.5s;font-size:1.1rem;color:rgba(217,70,168,.5);}
 @keyframes hsfSparkle {
   0%,100%{opacity:.35;transform:scale(1) translateY(0);}
   50%{opacity:1;transform:scale(1.3) translateY(-4px);}
@@ -96,12 +106,22 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   text-align:center;gap:10px;
   max-width:340px;
 }
+.hsf-dark .hsf-content {
+  align-items:flex-start;
+  text-align:left;
+}
+.hsf-idol .hsf-content {
+  align-items:flex-end;
+  text-align:right;
+}
 .hsf-app-num {
   font-family:'Cormorant Garamond',serif;
   font-size:.7rem;letter-spacing:.35em;
-  color:rgba(200,168,255,.45);margin-bottom:2px;
+  color:rgba(200,160,40,.6);margin-bottom:2px;
 }
-.hsf-app-num-idol { color:rgba(160,80,160,.45); }
+.hsf-app-num-idol {
+  color: rgba(147,51,234,.6);
+}
 
 .hsf-icon-wrap { margin:4px 0; }
 .hsf-crown {
@@ -126,29 +146,46 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
 
 /* アプリタイトル */
 .hsf-app-title {
-  font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:900;
+  font-size:clamp(2rem,7vw,3.5rem);font-weight:900;
   letter-spacing:.04em;line-height:1.15;margin:0;
 }
-.hsf-dark .hsf-app-title { color:#c8a040;text-shadow:0 0 30px rgba(200,160,40,.35); }
+/* ホストマッチング: ゴールド × 重厚感 */
+.hsf-dark .hsf-app-title {
+  color: #c8a040;
+  text-shadow: 0 2px 20px rgba(200,160,40,.5), 0 0 60px rgba(200,140,20,.2);
+  letter-spacing: .06em;
+}
+/* ゆぐどら!!: パステルピンク×パープル グラデーション */
 .hsf-app-title-idol {
-  background:linear-gradient(135deg,#d42090,#8020d4);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  background: linear-gradient(135deg, #d946a8 0%, #9333ea 60%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 8px rgba(217,70,168,.3));
 }
 
 /* キャッチコピー */
 .hsf-app-catch {
-  font-size:clamp(.82rem,1.6vw,1rem);font-weight:700;
+  font-size:clamp(.9rem,3vw,1.4rem);font-weight:700;
   margin:0;
 }
-.hsf-dark .hsf-app-catch { color:rgba(220,200,255,.8); }
-.hsf-app-catch-idol { color:rgba(160,60,130,.9); }
+/* ホストマッチング: 白 抑えめ */
+.hsf-dark .hsf-app-catch {
+  color: rgba(220,200,160,.8);
+  letter-spacing: .04em;
+}
+/* ゆぐどら!!: ディープパープル 可愛く */
+.hsf-app-catch-idol {
+  color: #7c2fa8;
+  font-weight: 800;
+}
 
 /* 説明文 */
 .hsf-app-desc {
   font-size:clamp(.7rem,1.3vw,.84rem);line-height:1.65;margin:0;
 }
-.hsf-dark .hsf-app-desc { color:rgba(200,180,255,.5); }
-.hsf-app-desc-idol { color:rgba(130,70,120,.6); }
+.hsf-dark .hsf-app-desc { color:rgba(255,255,255,.45); }
+.hsf-app-desc-idol { color:rgba(255,255,255,.45); }
 
 /* フィーチャータグ */
 .hsf-features {
@@ -164,9 +201,9 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   color:rgba(200,180,255,.6);
 }
 .hsf-features-idol span {
-  background:rgba(200,100,180,.09);
-  border:1px solid rgba(200,120,180,.22);
-  color:rgba(140,60,120,.85);
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.6);
 }
 
 /* CTAボタン */
@@ -201,7 +238,7 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
 }
 
 /* 縦の光る分割線 */
-.hsf-split-line {
+.hsf-split-line { display:none; } .hsf-split-line-hidden {
   position:absolute;
   top:0;bottom:0;
   width:1.5px;
@@ -274,22 +311,22 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   50%      { transform:rotate(var(--r,0deg)) translateY(-7px); }
 }
 
-/* ── ホスト側 (ダーク) ── */
+/* ── ホスト側: モノクロ気味 × ゴールドボーダー 重厚感 ── */
 .hsf-dark .hsf-face {
-  opacity:.65;
-  mix-blend-mode:screen;
-  filter:contrast(1.05) brightness(1.1) saturate(0.8);
-  border:2px solid rgba(200,168,255,.55);
-  box-shadow:0 0 24px rgba(120,60,220,.65);
+  opacity: .7;
+  mix-blend-mode: luminosity;
+  filter: contrast(1.1) brightness(.95) saturate(0.4);
+  border: 2px solid rgba(200,160,40,.5);
+  box-shadow: 0 0 20px rgba(200,140,20,.4), 0 4px 16px rgba(0,0,0,.6);
 }
 
-/* ── アイドル側 (ライト) ── */
+/* ── アイドル側: 鮮やか × パステルピンクボーダー 可愛い ── */
 .hsf-idol .hsf-face {
-  opacity:.7;
-  object-position:top center;
-  border:2px solid rgba(220,100,180,.65);
-  box-shadow:0 0 18px rgba(200,80,180,.45);
-  filter:saturate(1.0) brightness(1.0);
+  opacity: .88;
+  object-position: top center;
+  filter: saturate(1.15) brightness(1.05) contrast(.97);
+  border: 3px solid rgba(236,72,153,.5);
+  box-shadow: 0 0 18px rgba(217,70,168,.35), 0 4px 12px rgba(147,51,234,.2);
 }
 
 /* HOST 個別配置（desktop: 80〜110px） */
@@ -319,7 +356,7 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   position:relative;z-index:2;
   display:flex;flex-direction:column;align-items:center;gap:8px;
   padding:16px 20px 28px;
-  background:linear-gradient(to bottom,transparent,rgba(7,1,26,.85));
+  background:linear-gradient(to bottom,transparent,rgba(0,0,0,.9));
 }
 
 /* ── 旧スタイル維持 (他箇所で参照) ── */
@@ -1870,32 +1907,43 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   .a-hero-title { font-size:clamp(1.6rem,7vw,2.6rem);text-align:center!important; }
   .a-hero-sub { font-size:.88rem;text-align:center!important; }
 
-  /* Fullsplit hero → grid 1fr 1fr で常に左右2分割 */
-  .hsf-wrap { grid-template-columns:1fr 1fr!important; }
-  .hsf-half { padding:20px 10px!important;min-height:100svh!important; }
+  /* Fullsplit hero → 左右縦スラッシュ維持 (スマホ) */
+  .hsf-wrap { position:relative!important;overflow:hidden!important;height:100svh!important; }
+  .hsf-half { position:absolute!important;inset:0!important;width:100%!important;height:100%!important; }
   .hsf-half:hover { transform:none!important; }
-  /* 中央マーク: 縦ライン維持 */
-  .hsf-center-mark {
-    position:absolute!important;
-    left:50%!important;top:0!important;bottom:0!important;
-    transform:translateX(-50%)!important;
-    width:0!important;height:auto!important;
-    flex-direction:column!important;
-    background:none!important;
-  }
-  .hsf-split-line {
-    position:absolute!important;top:0!important;bottom:0!important;
-    width:1.5px!important;height:100%!important;transform:none!important;
-  }
   .hsf-emblem { width:52px!important;height:52px!important; }
   .hsf-emblem-logo { width:18px!important; }
   .hsf-emblem-label { font-size:.28rem!important; }
   .hsf-emblem-badge { font-size:.28rem!important; }
-  .hsf-app-title { font-size:clamp(.85rem,4.5vw,1.4rem)!important; }
-  .hsf-crown,.hsf-star { font-size:1.8rem!important; }
-  .hsf-app-catch { font-size:clamp(.55rem,2.3vw,.78rem)!important; }
-  .hsf-cta { padding:8px 12px!important;font-size:.68rem!important; }
-  .hsf-content { gap:7px!important;max-width:none!important;width:100%!important; }
+  .hsf-app-title { font-size:clamp(.9rem,4vw,1.2rem)!important; }
+  .hsf-crown,.hsf-star { font-size:1.5rem!important; }
+  .hsf-app-catch { font-size:clamp(.58rem,2.2vw,.76rem)!important; }
+  .hsf-app-desc { display:none!important; }
+  .hsf-features { display:none!important; }
+  .hsf-cta { padding:6px 11px!important;font-size:.64rem!important; }
+  /* 左パネル: 左端寄せ、右パネル: 右端寄せ */
+  .hsf-content { gap:5px!important;max-width:42%!important;width:42%!important; }
+  .hsf-dark .hsf-content {
+    align-items:flex-start!important;
+    position:absolute!important;
+    left:10px!important;
+    right:auto!important;
+    top:50%!important;
+    transform:translateY(-50%)!important;
+    max-width:38%!important;
+    width:38%!important;
+  }
+  .hsf-idol .hsf-content {
+    align-items:flex-end!important;
+    text-align:right!important;
+    position:absolute!important;
+    right:10px!important;
+    left:auto!important;
+    top:50%!important;
+    transform:translateY(-50%)!important;
+    max-width:38%!important;
+    width:38%!important;
+  }
 
   /* ── モバイル: 写真を大きく・少なく ── */
   /* 余分な写真を非表示、残りを大きく */
@@ -1983,13 +2031,10 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
 
 /* ── 480px: phone ── */
 @media (max-width:480px) {
-  /* Hero split — grid 1fr 1fr 維持 */
-  .hsf-wrap { grid-template-columns:1fr 1fr!important; }
-  .hsf-half { padding:16px 6px!important;min-height:100svh!important; }
-  .hsf-app-title { font-size:clamp(.78rem,3.8vw,1.1rem)!important; }
-  .hsf-app-catch { font-size:clamp(.5rem,2vw,.68rem)!important; }
-  .hsf-crown,.hsf-star { font-size:1.5rem!important; }
-  .hsf-cta { padding:6px 8px!important;font-size:.6rem!important; }
+  .hsf-app-title { font-size:clamp(.82rem,4vw,1.1rem)!important; }
+  .hsf-app-catch { font-size:clamp(.55rem,2.2vw,.72rem)!important; }
+  .hsf-crown,.hsf-star { font-size:1.3rem!important; }
+  .hsf-cta { padding:6px 9px!important;font-size:.6rem!important; }
   .hsf-emblem { width:44px!important;height:44px!important; }
   .hsf-emblem-logo { width:14px!important; }
 
@@ -2088,21 +2133,23 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   z-index:0;
   pointer-events:none;
 }
+/* ホスト側: 暗く重く、コントラスト強め */
 .hsf-dark .hsf-bg-photo {
-  opacity:.28;
-  mix-blend-mode:luminosity;
-  filter:brightness(.8) contrast(1.1);
+  opacity: .35;
+  mix-blend-mode: luminosity;
+  filter: brightness(.6) contrast(1.2) saturate(0.3);
 }
+/* アイドル側: 薄く出してパステル背景を活かす */
 .hsf-idol .hsf-bg-photo {
-  opacity:.18;
-  filter:saturate(.6) brightness(1.15);
+  opacity: .12;
+  filter: saturate(0.4) brightness(1.3);
 }
 
 /* ================================================================
    PHOTO GALLERY STRIP
    ================================================================ */
 .pg-section {
-  background: #07011a;
+  background: #000000;
   padding: 64px 0 0;
   overflow: hidden;
 }
@@ -2190,7 +2237,7 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   pointer-events:none;
 }
 
-/* mobile */
+/* mobile photo strip */
 @media (max-width:768px) {
   .pg-item { width:160px;height:220px; }
   .pg-section { padding-top:40px; }
@@ -2209,4 +2256,1124 @@ body { font-family:'Noto Sans JP',sans-serif; background: var(--dark); color: va
   .ygd-kv-btn-primary,.ygd-kv-btn-secondary { width:90vw!important; }
   .ad-v-feat { padding:8px 10px; }
   .hero-app-card { width:88vw; }
+}
+
+/* ================================================================
+   SIMPLIFIED LP — 2 APPS INTRO + LINE CTA
+   ================================================================ */
+
+/* ── 2 Apps Intro ── */
+.simple-apps-intro {
+  background: #08010f;
+  padding: 64px 0 72px;
+}
+.sai-eyebrow {
+  text-align: center;
+  font-size: .72rem;
+  letter-spacing: .18em;
+  color: rgba(200,160,40,.6);
+  margin-bottom: 12px;
+  display: block;
+}
+.sai-title {
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 6vw, 3rem);
+  color: #fff;
+  margin: 0 0 40px;
+  line-height: 1.2;
+}
+.sai-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.sai-card {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  padding: 32px 24px;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform .25s, box-shadow .25s;
+}
+.sai-card:hover { transform: translateY(-4px); }
+.sai-dark {
+  background: linear-gradient(150deg, #0d0228 0%, #200960 100%);
+  border: 1px solid rgba(200,160,40,.2);
+}
+.sai-light {
+  background: linear-gradient(150deg, #fff5ff 0%, #ecdeff 100%);
+  border: 1px solid rgba(180,100,200,.2);
+}
+.sai-card-bg-host, .sai-card-bg-idol {
+  position: absolute; inset: 0; pointer-events: none;
+}
+.sai-num {
+  font-size: .65rem;
+  letter-spacing: .14em;
+  color: rgba(200,160,40,.7);
+}
+.sai-num-light { color: rgba(140,60,160,.6); }
+.sai-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+.sai-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.2rem, 3.5vw, 1.6rem);
+  color: #e8d060;
+  margin: 0;
+  line-height: 1.15;
+}
+.sai-name-light { color: #8830a0; }
+.sai-desc {
+  font-size: .78rem;
+  line-height: 1.6;
+  color: rgba(220,200,255,.65);
+  margin: 0;
+}
+.sai-desc-light { color: rgba(100,40,120,.65); }
+.sai-btn {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-size: .72rem;
+  background: rgba(200,160,40,.18);
+  color: #d4af37;
+  border: 1px solid rgba(200,160,40,.3);
+  width: fit-content;
+}
+.sai-btn-light {
+  background: rgba(160,60,180,.12);
+  color: #8830a0;
+  border-color: rgba(160,60,180,.25);
+}
+
+@media (max-width: 600px) {
+  .sai-cards { grid-template-columns: 1fr; max-width: 360px; }
+  .sai-card { padding: 24px 20px; }
+}
+
+/* ── Simple LINE CTA ── */
+.simple-cta {
+  position: relative;
+  background: #050010;
+  padding: 80px 0 100px;
+  overflow: hidden;
+}
+.simple-cta canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;
+}
+.scta-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.scta-logo {
+  width: 52px;
+  filter: brightness(1.4);
+  opacity: .9;
+}
+.scta-eyebrow {
+  font-size: .68rem;
+  letter-spacing: .2em;
+  color: rgba(200,160,40,.6);
+}
+.scta-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 6vw, 2.6rem);
+  color: #fff;
+  line-height: 1.2;
+  margin: 0;
+}
+.scta-benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+.scta-benefit {
+  padding: 10px 20px;
+  background: rgba(200,160,40,.06);
+  border: 1px solid rgba(200,160,40,.12);
+  border-radius: 12px;
+  font-size: .82rem;
+  color: rgba(230,210,255,.75);
+}
+.scta-line-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 40px;
+  background: #06C755;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: 100px;
+  text-decoration: none;
+  margin-top: 8px;
+  transition: transform .2s, box-shadow .2s;
+  box-shadow: 0 8px 28px rgba(6,199,85,.35);
+}
+.scta-line-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 36px rgba(6,199,85,.5);
+}
+.scta-note {
+  font-size: .72rem;
+  color: rgba(200,180,255,.4);
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .simple-cta { padding: 60px 0 80px; }
+  .scta-line-btn { padding: 16px 32px; font-size: .92rem; }
+}
+
+/* ================================================================
+   3-SECTION SIMPLIFIED LP
+   ================================================================ */
+
+/* ── Hero Tarot Badge ── */
+.hero-tarot-badge {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.15);
+  color: rgba(255,255,255,.8);
+  font-size: .78rem;
+  padding: 8px 20px;
+  border-radius: 100px;
+  backdrop-filter: blur(8px);
+  z-index: 10;
+  letter-spacing: .04em;
+}
+@media (max-width:480px) {
+  .hero-tarot-badge { font-size: .68rem; padding: 7px 14px; bottom: 14px; }
+}
+
+/* ── Section 2: LINE × Release × Tokuten ── */
+.sec-line {
+  position: relative;
+  background: #000000;
+  padding: 72px 0 80px;
+  overflow: hidden;
+}
+.sec-line canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;
+}
+.sec-line .container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  max-width: 600px;
+}
+
+/* リリースバナー */
+.release-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.release-label {
+  font-size: .62rem;
+  letter-spacing: .22em;
+  color: rgba(200,160,40,.55);
+}
+.release-date {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 7vw, 3rem);
+  color: #d4af37;
+  letter-spacing: .12em;
+  line-height: 1;
+}
+
+/* LINE CTA */
+.line-cta-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+}
+.line-cta-logo {
+  width: 44px;
+  filter: brightness(1.5);
+  opacity: .85;
+}
+.line-cta-sub {
+  font-size: .82rem;
+  color: rgba(220,200,255,.6);
+  margin: 0;
+}
+.line-cta-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 17px 44px;
+  background: #06C755;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.05rem;
+  border-radius: 100px;
+  text-decoration: none;
+  box-shadow: 0 8px 28px rgba(6,199,85,.4);
+  transition: transform .2s, box-shadow .2s;
+}
+.line-cta-btn:hover { transform: translateY(-3px); box-shadow: 0 14px 36px rgba(6,199,85,.55); }
+.line-cta-note {
+  font-size: .7rem;
+  color: rgba(200,180,255,.35);
+  margin: 0;
+}
+
+/* 初回特典 */
+.tokuten-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.tokuten-title {
+  font-size: .78rem;
+  letter-spacing: .16em;
+  color: rgba(200,160,40,.65);
+  margin: 0;
+}
+.tokuten-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  width: 100%;
+}
+.tokuten-card {
+  border-radius: 16px;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tokuten-dark {
+  background: linear-gradient(145deg, #0d0228, #1a0845);
+  border: 1px solid rgba(200,160,40,.2);
+}
+.tokuten-light {
+  background: #111111;
+  border: 1px solid rgba(255,255,255,.12);
+}
+.tokuten-app {
+  font-size: .58rem;
+  letter-spacing: .1em;
+  color: rgba(200,160,40,.65);
+}
+.tokuten-app-light { color: rgba(255,255,255,.45); }
+.tokuten-icon { font-size: 1.6rem; line-height: 1; }
+.tokuten-name {
+  font-weight: 700;
+  font-size: .9rem;
+  color: #e8d060;
+  margin: 0;
+  line-height: 1.3;
+}
+.tokuten-light .tokuten-name { color: #ffffff; }
+.tokuten-desc {
+  font-size: .7rem;
+  line-height: 1.55;
+  color: rgba(210,190,255,.55);
+  margin: 0;
+}
+.tokuten-light .tokuten-desc { color: rgba(255,255,255,.5); }
+.tokuten-coming {
+  display: inline-block;
+  font-size: .6rem;
+  padding: 3px 10px;
+  border-radius: 100px;
+  background: rgba(200,160,40,.12);
+  border: 1px solid rgba(200,160,40,.25);
+  color: rgba(200,160,40,.75);
+  width: fit-content;
+  margin-top: 4px;
+}
+.tokuten-coming-light {
+  background: rgba(255,255,255,.07);
+  border-color: rgba(255,255,255,.15);
+  color: rgba(255,255,255,.6);
+}
+
+@media (max-width: 480px) {
+  .tokuten-cards { grid-template-columns: 1fr; max-width: 300px; margin: 0 auto; }
+  .line-cta-btn { padding: 15px 36px; font-size: .95rem; }
+}
+
+/* ── Section 3: 動画 ── */
+.sec-video {
+  background: #050505;
+  padding: 72px 0 96px;
+}
+.sec-video .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  max-width: 700px;
+}
+.vid-eyebrow {
+  font-size: .65rem;
+  letter-spacing: .22em;
+  color: rgba(200,160,40,.5);
+  margin: 0;
+}
+.vid-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  color: rgba(255,255,255,.85);
+  margin: 0;
+  letter-spacing: .08em;
+}
+.vid-wrap {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(200,160,40,.15);
+}
+.vid-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(145deg, #0a0120, #160540);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+.vid-play-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(200,160,40,.15);
+  border: 2px solid rgba(200,160,40,.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: rgba(200,160,40,.75);
+}
+.vid-placeholder-text {
+  font-size: .82rem;
+  color: rgba(200,180,255,.4);
+  margin: 0;
+  letter-spacing: .08em;
+}
+
+/* ================================================================
+   COUNTDOWN + URGENCY STYLES
+   ================================================================ */
+
+/* カウントダウン */
+.countdown-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+.countdown-label {
+  font-size: .82rem;
+  color: rgba(255,200,80,.85);
+  margin: 0;
+  letter-spacing: .06em;
+  animation: pulse-text 2s ease-in-out infinite;
+}
+@keyframes pulse-text {
+  0%,100% { opacity: 1; }
+  50% { opacity: .6; }
+}
+.countdown-timer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cd-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 10px;
+  padding: 10px 14px;
+  min-width: 58px;
+}
+.cd-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 6vw, 2.4rem);
+  color: #ffffff;
+  line-height: 1;
+  font-weight: 600;
+}
+.cd-unit {
+  font-size: .5rem;
+  letter-spacing: .15em;
+  color: rgba(200,160,40,.5);
+  margin-top: 3px;
+}
+.cd-sep {
+  font-size: 1.6rem;
+  color: rgba(200,160,40,.4);
+  margin-bottom: 14px;
+}
+.countdown-date {
+  font-size: .72rem;
+  letter-spacing: .14em;
+  color: rgba(200,160,40,.55);
+  margin: 0;
+}
+
+/* 緊急コピー */
+.line-urgency {
+  font-size: .88rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  background: linear-gradient(90deg, rgba(255,80,80,.2), rgba(255,160,40,.15));
+  border: 1px solid rgba(255,120,60,.3);
+  padding: 8px 20px;
+  border-radius: 100px;
+  letter-spacing: .04em;
+}
+
+/* Hero title bigger */
+.hsf-app-title {
+  font-size: clamp(2rem, 7vw, 3.5rem) !important;
+  line-height: 1.05 !important;
+}
+.hsf-app-catch {
+  font-size: clamp(1rem, 3.5vw, 1.6rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.5 !important;
+  opacity: .85;
+}
+
+/* hero icon bigger */
+.hsf-crown { font-size: 2rem !important; }
+.hsf-star  { font-size: 2rem !important; }
+
+/* Tokuten card hover glow */
+.tokuten-dark {
+  transition: box-shadow .3s, transform .3s;
+}
+.tokuten-dark:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(200,160,40,.25);
+}
+.tokuten-light {
+  transition: box-shadow .3s, transform .3s;
+}
+.tokuten-light:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(180,80,220,.2);
+}
+
+/* LINE button pulse */
+.line-cta-btn {
+  animation: line-glow 2.5s ease-in-out infinite;
+}
+@keyframes line-glow {
+  0%,100% { box-shadow: 0 8px 28px rgba(6,199,85,.4); }
+  50% { box-shadow: 0 12px 40px rgba(6,199,85,.7), 0 0 0 6px rgba(6,199,85,.12); }
+}
+
+@media (max-width: 480px) {
+  .cd-block { min-width: 48px; padding: 8px 10px; }
+  .cd-num { font-size: 1.6rem; }
+  .countdown-timer { gap: 5px; }
+}
+
+/* ========== TAROT DEMO SECTION ========== */
+.sec-tarot {
+  background: #000000;
+  padding: 60px 0 70px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.sec-tarot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 40% at 50% 50%, rgba(120,60,200,.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.tarot-eyebrow {
+  font-size: .7rem;
+  letter-spacing: .18em;
+  color: var(--gold);
+  margin: 0 0 12px;
+}
+.tarot-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.7rem, 6vw, 2.6rem);
+  font-weight: 300;
+  color: #fff;
+  line-height: 1.25;
+  margin: 0 0 10px;
+}
+.tarot-sub {
+  font-size: .82rem;
+  color: rgba(255,255,255,.55);
+  margin: 0 0 36px;
+}
+
+/* Deck */
+.tarot-deck {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  perspective: 1000px;
+}
+.tarot-card {
+  width: 62px;
+  height: 104px;
+  cursor: pointer;
+  perspective: 800px;
+  transition: transform .2s;
+}
+.tarot-card:hover:not(.flipped):not(.disabled) {
+  transform: translateY(-8px) scale(1.04);
+}
+.tarot-card.disabled {
+  opacity: .35;
+  cursor: default;
+}
+.tc-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform .55s cubic-bezier(.4,0,.2,1);
+  border-radius: 10px;
+}
+.tarot-card.flipped .tc-inner {
+  transform: rotateY(180deg);
+}
+.tc-back, .tc-front {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255,255,255,.12);
+}
+.tc-back {
+  background: linear-gradient(160deg, #1a0a3a 0%, #3a1a6a 100%);
+  box-shadow: 0 4px 20px rgba(0,0,0,.5);
+}
+.tc-back-sym {
+  font-size: 1.4rem;
+  opacity: .6;
+}
+.tc-front {
+  transform: rotateY(180deg);
+  background: linear-gradient(160deg, #1a0a3a, #5a1a8a);
+  box-shadow: 0 6px 24px rgba(120,60,200,.4);
+  padding: 6px 4px;
+  gap: 4px;
+}
+.tc-front-sym {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.tc-front-name {
+  font-size: .55rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: .05em;
+  text-align: center;
+  line-height: 1.3;
+}
+.tc-front-en {
+  font-size: .38rem;
+  color: rgba(255,255,255,.5);
+  letter-spacing: .06em;
+  text-align: center;
+}
+
+.tarot-hint {
+  font-size: .8rem;
+  color: rgba(255,255,255,.45);
+  margin: 0;
+  animation: pulse-text 2s ease-in-out infinite;
+}
+
+/* Result */
+.tarot-result {
+  margin-top: 30px;
+  animation: fadeInUp .6s ease both;
+}
+.tr-cards-row {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.tr-mini-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 10px;
+  padding: 10px 14px;
+  min-width: 64px;
+}
+.tr-mini-sym { font-size: 1.4rem; }
+.tr-mini-name {
+  font-size: .6rem;
+  color: var(--gold);
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+.tr-message {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px;
+  padding: 20px 18px;
+  margin: 0 auto 20px;
+  max-width: 320px;
+}
+.tr-msg-text {
+  font-size: .82rem;
+  line-height: 1.8;
+  color: rgba(255,255,255,.8);
+  margin: 0;
+}
+.tarot-retry-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 30px;
+  color: rgba(255,255,255,.7);
+  font-size: .78rem;
+  padding: 9px 24px;
+  cursor: pointer;
+  transition: all .2s;
+  margin-bottom: 14px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.tarot-retry-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.tarot-app-cta {
+  font-size: .72rem;
+  color: rgba(255,255,255,.4);
+  margin: 0;
+}
+
+@keyframes fadeInUp {
+  from { opacity:0; transform:translateY(16px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes pulse-text {
+  0%,100% { opacity:.45; }
+  50% { opacity:.85; }
+}
+
+/* ========== TAROT CARD IMAGE STYLES ========== */
+.tc-front {
+  padding: 0 !important;
+  overflow: hidden;
+  border: 2px solid rgba(200,160,40,.5) !important;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.tc-front-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .55rem;
+  letter-spacing: .15em;
+  color: rgba(200,160,40,.9);
+  text-align: center;
+  padding: 3px 0 2px;
+  background: rgba(0,0,0,.8);
+  border-bottom: 1px solid rgba(200,160,40,.3);
+  flex-shrink: 0;
+}
+.tc-front-img {
+  width: 100%;
+  flex: 1;
+  object-fit: cover;
+  object-position: top center;
+  min-height: 0;
+}
+.tc-front-footer {
+  background: rgba(0,0,0,.85);
+  border-top: 1px solid rgba(200,160,40,.3);
+  padding: 2px 0;
+  flex-shrink: 0;
+}
+.tc-front-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .42rem !important;
+  letter-spacing: .1em;
+  color: rgba(200,160,40,.85) !important;
+  text-align: center;
+  display: block;
+}
+
+/* 結果表示 */
+.tr-mini-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  min-width: 80px;
+  max-width: 90px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(200,160,40,.4);
+  background: #000;
+}
+.tr-mini-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .5rem;
+  color: rgba(200,160,40,.8);
+  letter-spacing: .1em;
+  padding: 3px 0 2px;
+  width: 100%;
+  text-align: center;
+  background: rgba(0,0,0,.9);
+  border-bottom: 1px solid rgba(200,160,40,.2);
+}
+.tr-mini-img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  object-position: top center;
+}
+.tr-mini-name {
+  font-size: .48rem !important;
+  color: rgba(200,160,40,.85) !important;
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: .08em;
+  padding: 2px 0;
+  background: rgba(0,0,0,.9);
+  width: 100%;
+  text-align: center;
+}
+.tr-mini-cast {
+  font-size: .42rem;
+  color: rgba(255,255,255,.5);
+  padding: 0 0 3px;
+  background: rgba(0,0,0,.9);
+  width: 100%;
+  text-align: center;
+}
+
+/* ================================================================
+   REDESIGN — 調査結果に基づく全面リデザイン
+   ================================================================ */
+
+/* ── グレインテクスチャ（AIっぽさを消す） ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: .035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* ── ヒーロー写真を主役に ── */
+.hsf-dark .hsf-bg-photo {
+  opacity: .82 !important;
+  mix-blend-mode: normal !important;
+  filter: brightness(.88) contrast(1.08) saturate(0.85) !important;
+  object-position: top center;
+}
+.hsf-idol .hsf-bg-photo {
+  opacity: .78 !important;
+  mix-blend-mode: normal !important;
+  filter: brightness(1.0) saturate(1.1) !important;
+  object-position: top center;
+}
+
+/* ── パネル下部グラデーションオーバーレイ（テキスト読みやすく） ── */
+.hsf-panel-overlay {
+  position: absolute; inset: 0;
+  pointer-events: none; z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,.25) 0%,
+    transparent 25%,
+    transparent 45%,
+    rgba(0,0,0,.92) 100%
+  );
+}
+.hsf-panel-overlay-idol {
+  background: linear-gradient(
+    to bottom,
+    rgba(252,220,245,.3) 0%,
+    transparent 25%,
+    transparent 45%,
+    rgba(245,220,255,.95) 100%
+  );
+}
+
+/* ── 超デカいウォーターマーク文字（視覚テクスチャ） ── */
+.hsf-bg-word {
+  position: absolute;
+  bottom: -15px; left: -8px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(72px, 20vw, 140px);
+  font-weight: 900;
+  color: rgba(200,160,40,.06);
+  line-height: 1;
+  pointer-events: none;
+  letter-spacing: -.02em;
+  z-index: 0;
+  white-space: nowrap;
+  user-select: none;
+}
+.hsf-bg-word-idol {
+  color: rgba(217,70,168,.07);
+  left: auto; right: -8px;
+  text-align: right;
+}
+
+/* ── コンテンツをパネル下部に配置 ── */
+.hsf-half { position: absolute !important; }
+.hsf-dark .hsf-content {
+  position: absolute !important;
+  bottom: 36px !important; left: 18px !important;
+  top: auto !important; transform: none !important;
+  max-width: 42% !important;
+  align-items: flex-start !important;
+  text-align: left !important;
+  z-index: 2;
+  gap: 6px !important;
+}
+.hsf-idol .hsf-content {
+  position: absolute !important;
+  bottom: 36px !important; right: 14px !important;
+  left: auto !important; top: auto !important; transform: none !important;
+  max-width: 42% !important;
+  align-items: flex-end !important;
+  text-align: right !important;
+  z-index: 2;
+  gap: 6px !important;
+}
+
+/* ── タイトルをさらに大きく ── */
+.hsf-app-title {
+  font-size: clamp(1.7rem, 6.5vw, 3.8rem) !important;
+  line-height: 1.05 !important;
+  letter-spacing: .02em !important;
+}
+.hsf-app-catch {
+  font-size: clamp(.75rem, 2.5vw, 1.1rem) !important;
+  font-weight: 500 !important;
+  letter-spacing: .03em !important;
+}
+/* ダーク側タイトル: ゴールド + グロー */
+.hsf-dark .hsf-app-title {
+  color: #e8c85a !important;
+  text-shadow: 0 2px 24px rgba(200,160,40,.55) !important;
+}
+.hsf-dark .hsf-app-catch {
+  color: rgba(255,240,200,.75) !important;
+}
+/* アイドル側タイトル: ピンク×パープルグラデ */
+.hsf-app-title-idol {
+  background: linear-gradient(135deg, #d946a8 0%, #9333ea 60%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  filter: drop-shadow(0 2px 10px rgba(217,70,168,.4)) !important;
+}
+.hsf-app-catch-idol {
+  color: #6b21a8 !important;
+  font-weight: 700 !important;
+}
+/* APP番号ラベル */
+.hsf-app-num {
+  font-size: .62rem !important;
+  letter-spacing: .4em !important;
+  color: rgba(200,160,40,.7) !important;
+  margin-bottom: 0 !important;
+}
+.hsf-app-num-idol {
+  color: rgba(147,51,234,.65) !important;
+}
+
+/* ── キャストストリップ ── */
+.sec-cast-strip {
+  background: #000;
+  padding: 20px 0;
+  overflow: hidden;
+  border-top: 1px solid rgba(255,255,255,.06);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.cast-strip-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 0 20px 14px;
+}
+.cast-strip-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .65rem;
+  letter-spacing: .4em;
+  color: rgba(200,160,40,.6);
+  text-transform: uppercase;
+}
+.cast-strip-count {
+  font-size: .62rem;
+  color: rgba(255,255,255,.3);
+  letter-spacing: .05em;
+}
+.cast-strip-track-wrap {
+  overflow: hidden;
+  width: 100%;
+}
+.cast-strip-track {
+  display: flex;
+  gap: 8px;
+  width: max-content;
+  animation: castMarquee 22s linear infinite;
+}
+@keyframes castMarquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.cast-card {
+  width: 90px;
+  height: 118px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.08);
+  position: relative;
+}
+.cast-card img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  filter: brightness(.9) contrast(1.05) saturate(.8);
+  transition: filter .3s;
+}
+.cast-card:hover img { filter: brightness(1) contrast(1.05) saturate(1); }
+/* アイドル側カードはカラーをそのまま */
+.cast-card.idol-card img {
+  filter: brightness(1.02) saturate(1.1);
+}
+/* ゴールドボーダー（ホスト側） */
+.cast-card:not(.idol-card) {
+  border-color: rgba(200,160,40,.2);
+}
+/* ピンクボーダー（アイドル側） */
+.cast-card.idol-card {
+  border-color: rgba(236,72,153,.25);
+}
+
+/* ── 以下、セクション全体のタイポグラフィ強化 ── */
+/* タロットセクション見出し */
+.tarot-title {
+  font-size: clamp(2rem, 7vw, 3rem) !important;
+  letter-spacing: -.01em !important;
+}
+
+/* LINE CTAセクション：黒ベースを強化 */
+.sec-line {
+  background: #000 !important;
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+
+/* カウントダウン数字：より大胆に */
+.cd-num {
+  font-size: clamp(1.8rem, 6vw, 2.8rem) !important;
+  font-weight: 900 !important;
+  color: #fff !important;
+  font-family: 'Cormorant Garamond', serif !important;
+  letter-spacing: -.02em !important;
+}
+.cd-block {
+  background: rgba(255,255,255,.04) !important;
+  border: 1px solid rgba(255,255,255,.1) !important;
+}
+
+/* 初回特典カード – ダーク側をより重厚に */
+.tokuten-dark {
+  background: linear-gradient(160deg, #0a0800 0%, #1a1200 100%) !important;
+  border: 1px solid rgba(200,160,40,.25) !important;
+}
+.tokuten-light {
+  background: linear-gradient(160deg, #1a0030 0%, #2d0050 100%) !important;
+  border: 1px solid rgba(236,72,153,.25) !important;
+  color: #fff !important;
+}
+.tokuten-light .tokuten-name,
+.tokuten-light .tokuten-desc { color: rgba(255,255,255,.85) !important; }
+.tokuten-light .tokuten-app-light { color: rgba(236,72,153,.8) !important; }
+
+/* ── スクロールインジケーター ── */
+.a-hero-scroll {
+  z-index: 10 !important;
+}
+
+/* ── モザイクグリッド (hero photo mosaic) ── */
+.hsf-mosaic {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: auto;
+  gap: 2px;
+  z-index: 0;
+  overflow: hidden;
+}
+.mp {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  transition: transform .6s ease;
+}
+.mp-wide {
+  grid-column: span 2;
+  height: 110px;
+}
+.hsf-mosaic-dark .mp {
+  filter: brightness(.78) contrast(1.12) saturate(0.5);
+}
+.hsf-mosaic-idol .mp {
+  filter: brightness(1.02) saturate(1.2) contrast(.96);
 }
