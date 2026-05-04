@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<title>YGGDRASILL — Coming Soon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700;900&family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+SC:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Italiana&family=Marcellus&family=Marcellus+SC&family=Shippori+Mincho:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night-bg:    #0B0710;
+    --night-2:     #1A0F22;
+    --gold:        #C9A961;
+    --gold-bright: #E8CB85;
+    --gold-dim:    rgba(201,169,97,.35);
+    --cream:       #F5EFE0;
+    --cream-sub:   rgba(245,239,224,.7);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{
+    background:var(--night-bg);
+    color:var(--cream);
+    font-family:"Cinzel",serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  body{
+    max-width:480px;
+    margin:0 auto;
+    position:relative;
+    min-height:100vh;
+  }
+
+  /* ========== STAGE：1画面完結 ========== */
+  .stage{
+    position:relative;
+    height:100vh;
+    min-height:680px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* 動画は2分割（左：朝 / 右：夜）で全画面 */
+  .video-split{
+    position:absolute;
+    inset:0;
+    z-index:0;
+    display:flex;
+  }
+  .video-half{
+    flex:1;
+    position:relative;
+    overflow:hidden;
+  }
+  .video-half video{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    pointer-events:none;
+  }
+  /* 朝側だけ少し明るく */
+  .video-half.morning video{
+    filter:saturate(1.05) brightness(1.0);
+  }
+  .video-half.night video{
+    filter:saturate(.9) brightness(.85);
+  }
+
+  /* オーバーレイ（読みやすさ確保のため上に薄黒を重ねる） */
+  .overlay{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    background:
+      radial-gradient(ellipse at center, rgba(0,0,0,.15) 0%, rgba(0,0,0,.55) 100%),
+      linear-gradient(180deg, rgba(0,0,0,.3) 0%, rgba(0,0,0,.1) 30%, rgba(0,0,0,.65) 100%);
+  }
+
+  /* 中央の縦の境界線（朝と夜を分ける） */
+  .divider{
+    position:absolute;
+    top:0;bottom:0;
+    left:50%;
+    width:1px;
+    background:linear-gradient(180deg,
+      transparent 0%,
+      rgba(201,169,97,.3) 15%,
+      var(--gold) 50%,
+      rgba(201,169,97,.3) 85%,
+      transparent 100%);
+    z-index:2;
+    transform:translateX(-50%);
+  }
+
+  /* 中央コンテンツ */
+  .content{
+    position:relative;
+    z-index:3;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:space-between;
+    padding:40px 24px 32px;
+    text-align:center;
+  }
+
+  /* 上：Coming Soon */
+  .top-tag{
+    display:inline-block;
+    color:var(--gold-bright);
+    font-size:10px;
+    letter-spacing:.5em;
+    text-transform:uppercase;
+    font-weight:700;
+    text-indent:.5em;
+    border:1px solid var(--gold);
+    padding:8px 22px;
+    background:rgba(11,7,16,.7);
+    backdrop-filter:blur(6px);
+  }
+
+  /* 中央：ロゴ */
+  .center-logo{
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+  }
+  /* 上：GROUP YGGDRASILL（細い字、字間広め） */
+  .center-logo .group-name{
+    font-family:"Cormorant SC","Cinzel",serif;
+    font-weight:500;
+    font-size:10.5px;
+    letter-spacing:.55em;
+    color:var(--gold-bright);
+    text-indent:.55em;
+    margin-bottom:8px;
+    text-shadow:0 0 10px rgba(0,0,0,.6);
+  }
+  /* メイン：YGD（全部大文字、Gだけ小さい） */
+  .center-logo .ygd{
+    font-family:"Cormorant Garamond","Cinzel",serif;
+    font-weight:500;
+    line-height:1;
+    color:var(--gold-bright);
+    letter-spacing:.06em;
+    margin-bottom:18px;
+    text-shadow:
+      0 0 32px rgba(0,0,0,.7),
+      0 0 22px rgba(201,169,97,.55),
+      0 1px 0 rgba(232,203,133,.4);
+    /* block要素として中央寄せ、内部はflexで横並びベースライン揃え */
+    display:flex;
+    justify-content:center;
+    align-items:baseline;
+    gap:.04em;
+  }
+  .center-logo .ygd .y,
+  .center-logo .ygd .d{
+    font-size:72px;
+    font-weight:500;
+  }
+  .center-logo .ygd .g-small{
+    font-size:40px;
+    font-weight:500;
+    transform:translateY(-2px);
+  }
+  /* 下：ティザー用タグライン */
+  .center-logo .tagline{
+    font-family:"Shippori Mincho","Cormorant SC",serif;
+    font-weight:700;
+    font-size:16px;
+    color:var(--cream);
+    letter-spacing:.18em;
+    text-indent:.18em;
+    text-shadow:
+      0 0 14px rgba(0,0,0,.7),
+      0 0 8px rgba(201,169,97,.25);
+    margin-bottom:30px;
+    /* 上下に細い金線で挟んで主役感を出す */
+    padding:10px 18px;
+    border-top:1px solid var(--gold-dim);
+    border-bottom:1px solid var(--gold-dim);
+    display:inline-block;
+    white-space:nowrap;
+  }
+  .center-logo .tagline em{
+    font-family:"Shippori Mincho",serif;
+    font-style:normal;
+    font-weight:900;
+    color:var(--gold-bright);
+    font-size:1.15em;
+    margin:0 .04em;
+  }
+
+  /* カウントダウン */
+  .countdown-min{
+    display:flex;
+    gap:16px;
+    justify-content:center;
+    align-items:flex-end;
+  }
+  .cd-min{
+    text-align:center;
+    min-width:48px;
+  }
+  .cd-min .num{
+    /* 細すぎず太すぎず、読みやすいセリフ */
+    font-family:"Cormorant Garamond",serif;
+    font-weight:500;
+    font-size:38px;
+    color:var(--gold-bright);
+    line-height:1;
+    letter-spacing:.02em;
+    text-shadow:
+      0 0 16px rgba(0,0,0,.85),
+      0 0 6px rgba(201,169,97,.3);
+  }
+  .cd-min .unit{
+    font-family:"Cormorant SC",serif;
+    font-size:9px;
+    letter-spacing:.4em;
+    color:var(--cream-sub);
+    margin-top:6px;
+    text-transform:uppercase;
+    text-indent:.4em;
+    font-weight:500;
+  }
+  .cd-divider{
+    color:var(--gold-dim);
+    font-family:"Cormorant Garamond",serif;
+    font-size:30px;
+    font-weight:400;
+    line-height:1.3;
+  }
+
+  .release-line{
+    margin-top:20px;
+    font-family:"Cormorant Garamond",serif;
+    font-size:14px;
+    letter-spacing:.42em;
+    color:var(--gold);
+    text-indent:.42em;
+    font-weight:500;
+  }
+
+  /* 下：CTA */
+  .bottom-cta{
+    width:100%;
+    max-width:340px;
+    text-align:center;
+  }
+  .line-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    background:#06C755;
+    color:var(--cream);
+    padding:18px 24px;
+    font-family:"Cinzel",serif;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.3em;
+    text-transform:uppercase;
+    text-indent:.3em;
+    border:1px solid #06C755;
+    box-shadow:0 0 30px rgba(6,199,85,.25);
+    width:100%;
+  }
+  .perk{
+    display:inline-block;
+    margin-top:16px;
+    background:var(--gold);
+    color:var(--night-bg);
+    padding:9px 22px;
+    font-family:"Shippori Mincho",serif;
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:.18em;
+    text-indent:.18em;
+    border-radius:999px;
+    box-shadow:
+      0 4px 18px rgba(201,169,97,.4),
+      0 0 0 1px rgba(232,203,133,.3);
+  }
+  .perk::before{
+    content:"★";
+    margin-right:8px;
+    color:var(--night-bg);
+    font-size:13px;
+  }
+
+  /* フッター */
+  .foot{
+    text-align:center;
+    padding:14px 0;
+    font-size:8.5px;
+    letter-spacing:.35em;
+    color:var(--cream-sub);
+    background:var(--night-bg);
+    text-transform:uppercase;
+    text-indent:.35em;
+    font-weight:500;
+    border-top:1px solid var(--gold-dim);
+  }
+</style>
+</head>
+<body>
+
+  <!-- 1画面完結のステージ -->
+  <section class="stage">
+
+    <!-- 動画2分割 -->
+    <div class="video-split">
+      <div class="video-half morning">
+        <video autoplay muted loop playsinline preload="auto">
+          <source src="https://github.com/iiiiwwww1207-creator/VALHALLA/releases/download/teaser-v1/valhalla_morning.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="video-half night">
+        <video autoplay muted loop playsinline preload="auto">
+          <source src="https://github.com/iiiiwwww1207-creator/VALHALLA/releases/download/teaser-v1/valhalla_night.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+
+    <div class="overlay"></div>
+    <div class="divider"></div>
+
+    <!-- コンテンツ -->
+    <div class="content">
+
+      <!-- 上 -->
+      <div class="top-tag">Coming Soon</div>
+
+      <!-- 中央 -->
+      <div class="center-logo">
+
+        <div class="group-name">GROUP YGGDRASILL</div>
+        <div class="ygd">
+          <span class="y">Y</span><span class="g-small">G</span><span class="d">D</span>
+        </div>
+        <div class="tagline"><em>2</em>つのアプリ、リリース予定</div>
+
+        <div class="countdown-min">
+          <div class="cd-min">
+            <div class="num" id="cd-days">--</div>
+            <div class="unit">Days</div>
+          </div>
+          <div class="cd-divider">/</div>
+          <div class="cd-min">
+            <div class="num" id="cd-hours">--</div>
+            <div class="unit">Hrs</div>
+          </div>
+          <div class="cd-divider">/</div>
+          <div class="cd-min">
+            <div class="num" id="cd-minutes">--</div>
+            <div class="unit">Min</div>
+          </div>
+          <div class="cd-divider">/</div>
+          <div class="cd-min">
+            <div class="num" id="cd-seconds">--</div>
+            <div class="unit">Sec</div>
+          </div>
+        </div>
+
+        <div class="release-line">2026 . 07 . 01</div>
+      </div>
+
+      <!-- 下 -->
+      <div class="bottom-cta">
+        <a href="https://lin.ee/XXXXXXXX" class="line-btn">
+          ✦ LINE@ 登録 ✦
+        </a>
+        <div class="perk">先行者登録特典あり</div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="foot">© 2026 Group Yggdrasill</div>
+
+<script>
+  const RELEASE_DATE = new Date("2026-07-01T00:00:00+09:00");
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function updateCountdown(){
+    const now = new Date();
+    const diff = RELEASE_DATE - now;
+    if(diff <= 0){
+      ['cd-days','cd-hours','cd-minutes','cd-seconds'].forEach(id=>{
+        document.getElementById(id).textContent = '00';
+      });
+      return;
+    }
+    document.getElementById('cd-days').textContent = pad(Math.floor(diff/86400000));
+    document.getElementById('cd-hours').textContent = pad(Math.floor((diff/3600000)%24));
+    document.getElementById('cd-minutes').textContent = pad(Math.floor((diff/60000)%60));
+    document.getElementById('cd-seconds').textContent = pad(Math.floor((diff/1000)%60));
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>
+</body>
+</html>
