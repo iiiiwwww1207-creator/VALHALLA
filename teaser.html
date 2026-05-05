@@ -298,6 +298,126 @@
     font-size:13px;
   }
 
+  /* ========== タロットセクション ========== */
+  .tarot-section{
+    background:var(--night-2);
+    padding:48px 24px 52px;
+    text-align:center;
+    border-top:1px solid var(--gold-dim);
+    position:relative;
+    overflow:hidden;
+  }
+  .tarot-section::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(ellipse at 50% 0%, rgba(201,169,97,.08) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .tarot-eyebrow{
+    font-family:"Cormorant SC","Cinzel",serif;
+    font-size:9.5px;
+    letter-spacing:.55em;
+    color:var(--gold);
+    text-transform:uppercase;
+    text-indent:.55em;
+    margin-bottom:18px;
+    opacity:.85;
+  }
+  .tarot-title{
+    font-family:"Shippori Mincho",serif;
+    font-size:22px;
+    font-weight:700;
+    color:var(--cream);
+    letter-spacing:.12em;
+    line-height:1.55;
+    margin-bottom:10px;
+  }
+  .tarot-title span{
+    color:var(--gold-bright);
+  }
+  .tarot-desc{
+    font-family:"Shippori Mincho",serif;
+    font-size:12.5px;
+    color:var(--cream-sub);
+    line-height:1.9;
+    letter-spacing:.06em;
+    margin-bottom:32px;
+    max-width:300px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  /* カード3枚の飾り */
+  .tarot-cards{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:30px;
+  }
+  .tarot-card{
+    width:54px;
+    height:90px;
+    border:1px solid var(--gold-dim);
+    border-radius:4px;
+    background:linear-gradient(160deg, rgba(201,169,97,.07) 0%, rgba(26,15,34,.9) 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:26px;
+    box-shadow:0 4px 20px rgba(0,0,0,.5), 0 0 0 1px rgba(201,169,97,.1);
+    transition:transform .3s ease;
+  }
+  .tarot-card:nth-child(1){ transform:rotate(-8deg) translateY(4px); }
+  .tarot-card:nth-child(2){ transform:rotate(0deg) translateY(-4px); z-index:1; }
+  .tarot-card:nth-child(3){ transform:rotate(8deg) translateY(4px); }
+  .tarot-badge{
+    display:inline-block;
+    background:rgba(201,169,97,.12);
+    border:1px solid var(--gold-dim);
+    color:var(--gold-bright);
+    font-family:"Cinzel",serif;
+    font-size:9px;
+    letter-spacing:.35em;
+    text-indent:.35em;
+    padding:5px 14px;
+    border-radius:999px;
+    margin-bottom:20px;
+  }
+  .tarot-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    width:100%;
+    max-width:300px;
+    margin:0 auto;
+    padding:17px 24px;
+    background:linear-gradient(135deg, rgba(201,169,97,.15) 0%, rgba(201,169,97,.08) 100%);
+    border:1px solid var(--gold);
+    color:var(--gold-bright);
+    font-family:"Cinzel",serif;
+    font-size:11.5px;
+    font-weight:700;
+    letter-spacing:.3em;
+    text-indent:.3em;
+    text-decoration:none;
+    box-shadow:0 0 24px rgba(201,169,97,.15), inset 0 1px 0 rgba(232,203,133,.15);
+    cursor:pointer;
+    transition:all .2s ease;
+  }
+  .tarot-btn:hover{
+    background:linear-gradient(135deg, rgba(201,169,97,.25) 0%, rgba(201,169,97,.15) 100%);
+    box-shadow:0 0 36px rgba(201,169,97,.3), inset 0 1px 0 rgba(232,203,133,.2);
+  }
+  .tarot-sub{
+    margin-top:14px;
+    font-family:"Shippori Mincho",serif;
+    font-size:11px;
+    color:var(--cream-sub);
+    letter-spacing:.1em;
+    opacity:.7;
+  }
+
   /* フッター */
   .foot{
     text-align:center;
@@ -384,6 +504,21 @@
       </div>
 
     </div>
+  </section>
+
+  <!-- タロット占いセクション -->
+  <section class="tarot-section">
+    <div class="tarot-eyebrow">✦ New Feature ✦</div>
+    <h2 class="tarot-title">タロット占いで<br><span>運命のホスト</span>を知る</h2>
+    <p class="tarot-desc">カードが導く、今夜の出会い。<br>あなただけの運命を読み解く<br>タロット診断が体験できます。</p>
+    <div class="tarot-cards">
+      <div class="tarot-card">🌙</div>
+      <div class="tarot-card">⭐</div>
+      <div class="tarot-card">🔮</div>
+    </div>
+    <div class="tarot-badge">Demo Coming Soon</div><br>
+    <a href="#" class="tarot-btn">✦ タロット占いを試す ✦</a>
+    <p class="tarot-sub">※ デモ版・本実装はアプリリリース時</p>
   </section>
 
   <div class="foot">© 2026 Group Yggdrasill</div>
