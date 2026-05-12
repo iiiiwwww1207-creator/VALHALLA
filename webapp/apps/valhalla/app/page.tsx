@@ -60,8 +60,11 @@ const CREAM_FAINT = 'rgba(245,239,224,0.35)';
 const DARK = '#07050A';
 const GOLD_BRIGHT = '#E8CB85';
 
+// GitHub Pages では /VALHALLA/ プレフィックスが必要
+const BASE = process.env.NODE_ENV === 'production' ? '/VALHALLA' : '';
+
 // キャスト写真（画像あるものだけ）をシャッフルして使う
-const CAST_IMAGES = CAST_PUBLIC.filter(c => c.image).map(c => c.image);
+const CAST_IMAGES = CAST_PUBLIC.filter(c => c.image).map(c => `${BASE}${c.image}`);
 
 // マーキー用に十分な枚数に複製
 function buildRow(offset: number, count: number) {
