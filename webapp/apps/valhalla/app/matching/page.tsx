@@ -15,7 +15,7 @@
 //   - キャストの誕生日には触れない設計
 // ============================================================
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { CAST_PUBLIC, type CastPublic } from '../../src/data/cast-public';
@@ -91,20 +91,100 @@ const LP_DESC: Record<number, string> = {
   9: '博愛的で慈悲深く、人々を導く智慧の持ち主',
 };
 
+// ── ドラムロールピッカー ──────────────────────────────────
+const ITEM_H = 48; // 1行の高さ(px)
+
+function DrumPicker({ items, value, onChange, label }: {
+  items: string[];
+  value: string;
+  onChange: (v: string) => void;
+  label: string;
+}) {
+  const listRef = React.useRef<HTMLDivElement>(null);
+  const idx = items.indexOf(value);
+
+  // 選択中インデックスへスクロール
+  React.useEffect(() => {
+    if (!listRef.current) return;
+    const target = (idx < 0 ? 0 : idx) * ITEM_H;
+    listRef.current.scrollTo({ top: target, behavior: 'smooth' });
+  }, [idx]);
+
+  function onScroll() {
+    if (!listRef.current) return;
+    const i = Math.round(listRef.current.scrollTop / ITEM_H);
+    const clamped = Math.max(0, Math.min(items.length - 1, i));
+    if (items[clamped] !== value) onChange(items[clamped]);
+  }
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
+      <p style={{ fontSize: '9px', letterSpacing: '0.4em', color: GOLD_DIM, textTransform: 'uppercase', fontFamily: 'var(--font-cinzel)', marginBottom: '8px' }}>{label}</p>
+      <div style={{ position: 'relative', width: '100%' }}>
+        {/* 上下フェード */}
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: `${ITEM_H}px`, background: `linear-gradient(to bottom, rgba(7,5,10,0.95), transparent)`, zIndex: 2, pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: `${ITEM_H}px`, background: `linear-gradient(to top, rgba(7,5,10,0.95), transparent)`, zIndex: 2, pointerEvents: 'none' }} />
+        {/* 選択枠 */}
+        <div style={{ position: 'absolute', top: `${ITEM_H}px`, left: 0, right: 0, height: `${ITEM_H}px`, border: '1px solid rgba(201,169,97,0.5)', background: 'rgba(201,169,97,0.06)', zIndex: 1, pointerEvents: 'none' }} />
+        {/* スクロール領域 */}
+        <div
+          ref={listRef}
+          onScroll={onScroll}
+          style={{
+            height: `${ITEM_H * 3}px`,
+            overflowY: 'scroll',
+            scrollSnapType: 'y mandatory',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+          }}
+        >
+          {/* 上パディング */}
+          <div style={{ height: `${ITEM_H}px` }} />
+          {items.map(item => (
+            <div
+              key={item}
+              onClick={() => onChange(item)}
+              style={{
+                height: `${ITEM_H}px`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                scrollSnapAlign: 'center',
+                fontSize: item === value ? '22px' : '16px',
+                fontWeight: item === value ? 700 : 400,
+                color: item === value ? GOLD_BRIGHT : 'rgba(245,239,224,0.3)',
+                fontFamily: 'var(--font-cinzel)',
+                letterSpacing: '0.05em',
+                cursor: 'pointer',
+                transition: 'all 0.15s',
+              }}
+            >
+              {item}
+            </div>
+          ))}
+          {/* 下パディング */}
+          <div style={{ height: `${ITEM_H}px` }} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── コンポーネント ────────────────────────────────────────
 type Step = 'input' | 'result';
 
+const YEARS  = Array.from({ length: 2010 - 1980 + 1 }, (_, i) => String(1980 + i));
+const MONTHS = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0'));
+const DAYS   = Array.from({ length: 31 }, (_, i) => String(i + 1).padStart(2, '0'));
+
 export default function MatchingPage() {
-  const [year, setYear] = useState('');
-  const [month, setMonth] = useState('');
-  const [day, setDay] = useState('');
+  const [year, setYear] = useState('1995');
+  const [month, setMonth] = useState('01');
+  const [day, setDay] = useState('01');
   const [step, setStep] = useState<Step>('input');
   const [results, setResults] = useState<{ cast: CastPublic; score: number; rank: number }[]>([]);
   const [lifePathNum, setLifePathNum] = useState(0);
   const [revealed, setRevealed] = useState<number[]>([]);
 
-  const isValid = year.length === 4 && month.length >= 1 && day.length >= 1
-    && Number(year) >= 1940 && Number(year) <= 2010
+  const isValid = Number(year) >= 1980 && Number(year) <= 2010
     && Number(month) >= 1 && Number(month) <= 12
     && Number(day) >= 1 && Number(day) <= 31;
 
@@ -263,77 +343,31 @@ function InputSection({
   return (
     <div>
       {/* 説明文 */}
-      <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
         <p style={{ fontSize: '12px', color: CREAM_DIM, lineHeight: '28px', letterSpacing: '0.05em' }}>
-          生年月日を入力してください<br />
+          生年月日を選択してください<br />
           数秘術があなたにとって<br />
           <span style={{ color: GOLD_BRIGHT }}>最も相性の良いキャスト</span>を導き出します
         </p>
       </div>
 
-      {/* 入力フォーム */}
-      <div style={{ border: '1px solid rgba(201,169,97,0.25)', padding: '32px 24px', marginBottom: '32px', background: 'linear-gradient(160deg, rgba(255,255,255,0.02), rgba(26,15,34,0.6))' }}>
-        <p style={{ fontSize: '9px', letterSpacing: '0.5em', color: GOLD_DIM, textTransform: 'uppercase', marginBottom: '24px', textAlign: 'center', fontFamily: 'var(--font-cinzel)' }}>Birth Date</p>
-
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: '12px' }}>
-          {/* 年 */}
-          <div>
-            <label style={{ display: 'block', fontSize: '9px', letterSpacing: '0.3em', color: GOLD_DIM, marginBottom: '8px', textTransform: 'uppercase', fontFamily: 'var(--font-cinzel)' }}>Year</label>
-            <input
-              type="number"
-              placeholder="1995"
-              value={year}
-              onChange={e => setYear(e.target.value)}
-              style={{
-                width: '100%', boxSizing: 'border-box',
-                background: 'rgba(201,169,97,0.05)',
-                border: '1px solid rgba(201,169,97,0.3)',
-                color: CREAM, fontSize: '18px', fontWeight: 700,
-                padding: '12px 10px', textAlign: 'center',
-                outline: 'none', fontFamily: 'var(--font-cinzel)',
-                letterSpacing: '0.05em',
-              }}
-            />
-          </div>
-          {/* 月 */}
-          <div>
-            <label style={{ display: 'block', fontSize: '9px', letterSpacing: '0.3em', color: GOLD_DIM, marginBottom: '8px', textTransform: 'uppercase', fontFamily: 'var(--font-cinzel)' }}>Mon</label>
-            <input
-              type="number"
-              placeholder="7"
-              min={1} max={12}
-              value={month}
-              onChange={e => setMonth(e.target.value)}
-              style={{
-                width: '100%', boxSizing: 'border-box',
-                background: 'rgba(201,169,97,0.05)',
-                border: '1px solid rgba(201,169,97,0.3)',
-                color: CREAM, fontSize: '18px', fontWeight: 700,
-                padding: '12px 6px', textAlign: 'center',
-                outline: 'none', fontFamily: 'var(--font-cinzel)',
-              }}
-            />
-          </div>
-          {/* 日 */}
-          <div>
-            <label style={{ display: 'block', fontSize: '9px', letterSpacing: '0.3em', color: GOLD_DIM, marginBottom: '8px', textTransform: 'uppercase', fontFamily: 'var(--font-cinzel)' }}>Day</label>
-            <input
-              type="number"
-              placeholder="22"
-              min={1} max={31}
-              value={day}
-              onChange={e => setDay(e.target.value)}
-              style={{
-                width: '100%', boxSizing: 'border-box',
-                background: 'rgba(201,169,97,0.05)',
-                border: '1px solid rgba(201,169,97,0.3)',
-                color: CREAM, fontSize: '18px', fontWeight: 700,
-                padding: '12px 6px', textAlign: 'center',
-                outline: 'none', fontFamily: 'var(--font-cinzel)',
-              }}
-            />
-          </div>
+      {/* ドラムロールピッカー */}
+      <div style={{ border: '1px solid rgba(201,169,97,0.25)', padding: '24px 16px 32px', marginBottom: '32px', background: 'linear-gradient(160deg, rgba(255,255,255,0.02), rgba(26,15,34,0.6))' }}>
+        <p style={{ fontSize: '9px', letterSpacing: '0.5em', color: GOLD_DIM, textTransform: 'uppercase', marginBottom: '20px', textAlign: 'center', fontFamily: 'var(--font-cinzel)' }}>Birth Date</p>
+        <style>{`
+          div::-webkit-scrollbar { display: none; }
+        `}</style>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+          <DrumPicker items={YEARS}  value={year}  onChange={setYear}  label="Year" />
+          <div style={{ paddingTop: '68px', color: 'rgba(201,169,97,0.4)', fontSize: '18px', flexShrink: 0 }}>/</div>
+          <DrumPicker items={MONTHS} value={month} onChange={setMonth} label="Month" />
+          <div style={{ paddingTop: '68px', color: 'rgba(201,169,97,0.4)', fontSize: '18px', flexShrink: 0 }}>/</div>
+          <DrumPicker items={DAYS}   value={day}   onChange={setDay}   label="Day" />
         </div>
+        {/* 選択中の日付表示 */}
+        <p style={{ textAlign: 'center', marginTop: '16px', fontSize: '11px', color: 'rgba(201,169,97,0.5)', letterSpacing: '0.2em', fontFamily: 'var(--font-cinzel)' }}>
+          {year} / {month} / {day}
+        </p>
       </div>
 
       {/* 診断ボタン */}
