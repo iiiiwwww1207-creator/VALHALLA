@@ -139,8 +139,8 @@ export default function HomePage() {
                 <Link href={f.href} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
                   <div style={{ position: 'relative', overflow: 'hidden', borderTop: `1px solid rgba(201,169,97,0.2)`, ...(i === features.length - 1 && !f.bridge ? { borderBottom: `1px solid rgba(201,169,97,0.2)` } : {}) }}>
 
-                    {/* ===== 写真マーキー背景 ===== */}
-                    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
+                    {/* ===== 写真マーキー背景（相性診断のみ） ===== */}
+                    {f.id === 'matching' && <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
                       {/* 3列の写真ストリップ */}
                       {[
                         { row: row1, cls: 'mq-left',  top: '0%' },
@@ -166,7 +166,7 @@ export default function HomePage() {
                       <div style={{ position: 'absolute', inset: 0, background: 'rgba(7,5,10,0.62)' }} />
                       {/* 左右グラデフェード */}
                       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(7,5,10,0.7) 0%, transparent 20%, transparent 80%, rgba(7,5,10,0.7) 100%)' }} />
-                    </div>
+                    </div>}
 
                     {/* 背景番号 */}
                     <div style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', fontSize: '90px', fontWeight: 700, color: 'rgba(201,169,97,0.06)', lineHeight: 1, userSelect: 'none', pointerEvents: 'none', fontFamily: 'var(--font-cinzel)', zIndex: 1, ...(isRight ? { right: '12px' } : { left: '12px' }) }}>
