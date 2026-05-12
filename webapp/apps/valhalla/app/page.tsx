@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { CAST_PUBLIC } from '../src/data/cast-public';
 
 const features = [
   {
@@ -59,7 +60,21 @@ const CREAM_FAINT = 'rgba(245,239,224,0.35)';
 const DARK = '#07050A';
 const GOLD_BRIGHT = '#E8CB85';
 
+// キャスト写真（画像あるものだけ）をシャッフルして使う
+const CAST_IMAGES = CAST_PUBLIC.filter(c => c.image).map(c => c.image);
+
+// マーキー用に十分な枚数に複製
+function buildRow(offset: number, count: number) {
+  const all = [...CAST_IMAGES].sort(() => (offset * 17 + 7) % 3 - 1);
+  const repeated: string[] = [];
+  while (repeated.length < count) repeated.push(...all);
+  return repeated.slice(0, count);
+}
+
 export default function HomePage() {
+  const row1 = buildRow(0, 30);
+  const row2 = buildRow(1, 30);
+  const row3 = buildRow(2, 30);
   return (
     <main style={{ minHeight: '100dvh', backgroundColor: DARK, color: CREAM, overflowX: 'hidden', fontFamily: 'var(--font-body)' }}>
 
@@ -99,6 +114,14 @@ export default function HomePage() {
         </div>
       </section>
 
+      <style>{`
+        @keyframes mqLeft  { 0% { transform: translateX(0); }    100% { transform: translateX(-50%); } }
+        @keyframes mqRight { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+        .mq-left   { animation: mqLeft  45s linear infinite; display: flex; gap: 4px; width: max-content; }
+        .mq-left2  { animation: mqLeft  60s linear infinite; display: flex; gap: 4px; width: max-content; }
+        .mq-right  { animation: mqRight 52s linear infinite; display: flex; gap: 4px; width: max-content; }
+      `}</style>
+
       {/* ===== MENU ===== */}
       <section style={{ maxWidth: '480px', margin: '0 auto', backgroundColor: DARK }}>
         <div style={{ height: '1px', background: 'linear-gradient(to right, transparent, rgba(201,169,97,0.4), transparent)' }} />
@@ -116,12 +139,41 @@ export default function HomePage() {
                 <Link href={f.href} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
                   <div style={{ position: 'relative', overflow: 'hidden', borderTop: `1px solid rgba(201,169,97,0.2)`, ...(i === features.length - 1 && !f.bridge ? { borderBottom: `1px solid rgba(201,169,97,0.2)` } : {}) }}>
 
+                    {/* ===== 写真マーキー背景 ===== */}
+                    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
+                      {/* 3列の写真ストリップ */}
+                      {[
+                        { row: row1, cls: 'mq-left',  top: '0%' },
+                        { row: row2, cls: 'mq-right', top: '33.33%' },
+                        { row: row3, cls: 'mq-left2', top: '66.66%' },
+                      ].map(({ row, cls, top }) => (
+                        <div key={top} style={{ position: 'absolute', left: 0, top, width: '100%', height: '33.34%', overflow: 'hidden' }}>
+                          <div className={cls}>
+                            {[...row, ...row].map((img, idx) => (
+                              <div key={idx} style={{ flexShrink: 0, width: '60px', height: '100%' }}>
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                  src={img}
+                                  alt=""
+                                  style={{ width: '60px', height: '100%', objectFit: 'cover', objectPosition: 'center 15%', display: 'block' }}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                      {/* ダークオーバーレイ */}
+                      <div style={{ position: 'absolute', inset: 0, background: 'rgba(7,5,10,0.62)' }} />
+                      {/* 左右グラデフェード */}
+                      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(7,5,10,0.7) 0%, transparent 20%, transparent 80%, rgba(7,5,10,0.7) 100%)' }} />
+                    </div>
+
                     {/* 背景番号 */}
-                    <div style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', fontSize: '90px', fontWeight: 700, color: 'rgba(201,169,97,0.04)', lineHeight: 1, userSelect: 'none', pointerEvents: 'none', fontFamily: 'var(--font-cinzel)', ...(isRight ? { right: '12px' } : { left: '12px' }) }}>
+                    <div style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', fontSize: '90px', fontWeight: 700, color: 'rgba(201,169,97,0.06)', lineHeight: 1, userSelect: 'none', pointerEvents: 'none', fontFamily: 'var(--font-cinzel)', zIndex: 1, ...(isRight ? { right: '12px' } : { left: '12px' }) }}>
                       {f.num}
                     </div>
 
-                    <div style={{ position: 'relative', padding: '28px 24px', display: 'flex', flexDirection: 'column', ...(isRight ? { alignItems: 'flex-end', textAlign: 'right' } : { alignItems: 'flex-start', textAlign: 'left' }) }}>
+                    <div style={{ position: 'relative', zIndex: 2, padding: '28px 24px', display: 'flex', flexDirection: 'column', ...(isRight ? { alignItems: 'flex-end', textAlign: 'right' } : { alignItems: 'flex-start', textAlign: 'left' }) }}>
 
                       {/* ENラベル＋番号 */}
                       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px', ...(isRight ? { flexDirection: 'row-reverse' } : {}) }}>
@@ -148,7 +200,7 @@ export default function HomePage() {
                     </div>
 
                     {/* アクセントライン */}
-                    <div style={{ position: 'absolute', top: 0, bottom: 0, width: '2px', background: 'linear-gradient(to bottom, transparent, rgba(201,169,97,0.4), transparent)', ...(isRight ? { right: 0 } : { left: 0 }) }} />
+                    <div style={{ position: 'absolute', top: 0, bottom: 0, width: '2px', zIndex: 3, background: 'linear-gradient(to bottom, transparent, rgba(201,169,97,0.4), transparent)', ...(isRight ? { right: 0 } : { left: 0 }) }} />
                   </div>
                 </Link>
 
