@@ -173,51 +173,47 @@ export default function MatchingPage() {
         </div>
 
         {/* ── ヘッダー（写真流れる背景付き）── */}
-        <div style={{ position: 'relative', textAlign: 'center', paddingTop: '32px', paddingBottom: '40px', overflow: 'hidden', margin: '0 -20px' }}>
+        <div style={{ position: 'relative', textAlign: 'center', paddingTop: '48px', paddingBottom: '48px', overflow: 'hidden', margin: '0 -20px' }}>
 
           {/* 流れる写真 3行 */}
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', gap: '4px', opacity: 0.18, pointerEvents: 'none' }}>
+          <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', gap: '3px', pointerEvents: 'none' }}>
             {/* 1行目: 左へ */}
-            <div style={{ display: 'flex', gap: '4px', overflow: 'hidden', flex: 1 }}>
-              <div className="marquee-left" style={{ display: 'flex', gap: '4px', flexShrink: 0 }}>
+            <div style={{ display: 'flex', gap: '3px', overflow: 'hidden', flex: 1 }}>
+              <div className="marquee-left" style={{ display: 'flex', gap: '3px', flexShrink: 0 }}>
                 {row1.map((img, i) => (
-                  <div key={i} style={{ width: '56px', flexShrink: 0, height: '100%' }}>
-                    <img src={img} alt="" style={{ width: '56px', height: '100%', objectFit: 'cover', display: 'block' }} />
-                  </div>
+                  <img key={i} src={img} alt="" style={{ width: '72px', flexShrink: 0, height: '100%', objectFit: 'cover', display: 'block' }} />
                 ))}
               </div>
             </div>
             {/* 2行目: 右へ */}
-            <div style={{ display: 'flex', gap: '4px', overflow: 'hidden', flex: 1 }}>
-              <div className="marquee-right" style={{ display: 'flex', gap: '4px', flexShrink: 0 }}>
+            <div style={{ display: 'flex', gap: '3px', overflow: 'hidden', flex: 1 }}>
+              <div className="marquee-right" style={{ display: 'flex', gap: '3px', flexShrink: 0 }}>
                 {row2.map((img, i) => (
-                  <div key={i} style={{ width: '56px', flexShrink: 0, height: '100%' }}>
-                    <img src={img} alt="" style={{ width: '56px', height: '100%', objectFit: 'cover', display: 'block' }} />
-                  </div>
+                  <img key={i} src={img} alt="" style={{ width: '72px', flexShrink: 0, height: '100%', objectFit: 'cover', display: 'block' }} />
                 ))}
               </div>
             </div>
             {/* 3行目: 左へ（速度違う） */}
-            <div style={{ display: 'flex', gap: '4px', overflow: 'hidden', flex: 1 }}>
-              <div className="marquee-left2" style={{ display: 'flex', gap: '4px', flexShrink: 0 }}>
+            <div style={{ display: 'flex', gap: '3px', overflow: 'hidden', flex: 1 }}>
+              <div className="marquee-left2" style={{ display: 'flex', gap: '3px', flexShrink: 0 }}>
                 {row3.map((img, i) => (
-                  <div key={i} style={{ width: '56px', flexShrink: 0, height: '100%' }}>
-                    <img src={img} alt="" style={{ width: '56px', height: '100%', objectFit: 'cover', display: 'block' }} />
-                  </div>
+                  <img key={i} src={img} alt="" style={{ width: '72px', flexShrink: 0, height: '100%', objectFit: 'cover', display: 'block' }} />
                 ))}
               </div>
             </div>
           </div>
 
-          {/* 上下グラデーションオーバーレイ */}
-          <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(to bottom, ${DARK} 0%, transparent 25%, transparent 75%, ${DARK} 100%)`, pointerEvents: 'none' }} />
-          {/* 暗めオーバーレイ（文字を読みやすく） */}
-          <div style={{ position: 'absolute', inset: 0, background: 'rgba(7,5,10,0.5)', pointerEvents: 'none' }} />
+          {/* 全体に薄暗いオーバーレイ */}
+          <div style={{ position: 'absolute', inset: 0, background: 'rgba(7,5,10,0.55)', pointerEvents: 'none' }} />
+          {/* 上下グラデーション（端をなじませる） */}
+          <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(to bottom, ${DARK} 0%, transparent 20%, transparent 80%, ${DARK} 100%)`, pointerEvents: 'none' }} />
+          {/* テキスト中央部だけさらに暗くして読みやすく */}
+          <div style={{ position: 'absolute', left: 0, right: 0, top: '30%', bottom: '30%', background: 'rgba(7,5,10,0.4)', pointerEvents: 'none' }} />
 
           {/* テキスト */}
           <div style={{ position: 'relative', zIndex: 2 }}>
             <p style={{ fontSize: '9px', letterSpacing: '0.6em', color: GOLD, marginBottom: '12px', textTransform: 'uppercase', fontFamily: 'var(--font-cinzel)' }}>Compatibility</p>
-            <h1 style={{ fontSize: '28px', fontWeight: 700, color: GOLD_BRIGHT, fontFamily: 'var(--font-cinzel)', letterSpacing: '0.1em', marginBottom: '12px', textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+            <h1 style={{ fontSize: '28px', fontWeight: 700, color: GOLD_BRIGHT, fontFamily: 'var(--font-cinzel)', letterSpacing: '0.1em', marginBottom: '12px', textShadow: '0 0 30px rgba(0,0,0,1), 0 2px 8px rgba(0,0,0,0.9)' }}>
               相性診断
             </h1>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', justifyContent: 'center' }}>
