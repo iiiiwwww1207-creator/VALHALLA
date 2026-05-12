@@ -34,12 +34,8 @@ jobs:
         run: pnpm install
         working-directory: webapp
 
-      - name: Build shared package
-        run: pnpm build --filter=@yggdra/shared
-        working-directory: webapp
-
       - name: Build
-        run: pnpm build --filter=@yggdra/valhalla
+        run: pnpm build --filter=@yggdra/valhalla --force
         working-directory: webapp
 
       - name: Add .nojekyll
