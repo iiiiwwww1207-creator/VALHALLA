@@ -57,8 +57,8 @@ export const CAST_LIST: CastEntry[] = [
   },
   {
     id: 'nagi_shiraishi', name: '白石 凪', nameOnHosthos: '白石 凪',
-    birthday: '1998-01-22', image: '', imageStatus: 'missing',
-    // ※ ホスホスのURLスラグは "nagi01" → 未ダウンロード
+    birthday: '1998-01-22', image: '/images/cast/nagi01.jpg', imageStatus: 'confirmed',
+    // ※ ホスホスのURLスラグは "nagi01"
   },
   {
     id: 'yoeru', name: 'ヨエル', nameOnHosthos: 'ヨエル',
