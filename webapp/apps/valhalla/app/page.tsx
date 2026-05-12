@@ -92,6 +92,31 @@ export default function HomePage() {
             </video>
           </div>
         </div>
+        {/* 写真マーキー（動画の上、テキストの下） */}
+        <div style={{ position: 'absolute', inset: 0, zIndex: 5, overflow: 'hidden', pointerEvents: 'none' }}>
+          {/* 縦に並ぶ複数列 */}
+          {[
+            { row: row1, cls: 'mq-left',  heightPct: 20 },
+            { row: row2, cls: 'mq-right', heightPct: 20 },
+            { row: row3, cls: 'mq-left2', heightPct: 20 },
+            { row: row1, cls: 'mq-right', heightPct: 20 },
+            { row: row2, cls: 'mq-left',  heightPct: 20 },
+          ].map(({ row, cls, heightPct }, ri) => (
+            <div key={ri} style={{ position: 'absolute', left: 0, top: `${ri * heightPct}%`, width: '100%', height: `${heightPct}%`, overflow: 'hidden' }}>
+              <div className={cls}>
+                {[...row, ...row].map((img, idx) => (
+                  <div key={idx} style={{ flexShrink: 0, width: '56px', height: '100%' }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={img} alt="" style={{ width: '56px', height: '100%', objectFit: 'cover', objectPosition: 'center 15%', display: 'block' }} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+          {/* 暗めのオーバーレイで動画と馴染ませる */}
+          <div style={{ position: 'absolute', inset: 0, background: 'rgba(7,5,10,0.55)' }} />
+        </div>
+
         <div style={{ position: 'absolute', inset: 0, zIndex: 10, background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.5) 100%), linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.05) 30%, rgba(0,0,0,0.85) 100%)' }} />
         <div style={{ position: 'absolute', top: 0, bottom: 0, left: '50%', width: '1px', zIndex: 20, background: 'linear-gradient(180deg, transparent 0%, rgba(201,169,97,0.25) 15%, rgba(201,169,97,0.7) 50%, rgba(201,169,97,0.25) 85%, transparent 100%)', transform: 'translateX(-50%)' }} />
         <div style={{ position: 'relative', zIndex: 30, flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', padding: '56px 24px 40px', maxWidth: '480px', margin: '0 auto', width: '100%' }}>
