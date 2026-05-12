@@ -136,7 +136,7 @@ export default function MatchingPage() {
   }
 
   // GitHub Pages では /VALHALLA/ プレフィックスが必要
-  const BASE = process.env.NODE_ENV === 'production' ? '/VALHALLA' : '';
+  const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
   // 写真ありのキャストだけ抽出してシャッフル
   const photoList = CAST_PUBLIC.filter(c => c.image).map(c => `${BASE}${c.image}`);
   // 3行分のリスト（各行に使う写真を少しずつずらす）

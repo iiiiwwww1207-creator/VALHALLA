@@ -61,7 +61,7 @@ const DARK = '#07050A';
 const GOLD_BRIGHT = '#E8CB85';
 
 // GitHub Pages では /VALHALLA/ プレフィックスが必要
-const BASE = process.env.NODE_ENV === 'production' ? '/VALHALLA' : '';
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 
 // キャスト写真（画像あるものだけ）をシャッフルして使う
 const CAST_IMAGES = CAST_PUBLIC.filter(c => c.image).map(c => `${BASE}${c.image}`);
