@@ -464,11 +464,6 @@ function CastCard({
             <p style={{ fontSize: '16px', fontWeight: 700, color: rank === 1 ? GOLD_BRIGHT : CREAM, marginBottom: '4px', letterSpacing: '0.05em' }}>
               {cast.name}
             </p>
-            {cast.rank > 0 && (
-              <p style={{ fontSize: '9px', color: GOLD_DIM, letterSpacing: '0.3em', fontFamily: 'var(--font-cinzel)' }}>
-                RANK #{cast.rank}
-              </p>
-            )}
           </div>
 
           {/* 相性スコア */}
