@@ -17,7 +17,6 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { CAST_PUBLIC, type CastPublic } from '../../src/data/cast-public';
 
 // ── カラー定数 ──────────────────────────────────────────
@@ -309,6 +308,7 @@ export default function MatchingPage() {
             revealed={revealed}
             onReveal={handleReveal}
             onReset={handleReset}
+            base={BASE}
           />
         )}
       </div>
@@ -419,13 +419,14 @@ function InputSection({
 
 // ── 結果セクション ─────────────────────────────────────────
 function ResultSection({
-  lifePathNum, results, revealed, onReveal, onReset
+  lifePathNum, results, revealed, onReveal, onReset, base
 }: {
   lifePathNum: number;
   results: { cast: CastPublic; score: number; rank: number }[];
   revealed: number[];
   onReveal: (i: number) => void;
   onReset: () => void;
+  base: string;
 }) {
   const top3 = results.slice(0, 3);
   const rest = results.slice(3);
@@ -456,6 +457,7 @@ function ResultSection({
             rank={i + 1}
             isRevealed={revealed.includes(i)}
             onReveal={() => onReveal(i)}
+            base={base}
           />
         ))}
       </div>
@@ -476,8 +478,11 @@ function ResultSection({
               }}
             >
               <span style={{ fontSize: '9px', color: 'rgba(201,169,97,0.3)', fontFamily: 'var(--font-cinzel)', minWidth: '20px' }}>0{i + 4}</span>
-              <div style={{ width: '40px', height: '40px', borderRadius: '50%', overflow: 'hidden', border: '1px solid rgba(201,169,97,0.2)', flexShrink: 0 }}>
-                <Image src={r.cast.image} alt={r.cast.name} width={40} height={40} style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
+              <div style={{ width: '40px', height: '40px', borderRadius: '50%', overflow: 'hidden', border: '1px solid rgba(201,169,97,0.2)', flexShrink: 0, background: 'rgba(201,169,97,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {r.cast.image
+                  ? <img src={`${base}${r.cast.image}`} alt={r.cast.name} loading="eager" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 15%' }} />
+                  : <span style={{ fontSize: '16px', color: 'rgba(201,169,97,0.4)' }}>✦</span>
+                }
               </div>
               <span style={{ fontSize: '13px', color: CREAM_DIM, flex: 1 }}>{r.cast.name}</span>
               <span style={{ fontSize: '12px', color: GOLD, fontFamily: 'var(--font-cinzel)' }}>{r.score}%</span>
@@ -506,12 +511,13 @@ function ResultSection({
 
 // ── キャストカード ─────────────────────────────────────────
 function CastCard({
-  entry, rank, isRevealed, onReveal,
+  entry, rank, isRevealed, onReveal, base,
 }: {
   entry: { cast: CastPublic; score: number };
   rank: number;
   isRevealed: boolean;
   onReveal: () => void;
+  base: string;
 }) {
   const { cast, score } = entry;
   const medals = ['✦', '✧', '◇'];
@@ -546,16 +552,23 @@ function CastCard({
           border: '1px solid rgba(201,169,97,0.3)',
         }}>
           {/* ぼかし → タップで表示 */}
-          <Image
-            src={cast.image}
-            alt={cast.name}
-            fill
-            style={{
-              objectFit: 'cover',
-              filter: isRevealed ? 'none' : 'blur(12px) brightness(0.6)',
-              transition: 'filter 0.5s ease',
-            }}
-          />
+          {cast.image
+            ? <img
+                src={`${base}${cast.image}`}
+                alt={cast.name}
+                loading="eager"
+                style={{
+                  width: '100%', height: '100%',
+                  objectFit: 'cover', objectPosition: 'center 15%',
+                  filter: isRevealed ? 'none' : 'blur(12px) brightness(0.6)',
+                  transition: 'filter 0.5s ease',
+                  display: 'block',
+                }}
+              />
+            : <div style={{ width: '100%', height: '100%', background: 'rgba(201,169,97,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontSize: '28px', color: 'rgba(201,169,97,0.3)' }}>✦</span>
+              </div>
+          }
           {!isRevealed && (
             <button
               onClick={onReveal}
