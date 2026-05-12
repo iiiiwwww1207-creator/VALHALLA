@@ -139,12 +139,33 @@ export default function HomePage() {
                 <Link href={f.href} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
                   <div style={{ position: 'relative', overflow: 'hidden', borderTop: `1px solid rgba(201,169,97,0.2)`, ...(i === features.length - 1 && !f.bridge ? { borderBottom: `1px solid rgba(201,169,97,0.2)` } : {}) }}>
 
+                    {/* 相性診断のみ：カード全体に薄い写真マーキー背景 */}
+                    {f.id === 'matching' && (
+                      <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
+                        {[
+                          { row: row1, cls: 'mq-left',  top: '0%' },
+                          { row: row2, cls: 'mq-right', top: '33.33%' },
+                          { row: row3, cls: 'mq-left2', top: '66.66%' },
+                        ].map(({ row, cls, top }) => (
+                          <div key={top} style={{ position: 'absolute', left: 0, top, width: '100%', height: '33.34%', overflow: 'hidden' }}>
+                            <div className={cls}>
+                              {[...row, ...row].map((img, idx) => (
+                                <img key={idx} src={img} alt="" style={{ flexShrink: 0, width: '56px', height: '100%', objectFit: 'cover', objectPosition: 'center 15%', display: 'block' }} />
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                        {/* 暗めオーバーレイ（薄め） */}
+                        <div style={{ position: 'absolute', inset: 0, background: 'rgba(7,5,10,0.72)' }} />
+                      </div>
+                    )}
+
                     {/* 背景番号 */}
-                    <div style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', fontSize: '90px', fontWeight: 700, color: 'rgba(201,169,97,0.04)', lineHeight: 1, userSelect: 'none', pointerEvents: 'none', fontFamily: 'var(--font-cinzel)', ...(isRight ? { right: '12px' } : { left: '12px' }) }}>
+                    <div style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', fontSize: '90px', fontWeight: 700, color: 'rgba(201,169,97,0.04)', lineHeight: 1, userSelect: 'none', pointerEvents: 'none', fontFamily: 'var(--font-cinzel)', zIndex: 1, ...(isRight ? { right: '12px' } : { left: '12px' }) }}>
                       {f.num}
                     </div>
 
-                    <div style={{ position: 'relative', padding: '28px 24px', display: 'flex', flexDirection: 'column', ...(isRight ? { alignItems: 'flex-end', textAlign: 'right' } : { alignItems: 'flex-start', textAlign: 'left' }) }}>
+                    <div style={{ position: 'relative', zIndex: 2, padding: '28px 24px', display: 'flex', flexDirection: 'column', ...(isRight ? { alignItems: 'flex-end', textAlign: 'right' } : { alignItems: 'flex-start', textAlign: 'left' }) }}>
 
                       {/* ENラベル＋番号 */}
                       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px', ...(isRight ? { flexDirection: 'row-reverse' } : {}) }}>
@@ -154,20 +175,8 @@ export default function HomePage() {
                       </div>
 
                       {/* タイトル */}
-                      <h3 style={{ position: 'relative', display: 'inline-block', fontSize: '20px', fontWeight: 700, color: GOLD_BRIGHT, lineHeight: 1.2, marginBottom: '8px', letterSpacing: '0.05em', border: `1px solid rgba(201,169,97,0.5)`, padding: '4px 12px', overflow: 'hidden', zIndex: 0 }}>
-                        {/* 相性診断のみ：h3の中に写真マーキー */}
-                        {f.id === 'matching' && (
-                          <span style={{ position: 'absolute', inset: 0, overflow: 'hidden', zIndex: 0, pointerEvents: 'none' }}>
-                            <span className="mq-left" style={{ height: '100%' }}>
-                              {[...row1, ...row1].map((img, idx) => (
-                                <img key={idx} src={img} alt="" style={{ flexShrink: 0, width: '36px', height: '100%', objectFit: 'cover', objectPosition: 'center 15%', display: 'inline-block' }} />
-                              ))}
-                            </span>
-                            {/* 半透明オーバーレイ */}
-                            <span style={{ position: 'absolute', inset: 0, background: 'rgba(7,5,10,0.45)' }} />
-                          </span>
-                        )}
-                        <span style={{ position: 'relative', zIndex: 1 }}>{f.title}</span>
+                      <h3 style={{ display: 'inline-block', fontSize: '20px', fontWeight: 700, color: GOLD_BRIGHT, lineHeight: 1.2, marginBottom: '8px', letterSpacing: '0.05em', border: `1px solid rgba(201,169,97,0.5)`, padding: '4px 12px', backgroundColor: 'rgba(201,169,97,0.05)' }}>
+                        {f.title}
                       </h3>
 
                       {/* キャッチコピー */}
@@ -183,7 +192,7 @@ export default function HomePage() {
                     </div>
 
                     {/* アクセントライン */}
-                    <div style={{ position: 'absolute', top: 0, bottom: 0, width: '2px', background: 'linear-gradient(to bottom, transparent, rgba(201,169,97,0.4), transparent)', ...(isRight ? { right: 0 } : { left: 0 }) }} />
+                    <div style={{ position: 'absolute', top: 0, bottom: 0, width: '2px', zIndex: 3, background: 'linear-gradient(to bottom, transparent, rgba(201,169,97,0.4), transparent)', ...(isRight ? { right: 0 } : { left: 0 }) }} />
                   </div>
                 </Link>
 
