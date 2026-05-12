@@ -135,8 +135,10 @@ export default function MatchingPage() {
     setRevealed([]);
   }
 
+  // GitHub Pages では /VALHALLA/ プレフィックスが必要
+  const BASE = process.env.NODE_ENV === 'production' ? '/VALHALLA' : '';
   // 写真ありのキャストだけ抽出してシャッフル
-  const photoList = CAST_PUBLIC.filter(c => c.image).map(c => c.image);
+  const photoList = CAST_PUBLIC.filter(c => c.image).map(c => `${BASE}${c.image}`);
   // 3行分のリスト（各行に使う写真を少しずつずらす）
   const row1 = [...photoList.slice(0, 24), ...photoList.slice(0, 24)];
   const row2 = [...photoList.slice(12, 36), ...photoList.slice(12, 36)];
