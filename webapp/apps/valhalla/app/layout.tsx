@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Cormorant_Garamond, Noto_Sans_JP } from 'next/font/google';
+import { Cormorant_Garamond, Noto_Sans_JP, Cinzel } from 'next/font/google';
 import './globals.css';
 
 const display = Cormorant_Garamond({
@@ -14,6 +14,12 @@ const body = Noto_Sans_JP({
   weight: ['400', '500', '700'],
 });
 
+const cinzel = Cinzel({
+  subsets: ['latin'],
+  variable: '--font-cinzel',
+  weight: ['400', '500', '700', '900'],
+});
+
 export const metadata: Metadata = {
   title: 'Valhalla Demo',
   description: '運命のホストと出会う、ヴァルハラ診断デモ',
@@ -26,7 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja" className="dark">
-      <body className={`${display.variable} ${body.variable}`}>
+      <body className={`${display.variable} ${body.variable} ${cinzel.variable}`}>
         {children}
       </body>
     </html>
