@@ -91,77 +91,64 @@ const LP_DESC: Record<number, string> = {
   9: '博愛的で慈悲深く、人々を導く智慧の持ち主',
 };
 
-// ── ドラムロールピッカー ──────────────────────────────────
-const ITEM_H = 48; // 1行の高さ(px)
-
-function DrumPicker({ items, value, onChange, label }: {
+// ── ボトムシートピッカー ──────────────────────────────────
+function PickerSheet({ items, value, label, onSelect, onClose }: {
   items: string[];
   value: string;
-  onChange: (v: string) => void;
   label: string;
+  onSelect: (v: string) => void;
+  onClose: () => void;
 }) {
   const listRef = React.useRef<HTMLDivElement>(null);
-  const idx = items.indexOf(value);
 
-  // 選択中インデックスへスクロール
+  // 開いた瞬間に選択中の値までスクロール
   React.useEffect(() => {
-    if (!listRef.current) return;
-    const target = (idx < 0 ? 0 : idx) * ITEM_H;
-    listRef.current.scrollTo({ top: target, behavior: 'smooth' });
-  }, [idx]);
-
-  function onScroll() {
-    if (!listRef.current) return;
-    const i = Math.round(listRef.current.scrollTop / ITEM_H);
-    const clamped = Math.max(0, Math.min(items.length - 1, i));
-    if (items[clamped] !== value) onChange(items[clamped]);
-  }
+    const idx = items.indexOf(value);
+    if (listRef.current && idx >= 0) {
+      listRef.current.scrollTop = idx * 52;
+    }
+  }, []);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
-      <p style={{ fontSize: '9px', letterSpacing: '0.4em', color: GOLD_DIM, textTransform: 'uppercase', fontFamily: 'var(--font-cinzel)', marginBottom: '8px' }}>{label}</p>
-      <div style={{ position: 'relative', width: '100%' }}>
-        {/* 上下フェード */}
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: `${ITEM_H}px`, background: `linear-gradient(to bottom, rgba(7,5,10,0.95), transparent)`, zIndex: 2, pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: `${ITEM_H}px`, background: `linear-gradient(to top, rgba(7,5,10,0.95), transparent)`, zIndex: 2, pointerEvents: 'none' }} />
-        {/* 選択枠 */}
-        <div style={{ position: 'absolute', top: `${ITEM_H}px`, left: 0, right: 0, height: `${ITEM_H}px`, border: '1px solid rgba(201,169,97,0.5)', background: 'rgba(201,169,97,0.06)', zIndex: 1, pointerEvents: 'none' }} />
-        {/* スクロール領域 */}
+    <div
+      onClick={onClose}
+      style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'flex-end' }}
+    >
+      <div
+        onClick={e => e.stopPropagation()}
+        style={{ width: '100%', background: '#0F0C14', borderTop: '1px solid rgba(201,169,97,0.4)', borderRadius: '16px 16px 0 0', paddingBottom: 'env(safe-area-inset-bottom)' }}
+      >
+        {/* ヘッダー */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px', borderBottom: '1px solid rgba(201,169,97,0.15)' }}>
+          <span style={{ fontSize: '11px', letterSpacing: '0.4em', color: GOLD_DIM, textTransform: 'uppercase', fontFamily: 'var(--font-cinzel)' }}>{label}</span>
+          <button onClick={onClose} style={{ background: 'none', border: '1px solid rgba(201,169,97,0.4)', color: GOLD_BRIGHT, fontSize: '11px', padding: '4px 16px', cursor: 'pointer', letterSpacing: '0.2em', fontFamily: 'var(--font-cinzel)' }}>完了</button>
+        </div>
+        {/* リスト */}
         <div
           ref={listRef}
-          onScroll={onScroll}
-          style={{
-            height: `${ITEM_H * 3}px`,
-            overflowY: 'scroll',
-            scrollSnapType: 'y mandatory',
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-          }}
+          style={{ height: '260px', overflowY: 'auto', scrollbarWidth: 'none' }}
         >
-          {/* 上パディング */}
-          <div style={{ height: `${ITEM_H}px` }} />
+          <style>{`div::-webkit-scrollbar{display:none}`}</style>
           {items.map(item => (
             <div
               key={item}
-              onClick={() => onChange(item)}
+              onClick={() => { onSelect(item); onClose(); }}
               style={{
-                height: `${ITEM_H}px`,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                scrollSnapAlign: 'center',
-                fontSize: item === value ? '22px' : '16px',
+                height: '52px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: item === value ? '24px' : '18px',
                 fontWeight: item === value ? 700 : 400,
-                color: item === value ? GOLD_BRIGHT : 'rgba(245,239,224,0.3)',
+                color: item === value ? GOLD_BRIGHT : 'rgba(245,239,224,0.45)',
                 fontFamily: 'var(--font-cinzel)',
-                letterSpacing: '0.05em',
+                letterSpacing: '0.08em',
+                background: item === value ? 'rgba(201,169,97,0.08)' : 'transparent',
+                borderLeft: item === value ? '2px solid rgba(201,169,97,0.6)' : '2px solid transparent',
                 cursor: 'pointer',
-                transition: 'all 0.15s',
+                transition: 'all 0.1s',
               }}
             >
               {item}
             </div>
           ))}
-          {/* 下パディング */}
-          <div style={{ height: `${ITEM_H}px` }} />
         </div>
       </div>
     </div>
@@ -340,6 +327,8 @@ function InputSection({
   isValid: boolean;
   onDiagnose: () => void;
 }) {
+  const [openPicker, setOpenPicker] = React.useState<'year'|'month'|'day'|null>(null);
+
   return (
     <div>
       {/* 説明文 */}
@@ -351,24 +340,50 @@ function InputSection({
         </p>
       </div>
 
-      {/* ドラムロールピッカー */}
-      <div style={{ border: '1px solid rgba(201,169,97,0.25)', padding: '24px 16px 32px', marginBottom: '32px', background: 'linear-gradient(160deg, rgba(255,255,255,0.02), rgba(26,15,34,0.6))' }}>
-        <p style={{ fontSize: '9px', letterSpacing: '0.5em', color: GOLD_DIM, textTransform: 'uppercase', marginBottom: '20px', textAlign: 'center', fontFamily: 'var(--font-cinzel)' }}>Birth Date</p>
-        <style>{`
-          div::-webkit-scrollbar { display: none; }
-        `}</style>
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
-          <DrumPicker items={YEARS}  value={year}  onChange={setYear}  label="Year" />
-          <div style={{ paddingTop: '68px', color: 'rgba(201,169,97,0.4)', fontSize: '18px', flexShrink: 0 }}>/</div>
-          <DrumPicker items={MONTHS} value={month} onChange={setMonth} label="Month" />
-          <div style={{ paddingTop: '68px', color: 'rgba(201,169,97,0.4)', fontSize: '18px', flexShrink: 0 }}>/</div>
-          <DrumPicker items={DAYS}   value={day}   onChange={setDay}   label="Day" />
+      {/* 日付選択 */}
+      <div style={{ border: '1px solid rgba(201,169,97,0.25)', padding: '28px 20px 32px', marginBottom: '32px', background: 'linear-gradient(160deg, rgba(255,255,255,0.02), rgba(26,15,34,0.6))' }}>
+        <p style={{ fontSize: '9px', letterSpacing: '0.5em', color: GOLD_DIM, textTransform: 'uppercase', marginBottom: '24px', textAlign: 'center', fontFamily: 'var(--font-cinzel)' }}>Birth Date</p>
+
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center', justifyContent: 'center' }}>
+          {([
+            { key: 'year'  as const, label: 'Year',  val: year  },
+            { key: 'month' as const, label: 'Month', val: month },
+            { key: 'day'   as const, label: 'Day',   val: day   },
+          ]).map(({ key, label, val }, i) => (
+            <React.Fragment key={key}>
+              {i > 0 && <span style={{ color: 'rgba(201,169,97,0.4)', fontSize: '20px', flexShrink: 0 }}>/</span>}
+              <div style={{ flex: key === 'year' ? 2 : 1 }}>
+                <p style={{ fontSize: '8px', letterSpacing: '0.4em', color: GOLD_DIM, textTransform: 'uppercase', fontFamily: 'var(--font-cinzel)', textAlign: 'center', marginBottom: '6px' }}>{label}</p>
+                <button
+                  onClick={() => setOpenPicker(key)}
+                  style={{
+                    width: '100%', padding: '14px 6px',
+                    background: 'rgba(201,169,97,0.06)',
+                    border: '1px solid rgba(201,169,97,0.45)',
+                    color: GOLD_BRIGHT,
+                    fontSize: '20px',
+                    fontWeight: 700,
+                    fontFamily: 'var(--font-cinzel)',
+                    letterSpacing: '0.05em',
+                    cursor: 'pointer',
+                    textAlign: 'center',
+                  }}
+                >
+                  {val}
+                </button>
+              </div>
+            </React.Fragment>
+          ))}
         </div>
-        {/* 選択中の日付表示 */}
-        <p style={{ textAlign: 'center', marginTop: '16px', fontSize: '11px', color: 'rgba(201,169,97,0.5)', letterSpacing: '0.2em', fontFamily: 'var(--font-cinzel)' }}>
-          {year} / {month} / {day}
+        <p style={{ textAlign: 'center', marginTop: '14px', fontSize: '10px', color: 'rgba(201,169,97,0.3)', letterSpacing: '0.1em' }}>
+          タップして変更
         </p>
       </div>
+
+      {/* ボトムシート */}
+      {openPicker === 'year'  && <PickerSheet items={YEARS}  value={year}  label="Year"  onSelect={setYear}  onClose={() => setOpenPicker(null)} />}
+      {openPicker === 'month' && <PickerSheet items={MONTHS} value={month} label="Month" onSelect={setMonth} onClose={() => setOpenPicker(null)} />}
+      {openPicker === 'day'   && <PickerSheet items={DAYS}   value={day}   label="Day"   onSelect={setDay}   onClose={() => setOpenPicker(null)} />}
 
       {/* 診断ボタン */}
       <button
