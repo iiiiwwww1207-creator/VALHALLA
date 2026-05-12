@@ -168,7 +168,6 @@ export default function MatchingPage() {
   const [step, setStep] = useState<Step>('input');
   const [results, setResults] = useState<{ cast: CastPublic; score: number; rank: number }[]>([]);
   const [lifePathNum, setLifePathNum] = useState(0);
-  const [revealed, setRevealed] = useState<number[]>([]);
 
   const isValid = Number(year) >= 1980 && Number(year) <= 2010
     && Number(month) >= 1 && Number(month) <= 12
@@ -177,28 +176,19 @@ export default function MatchingPage() {
   function handleDiagnose() {
     const lp = calcLifePath(Number(year), Number(month), Number(day));
     setLifePathNum(lp);
-
     const scored = CAST_PUBLIC.map((c, i) => ({
-      cast: c,
-      score: compatScore(lp, i),
-      rank: i,
+      cast: c, score: compatScore(lp, i), rank: i,
     }));
     scored.sort((a, b) => b.score - a.score || a.rank - b.rank);
     setResults(scored.slice(0, 5));
-    setRevealed([]);
     setStep('result');
-  }
-
-  function handleReveal(index: number) {
-    setRevealed(prev => prev.includes(index) ? prev : [...prev, index]);
   }
 
   function handleReset() {
     setStep('input');
-    setYear('');
-    setMonth('');
-    setDay('');
-    setRevealed([]);
+    setYear('1995');
+    setMonth('01');
+    setDay('01');
   }
 
   // GitHub Pages では /VALHALLA/ プレフィックスが必要
@@ -305,8 +295,6 @@ export default function MatchingPage() {
           <ResultSection
             lifePathNum={lifePathNum}
             results={results}
-            revealed={revealed}
-            onReveal={handleReveal}
             onReset={handleReset}
             base={BASE}
           />
@@ -418,23 +406,16 @@ function InputSection({
 }
 
 // ── 結果セクション ─────────────────────────────────────────
-function ResultSection({
-  lifePathNum, results, revealed, onReveal, onReset, base
-}: {
+function ResultSection({ lifePathNum, results, onReset, base }: {
   lifePathNum: number;
   results: { cast: CastPublic; score: number; rank: number }[];
-  revealed: number[];
-  onReveal: (i: number) => void;
   onReset: () => void;
   base: string;
 }) {
-  const top3 = results.slice(0, 3);
-  const rest = results.slice(3);
-
   return (
     <div>
-      {/* ライフパスナンバー表示 */}
-      <div style={{ textAlign: 'center', marginBottom: '40px', padding: '28px 24px', border: '1px solid rgba(201,169,97,0.2)', background: 'linear-gradient(160deg, rgba(201,169,97,0.06), rgba(7,5,10,0.8))' }}>
+      {/* ライフパスナンバー */}
+      <div style={{ textAlign: 'center', marginBottom: '32px', padding: '28px 24px', border: '1px solid rgba(201,169,97,0.2)', background: 'linear-gradient(160deg, rgba(201,169,97,0.06), rgba(7,5,10,0.8))' }}>
         <p style={{ fontSize: '9px', letterSpacing: '0.5em', color: GOLD_DIM, marginBottom: '12px', textTransform: 'uppercase', fontFamily: 'var(--font-cinzel)' }}>Your Life Path Number</p>
         <div style={{ fontSize: '72px', fontWeight: 700, color: GOLD_BRIGHT, fontFamily: 'var(--font-cinzel)', lineHeight: 1, marginBottom: '16px', textShadow: '0 0 30px rgba(201,169,97,0.3)' }}>
           {lifePathNum}
@@ -444,58 +425,71 @@ function ResultSection({
         </p>
       </div>
 
-      {/* TOP 3 */}
-      <div style={{ marginBottom: '12px' }}>
-        <p style={{ fontSize: '9px', letterSpacing: '0.5em', color: GOLD_DIM, textTransform: 'uppercase', marginBottom: '20px', textAlign: 'center', fontFamily: 'var(--font-cinzel)' }}>
-          Your Top Matches
-        </p>
+      {/* 結果一覧 */}
+      <p style={{ fontSize: '9px', letterSpacing: '0.5em', color: GOLD_DIM, textTransform: 'uppercase', marginBottom: '20px', textAlign: 'center', fontFamily: 'var(--font-cinzel)' }}>
+        Your Top Matches
+      </p>
 
-        {top3.map((r, i) => (
-          <CastCard
-            key={r.cast.id}
-            entry={r}
-            rank={i + 1}
-            isRevealed={revealed.includes(i)}
-            onReveal={() => onReveal(i)}
-            base={base}
-          />
-        ))}
-      </div>
-
-      {/* その他 2名 */}
-      {rest.length > 0 && (
-        <div style={{ marginBottom: '32px' }}>
-          <p style={{ fontSize: '9px', letterSpacing: '0.4em', color: 'rgba(201,169,97,0.3)', textAlign: 'center', marginBottom: '12px', textTransform: 'uppercase', fontFamily: 'var(--font-cinzel)' }}>
-            Also Compatible
-          </p>
-          {rest.map((r, i) => (
-            <div
-              key={r.cast.id}
-              style={{
-                display: 'flex', alignItems: 'center', gap: '12px',
-                padding: '12px 16px',
-                borderTop: '1px solid rgba(201,169,97,0.08)',
-              }}
-            >
-              <span style={{ fontSize: '9px', color: 'rgba(201,169,97,0.3)', fontFamily: 'var(--font-cinzel)', minWidth: '20px' }}>0{i + 4}</span>
-              <div style={{ width: '40px', height: '40px', borderRadius: '50%', overflow: 'hidden', border: '1px solid rgba(201,169,97,0.2)', flexShrink: 0, background: 'rgba(201,169,97,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                {r.cast.image
-                  ? <img src={`${base}${r.cast.image}`} alt={r.cast.name} loading="eager" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 15%' }} />
-                  : <span style={{ fontSize: '16px', color: 'rgba(201,169,97,0.4)' }}>✦</span>
-                }
-              </div>
-              <span style={{ fontSize: '13px', color: CREAM_DIM, flex: 1 }}>{r.cast.name}</span>
-              <span style={{ fontSize: '12px', color: GOLD, fontFamily: 'var(--font-cinzel)' }}>{r.score}%</span>
+      {results.map((r, i) => {
+        const imgSrc = r.cast.image ? `${base}${r.cast.image}` : null;
+        const medals = ['✦', '✧', '◇', '·', '·'];
+        const isTop = i < 3;
+        return (
+          <div key={r.cast.id} style={{
+            display: 'flex', alignItems: 'center', gap: '14px',
+            marginBottom: '12px', padding: '16px',
+            border: i === 0 ? '1px solid rgba(201,169,97,0.5)' : '1px solid rgba(201,169,97,0.15)',
+            background: i === 0
+              ? 'linear-gradient(160deg, rgba(201,169,97,0.1), rgba(7,5,10,0.9))'
+              : 'rgba(255,255,255,0.02)',
+          }}>
+            {/* 順位 */}
+            <span style={{ fontSize: '11px', color: GOLD_DIM, fontFamily: 'var(--font-cinzel)', minWidth: '24px', textAlign: 'center' }}>
+              {medals[i]}{'\n'}{String(i + 1).padStart(2, '0')}
+            </span>
+            {/* 写真 */}
+            <div style={{
+              width: isTop ? '80px' : '52px',
+              height: isTop ? '100px' : '64px',
+              flexShrink: 0, overflow: 'hidden',
+              border: '1px solid rgba(201,169,97,0.3)',
+              background: 'rgba(201,169,97,0.06)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              {imgSrc
+                ? <img
+                    src={imgSrc}
+                    alt={r.cast.name}
+                    loading="eager"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 15%', display: 'block' }}
+                  />
+                : <span style={{ fontSize: '20px', color: 'rgba(201,169,97,0.3)' }}>✦</span>
+              }
             </div>
-          ))}
-        </div>
-      )}
+            {/* テキスト */}
+            <div style={{ flex: 1 }}>
+              <p style={{ fontSize: isTop ? '15px' : '13px', fontWeight: 700, color: i === 0 ? GOLD_BRIGHT : CREAM, marginBottom: '6px', letterSpacing: '0.05em' }}>
+                {r.cast.name}
+              </p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                <div style={{ flex: 1, height: '3px', background: 'rgba(201,169,97,0.15)', overflow: 'hidden' }}>
+                  <div style={{ width: `${r.score}%`, height: '100%', background: 'linear-gradient(to right, #C9A961, #E8CB85)' }} />
+                </div>
+                <span style={{ fontSize: '13px', color: GOLD_BRIGHT, fontFamily: 'var(--font-cinzel)', fontWeight: 700 }}>{r.score}%</span>
+              </div>
+              <p style={{ fontSize: '10px', color: CREAM_FAINT, lineHeight: '16px', letterSpacing: '0.03em' }}>
+                {compatMessage(r.score)}
+              </p>
+            </div>
+          </div>
+        );
+      })}
 
-      {/* もう一度ボタン */}
+      {/* もう一度 */}
       <button
         onClick={onReset}
         style={{
-          width: '100%', padding: '16px',
+          width: '100%', padding: '16px', marginTop: '8px',
           background: 'transparent',
           border: '1px solid rgba(201,169,97,0.35)',
           color: GOLD_DIM, fontSize: '12px',
@@ -505,117 +499,6 @@ function ResultSection({
       >
         RETRY
       </button>
-    </div>
-  );
-}
-
-// ── キャストカード ─────────────────────────────────────────
-function CastCard({
-  entry, rank, isRevealed, onReveal, base,
-}: {
-  entry: { cast: CastPublic; score: number };
-  rank: number;
-  isRevealed: boolean;
-  onReveal: () => void;
-  base: string;
-}) {
-  const { cast, score } = entry;
-  const medals = ['✦', '✧', '◇'];
-
-  return (
-    <div
-      style={{
-        position: 'relative', marginBottom: '16px', overflow: 'hidden',
-        border: rank === 1 ? '1px solid rgba(201,169,97,0.5)' : '1px solid rgba(201,169,97,0.2)',
-        background: rank === 1
-          ? 'linear-gradient(160deg, rgba(201,169,97,0.08), rgba(7,5,10,0.9))'
-          : 'linear-gradient(160deg, rgba(255,255,255,0.02), rgba(7,5,10,0.8))',
-      }}
-    >
-      {/* ランクバッジ */}
-      <div style={{
-        position: 'absolute', top: 0, left: 0,
-        padding: '4px 10px',
-        background: rank === 1 ? 'rgba(201,169,97,0.2)' : 'rgba(201,169,97,0.08)',
-        borderRight: '1px solid rgba(201,169,97,0.2)',
-        borderBottom: '1px solid rgba(201,169,97,0.2)',
-        fontSize: '9px', color: GOLD, fontFamily: 'var(--font-cinzel)', letterSpacing: '0.3em',
-      }}>
-        {medals[rank - 1]} {String(rank).padStart(2, '0')}
-      </div>
-
-      {/* 写真エリア */}
-      <div style={{ display: 'flex', padding: '32px 20px 20px' }}>
-        <div style={{
-          width: '90px', height: '110px', flexShrink: 0,
-          position: 'relative', overflow: 'hidden',
-          border: '1px solid rgba(201,169,97,0.3)',
-        }}>
-          {/* ぼかし → タップで表示 */}
-          {cast.image
-            ? <img
-                src={`${base}${cast.image}`}
-                alt={cast.name}
-                loading="eager"
-                style={{
-                  width: '100%', height: '100%',
-                  objectFit: 'cover', objectPosition: 'center 15%',
-                  filter: isRevealed ? 'none' : 'blur(12px) brightness(0.6)',
-                  transition: 'filter 0.5s ease',
-                  display: 'block',
-                }}
-              />
-            : <div style={{ width: '100%', height: '100%', background: 'rgba(201,169,97,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span style={{ fontSize: '28px', color: 'rgba(201,169,97,0.3)' }}>✦</span>
-              </div>
-          }
-          {!isRevealed && (
-            <button
-              onClick={onReveal}
-              style={{
-                position: 'absolute', inset: 0, display: 'flex',
-                flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                background: 'transparent', border: 'none', cursor: 'pointer',
-                gap: '4px',
-              }}
-            >
-              <span style={{ fontSize: '18px' }}>👁</span>
-              <span style={{ fontSize: '8px', color: GOLD, letterSpacing: '0.2em', fontFamily: 'var(--font-cinzel)' }}>REVEAL</span>
-            </button>
-          )}
-        </div>
-
-        {/* テキスト */}
-        <div style={{ flex: 1, paddingLeft: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-          <div>
-            <p style={{ fontSize: '16px', fontWeight: 700, color: rank === 1 ? GOLD_BRIGHT : CREAM, marginBottom: '4px', letterSpacing: '0.05em' }}>
-              {cast.name}
-            </p>
-          </div>
-
-          {/* 相性スコア */}
-          <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
-              <span style={{ fontSize: '9px', color: GOLD_DIM, letterSpacing: '0.3em', fontFamily: 'var(--font-cinzel)' }}>COMPATIBILITY</span>
-              <span style={{ fontSize: '14px', color: GOLD_BRIGHT, fontFamily: 'var(--font-cinzel)', fontWeight: 700 }}>{score}%</span>
-            </div>
-            {/* バー */}
-            <div style={{ height: '3px', background: 'rgba(201,169,97,0.15)', position: 'relative', overflow: 'hidden' }}>
-              <div style={{
-                position: 'absolute', left: 0, top: 0, bottom: 0,
-                width: `${score}%`,
-                background: score >= 90
-                  ? 'linear-gradient(to right, #C9A961, #E8CB85)'
-                  : 'linear-gradient(to right, rgba(201,169,97,0.6), rgba(201,169,97,0.4))',
-              }} />
-            </div>
-          </div>
-
-          <p style={{ fontSize: '10px', color: CREAM_FAINT, lineHeight: '18px', letterSpacing: '0.05em', marginTop: '8px' }}>
-            {compatMessage(score)}
-          </p>
-        </div>
-      </div>
     </div>
   );
 }
