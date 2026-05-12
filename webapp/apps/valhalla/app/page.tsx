@@ -64,7 +64,7 @@ const GOLD_BRIGHT = '#E8CB85';
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 
 // キャスト写真（画像あるものだけ）をシャッフルして使う
-const CAST_IMAGES = CAST_PUBLIC.filter(c => c.image).map(c => `${BASE}${c.image}`);
+const CAST_IMAGES = CAST_PUBLIC.filter(c => c.image).map(c => `${BASE}${c.image}?v=3`);
 
 // マーキー用に十分な枚数に複製
 function buildRow(offset: number, count: number) {

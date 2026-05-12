@@ -194,7 +194,7 @@ export default function MatchingPage() {
   // GitHub Pages では /VALHALLA/ プレフィックスが必要
   const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
   // 写真ありのキャストだけ抽出してシャッフル
-  const photoList = CAST_PUBLIC.filter(c => c.image).map(c => `${BASE}${c.image}`);
+  const photoList = CAST_PUBLIC.filter(c => c.image).map(c => `${BASE}${c.image}?v=3`);
   // 3行分のリスト（各行に使う写真を少しずつずらす）
   const row1 = [...photoList.slice(0, 24), ...photoList.slice(0, 24)];
   const row2 = [...photoList.slice(12, 36), ...photoList.slice(12, 36)];
@@ -431,7 +431,7 @@ function ResultSection({ lifePathNum, results, onReset, base }: {
       </p>
 
       {results.map((r, i) => {
-        const imgSrc = r.cast.image ? `${base}${r.cast.image}` : null;
+        const imgSrc = r.cast.image ? `${base}${r.cast.image}?v=3` : null;
         const medals = ['✦', '✧', '◇', '·', '·'];
         const isTop = i < 3;
         return (
