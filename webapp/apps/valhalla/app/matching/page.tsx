@@ -316,6 +316,24 @@ export default function MatchingPage() {
   );
 }
 
+// ── select スタイル（インラインで上書き）────────────────────
+const selectStyle: React.CSSProperties = {
+  width: '100%',
+  padding: '14px 6px',
+  background: 'rgba(201,169,97,0.06)',
+  border: '1px solid rgba(201,169,97,0.45)',
+  color: '#E8CB85',
+  fontSize: '20px',
+  fontWeight: 700,
+  letterSpacing: '0.05em',
+  cursor: 'pointer',
+  textAlign: 'center',
+  appearance: 'none',
+  WebkitAppearance: 'none',
+  borderRadius: 0,
+  outline: 'none',
+};
+
 // ── 入力セクション ─────────────────────────────────────────
 function InputSection({
   year, month, day, setYear, setMonth, setDay, isValid, onDiagnose
@@ -327,8 +345,6 @@ function InputSection({
   isValid: boolean;
   onDiagnose: () => void;
 }) {
-  const [openPicker, setOpenPicker] = React.useState<'year'|'month'|'day'|null>(null);
-
   return (
     <div>
       {/* 説明文 */}
@@ -344,46 +360,35 @@ function InputSection({
       <div style={{ border: '1px solid rgba(201,169,97,0.25)', padding: '28px 20px 32px', marginBottom: '32px', background: 'linear-gradient(160deg, rgba(255,255,255,0.02), rgba(26,15,34,0.6))' }}>
         <p style={{ fontSize: '9px', letterSpacing: '0.5em', color: GOLD_DIM, textTransform: 'uppercase', marginBottom: '24px', textAlign: 'center', fontFamily: 'var(--font-cinzel)' }}>Birth Date</p>
 
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'center', justifyContent: 'center' }}>
-          {([
-            { key: 'year'  as const, label: 'Year',  val: year  },
-            { key: 'month' as const, label: 'Month', val: month },
-            { key: 'day'   as const, label: 'Day',   val: day   },
-          ]).map(({ key, label, val }, i) => (
-            <React.Fragment key={key}>
-              {i > 0 && <span style={{ color: 'rgba(201,169,97,0.4)', fontSize: '20px', flexShrink: 0 }}>/</span>}
-              <div style={{ flex: key === 'year' ? 2 : 1 }}>
-                <p style={{ fontSize: '8px', letterSpacing: '0.4em', color: GOLD_DIM, textTransform: 'uppercase', fontFamily: 'var(--font-cinzel)', textAlign: 'center', marginBottom: '6px' }}>{label}</p>
-                <button
-                  onClick={() => setOpenPicker(key)}
-                  style={{
-                    width: '100%', padding: '14px 6px',
-                    background: 'rgba(201,169,97,0.06)',
-                    border: '1px solid rgba(201,169,97,0.45)',
-                    color: GOLD_BRIGHT,
-                    fontSize: '20px',
-                    fontWeight: 700,
-                    fontFamily: 'var(--font-cinzel)',
-                    letterSpacing: '0.05em',
-                    cursor: 'pointer',
-                    textAlign: 'center',
-                  }}
-                >
-                  {val}
-                </button>
-              </div>
-            </React.Fragment>
-          ))}
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-end' }}>
+          {/* 年 */}
+          <div style={{ flex: 2 }}>
+            <p style={{ fontSize: '8px', letterSpacing: '0.4em', color: GOLD_DIM, textTransform: 'uppercase', fontFamily: 'var(--font-cinzel)', textAlign: 'center', marginBottom: '6px' }}>Year</p>
+            <select value={year} onChange={e => setYear(e.target.value)} style={selectStyle}>
+              {YEARS.map(y => <option key={y} value={y} style={{ background: '#0F0C14', color: '#E8CB85' }}>{y}</option>)}
+            </select>
+          </div>
+          <span style={{ color: 'rgba(201,169,97,0.4)', fontSize: '20px', paddingBottom: '14px', flexShrink: 0 }}>/</span>
+          {/* 月 */}
+          <div style={{ flex: 1 }}>
+            <p style={{ fontSize: '8px', letterSpacing: '0.4em', color: GOLD_DIM, textTransform: 'uppercase', fontFamily: 'var(--font-cinzel)', textAlign: 'center', marginBottom: '6px' }}>Month</p>
+            <select value={month} onChange={e => setMonth(e.target.value)} style={selectStyle}>
+              {MONTHS.map(m => <option key={m} value={m} style={{ background: '#0F0C14', color: '#E8CB85' }}>{m}</option>)}
+            </select>
+          </div>
+          <span style={{ color: 'rgba(201,169,97,0.4)', fontSize: '20px', paddingBottom: '14px', flexShrink: 0 }}>/</span>
+          {/* 日 */}
+          <div style={{ flex: 1 }}>
+            <p style={{ fontSize: '8px', letterSpacing: '0.4em', color: GOLD_DIM, textTransform: 'uppercase', fontFamily: 'var(--font-cinzel)', textAlign: 'center', marginBottom: '6px' }}>Day</p>
+            <select value={day} onChange={e => setDay(e.target.value)} style={selectStyle}>
+              {DAYS.map(d => <option key={d} value={d} style={{ background: '#0F0C14', color: '#E8CB85' }}>{d}</option>)}
+            </select>
+          </div>
         </div>
         <p style={{ textAlign: 'center', marginTop: '14px', fontSize: '10px', color: 'rgba(201,169,97,0.3)', letterSpacing: '0.1em' }}>
-          タップして変更
+          ▼ タップして選択
         </p>
       </div>
-
-      {/* ボトムシート */}
-      {openPicker === 'year'  && <PickerSheet items={YEARS}  value={year}  label="Year"  onSelect={setYear}  onClose={() => setOpenPicker(null)} />}
-      {openPicker === 'month' && <PickerSheet items={MONTHS} value={month} label="Month" onSelect={setMonth} onClose={() => setOpenPicker(null)} />}
-      {openPicker === 'day'   && <PickerSheet items={DAYS}   value={day}   label="Day"   onSelect={setDay}   onClose={() => setOpenPicker(null)} />}
 
       {/* 診断ボタン */}
       <button
