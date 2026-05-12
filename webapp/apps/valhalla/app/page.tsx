@@ -50,120 +50,117 @@ const features = [
   },
 ];
 
+const GOLD = '#C9A961';
+const GOLD_DIM = 'rgba(201,169,97,0.5)';
+const GOLD_FAINT = 'rgba(201,169,97,0.1)';
+const CREAM = '#F5EFE0';
+const CREAM_DIM = 'rgba(245,239,224,0.4)';
+const CREAM_FAINT = 'rgba(245,239,224,0.35)';
+const DARK = '#07050A';
+const GOLD_BRIGHT = '#E8CB85';
+
 export default function HomePage() {
   return (
-    <main className="min-h-dvh bg-[#07050A] text-[#F5EFE0] overflow-x-hidden" style={{ fontFamily: 'var(--font-body)' }}>
+    <main style={{ minHeight: '100dvh', backgroundColor: DARK, color: CREAM, overflowX: 'hidden', fontFamily: 'var(--font-body)' }}>
 
       {/* ===== HERO ===== */}
-      <section className="relative h-dvh min-h-[680px] flex flex-col overflow-hidden">
-        <div className="absolute inset-0 z-0 flex">
-          <div className="flex-1 relative overflow-hidden">
-            <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover" style={{ filter: 'saturate(1.05) brightness(1.0)' }}>
+      <section style={{ position: 'relative', height: '100dvh', minHeight: '680px', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', inset: 0, zIndex: 0, display: 'flex' }}>
+          <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+            <video autoPlay muted loop playsInline style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', filter: 'saturate(1.05) brightness(1.0)' }}>
               <source src="https://github.com/iiiiwwww1207-creator/VALHALLA/releases/download/teaser-v1/valhalla_morning.mp4" type="video/mp4" />
             </video>
           </div>
-          <div className="flex-1 relative overflow-hidden">
-            <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover" style={{ filter: 'saturate(0.9) brightness(0.85)' }}>
+          <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+            <video autoPlay muted loop playsInline style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', filter: 'saturate(0.9) brightness(0.85)' }}>
               <source src="https://github.com/iiiiwwww1207-creator/VALHALLA/releases/download/teaser-v1/valhalla_night.mp4" type="video/mp4" />
             </video>
           </div>
         </div>
-        <div className="absolute inset-0 z-10" style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.5) 100%), linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.05) 30%, rgba(0,0,0,0.85) 100%)' }} />
-        <div className="absolute top-0 bottom-0 left-1/2 w-px z-20" style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(201,169,97,0.25) 15%, rgba(201,169,97,0.7) 50%, rgba(201,169,97,0.25) 85%, transparent 100%)', transform: 'translateX(-50%)' }} />
-        <div className="relative z-30 flex-1 flex flex-col items-center justify-between px-6 pt-14 pb-10 max-w-[480px] mx-auto w-full">
-          <div className="border border-[rgba(201,169,97,0.6)] px-5 py-1.5" style={{ background: 'rgba(7,5,10,0.6)', backdropFilter: 'blur(8px)' }}>
-            <span className="text-[9px] tracking-[0.6em] text-[#C9A961] uppercase" style={{ fontFamily: 'var(--font-cinzel)' }}>Group Yggdrasill</span>
+        <div style={{ position: 'absolute', inset: 0, zIndex: 10, background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.5) 100%), linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.05) 30%, rgba(0,0,0,0.85) 100%)' }} />
+        <div style={{ position: 'absolute', top: 0, bottom: 0, left: '50%', width: '1px', zIndex: 20, background: 'linear-gradient(180deg, transparent 0%, rgba(201,169,97,0.25) 15%, rgba(201,169,97,0.7) 50%, rgba(201,169,97,0.25) 85%, transparent 100%)', transform: 'translateX(-50%)' }} />
+        <div style={{ position: 'relative', zIndex: 30, flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', padding: '56px 24px 40px', maxWidth: '480px', margin: '0 auto', width: '100%' }}>
+          <div style={{ border: `1px solid rgba(201,169,97,0.6)`, padding: '6px 20px', background: 'rgba(7,5,10,0.6)', backdropFilter: 'blur(8px)' }}>
+            <span style={{ fontSize: '9px', letterSpacing: '0.6em', color: GOLD, textTransform: 'uppercase', fontFamily: 'var(--font-cinzel)' }}>Group Yggdrasill</span>
           </div>
-          <div className="text-center">
-            <p className="text-[9px] tracking-[0.6em] text-[rgba(201,169,97,0.7)] mb-3 uppercase" style={{ fontFamily: 'var(--font-cinzel)' }}>Group Yggdrasill</p>
-            <h1 className="leading-none font-medium text-[#E8CB85]" style={{ fontFamily: 'var(--font-display)', fontSize: '80px', textShadow: '0 0 40px rgba(0,0,0,0.8), 0 0 20px rgba(201,169,97,0.4)', letterSpacing: '0.06em' }}>YGD</h1>
-            <div className="mt-4 flex items-center gap-3">
-              <div className="h-px flex-1 bg-[rgba(201,169,97,0.3)]" />
-              <span className="text-xs tracking-[0.2em] text-[rgba(245,239,224,0.7)]">ヴァルハラ公式アプリ</span>
-              <div className="h-px flex-1 bg-[rgba(201,169,97,0.3)]" />
+          <div style={{ textAlign: 'center' }}>
+            <p style={{ fontSize: '9px', letterSpacing: '0.6em', color: 'rgba(201,169,97,0.7)', marginBottom: '12px', textTransform: 'uppercase', fontFamily: 'var(--font-cinzel)' }}>Group Yggdrasill</p>
+            <h1 style={{ lineHeight: 1, fontWeight: 500, color: GOLD_BRIGHT, fontFamily: 'var(--font-display)', fontSize: '80px', textShadow: '0 0 40px rgba(0,0,0,0.8), 0 0 20px rgba(201,169,97,0.4)', letterSpacing: '0.06em' }}>YGD</h1>
+            <div style={{ marginTop: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div style={{ height: '1px', flex: 1, backgroundColor: 'rgba(201,169,97,0.3)' }} />
+              <span style={{ fontSize: '12px', letterSpacing: '0.2em', color: 'rgba(245,239,224,0.7)' }}>ヴァルハラ公式アプリ</span>
+              <div style={{ height: '1px', flex: 1, backgroundColor: 'rgba(201,169,97,0.3)' }} />
             </div>
           </div>
-          <div className="flex flex-col items-center gap-1">
-            <span className="text-[8px] tracking-[0.5em] text-[rgba(201,169,97,0.5)] uppercase" style={{ fontFamily: 'var(--font-cinzel)' }}>scroll</span>
-            <div className="w-px h-8 bg-gradient-to-b from-[rgba(201,169,97,0.5)] to-transparent" />
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+            <span style={{ fontSize: '8px', letterSpacing: '0.5em', color: 'rgba(201,169,97,0.5)', textTransform: 'uppercase', fontFamily: 'var(--font-cinzel)' }}>scroll</span>
+            <div style={{ width: '1px', height: '32px', background: 'linear-gradient(to bottom, rgba(201,169,97,0.5), transparent)' }} />
           </div>
         </div>
       </section>
 
-      {/* ===== メニューセクション ===== */}
-      <section className="max-w-[480px] mx-auto bg-[#07050A]">
-        <div className="h-px bg-gradient-to-r from-transparent via-[rgba(201,169,97,0.4)] to-transparent" />
+      {/* ===== MENU ===== */}
+      <section style={{ maxWidth: '480px', margin: '0 auto', backgroundColor: DARK }}>
+        <div style={{ height: '1px', background: 'linear-gradient(to right, transparent, rgba(201,169,97,0.4), transparent)' }} />
 
-        <div className="px-6 pt-8 pb-2">
-          <p className="text-[9px] tracking-[0.6em] text-[rgba(201,169,97,0.5)] uppercase mb-1" style={{ fontFamily: 'var(--font-cinzel)' }}>Select</p>
-          <h2 className="text-2xl font-bold tracking-[0.3em] text-[#E8CB85]" style={{ fontFamily: 'var(--font-cinzel)' }}>MENU</h2>
+        <div style={{ padding: '32px 24px 8px' }}>
+          <p style={{ fontSize: '9px', letterSpacing: '0.6em', color: GOLD_DIM, textTransform: 'uppercase', marginBottom: '4px', fontFamily: 'var(--font-cinzel)' }}>Select</p>
+          <h2 style={{ fontSize: '24px', fontWeight: 700, letterSpacing: '0.3em', color: GOLD_BRIGHT, fontFamily: 'var(--font-cinzel)' }}>MENU</h2>
         </div>
 
-        {/* ジャーニーレイアウト */}
-        <div className="pb-10">
+        <div style={{ paddingBottom: '40px' }}>
           {features.map((f, i) => {
             const isRight = i % 2 === 1;
             return (
               <div key={f.id}>
-                {/* メニューアイテム */}
-                <Link href={f.href}>
-                  <div className={`group relative overflow-hidden border-t border-[rgba(201,169,97,0.2)] transition-all duration-300 hover:bg-[rgba(201,169,97,0.06)] ${i === features.length - 1 && !f.bridge ? 'border-b border-[rgba(201,169,97,0.2)]' : ''}`}>
+                <Link href={f.href} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
+                  <div style={{ position: 'relative', overflow: 'hidden', borderTop: `1px solid rgba(201,169,97,0.2)`, ...(i === features.length - 1 && !f.bridge ? { borderBottom: `1px solid rgba(201,169,97,0.2)` } : {}) }}>
 
                     {/* 背景番号 */}
-                    <div className={`absolute top-1/2 -translate-y-1/2 text-[90px] font-bold text-[rgba(201,169,97,0.04)] leading-none select-none pointer-events-none ${isRight ? 'right-3' : 'left-3'}`}
-                      style={{ fontFamily: 'var(--font-cinzel)' }}>
+                    <div style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', fontSize: '90px', fontWeight: 700, color: 'rgba(201,169,97,0.04)', lineHeight: 1, userSelect: 'none', pointerEvents: 'none', fontFamily: 'var(--font-cinzel)', ...(isRight ? { right: '12px' } : { left: '12px' }) }}>
                       {f.num}
                     </div>
 
-                    <div className={`relative px-6 py-7 flex flex-col ${isRight ? 'items-end text-right' : 'items-start text-left'}`}>
+                    <div style={{ position: 'relative', padding: '28px 24px', display: 'flex', flexDirection: 'column', ...(isRight ? { alignItems: 'flex-end', textAlign: 'right' } : { alignItems: 'flex-start', textAlign: 'left' }) }}>
 
-                      {/* 英語ラベル＋番号 */}
-                      <div className={`flex items-center gap-3 mb-2 ${isRight ? 'flex-row-reverse' : ''}`}>
-                        <span className="text-[9px] tracking-[0.5em] text-[rgba(201,169,97,0.5)] uppercase" style={{ fontFamily: 'var(--font-cinzel)' }}>
-                          {f.en}
-                        </span>
-                        <div className="w-4 h-px bg-[rgba(201,169,97,0.3)]" />
-                        <span className="text-[9px] text-[rgba(201,169,97,0.35)]" style={{ fontFamily: 'var(--font-cinzel)' }}>
-                          {f.num}
-                        </span>
+                      {/* ENラベル＋番号 */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px', ...(isRight ? { flexDirection: 'row-reverse' } : {}) }}>
+                        <span style={{ fontSize: '9px', letterSpacing: '0.5em', color: GOLD_DIM, textTransform: 'uppercase', fontFamily: 'var(--font-cinzel)' }}>{f.en}</span>
+                        <div style={{ width: '16px', height: '1px', backgroundColor: 'rgba(201,169,97,0.3)' }} />
+                        <span style={{ fontSize: '9px', color: 'rgba(201,169,97,0.35)', fontFamily: 'var(--font-cinzel)' }}>{f.num}</span>
                       </div>
 
-                      {/* 日本語タイトル */}
-                      <h3 className="inline-block text-[20px] font-bold text-[#E8CB85] leading-tight mb-2 tracking-wide border border-[rgba(201,169,97,0.5)] px-3 py-1" style={{ background: 'rgba(201,169,97,0.05)' }}>
+                      {/* タイトル */}
+                      <h3 style={{ display: 'inline-block', fontSize: '20px', fontWeight: 700, color: GOLD_BRIGHT, lineHeight: 1.2, marginBottom: '8px', letterSpacing: '0.05em', border: `1px solid rgba(201,169,97,0.5)`, padding: '4px 12px', backgroundColor: 'rgba(201,169,97,0.05)' }}>
                         {f.title}
                       </h3>
 
                       {/* キャッチコピー */}
-                      <p className="text-[11px] text-[rgba(245,239,224,0.4)] leading-6 whitespace-pre-line tracking-wider">
+                      <p style={{ fontSize: '11px', color: CREAM_DIM, lineHeight: '24px', whiteSpace: 'pre-line', letterSpacing: '0.05em' }}>
                         {f.catch}
                       </p>
 
                       {/* 矢印 */}
-                      <div className={`mt-4 flex items-center gap-2 ${isRight ? 'flex-row-reverse' : ''}`}>
-                        <div className="w-6 h-px bg-[rgba(201,169,97,0.4)] group-hover:w-10 transition-all duration-300" />
-                        <span className="text-[10px] text-[rgba(201,169,97,0.5)] group-hover:text-[#C9A961] transition-colors" style={{ fontFamily: 'var(--font-cinzel)' }}>
-                          {isRight ? '←' : '→'}
-                        </span>
+                      <div style={{ marginTop: '16px', display: 'flex', alignItems: 'center', gap: '8px', ...(isRight ? { flexDirection: 'row-reverse' } : {}) }}>
+                        <div style={{ width: '24px', height: '1px', backgroundColor: 'rgba(201,169,97,0.4)' }} />
+                        <span style={{ fontSize: '10px', color: GOLD_DIM, fontFamily: 'var(--font-cinzel)' }}>{isRight ? '←' : '→'}</span>
                       </div>
                     </div>
 
                     {/* アクセントライン */}
-                    <div className={`absolute top-0 bottom-0 w-0.5 bg-gradient-to-b from-transparent via-[rgba(201,169,97,0.4)] to-transparent group-hover:via-[rgba(201,169,97,0.9)] transition-all duration-300 origin-center ${isRight ? 'right-0' : 'left-0'}`} />
+                    <div style={{ position: 'absolute', top: 0, bottom: 0, width: '2px', background: 'linear-gradient(to bottom, transparent, rgba(201,169,97,0.4), transparent)', ...(isRight ? { right: 0 } : { left: 0 }) }} />
                   </div>
                 </Link>
 
-                {/* ブリッジテキスト（次のステップへの誘導） */}
+                {/* ブリッジテキスト */}
                 {f.bridge && (
-                  <div className="relative flex flex-col items-center py-4 px-8">
-                    {/* 上の縦線 */}
-                    <div className="w-px h-4 bg-gradient-to-b from-[rgba(201,169,97,0.3)] to-[rgba(201,169,97,0.15)]" />
-                    {/* テキスト */}
-                    <p className="text-center text-[10px] text-[rgba(245,239,224,0.35)] tracking-widest leading-5 py-2 px-4 border-l border-r border-[rgba(201,169,97,0.1)]">
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px 32px' }}>
+                    <div style={{ width: '1px', height: '16px', background: 'linear-gradient(to bottom, rgba(201,169,97,0.3), rgba(201,169,97,0.15))' }} />
+                    <p style={{ textAlign: 'center', fontSize: '10px', color: CREAM_FAINT, letterSpacing: '0.1em', lineHeight: '20px', padding: '8px 16px', borderLeft: `1px solid rgba(201,169,97,0.1)`, borderRight: `1px solid rgba(201,169,97,0.1)` }}>
                       {f.bridge}
                     </p>
-                    {/* 下の縦線＋矢印 */}
-                    <div className="w-px h-4 bg-gradient-to-b from-[rgba(201,169,97,0.15)] to-[rgba(201,169,97,0.3)]" />
-                    <div className="text-[rgba(201,169,97,0.4)] text-[8px]">▼</div>
+                    <div style={{ width: '1px', height: '16px', background: 'linear-gradient(to bottom, rgba(201,169,97,0.15), rgba(201,169,97,0.3))' }} />
+                    <div style={{ fontSize: '8px', color: 'rgba(201,169,97,0.4)' }}>▼</div>
                   </div>
                 )}
               </div>
@@ -171,9 +168,9 @@ export default function HomePage() {
           })}
         </div>
 
-        <div className="text-center pb-10">
-          <div className="h-px bg-gradient-to-r from-transparent via-[rgba(201,169,97,0.15)] to-transparent mb-6" />
-          <p className="text-[9px] tracking-[0.4em] text-[rgba(245,239,224,0.2)] uppercase" style={{ fontFamily: 'var(--font-cinzel)' }}>© 2026 Group Yggdrasill</p>
+        <div style={{ textAlign: 'center', paddingBottom: '40px' }}>
+          <div style={{ height: '1px', background: 'linear-gradient(to right, transparent, rgba(201,169,97,0.15), transparent)', marginBottom: '24px' }} />
+          <p style={{ fontSize: '9px', letterSpacing: '0.4em', color: 'rgba(245,239,224,0.2)', textTransform: 'uppercase', fontFamily: 'var(--font-cinzel)' }}>© 2026 Group Yggdrasill</p>
         </div>
       </section>
     </main>

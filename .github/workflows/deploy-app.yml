@@ -34,6 +34,10 @@ jobs:
         run: pnpm install
         working-directory: webapp
 
+      - name: Clear Next.js build
+        run: rm -rf apps/valhalla/.next
+        working-directory: webapp
+
       - name: Build
         run: pnpm build --filter=@yggdra/valhalla --force
         working-directory: webapp
