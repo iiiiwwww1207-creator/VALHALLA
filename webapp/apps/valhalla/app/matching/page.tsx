@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { CAST_LIST } from '../../src/data/cast-list';
+import { CAST_PUBLIC, type CastPublic } from '../../src/data/cast-public';
 
 // ── カラー定数 ──────────────────────────────────────────
 const GOLD = '#C9A961';
@@ -84,7 +84,7 @@ export default function MatchingPage() {
   const [month, setMonth] = useState('');
   const [day, setDay] = useState('');
   const [step, setStep] = useState<Step>('input');
-  const [results, setResults] = useState<{ cast: typeof CAST_LIST[number]; score: number; rank: number }[]>([]);
+  const [results, setResults] = useState<{ cast: CastPublic; score: number; rank: number }[]>([]);
   const [lifePathNum, setLifePathNum] = useState(0);
   const [revealed, setRevealed] = useState<number[]>([]);
 
@@ -97,7 +97,7 @@ export default function MatchingPage() {
     const lp = calcLifePath(Number(year), Number(month), Number(day));
     setLifePathNum(lp);
 
-    const scored = CAST_LIST.map((c, i) => ({
+    const scored = CAST_PUBLIC.map((c, i) => ({
       cast: c,
       score: compatScore(lp, i),
       rank: i,
@@ -293,7 +293,7 @@ function ResultSection({
   lifePathNum, results, revealed, onReveal, onReset
 }: {
   lifePathNum: number;
-  results: { cast: typeof CAST_LIST[number]; score: number; rank: number }[];
+  results: { cast: CastPublic; score: number; rank: number }[];
   revealed: number[];
   onReveal: (i: number) => void;
   onReset: () => void;
@@ -379,7 +379,7 @@ function ResultSection({
 function CastCard({
   entry, rank, isRevealed, onReveal,
 }: {
-  entry: { cast: typeof CAST_LIST[number]; score: number };
+  entry: { cast: CastPublic; score: number };
   rank: number;
   isRevealed: boolean;
   onReveal: () => void;
