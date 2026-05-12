@@ -153,7 +153,7 @@ export default function HomePage() {
                           <div key={top} style={{ position: 'absolute', left: 0, top, width: '100%', height: '33.34%', overflow: 'hidden' }}>
                             <div className={cls}>
                               {[...row, ...row].map((img, idx) => (
-                                <img key={idx} src={img} alt="" style={{ flexShrink: 0, width: '56px', height: '100%', objectFit: 'cover', objectPosition: 'center 15%', display: 'block' }} />
+                                <img key={idx} src={img} alt="" loading="eager" style={{ flexShrink: 0, width: '56px', height: '100%', objectFit: 'cover', objectPosition: 'center 15%', display: 'block' }} />
                               ))}
                             </div>
                           </div>

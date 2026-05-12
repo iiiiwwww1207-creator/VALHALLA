@@ -183,7 +183,7 @@ export default function MatchingPage() {
             <div style={{ display: 'flex', gap: '3px', overflow: 'hidden', flex: 1 }}>
               <div className="marquee-left" style={{ display: 'flex', gap: '3px', flexShrink: 0 }}>
                 {row1.map((img, i) => (
-                  <img key={i} src={img} alt="" style={{ width: '72px', flexShrink: 0, height: '100%', objectFit: 'cover', display: 'block' }} />
+                  <img key={i} src={img} alt="" loading="eager" style={{ width: '72px', flexShrink: 0, height: '100%', objectFit: 'cover', objectPosition: 'center 15%', display: 'block' }} />
                 ))}
               </div>
             </div>
@@ -191,7 +191,7 @@ export default function MatchingPage() {
             <div style={{ display: 'flex', gap: '3px', overflow: 'hidden', flex: 1 }}>
               <div className="marquee-right" style={{ display: 'flex', gap: '3px', flexShrink: 0 }}>
                 {row2.map((img, i) => (
-                  <img key={i} src={img} alt="" style={{ width: '72px', flexShrink: 0, height: '100%', objectFit: 'cover', display: 'block' }} />
+                  <img key={i} src={img} alt="" loading="eager" style={{ width: '72px', flexShrink: 0, height: '100%', objectFit: 'cover', objectPosition: 'center 15%', display: 'block' }} />
                 ))}
               </div>
             </div>
@@ -199,7 +199,7 @@ export default function MatchingPage() {
             <div style={{ display: 'flex', gap: '3px', overflow: 'hidden', flex: 1 }}>
               <div className="marquee-left2" style={{ display: 'flex', gap: '3px', flexShrink: 0 }}>
                 {row3.map((img, i) => (
-                  <img key={i} src={img} alt="" style={{ width: '72px', flexShrink: 0, height: '100%', objectFit: 'cover', display: 'block' }} />
+                  <img key={i} src={img} alt="" loading="eager" style={{ width: '72px', flexShrink: 0, height: '100%', objectFit: 'cover', objectPosition: 'center 15%', display: 'block' }} />
                 ))}
               </div>
             </div>
