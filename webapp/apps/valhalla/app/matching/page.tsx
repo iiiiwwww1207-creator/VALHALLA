@@ -135,8 +135,30 @@ export default function MatchingPage() {
     setRevealed([]);
   }
 
+  // 写真ありのキャストだけ抽出してシャッフル
+  const photoList = CAST_PUBLIC.filter(c => c.image).map(c => c.image);
+  // 3行分のリスト（各行に使う写真を少しずつずらす）
+  const row1 = [...photoList.slice(0, 24), ...photoList.slice(0, 24)];
+  const row2 = [...photoList.slice(12, 36), ...photoList.slice(12, 36)];
+  const row3 = [...photoList.slice(24), ...photoList.slice(24)];
+
   return (
     <main style={{ minHeight: '100dvh', backgroundColor: DARK, color: CREAM, overflowX: 'hidden', fontFamily: 'var(--font-body)' }}>
+
+      {/* ── CSS アニメーション定義 ── */}
+      <style>{`
+        @keyframes marquee-left {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        @keyframes marquee-right {
+          0%   { transform: translateX(-50%); }
+          100% { transform: translateX(0); }
+        }
+        .marquee-left  { animation: marquee-left  40s linear infinite; }
+        .marquee-right { animation: marquee-right 50s linear infinite; }
+        .marquee-left2 { animation: marquee-left  60s linear infinite; }
+      `}</style>
 
       {/* 背景グロー */}
       <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0, background: 'radial-gradient(ellipse at 50% 0%, rgba(201,169,97,0.06) 0%, transparent 60%)' }} />
@@ -150,16 +172,59 @@ export default function MatchingPage() {
           </Link>
         </div>
 
-        {/* ── ヘッダー ── */}
-        <div style={{ textAlign: 'center', paddingTop: '24px', paddingBottom: '32px' }}>
-          <p style={{ fontSize: '9px', letterSpacing: '0.6em', color: GOLD, marginBottom: '12px', textTransform: 'uppercase', fontFamily: 'var(--font-cinzel)' }}>Compatibility</p>
-          <h1 style={{ fontSize: '28px', fontWeight: 700, color: GOLD_BRIGHT, fontFamily: 'var(--font-cinzel)', letterSpacing: '0.1em', marginBottom: '12px' }}>
-            相性診断
-          </h1>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', justifyContent: 'center' }}>
-            <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(201,169,97,0.3)' }} />
-            <span style={{ fontSize: '11px', color: CREAM_FAINT, letterSpacing: '0.15em' }}>数秘術であなたの運命を読み解く</span>
-            <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(201,169,97,0.3)' }} />
+        {/* ── ヘッダー（写真流れる背景付き）── */}
+        <div style={{ position: 'relative', textAlign: 'center', paddingTop: '32px', paddingBottom: '40px', overflow: 'hidden', margin: '0 -20px' }}>
+
+          {/* 流れる写真 3行 */}
+          <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', gap: '4px', opacity: 0.18, pointerEvents: 'none' }}>
+            {/* 1行目: 左へ */}
+            <div style={{ display: 'flex', gap: '4px', overflow: 'hidden', flex: 1 }}>
+              <div className="marquee-left" style={{ display: 'flex', gap: '4px', flexShrink: 0 }}>
+                {row1.map((img, i) => (
+                  <div key={i} style={{ width: '56px', flexShrink: 0, height: '100%' }}>
+                    <img src={img} alt="" style={{ width: '56px', height: '100%', objectFit: 'cover', display: 'block' }} />
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* 2行目: 右へ */}
+            <div style={{ display: 'flex', gap: '4px', overflow: 'hidden', flex: 1 }}>
+              <div className="marquee-right" style={{ display: 'flex', gap: '4px', flexShrink: 0 }}>
+                {row2.map((img, i) => (
+                  <div key={i} style={{ width: '56px', flexShrink: 0, height: '100%' }}>
+                    <img src={img} alt="" style={{ width: '56px', height: '100%', objectFit: 'cover', display: 'block' }} />
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* 3行目: 左へ（速度違う） */}
+            <div style={{ display: 'flex', gap: '4px', overflow: 'hidden', flex: 1 }}>
+              <div className="marquee-left2" style={{ display: 'flex', gap: '4px', flexShrink: 0 }}>
+                {row3.map((img, i) => (
+                  <div key={i} style={{ width: '56px', flexShrink: 0, height: '100%' }}>
+                    <img src={img} alt="" style={{ width: '56px', height: '100%', objectFit: 'cover', display: 'block' }} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* 上下グラデーションオーバーレイ */}
+          <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(to bottom, ${DARK} 0%, transparent 25%, transparent 75%, ${DARK} 100%)`, pointerEvents: 'none' }} />
+          {/* 暗めオーバーレイ（文字を読みやすく） */}
+          <div style={{ position: 'absolute', inset: 0, background: 'rgba(7,5,10,0.5)', pointerEvents: 'none' }} />
+
+          {/* テキスト */}
+          <div style={{ position: 'relative', zIndex: 2 }}>
+            <p style={{ fontSize: '9px', letterSpacing: '0.6em', color: GOLD, marginBottom: '12px', textTransform: 'uppercase', fontFamily: 'var(--font-cinzel)' }}>Compatibility</p>
+            <h1 style={{ fontSize: '28px', fontWeight: 700, color: GOLD_BRIGHT, fontFamily: 'var(--font-cinzel)', letterSpacing: '0.1em', marginBottom: '12px', textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+              相性診断
+            </h1>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', justifyContent: 'center' }}>
+              <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(201,169,97,0.3)' }} />
+              <span style={{ fontSize: '11px', color: CREAM_FAINT, letterSpacing: '0.15em' }}>数秘術であなたの運命を読み解く</span>
+              <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(201,169,97,0.3)' }} />
+            </div>
           </div>
         </div>
 
