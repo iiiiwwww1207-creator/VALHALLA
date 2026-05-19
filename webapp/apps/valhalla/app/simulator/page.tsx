@@ -213,7 +213,7 @@ function fmt(n: number) {
   return '¥' + n.toLocaleString('ja-JP');
 }
 
-type CartItem = { id: string; name: string; price: number; qty: number };
+type CartItem = { id: string; name: string; base: number; price: number; qty: number };
 
 const BUDGET_PRESETS = [10000, 20000, 30000, 50000, 80000, 100000, 150000, 200000, 300000, 500000];
 
@@ -242,7 +242,7 @@ export default function SimulatorPage() {
     setCart(prev => {
       const existing = prev.find(c => c.id === id && c.name === name);
       if (existing) return prev.map(c => c.id === id && c.name === name ? { ...c, qty: c.qty + 1 } : c);
-      return [...prev, { id, name, price, qty: 1 }];
+      return [...prev, { id, name, base: basePrice, price, qty: 1 }];
     });
   }
 
@@ -424,8 +424,11 @@ export default function SimulatorPage() {
           <p style={{ fontSize: '9px', letterSpacing: '0.4em', color: GOLD, textTransform: 'uppercase', marginBottom: '14px', fontFamily: 'var(--font-cinzel)' }}>
             Step 04 — ドリンク・フードを追加
           </p>
-          <p style={{ fontSize: '11px', color: CREAM_DIM, marginBottom: '16px', lineHeight: '20px' }}>
-            カテゴリをタップして追加。表示価格はすべて税・サービス料込みの目安です。
+          <p style={{ fontSize: '11px', color: CREAM_DIM, marginBottom: '4px', lineHeight: '20px' }}>
+            カテゴリをタップして追加。価格はメニュー表記の金額です。
+          </p>
+          <p style={{ fontSize: '10px', color: 'rgba(201,169,97,0.6)', marginBottom: '16px', lineHeight: '18px' }}>
+            ※全て消費税10%・サービス料35%となります（合計欄に反映）
           </p>
           <div style={{ display: 'grid', gap: '6px' }}>
             {DRINKS.map(cat => {
@@ -479,7 +482,7 @@ export default function SimulatorPage() {
                                     >
                                       <span style={{ fontSize: '12px', color: 'rgba(245,239,224,0.8)' }}>{v.label}</span>
                                       <span style={{ fontSize: '12px', color: GOLD_BRIGHT, fontWeight: 600 }}>
-                                        {fmt(calc(v.base))}
+                                        {fmt(v.base)}
                                       </span>
                                     </button>
                                   ))}
@@ -501,7 +504,7 @@ export default function SimulatorPage() {
                           >
                             <span style={{ fontSize: '12px', color: CREAM, flex: 1, marginRight: '8px' }}>{item.name}</span>
                             <span style={{ fontSize: '13px', color: GOLD_BRIGHT, fontWeight: 600, whiteSpace: 'nowrap' }}>
-                              + {fmt(displayPrice)}
+                              {fmt(item.base)}
                             </span>
                           </button>
                         );
@@ -528,10 +531,10 @@ export default function SimulatorPage() {
                   <div key={c.id + c.name} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 14px', border: '1px solid rgba(201,169,97,0.15)', borderRadius: '4px', background: 'rgba(201,169,97,0.04)' }}>
                     <div style={{ flex: 1, marginRight: '8px' }}>
                       <p style={{ fontSize: '12px', color: CREAM, margin: 0 }}>{c.name}</p>
-                      <p style={{ fontSize: '11px', color: GOLD_DIM, margin: '2px 0 0' }}>{fmt(c.price)} × {c.qty}</p>
+                      <p style={{ fontSize: '11px', color: GOLD_DIM, margin: '2px 0 0' }}>{fmt(c.base)}{c.qty > 1 ? ` × ${c.qty}` : ''}</p>
                     </div>
                     <p style={{ fontSize: '13px', fontWeight: 700, color: GOLD_BRIGHT, marginRight: '12px', whiteSpace: 'nowrap' }}>
-                      {fmt(c.price * c.qty)}
+                      {fmt(c.base * c.qty)}
                     </p>
                     <button
                       onClick={() => removeItem(c.id, c.name)}
@@ -599,9 +602,15 @@ export default function SimulatorPage() {
                 <span style={{ fontSize: '12px', color: CREAM_DIM, flex: 1, marginRight: '8px' }}>
                   {c.name}{c.qty > 1 ? ` ×${c.qty}` : ''}
                 </span>
-                <span style={{ fontSize: '12px', color: CREAM, whiteSpace: 'nowrap' }}>{fmt(c.price * c.qty)}</span>
+                <span style={{ fontSize: '12px', color: CREAM, whiteSpace: 'nowrap' }}>{fmt(c.base * c.qty)}</span>
               </div>
             ))}
+            {cart.length > 0 && (
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <span style={{ fontSize: '11px', color: 'rgba(201,169,97,0.55)' }}>消費税10% + サービス料35%</span>
+                <span style={{ fontSize: '11px', color: 'rgba(201,169,97,0.55)' }}>+{fmt(drinkTotal - cart.reduce((s,c) => s + c.base * c.qty, 0))}</span>
+              </div>
+            )}
             <div style={{ height: '1px', background: 'rgba(201,169,97,0.2)', margin: '14px 0' }} />
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontSize: '13px', letterSpacing: '0.1em', color: GOLD, fontFamily: 'var(--font-cinzel)' }}>合計目安</span>
@@ -626,7 +635,7 @@ export default function SimulatorPage() {
                         color: GOLD_BRIGHT, cursor: 'pointer', borderRadius: '20px',
                       }}
                     >
-                      {item.name.length > 12 ? item.name.slice(0, 12) + '…' : item.name}　{fmt(calc(item.base))}
+                      {item.name.length > 12 ? item.name.slice(0, 12) + '…' : item.name}　{fmt(item.base)}
                     </button>
                   ))}
                 </div>
@@ -635,7 +644,7 @@ export default function SimulatorPage() {
           </div>
 
           <p style={{ fontSize: '10px', color: 'rgba(245,239,224,0.3)', marginTop: '12px', lineHeight: '18px' }}>
-            ※ドリンク価格は定価×消費税10%×サービス料35%の目安金額です（¥1,000未満切り上げ）。<br />
+            ※ドリンク価格はメニュー表記の金額に消費税10%・サービス料35%を加算し、¥1,000未満切り上げで計算しています。<br />
             ※セット料金はすでに税・サービス料込みの金額です。<br />
             ※実際の料金はお店の状況によって異なる場合があります。
           </p>
