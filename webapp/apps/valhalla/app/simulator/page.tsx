@@ -16,134 +16,61 @@ function calc(base: number) {
 }
 
 // ===================== セット料金 =====================
-type SetItem = {
+type PlanItem = { id: string; label: string; price: number; note?: string };
+type SeatType = {
   id: string;
   label: string;
-  sub: string;
-  price: number;
-  note?: string;
-  tag?: string;
+  desc: string;
+  plans: PlanItem[];
 };
 
-type SetGroup = { group: string; items: SetItem[] };
-
-const SET_GROUPS: SetGroup[] = [
+const SEATS: SeatType[] = [
   {
-    group: 'Main Floor',
-    items: [
-      {
-        id: 'quick',
-        label: 'クイック',
-        sub: '60分・時間制限制',
-        price: 10000,
-        note: '缶物2本込み。60分でチェックアウト。',
-        tag: '時間制限',
-      },
-      {
-        id: 'normal',
-        label: '通常',
-        sub: 'フリータイム',
-        price: 21000,
-        note: 'ドリンクは別途。閉店まで滞在可能。',
-        tag: 'フリータイム',
-      },
-      {
-        id: 'nomi_main',
-        label: '飲み放題',
-        sub: '90分',
-        price: 30000,
-        note: '一部ドリンクは別途。延長は60分ごとに¥15,000。',
-        tag: '90分',
-      },
+    id: 'main',
+    label: 'Main Floor',
+    desc: 'メインフロア',
+    plans: [
+      { id: 'quick',     label: 'クイック（60分・時間制限）', price: 10000, note: '缶物2本込み。60分でチェックアウト。' },
+      { id: 'normal',    label: '通常（フリータイム）',       price: 21000, note: 'ドリンクは別途。閉店まで滞在可能。' },
+      { id: 'nomi_main', label: '飲み放題（90分）',           price: 30000, note: '一部ドリンクは別途。延長¥15,000 / 60分。' },
     ],
   },
   {
-    group: '飲み放題 延長',
-    items: [
-      {
-        id: 'nomi_ext',
-        label: '延長料金',
-        sub: '60分ごと',
-        price: 15000,
-        note: '飲み放題の延長料金（60分単位）。',
-      },
+    id: 'vip_sofa',
+    label: 'V.I.P.Sofa',
+    desc: 'VIPソファ席',
+    plans: [
+      { id: 'vip_sofa_normal', label: '通常（フリータイム）', price: 30000, note: 'ドリンクは別途。' },
+      { id: 'nomi_vip',        label: '飲み放題（90分）',     price: 50000, note: '一部ドリンクは別途。延長¥25,000 / 60分。' },
     ],
   },
   {
-    group: 'V.I.P Floor',
-    items: [
-      {
-        id: 'vip_sofa',
-        label: 'V.I.P.Sofa',
-        sub: 'フリータイム',
-        price: 30000,
-        note: 'ドリンクは別途。',
-      },
-      {
-        id: 'vip_box',
-        label: 'V.I.P.Box',
-        sub: 'フリータイム',
-        price: 35000,
-        note: 'ドリンクは別途。',
-      },
-      {
-        id: 'nomi_vip',
-        label: 'VIP飲み放題',
-        sub: '90分',
-        price: 50000,
-        note: '一部ドリンクは別途。',
-      },
-      {
-        id: 'nomi_vip_ext',
-        label: 'VIP延長',
-        sub: '60分ごと',
-        price: 25000,
-      },
+    id: 'vip_box',
+    label: 'V.I.P.Box',
+    desc: 'VIPボックス席',
+    plans: [
+      { id: 'vip_box_normal', label: '通常（フリータイム）', price: 35000, note: 'ドリンクは別途。' },
+      { id: 'nomi_vip',       label: '飲み放題（90分）',     price: 50000, note: '一部ドリンクは別途。延長¥25,000 / 60分。' },
     ],
   },
   {
-    group: 'Executive Room',
-    items: [
-      {
-        id: 'exe',
-        label: 'Executive Room',
-        sub: 'フリータイム',
-        price: 50000,
-        note: 'ドリンクは別途。',
-      },
-      {
-        id: 'nomi_exe',
-        label: 'Executive飲み放題',
-        sub: '90分',
-        price: 100000,
-        note: '一部ドリンクは別途。',
-      },
-      {
-        id: 'nomi_exe_ext',
-        label: 'Executive延長',
-        sub: '60分ごと',
-        price: 50000,
-      },
-    ],
-  },
-  {
-    group: 'その他',
-    items: [
-      {
-        id: 'jonai_set',
-        label: '場内指名',
-        sub: '税・サービス料別',
-        price: 1000,
-      },
-      {
-        id: 'dohan_set',
-        label: '同伴料金',
-        sub: '税・サービス料別',
-        price: 3000,
-      },
+    id: 'exe',
+    label: 'Executive Room',
+    desc: 'エグゼクティブルーム',
+    plans: [
+      { id: 'exe_normal', label: '通常（フリータイム）', price: 50000,  note: 'ドリンクは別途。' },
+      { id: 'nomi_exe',   label: '飲み放題（90分）',    price: 100000, note: '一部ドリンクは別途。延長¥50,000 / 60分。' },
     ],
   },
 ];
+
+// 延長料金（飲み放題選択時のみ表示）
+const EXT_PLANS: Record<string, PlanItem> = {
+  main:     { id: 'nomi_ext',     label: '延長（+60分）', price: 15000 },
+  vip_sofa: { id: 'nomi_vip_ext', label: '延長（+60分）', price: 25000 },
+  vip_box:  { id: 'nomi_vip_ext', label: '延長（+60分）', price: 25000 },
+  exe:      { id: 'nomi_exe_ext', label: '延長（+60分）', price: 50000 },
+};
 
 // ===================== ドリンクメニュー =====================
 type DrinkItem = { id: string; name: string; base: number; variants?: { label: string; base: number }[] };
@@ -292,14 +219,18 @@ const BUDGET_PRESETS = [10000, 20000, 30000, 50000, 80000, 100000, 150000, 20000
 
 export default function SimulatorPage() {
   const [budget, setBudget] = useState<number>(0);
-  const [setId, setSetId] = useState<string>('');
+  const [seatId, setSeatId] = useState<string>('');
+  const [planId, setPlanId] = useState<string>('');
+  const [extQty, setExtQty] = useState<number>(0);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [openCat, setOpenCat] = useState<string>('');
   const [variantOpen, setVariantOpen] = useState<string>('');
 
-  const allSets = SET_GROUPS.flatMap(g => g.items);
-  const selectedSet = allSets.find(s => s.id === setId);
-  const setPrice = selectedSet ? selectedSet.price : 0;
+  const selectedSeat = SEATS.find(s => s.id === seatId);
+  const selectedPlan = selectedSeat?.plans.find(p => p.id === planId);
+  const isNomi = planId.startsWith('nomi_');
+  const extPlan = seatId ? EXT_PLANS[seatId] : null;
+  const setPrice = (selectedPlan?.price ?? 0) + (isNomi && extPlan ? extPlan.price * extQty : 0);
 
   const drinkTotal = cart.reduce((sum, c) => sum + c.price * c.qty, 0);
   const total = setPrice + drinkTotal;
@@ -383,115 +314,102 @@ export default function SimulatorPage() {
 
         {divider}
 
-        {/* STEP 1 セット選択 */}
+        {/* STEP 2 席を選ぶ */}
         <section style={{ paddingTop: '24px', paddingBottom: '24px' }}>
           <p style={{ fontSize: '9px', letterSpacing: '0.4em', color: GOLD, textTransform: 'uppercase', marginBottom: '6px', fontFamily: 'var(--font-cinzel)' }}>
-            Step 02 — セット料金（プランを選ぶ）
+            Step 02 — 席を選ぶ
           </p>
-          <p style={{ fontSize: '11px', color: CREAM_DIM, marginBottom: '18px', lineHeight: '20px' }}>
-            どのプランで入店しますか？
-          </p>
-
-          {/* 料金形態3種（Main Floor）を目立たせる */}
-          <div style={{ display: 'grid', gap: '10px', marginBottom: '20px' }}>
-            {SET_GROUPS[0].items.map(s => {
-              const active = setId === s.id;
-              const tagColors: Record<string, string> = {
-                '時間制限': 'rgba(255,100,100,0.8)',
-                'フリータイム': 'rgba(100,200,150,0.8)',
-                '90分': 'rgba(100,160,255,0.8)',
-              };
+          <p style={{ fontSize: '11px', color: CREAM_DIM, marginBottom: '14px' }}>どのエリアに座りますか？</p>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+            {SEATS.map(seat => {
+              const active = seatId === seat.id;
               return (
                 <button
-                  key={s.id}
-                  onClick={() => setSetId(active ? '' : s.id)}
+                  key={seat.id}
+                  onClick={() => { setSeatId(active ? '' : seat.id); setPlanId(''); setExtQty(0); }}
                   style={{
-                    width: '100%', textAlign: 'left', padding: '16px 16px',
-                    border: active ? `1px solid ${GOLD}` : '1px solid rgba(201,169,97,0.25)',
-                    background: active ? 'rgba(201,169,97,0.1)' : 'rgba(255,255,255,0.03)',
+                    textAlign: 'left', padding: '14px 14px',
+                    border: active ? `1px solid ${GOLD}` : '1px solid rgba(201,169,97,0.2)',
+                    background: active ? 'rgba(201,169,97,0.12)' : 'rgba(255,255,255,0.02)',
                     cursor: 'pointer', borderRadius: '4px',
                   }}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                        <p style={{ fontSize: '15px', fontWeight: 700, color: active ? GOLD_BRIGHT : CREAM, margin: 0 }}>{s.label}</p>
-                        {s.tag && (
-                          <span style={{ fontSize: '9px', padding: '2px 7px', borderRadius: '20px', border: `1px solid ${tagColors[s.tag] ?? GOLD_DIM}`, color: tagColors[s.tag] ?? GOLD_DIM }}>
-                            {s.tag}
-                          </span>
-                        )}
-                      </div>
-                      {s.note && <p style={{ fontSize: '11px', color: 'rgba(245,239,224,0.45)', margin: 0, lineHeight: '18px' }}>{s.note}</p>}
-                    </div>
-                    <p style={{ fontSize: '16px', fontWeight: 700, color: active ? GOLD_BRIGHT : GOLD_DIM, whiteSpace: 'nowrap', marginLeft: '14px' }}>
-                      {fmt(s.price)}
-                    </p>
-                  </div>
+                  <p style={{ fontSize: '13px', fontWeight: 700, color: active ? GOLD_BRIGHT : CREAM, margin: '0 0 3px' }}>{seat.label}</p>
+                  <p style={{ fontSize: '10px', color: CREAM_DIM, margin: 0 }}>{seat.desc}</p>
                 </button>
               );
             })}
           </div>
-
-          {/* その他のセット（折りたたみ） */}
-          {SET_GROUPS.slice(1).map(g => {
-            const isOpen = openCat === g.group;
-            return (
-              <div key={g.group} style={{ border: '1px solid rgba(201,169,97,0.12)', borderRadius: '4px', overflow: 'hidden', marginBottom: '6px' }}>
-                <button
-                  onClick={() => setOpenCat(isOpen ? '' : g.group)}
-                  style={{
-                    width: '100%', textAlign: 'left', padding: '11px 16px',
-                    background: isOpen ? 'rgba(201,169,97,0.06)' : 'rgba(255,255,255,0.02)',
-                    border: 'none', cursor: 'pointer',
-                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                  }}
-                >
-                  <span style={{ fontSize: '12px', color: isOpen ? GOLD_BRIGHT : 'rgba(245,239,224,0.7)', fontWeight: 600 }}>{g.group}</span>
-                  <span style={{ fontSize: '10px', color: GOLD_DIM }}>{isOpen ? '▲' : '▼'}</span>
-                </button>
-                {isOpen && (
-                  <div style={{ borderTop: '1px solid rgba(201,169,97,0.1)' }}>
-                    {g.items.map(s => {
-                      const active = setId === s.id;
-                      return (
-                        <button
-                          key={s.id}
-                          onClick={() => setSetId(active ? '' : s.id)}
-                          style={{
-                            width: '100%', textAlign: 'left', padding: '11px 16px',
-                            background: active ? 'rgba(201,169,97,0.08)' : 'transparent',
-                            border: 'none', borderBottom: '1px solid rgba(201,169,97,0.07)',
-                            cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                          }}
-                        >
-                          <div>
-                            <p style={{ fontSize: '13px', fontWeight: 600, color: active ? GOLD_BRIGHT : CREAM, margin: 0 }}>{s.label}</p>
-                            <p style={{ fontSize: '11px', color: CREAM_DIM, margin: '2px 0 0' }}>{s.sub}</p>
-                          </div>
-                          <p style={{ fontSize: '13px', fontWeight: 700, color: active ? GOLD_BRIGHT : GOLD_DIM, whiteSpace: 'nowrap', marginLeft: '12px' }}>
-                            {fmt(s.price)}
-                          </p>
-                        </button>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-
-          <p style={{ fontSize: '10px', color: 'rgba(245,239,224,0.3)', marginTop: '10px', lineHeight: '18px' }}>
-            ※セット料金は税・サービス料込みの金額です。
-          </p>
         </section>
+
+        {/* STEP 3 プランを選ぶ（席選択後に表示） */}
+        {selectedSeat && (
+          <>
+            {divider}
+            <section style={{ paddingTop: '24px', paddingBottom: '24px' }}>
+              <p style={{ fontSize: '9px', letterSpacing: '0.4em', color: GOLD, textTransform: 'uppercase', marginBottom: '6px', fontFamily: 'var(--font-cinzel)' }}>
+                Step 03 — プランを選ぶ
+              </p>
+              <p style={{ fontSize: '11px', color: CREAM_DIM, marginBottom: '14px' }}>
+                <span style={{ color: GOLD_BRIGHT, fontWeight: 700 }}>{selectedSeat.label}</span> でのプランを選んでください。
+              </p>
+              <div style={{ display: 'grid', gap: '8px' }}>
+                {selectedSeat.plans.map(plan => {
+                  const active = planId === plan.id;
+                  return (
+                    <button
+                      key={plan.id}
+                      onClick={() => { setPlanId(active ? '' : plan.id); setExtQty(0); }}
+                      style={{
+                        width: '100%', textAlign: 'left', padding: '14px 16px',
+                        border: active ? `1px solid ${GOLD}` : '1px solid rgba(201,169,97,0.2)',
+                        background: active ? 'rgba(201,169,97,0.1)' : 'rgba(255,255,255,0.02)',
+                        cursor: 'pointer', borderRadius: '4px',
+                        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                      }}
+                    >
+                      <div style={{ flex: 1 }}>
+                        <p style={{ fontSize: '14px', fontWeight: 700, color: active ? GOLD_BRIGHT : CREAM, margin: '0 0 3px' }}>{plan.label}</p>
+                        {plan.note && <p style={{ fontSize: '11px', color: 'rgba(245,239,224,0.45)', margin: 0, lineHeight: '18px' }}>{plan.note}</p>}
+                      </div>
+                      <p style={{ fontSize: '16px', fontWeight: 700, color: active ? GOLD_BRIGHT : GOLD_DIM, whiteSpace: 'nowrap', marginLeft: '16px' }}>
+                        {fmt(plan.price)}
+                      </p>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* 飲み放題の延長オプション */}
+              {isNomi && extPlan && (
+                <div style={{ marginTop: '14px', padding: '14px 16px', border: '1px solid rgba(201,169,97,0.15)', borderRadius: '4px', background: 'rgba(255,255,255,0.02)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div>
+                      <p style={{ fontSize: '13px', color: CREAM, margin: '0 0 2px', fontWeight: 600 }}>{extPlan.label}</p>
+                      <p style={{ fontSize: '11px', color: CREAM_DIM, margin: 0 }}>{fmt(extPlan.price)} / 60分</p>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <button onClick={() => setExtQty(q => Math.max(0, q - 1))} style={{ width: '30px', height: '30px', border: '1px solid rgba(201,169,97,0.3)', background: 'transparent', color: GOLD_DIM, fontSize: '16px', cursor: 'pointer', borderRadius: '50%' }}>−</button>
+                      <span style={{ fontSize: '16px', fontWeight: 700, color: extQty > 0 ? GOLD_BRIGHT : 'rgba(245,239,224,0.4)', minWidth: '20px', textAlign: 'center' }}>{extQty}</span>
+                      <button onClick={() => setExtQty(q => q + 1)} style={{ width: '30px', height: '30px', border: '1px solid rgba(201,169,97,0.3)', background: 'transparent', color: GOLD_DIM, fontSize: '16px', cursor: 'pointer', borderRadius: '50%' }}>＋</button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <p style={{ fontSize: '10px', color: 'rgba(245,239,224,0.3)', marginTop: '10px', lineHeight: '18px' }}>
+                ※セット料金は税・サービス料込みの金額です。
+              </p>
+            </section>
+          </>
+        )}
 
         {divider}
 
         {/* STEP 2 ドリンク選択 */}
         <section style={{ paddingTop: '24px', paddingBottom: '24px' }}>
           <p style={{ fontSize: '9px', letterSpacing: '0.4em', color: GOLD, textTransform: 'uppercase', marginBottom: '14px', fontFamily: 'var(--font-cinzel)' }}>
-            Step 03 — ドリンク・フードを追加
+            Step 04 — ドリンク・フードを追加
           </p>
           <p style={{ fontSize: '11px', color: CREAM_DIM, marginBottom: '16px', lineHeight: '20px' }}>
             カテゴリをタップして追加。表示価格はすべて税・サービス料込みの目安です。
@@ -649,11 +567,19 @@ export default function SimulatorPage() {
 
           {/* 内訳 */}
           <div style={{ border: `1px solid ${overBudget ? 'rgba(255,80,80,0.4)' : 'rgba(201,169,97,0.35)'}`, borderRadius: '4px', padding: '20px', background: 'linear-gradient(135deg, rgba(201,169,97,0.08), rgba(7,5,10,0.6))' }}>
-            {selectedSet && (
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                <span style={{ fontSize: '12px', color: CREAM_DIM }}>セット（{selectedSet.label}）</span>
-                <span style={{ fontSize: '12px', color: CREAM }}>{fmt(setPrice)}</span>
-              </div>
+            {selectedSeat && selectedPlan && (
+              <>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                  <span style={{ fontSize: '12px', color: CREAM_DIM }}>{selectedSeat.label}　{selectedPlan.label}</span>
+                  <span style={{ fontSize: '12px', color: CREAM }}>{fmt(selectedPlan.price)}</span>
+                </div>
+                {isNomi && extPlan && extQty > 0 && (
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                    <span style={{ fontSize: '12px', color: CREAM_DIM }}>延長 ×{extQty}</span>
+                    <span style={{ fontSize: '12px', color: CREAM }}>{fmt(extPlan.price * extQty)}</span>
+                  </div>
+                )}
+              </>
             )}
             {cart.map(c => (
               <div key={c.id + c.name} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
@@ -702,9 +628,9 @@ export default function SimulatorPage() {
           </p>
 
           {/* リセット */}
-          {(budget > 0 || setId || cart.length > 0) && (
+          {(budget > 0 || seatId || cart.length > 0) && (
             <button
-              onClick={() => { setBudget(0); setSetId(''); setCart([]); }}
+              onClick={() => { setBudget(0); setSeatId(''); setPlanId(''); setExtQty(0); setCart([]); }}
               style={{
                 marginTop: '20px', width: '100%', padding: '12px',
                 border: '1px solid rgba(201,169,97,0.2)', background: 'transparent',
