@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>料金シミュレーター — VALHALLA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #D4AF37;
+      --gold2: #F4D17A;
+      --bg: #080810;
+      --surface: #0f0f1a;
+      --surface2: #161626;
+      --border: rgba(212,175,55,0.18);
+      --text: #f0eaff;
+      --text2: rgba(240,234,255,0.6);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans JP', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── TOP BAR ── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 100;
+    }
+    .topbar-back {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      color: var(--text2);
+      font-size: 13px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .topbar-back:hover { color: var(--gold); }
+    .topbar-badge {
+      font-size: 11px;
+      color: var(--gold);
+      border: 1px solid var(--border);
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    /* ── MAIN CONTENT ── */
+    .content {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 24px 20px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* ── HERO ── */
+    .hero-eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      color: var(--gold);
+      text-transform: uppercase;
+      font-family: 'Cormorant Garamond', serif;
+      margin-bottom: 8px;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 30px;
+      font-weight: 400;
+      color: var(--gold2);
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+    .hero-desc {
+      font-size: 12px;
+      color: var(--text2);
+      line-height: 1.8;
+    }
+
+    /* ── SECTION HEADER ── */
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .step-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px;
+      color: var(--gold);
+      letter-spacing: 0.3em;
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+    }
+    .step-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── SEAT CARDS ── */
+    .seat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .seat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 12px;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      text-align: left;
+      width: 100%;
+      font-family: inherit;
+    }
+    .seat-card:hover { border-color: rgba(212,175,55,0.45); }
+    .seat-card.selected {
+      border-color: var(--gold);
+      background: rgba(212,175,55,0.07);
+    }
+    .seat-card-en {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      color: var(--gold2);
+      font-weight: 600;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .seat-card-ja {
+      font-size: 10px;
+      color: var(--text2);
+    }
+
+    /* ── PLAN CARDS ── */
+    .plan-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .plan-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      text-align: left;
+      width: 100%;
+      font-family: inherit;
+    }
+    .plan-card:hover { border-color: rgba(212,175,55,0.45); }
+    .plan-card.selected {
+      border-color: var(--gold);
+      background: rgba(212,175,55,0.07);
+    }
+    .plan-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .plan-card-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .plan-card-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      color: var(--gold2);
+      white-space: nowrap;
+      flex-shrink: 0;
+      font-weight: 600;
+    }
+    .plan-card-note {
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--text2);
+      line-height: 1.7;
+    }
+
+    /* ── EXT COUNTER ── */
+    .ext-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+    }
+    .ext-label {
+      font-size: 13px;
+      color: var(--text);
+    }
+    .ext-price {
+      font-size: 11px;
+      color: var(--text2);
+    }
+    .counter-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .counter-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      color: var(--gold);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: inherit;
+      line-height: 1;
+      transition: border-color 0.15s;
+    }
+    .counter-btn:hover { border-color: var(--gold); }
+    .counter-btn:disabled { opacity: 0.3; cursor: default; }
+    .counter-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      color: var(--gold2);
+      min-width: 20px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    /* ── DRINK SECTION ── */
+    .lock-box {
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text2);
+    }
+    .lock-box span { margin-right: 6px; }
+
+    .cat-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .cat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      width: 100%;
+      font-family: inherit;
+      text-align: left;
+    }
+    .cat-header:hover { background: rgba(212,175,55,0.04); }
+    .cat-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+    .cat-chevron {
+      font-size: 12px;
+      color: var(--text2);
+      transition: transform 0.2s;
+    }
+    .cat-chevron.open { transform: rotate(180deg); }
+    .cat-body {
+      display: none;
+      border-top: 1px solid var(--border);
+    }
+    .cat-body.open { display: block; }
+
+    .drink-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 16px;
+      border-bottom: 1px solid rgba(212,175,55,0.07);
+      gap: 8px;
+    }
+    .drink-row:last-child { border-bottom: none; }
+    .drink-name {
+      font-size: 12px;
+      color: var(--text);
+      line-height: 1.5;
+      flex: 1;
+    }
+    .drink-base {
+      font-size: 12px;
+      color: var(--text2);
+      white-space: nowrap;
+      margin-right: 12px;
+      flex-shrink: 0;
+    }
+    .drink-counter {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .dc-btn {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      color: var(--gold);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: inherit;
+      line-height: 1;
+      transition: border-color 0.15s;
+      flex-shrink: 0;
+    }
+    .dc-btn:hover { border-color: var(--gold); }
+    .dc-qty {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      color: var(--gold2);
+      min-width: 16px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    /* variant selector */
+    .variant-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      width: 100%;
+    }
+    .variant-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 16px;
+      border-bottom: 1px solid rgba(212,175,55,0.05);
+      gap: 8px;
+    }
+    .variant-row:last-child { border-bottom: none; }
+    .variant-name {
+      font-size: 11px;
+      color: var(--text2);
+      flex: 1;
+    }
+    .variant-price {
+      font-size: 11px;
+      color: var(--text2);
+      white-space: nowrap;
+      margin-right: 12px;
+      flex-shrink: 0;
+    }
+
+    /* ── TOTAL SECTION ── */
+    .total-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .total-header {
+      padding: 14px 16px 10px;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+    }
+    .total-body {
+      padding: 12px 16px;
+    }
+    .total-section-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--text2);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      margin-top: 14px;
+    }
+    .total-section-label:first-child { margin-top: 0; }
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 5px;
+      font-size: 13px;
+    }
+    .total-row-label { color: var(--text2); flex: 1; }
+    .total-row-amount { color: var(--text); white-space: nowrap; }
+    .total-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 10px 0;
+    }
+    .total-subtotal {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text2);
+      margin-bottom: 4px;
+    }
+    .total-tax {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text2);
+      margin-bottom: 4px;
+    }
+    .total-drink-sum {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0;
+    }
+    .total-grand-divider {
+      height: 1px;
+      background: rgba(212,175,55,0.4);
+      margin: 12px 0;
+    }
+    .total-grand {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .total-grand-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .total-grand-amount {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      color: var(--gold2);
+      font-weight: 600;
+    }
+    .total-note {
+      font-size: 10px;
+      color: var(--text2);
+      margin-top: 4px;
+      text-align: right;
+    }
+    .total-empty {
+      font-size: 12px;
+      color: var(--text2);
+      text-align: center;
+      padding: 16px 0;
+    }
+
+    /* ── RESET BTN ── */
+    .reset-btn {
+      width: 100%;
+      padding: 14px;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text2);
+      font-size: 13px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .reset-btn:hover { border-color: rgba(212,175,55,0.5); color: var(--text); }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="topbar-back" onclick="history.back()">
+    ← 戻る
+  </button>
+  <span class="topbar-badge">Price Simulator</span>
+</div>
+
+<div class="content">
+
+  <!-- HERO -->
+  <div>
+    <div class="hero-eyebrow">03 · Price Simulator</div>
+    <h1 class="hero-title">料金シミュレーター</h1>
+    <p class="hero-desc">席・プランを選んでドリンクを追加すると、料金の目安が確認できます。<br>全てのドリンク料金には消費税10%＋サービス料35%が加算されます。</p>
+  </div>
+
+  <!-- STEP 01: SEAT -->
+  <div>
+    <div class="step-header">
+      <span class="step-num">STEP 01</span>
+      <span class="step-label">席を選ぶ</span>
+    </div>
+    <div class="seat-grid" id="seat-grid"></div>
+  </div>
+
+  <!-- STEP 02: PLAN -->
+  <div id="plan-section">
+    <div class="step-header">
+      <span class="step-num">STEP 02</span>
+      <span class="step-label">プランを選ぶ</span>
+    </div>
+    <div class="plan-list" id="plan-list"></div>
+    <!-- EXTENSION (飲み放題のみ) -->
+    <div id="ext-section" style="display:none; margin-top:8px;">
+      <div class="ext-row">
+        <div>
+          <div class="ext-label" id="ext-label">延長（+60分）</div>
+          <div class="ext-price" id="ext-price">¥15,000</div>
+        </div>
+        <div class="counter-wrap">
+          <button class="counter-btn" id="ext-minus" onclick="changeExt(-1)">−</button>
+          <span class="counter-val" id="ext-qty">0</span>
+          <button class="counter-btn" onclick="changeExt(1)">＋</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 03: DRINKS -->
+  <div>
+    <div class="step-header">
+      <span class="step-num">STEP 03</span>
+      <span class="step-label">ドリンクを追加</span>
+    </div>
+    <div id="drink-lock" class="lock-box">
+      <span>🔒</span>Step 01・02で席とプランを選択するとドリンクを追加できます
+    </div>
+    <div id="drink-list" style="display:none;"></div>
+  </div>
+
+  <!-- TOTAL -->
+  <div>
+    <div class="step-header">
+      <span class="step-num">TOTAL</span>
+      <span class="step-label">料金目安</span>
+    </div>
+    <div class="total-box">
+      <div class="total-header">料金内訳</div>
+      <div class="total-body" id="total-body">
+        <div class="total-empty">席とプランを選択してください</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESET -->
+  <button class="reset-btn" onclick="resetAll()">🔄 リセット</button>
+
+</div>
+
+<script>
+// ──────────────────────────────────────────────
+// DATA
+// ──────────────────────────────────────────────
+const SEATS = [
+  { id: 'main', label: 'Main Floor', desc: 'メインフロア', plans: [
+    { id: 'quick', label: 'クイック（60分）', price: 10000,
+      note: '缶物（スラット・淡麗・お茶割り・JJ茉莉花）2セット、またはノンアルコールドリンクのピッチャー2杯が無料。3セット目以降またはそれ以外のドリンクは別途料金。60分でチェックアウト。' },
+    { id: 'normal', label: '通常（フリータイム）', price: 21000, note: 'ドリンクは別途。閉店まで滞在可能。' },
+    { id: 'nomi_main', label: '飲み放題（90分）', price: 30000, note: '一部ドリンクは別途。延長¥15,000 / 60分。' },
+  ]},
+  { id: 'vip_sofa', label: 'V.I.P.Sofa', desc: 'VIPソファ席', plans: [
+    { id: 'vip_sofa_normal', label: '通常（フリータイム）', price: 30000, note: 'ドリンクは別途。閉店まで滞在可能。' },
+    { id: 'nomi_vip_sofa', label: '飲み放題（90分）', price: 50000, note: '一部ドリンクは別途。延長¥25,000 / 60分。' },
+  ]},
+  { id: 'vip_box', label: 'V.I.P.Box', desc: 'VIPボックス席', plans: [
+    { id: 'vip_box_normal', label: '通常（フリータイム）', price: 35000, note: 'ドリンクは別途。閉店まで滞在可能。' },
+    { id: 'nomi_vip_box', label: '飲み放題（90分）', price: 50000, note: '一部ドリンクは別途。延長¥25,000 / 60分。' },
+  ]},
+  { id: 'exe', label: 'Executive', desc: 'エグゼクティブルーム', plans: [
+    { id: 'exe_normal', label: '通常（フリータイム）', price: 50000, note: 'ドリンクは別途。閉店まで滞在可能。' },
+    { id: 'nomi_exe', label: '飲み放題（90分）', price: 100000, note: '一部ドリンクは別途。延長¥50,000 / 60分。' },
+  ]},
+];
+
+const EXT_PRICES = { main: 15000, vip_sofa: 25000, vip_box: 25000, exe: 50000 };
+
+const DRINKS = [
+  { cat: 'ノンアルコールドリンク', items: [
+    { id: 'soft_1k', name: '緑茶／烏龍茶／麦茶／コーン茶／ジャスミン茶／ストレートティー／レモンティー／ミルクティー／オレンジジュース／アップルジュース／グレープフルーツジュース／パインジュース／グレープジュース／アセロラジュース／カルピス', base: 1000 },
+    { id: 'soft_2k', name: 'コーラ／ジンジャエール／ラムネ／クラブソーダ／トマトジュース／ネクター／ポカリスエット', base: 2000 },
+    { id: 'redbull_na', name: 'レッドブル', base: 3000 },
+    { id: 'perrier', name: 'ペリエ', base: 6000 },
+    { id: 'junzo', name: '順造選（りんご／白桃／マンゴー／ブルーベリー／みかん／パイナップル）', base: 8000 },
+  ]},
+  { cat: 'アルコールドリンク', items: [
+    { id: 'beer', name: '瓶ビール', base: 3000 },
+    { id: 'ochawari', name: 'お茶割り', base: 3000 },
+    { id: 'tanrei', name: '淡麗', base: 3000 },
+    { id: 'slat', name: 'スラット', base: 3000 },
+    { id: 'jj', name: 'JJ茉莉花', base: 3000 },
+    { id: 'otoko', name: '男梅', base: 4000 },
+    { id: 'hyoketsu', name: '氷結', base: 4000 },
+    { id: 'highball', name: 'ハイボール', base: 5000 },
+    { id: 'rbv', name: 'レッドブルウォッカ', base: 6000 },
+    { id: 'pokav', name: 'ポカリウォッカ', base: 6000 },
+  ]},
+  { cat: 'ショットグラス', items: [
+    { id: 'jager', name: 'イエガー', base: 4000 },
+    { id: 'cocarelo', name: 'コカレロ', base: 4000 },
+    { id: 'tarantula', name: 'タランチュラ', base: 4000 },
+    { id: 'tequila_b', name: 'テキーラボール', base: 4000 },
+    { id: 'tequila_r', name: 'テキーラローズ', base: 4000 },
+    { id: 'anejo', name: 'アネホテキーラ', base: 5000 },
+    { id: 'cocapom', name: 'コカポム', base: 5000 },
+    { id: 'kleiner', name: 'クライナー', base: 5000 },
+    { id: 'habu', name: 'ハブ酒', base: 5000 },
+    { id: 'vodka', name: 'ウォッカ', base: 6000 },
+    { id: 'cristalino', name: 'クリスタリーノ', base: 9000 },
+    { id: 'tequila_car', name: 'テキーラ観覧車', base: 70000 },
+    { id: 'aneho_car', name: 'アネホ観覧車', base: 100000 },
+    { id: 'tequila_globe', name: 'テキーラ地球儀', base: 100000 },
+    { id: 'tequila_ship', name: 'テキーラシップ', base: 130000 },
+    { id: 'cristal_car', name: 'クリスタリーノ観覧車', base: 150000 },
+    { id: 'aneho_globe', name: 'アネホ地球儀', base: 150000 },
+  ]},
+  { cat: 'シャンパン', items: [
+    { id: 'cafe_paris', name: 'カフェドパリ', base: 15000 },
+    { id: 'asti', name: 'アスティ', base: 45000 },
+    { id: 'vuv_yellow', name: 'ヴーヴ・グリコ イエロー', base: 70000 },
+    { id: 'tobeg', name: 'TO BE G', base: 80000 },
+    { id: 'vuv_white', name: 'ヴーヴ・グリコ ホワイト', base: 80000 },
+    { id: 'moet_w', name: 'モエ・エ・シャンドン ホワイト', base: 90000 },
+    { id: 'moet_r', name: 'モエ・エ・シャンドン ロゼ', base: 140000 },
+    { id: 'moet_b', name: 'モエ・エ・シャンドン ネクター ブラック', base: 150000 },
+    { id: 'roger_r', name: 'ロジャーグラード ロゼ', base: 100000 },
+    { id: 'roger_g', name: 'ロジャーグラード ゴールド', base: 150000 },
+    { id: 'ygd_100', name: 'YGGDRASILLオリジナル ¥100,000', base: 100000 },
+    { id: 'ygd_150', name: 'YGGDRASILLオリジナル ¥150,000', base: 150000 },
+    { id: 'mapam', name: 'マパム・グラシア', base: 120000 },
+  ]},
+  { cat: 'フード', items: [
+    { id: 'potage', name: 'ポタージュ', base: 2000 },
+    { id: 'chips', name: 'ポテトチップス（ソルト／トリュフ／チーズ／ハニー／ガーリック）', base: 2000 },
+    { id: 'gelato', name: 'ジェラート（バニラ／ストロベリー／抹茶／チョコレート）', base: 3000 },
+    { id: 'sandwich', name: 'サンドイッチ（ミックス／ハム卵／ツナ）', base: 3000 },
+    { id: 'waffle', name: 'ワッフルサンド（クリームチーズ＆生ハム）', base: 3000 },
+    { id: 'honey_lemon', name: 'はちみつレモン', base: 3000 },
+    { id: 'smoothie_s', name: 'スムージー (S)', base: 3000 },
+    { id: 'smoothie_l', name: 'スムージー (L)', base: 5000 },
+  ]},
+];
+
+// ──────────────────────────────────────────────
+// STATE
+// ──────────────────────────────────────────────
+let state = {
+  seatId: '',
+  planId: '',
+  extQty: 0,
+  cart: {},  // { id: { name, base, qty } }
+  openCats: {},
+};
+
+function fmt(n) {
+  return '¥' + n.toLocaleString('ja-JP');
+}
+
+function calc(base) {
+  return Math.ceil((base * 1.35 * 1.1) / 1000) * 1000;
+}
+
+function getSeat() {
+  return SEATS.find(s => s.id === state.seatId) || null;
+}
+function getPlan() {
+  const seat = getSeat();
+  if (!seat) return null;
+  return seat.plans.find(p => p.id === state.planId) || null;
+}
+function isNomi() {
+  return state.planId.startsWith('nomi_');
+}
+
+// ──────────────────────────────────────────────
+// RENDER
+// ──────────────────────────────────────────────
+function render() {
+  renderSeats();
+  renderPlans();
+  renderExt();
+  renderDrinks();
+  renderTotal();
+}
+
+function renderSeats() {
+  const grid = document.getElementById('seat-grid');
+  grid.innerHTML = '';
+  SEATS.forEach(seat => {
+    const btn = document.createElement('button');
+    btn.className = 'seat-card' + (state.seatId === seat.id ? ' selected' : '');
+    btn.innerHTML = `<span class="seat-card-en">${seat.label}</span><span class="seat-card-ja">${seat.desc}</span>`;
+    btn.onclick = () => selectSeat(seat.id);
+    grid.appendChild(btn);
+  });
+}
+
+function renderPlans() {
+  const list = document.getElementById('plan-list');
+  list.innerHTML = '';
+  const seat = getSeat();
+  if (!seat) {
+    const msg = document.createElement('div');
+    msg.style.cssText = 'font-size:12px;color:var(--text2);padding:8px 0;';
+    msg.textContent = 'まず席を選んでください';
+    list.appendChild(msg);
+    return;
+  }
+  seat.plans.forEach(plan => {
+    const btn = document.createElement('button');
+    btn.className = 'plan-card' + (state.planId === plan.id ? ' selected' : '');
+    btn.innerHTML = `
+      <div class="plan-card-top">
+        <span class="plan-card-label">${plan.label}</span>
+        <span class="plan-card-price">${fmt(plan.price)}</span>
+      </div>
+      ${plan.note ? `<div class="plan-card-note">${plan.note}</div>` : ''}
+    `;
+    btn.onclick = () => selectPlan(plan.id);
+    list.appendChild(btn);
+  });
+}
+
+function renderExt() {
+  const sec = document.getElementById('ext-section');
+  const minus = document.getElementById('ext-minus');
+  const qtyEl = document.getElementById('ext-qty');
+  const labelEl = document.getElementById('ext-label');
+  const priceEl = document.getElementById('ext-price');
+
+  if (!state.seatId || !isNomi()) {
+    sec.style.display = 'none';
+    return;
+  }
+  const extPrice = EXT_PRICES[state.seatId];
+  sec.style.display = 'block';
+  labelEl.textContent = '延長（+60分）';
+  priceEl.textContent = fmt(extPrice) + ' / 60分';
+  qtyEl.textContent = state.extQty;
+  minus.disabled = state.extQty <= 0;
+}
+
+function renderDrinks() {
+  const lock = document.getElementById('drink-lock');
+  const list = document.getElementById('drink-list');
+
+  if (!state.seatId || !state.planId) {
+    lock.style.display = 'block';
+    list.style.display = 'none';
+    return;
+  }
+  lock.style.display = 'none';
+  list.style.display = 'block';
+  list.innerHTML = '';
+
+  DRINKS.forEach(cat => {
+    const block = document.createElement('div');
+    block.className = 'cat-block';
+
+    const isOpen = !!state.openCats[cat.cat];
+
+    const header = document.createElement('button');
+    header.className = 'cat-header';
+    header.innerHTML = `
+      <span class="cat-title">${cat.cat}</span>
+      <span class="cat-chevron ${isOpen ? 'open' : ''}">▼</span>
+    `;
+    header.onclick = () => toggleCat(cat.cat);
+    block.appendChild(header);
+
+    const body = document.createElement('div');
+    body.className = 'cat-body' + (isOpen ? ' open' : '');
+
+    cat.items.forEach(item => {
+      const row = document.createElement('div');
+      row.className = 'drink-row';
+
+      const qty = state.cart[item.id] ? state.cart[item.id].qty : 0;
+
+      row.innerHTML = `
+        <span class="drink-name">${item.name}</span>
+        <span class="drink-base">${fmt(item.base)}</span>
+        <div class="drink-counter">
+          ${qty > 0 ? `<button class="dc-btn" onclick="addDrink('${item.id}','${escHtml(item.name)}',${item.base},-1)">−</button>` : ''}
+          ${qty > 0 ? `<span class="dc-qty">${qty}</span>` : ''}
+          <button class="dc-btn" onclick="addDrink('${item.id}','${escHtml(item.name)}',${item.base},1)">＋</button>
+        </div>
+      `;
+      body.appendChild(row);
+    });
+
+    block.appendChild(body);
+    list.appendChild(block);
+  });
+}
+
+function renderTotal() {
+  const body = document.getElementById('total-body');
+  const seat = getSeat();
+  const plan = getPlan();
+
+  if (!seat || !plan) {
+    body.innerHTML = '<div class="total-empty">席とプランを選択してください</div>';
+    return;
+  }
+
+  const extPrice = isNomi() ? (EXT_PRICES[state.seatId] || 0) * state.extQty : 0;
+  const setPrice = plan.price + extPrice;
+
+  // drink items
+  const cartItems = Object.values(state.cart).filter(c => c.qty > 0);
+  const drinkSubtotal = cartItems.reduce((sum, c) => sum + c.base * c.qty, 0);
+  const drinkTax = calc(drinkSubtotal) - drinkSubtotal;  // not exact per-item but shows total markup
+  // More accurate: sum of calc(base)*qty
+  const drinkCalcTotal = cartItems.reduce((sum, c) => sum + calc(c.base) * c.qty, 0);
+  const drinkActualTax = drinkCalcTotal - drinkSubtotal;
+
+  const grandTotal = setPrice + drinkCalcTotal;
+
+  let html = '';
+
+  // Set price section
+  html += `<div class="total-section-label">セット料金（税・サービス料込み）</div>`;
+  html += `<div class="total-row"><span class="total-row-label">${seat.label}　${plan.label}</span><span class="total-row-amount">${fmt(plan.price)}</span></div>`;
+  if (isNomi() && state.extQty > 0) {
+    html += `<div class="total-row"><span class="total-row-label">延長 ×${state.extQty}</span><span class="total-row-amount">${fmt(EXT_PRICES[state.seatId] * state.extQty)}</span></div>`;
+  }
+
+  // Drink section
+  if (cartItems.length > 0) {
+    html += `<div class="total-divider"></div>`;
+    html += `<div class="total-section-label">ドリンク明細</div>`;
+    cartItems.forEach(c => {
+      html += `<div class="total-row"><span class="total-row-label">${c.name}　×${c.qty}</span><span class="total-row-amount">${fmt(c.base)} × ${c.qty}</span></div>`;
+    });
+    html += `<div class="total-divider"></div>`;
+    html += `<div class="total-subtotal"><span>小計</span><span>${fmt(drinkSubtotal)}</span></div>`;
+    html += `<div class="total-tax"><span>消費税10% + サービス料35%</span><span>+${fmt(drinkActualTax)}</span></div>`;
+    html += `<div class="total-drink-sum"><span>ドリンク合計</span><span>${fmt(drinkCalcTotal)}</span></div>`;
+  }
+
+  html += `<div class="total-grand-divider"></div>`;
+  html += `
+    <div class="total-grand">
+      <span class="total-grand-label">合計目安</span>
+      <span class="total-grand-amount">${fmt(grandTotal)}</span>
+    </div>
+    <div class="total-note">※ドリンク料金は消費税10%＋サービス料35%込みの概算です</div>
+  `;
+
+  body.innerHTML = html;
+}
+
+// ──────────────────────────────────────────────
+// ACTIONS
+// ──────────────────────────────────────────────
+function selectSeat(id) {
+  if (state.seatId === id) return;
+  state.seatId = id;
+  state.planId = '';
+  state.extQty = 0;
+  state.cart = {};
+  render();
+}
+
+function selectPlan(id) {
+  state.planId = id;
+  state.extQty = 0;
+  render();
+}
+
+function changeExt(delta) {
+  state.extQty = Math.max(0, state.extQty + delta);
+  renderExt();
+  renderTotal();
+}
+
+function addDrink(id, name, base, delta) {
+  if (!state.cart[id]) {
+    state.cart[id] = { name, base, qty: 0 };
+  }
+  state.cart[id].qty = Math.max(0, state.cart[id].qty + delta);
+  if (state.cart[id].qty === 0) delete state.cart[id];
+  renderDrinks();
+  renderTotal();
+}
+
+function toggleCat(cat) {
+  state.openCats[cat] = !state.openCats[cat];
+  renderDrinks();
+}
+
+function resetAll() {
+  state = { seatId: '', planId: '', extQty: 0, cart: {}, openCats: {} };
+  render();
+}
+
+function escHtml(str) {
+  return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+}
+
+// Initial render
+render();
+</script>
+</body>
+</html>
