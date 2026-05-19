@@ -288,7 +288,10 @@ function fmt(n: number) {
 
 type CartItem = { id: string; name: string; price: number; qty: number };
 
+const BUDGET_PRESETS = [10000, 20000, 30000, 50000, 80000, 100000, 150000, 200000, 300000, 500000];
+
 export default function SimulatorPage() {
+  const [budget, setBudget] = useState<number>(0);
   const [setId, setSetId] = useState<string>('');
   const [cart, setCart] = useState<CartItem[]>([]);
   const [openCat, setOpenCat] = useState<string>('');
@@ -300,6 +303,8 @@ export default function SimulatorPage() {
 
   const drinkTotal = cart.reduce((sum, c) => sum + c.price * c.qty, 0);
   const total = setPrice + drinkTotal;
+  const remaining = budget > 0 ? budget - total : null;
+  const overBudget = remaining !== null && remaining < 0;
 
   function addDrinkDirect(id: string, name: string, basePrice: number) {
     const price = calc(basePrice);
@@ -340,8 +345,40 @@ export default function SimulatorPage() {
             料金シミュレーター
           </h1>
           <p style={{ fontSize: '12px', color: CREAM_DIM, lineHeight: '22px' }}>
-            セット料金＋ドリンクを選んで合計金額の目安を確認できます。
+            予算を決めて→プランを選ぶ→ドリンクを追加<br />
+            「この金額で何が頼めるか」がひと目でわかります。
           </p>
+        </section>
+
+        {divider}
+
+        {/* STEP 0 予算入力 */}
+        <section style={{ paddingTop: '24px', paddingBottom: '24px' }}>
+          <p style={{ fontSize: '9px', letterSpacing: '0.4em', color: GOLD, textTransform: 'uppercase', marginBottom: '14px', fontFamily: 'var(--font-cinzel)' }}>
+            Step 01 — 予算を決める
+          </p>
+          <p style={{ fontSize: '11px', color: CREAM_DIM, marginBottom: '14px' }}>今日使える金額を選んでください。</p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+            {BUDGET_PRESETS.map(b => {
+              const active = budget === b;
+              return (
+                <button
+                  key={b}
+                  onClick={() => setBudget(active ? 0 : b)}
+                  style={{
+                    padding: '8px 14px',
+                    border: active ? `1px solid ${GOLD}` : '1px solid rgba(201,169,97,0.25)',
+                    background: active ? 'rgba(201,169,97,0.15)' : 'rgba(255,255,255,0.03)',
+                    color: active ? GOLD_BRIGHT : 'rgba(245,239,224,0.7)',
+                    fontSize: '13px', fontWeight: active ? 700 : 400,
+                    cursor: 'pointer', borderRadius: '4px',
+                  }}
+                >
+                  {fmt(b)}
+                </button>
+              );
+            })}
+          </div>
         </section>
 
         {divider}
@@ -349,10 +386,10 @@ export default function SimulatorPage() {
         {/* STEP 1 セット選択 */}
         <section style={{ paddingTop: '24px', paddingBottom: '24px' }}>
           <p style={{ fontSize: '9px', letterSpacing: '0.4em', color: GOLD, textTransform: 'uppercase', marginBottom: '6px', fontFamily: 'var(--font-cinzel)' }}>
-            Step 01 — セット料金
+            Step 02 — セット料金（プランを選ぶ）
           </p>
           <p style={{ fontSize: '11px', color: CREAM_DIM, marginBottom: '18px', lineHeight: '20px' }}>
-            料金形態を1つ選んでください。
+            どのプランで入店しますか？
           </p>
 
           {/* 料金形態3種（Main Floor）を目立たせる */}
@@ -454,10 +491,10 @@ export default function SimulatorPage() {
         {/* STEP 2 ドリンク選択 */}
         <section style={{ paddingTop: '24px', paddingBottom: '24px' }}>
           <p style={{ fontSize: '9px', letterSpacing: '0.4em', color: GOLD, textTransform: 'uppercase', marginBottom: '14px', fontFamily: 'var(--font-cinzel)' }}>
-            Step 02 — ドリンク・フード
+            Step 03 — ドリンク・フードを追加
           </p>
           <p style={{ fontSize: '11px', color: CREAM_DIM, marginBottom: '16px', lineHeight: '20px' }}>
-            カテゴリをタップして追加できます。表示価格はすべて税・サービス料込みの目安金額です。
+            カテゴリをタップして追加。表示価格はすべて税・サービス料込みの目安です。
           </p>
           <div style={{ display: 'grid', gap: '6px' }}>
             {DRINKS.map(cat => {
@@ -579,32 +616,85 @@ export default function SimulatorPage() {
           </>
         )}
 
-        {/* 合計 */}
+        {/* 合計 & 残り予算 */}
         <section style={{ paddingTop: '28px' }}>
           <p style={{ fontSize: '9px', letterSpacing: '0.4em', color: GOLD, textTransform: 'uppercase', marginBottom: '16px', fontFamily: 'var(--font-cinzel)' }}>
-            Total
+            Result
           </p>
-          <div style={{ border: `1px solid rgba(201,169,97,0.35)`, borderRadius: '4px', padding: '20px', background: 'linear-gradient(135deg, rgba(201,169,97,0.08), rgba(7,5,10,0.6))' }}>
+
+          {/* 予算プログレスバー */}
+          {budget > 0 && (
+            <div style={{ marginBottom: '20px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+                <span style={{ fontSize: '11px', color: CREAM_DIM }}>予算 {fmt(budget)}</span>
+                <span style={{ fontSize: '11px', color: overBudget ? '#ff7070' : 'rgba(100,220,160,0.9)', fontWeight: 700 }}>
+                  {overBudget ? `予算オーバー ${fmt(Math.abs(remaining!))}` : `残り ${fmt(remaining!)}`}
+                </span>
+              </div>
+              <div style={{ height: '6px', background: 'rgba(255,255,255,0.07)', borderRadius: '3px', overflow: 'hidden' }}>
+                <div style={{
+                  height: '100%',
+                  width: `${Math.min((total / budget) * 100, 100)}%`,
+                  background: overBudget
+                    ? 'linear-gradient(to right, #ff5050, #ff3030)'
+                    : total / budget > 0.85
+                    ? 'linear-gradient(to right, #E8CB85, #ffaa30)'
+                    : 'linear-gradient(to right, #C9A961, #E8CB85)',
+                  borderRadius: '3px',
+                  transition: 'width 0.3s ease',
+                }} />
+              </div>
+            </div>
+          )}
+
+          {/* 内訳 */}
+          <div style={{ border: `1px solid ${overBudget ? 'rgba(255,80,80,0.4)' : 'rgba(201,169,97,0.35)'}`, borderRadius: '4px', padding: '20px', background: 'linear-gradient(135deg, rgba(201,169,97,0.08), rgba(7,5,10,0.6))' }}>
             {selectedSet && (
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                <span style={{ fontSize: '12px', color: CREAM_DIM }}>{selectedSet.label}</span>
+                <span style={{ fontSize: '12px', color: CREAM_DIM }}>セット（{selectedSet.label}）</span>
                 <span style={{ fontSize: '12px', color: CREAM }}>{fmt(setPrice)}</span>
               </div>
             )}
-            {cart.length > 0 && (
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                <span style={{ fontSize: '12px', color: CREAM_DIM }}>ドリンク合計</span>
-                <span style={{ fontSize: '12px', color: CREAM }}>{fmt(drinkTotal)}</span>
+            {cart.map(c => (
+              <div key={c.id + c.name} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <span style={{ fontSize: '12px', color: CREAM_DIM, flex: 1, marginRight: '8px' }}>
+                  {c.name}{c.qty > 1 ? ` ×${c.qty}` : ''}
+                </span>
+                <span style={{ fontSize: '12px', color: CREAM, whiteSpace: 'nowrap' }}>{fmt(c.price * c.qty)}</span>
               </div>
-            )}
-            <div style={{ height: '1px', background: 'rgba(201,169,97,0.2)', margin: '12px 0' }} />
+            ))}
+            <div style={{ height: '1px', background: 'rgba(201,169,97,0.2)', margin: '14px 0' }} />
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontSize: '13px', letterSpacing: '0.1em', color: GOLD, fontFamily: 'var(--font-cinzel)' }}>合計目安</span>
-              <span style={{ fontSize: '26px', fontWeight: 700, color: GOLD_BRIGHT, fontFamily: 'var(--font-display)' }}>
+              <span style={{ fontSize: '28px', fontWeight: 700, color: overBudget ? '#ff7070' : GOLD_BRIGHT, fontFamily: 'var(--font-display)' }}>
                 {fmt(total)}
               </span>
             </div>
+
+            {/* 残り予算でのドリンク提案 */}
+            {budget > 0 && !overBudget && remaining! > 0 && (
+              <div style={{ marginTop: '16px', padding: '12px', background: 'rgba(201,169,97,0.06)', border: '1px solid rgba(201,169,97,0.15)', borderRadius: '4px' }}>
+                <p style={{ fontSize: '10px', color: GOLD_DIM, marginBottom: '8px', letterSpacing: '0.1em' }}>残り {fmt(remaining!)} で追加できるドリンク例</p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                  {DRINKS.flatMap(cat => cat.items.filter(item => !item.variants)).filter(item => calc(item.base) <= remaining!).slice(0, 6).map(item => (
+                    <button
+                      key={item.id}
+                      onClick={() => addDrinkDirect(item.id, item.name, item.base)}
+                      style={{
+                        padding: '5px 10px', fontSize: '11px',
+                        border: '1px solid rgba(201,169,97,0.3)',
+                        background: 'rgba(201,169,97,0.08)',
+                        color: GOLD_BRIGHT, cursor: 'pointer', borderRadius: '20px',
+                      }}
+                    >
+                      {item.name.length > 12 ? item.name.slice(0, 12) + '…' : item.name}　{fmt(calc(item.base))}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
+
           <p style={{ fontSize: '10px', color: 'rgba(245,239,224,0.3)', marginTop: '12px', lineHeight: '18px' }}>
             ※ドリンク価格は定価×消費税10%×サービス料35%の目安金額です（¥1,000未満切り上げ）。<br />
             ※セット料金はすでに税・サービス料込みの金額です。<br />
@@ -612,9 +702,9 @@ export default function SimulatorPage() {
           </p>
 
           {/* リセット */}
-          {(setId || cart.length > 0) && (
+          {(budget > 0 || setId || cart.length > 0) && (
             <button
-              onClick={() => { setSetId(''); setCart([]); }}
+              onClick={() => { setBudget(0); setSetId(''); setCart([]); }}
               style={{
                 marginTop: '20px', width: '100%', padding: '12px',
                 border: '1px solid rgba(201,169,97,0.2)', background: 'transparent',
