@@ -376,21 +376,24 @@ export default function SimulatorPage() {
 
         {divider}
 
-        {/* STEP 3 ドリンク選択（席＋プラン選択後のみ） */}
+        {/* STEP 3 ドリンク選択 */}
         <section style={{ paddingTop: '24px', paddingBottom: '24px' }}>
-          <p style={{ fontSize: '9px', letterSpacing: '0.4em', color: GOLD, textTransform: 'uppercase', marginBottom: '6px', fontFamily: 'var(--font-cinzel)' }}>
+          <p style={{ fontSize: '9px', letterSpacing: '0.4em', color: GOLD, textTransform: 'uppercase', marginBottom: '12px', fontFamily: 'var(--font-cinzel)' }}>
             Step 03 — ドリンク・フードを選ぶ
           </p>
 
-          {/* 未選択時のロック表示 */}
-          {!selectedPlan ? (
+          {/* 席＋プラン未選択時はロック */}
+          {(!seatId || !planId) && (
             <div style={{ padding: '24px 16px', border: '1px dashed rgba(201,169,97,0.2)', borderRadius: '4px', textAlign: 'center' }}>
               <p style={{ fontSize: '20px', margin: '0 0 8px' }}>🔒</p>
               <p style={{ fontSize: '12px', color: 'rgba(245,239,224,0.4)', margin: 0, lineHeight: '20px' }}>
                 Step 01・02 で席とプランを<br />選択するとドリンクを追加できます
               </p>
             </div>
-          ) : (
+          )}
+
+          {/* 席＋プラン選択済みのみ表示 */}
+          {seatId && planId && (
             <>
           <p style={{ fontSize: '10px', color: 'rgba(201,169,97,0.6)', marginBottom: '16px', lineHeight: '18px' }}>
             価格はメニュー表記。全て消費税10%・サービス料35%となります（合計欄に反映）
