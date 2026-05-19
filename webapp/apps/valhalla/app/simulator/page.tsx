@@ -583,38 +583,62 @@ export default function SimulatorPage() {
 
           {/* 内訳 */}
           <div style={{ border: `1px solid ${overBudget ? 'rgba(255,80,80,0.4)' : 'rgba(201,169,97,0.35)'}`, borderRadius: '4px', padding: '20px', background: 'linear-gradient(135deg, rgba(201,169,97,0.08), rgba(7,5,10,0.6))' }}>
+
+            {/* セット料金ブロック */}
             {selectedSeat && selectedPlan && (
-              <>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <div style={{ marginBottom: '16px' }}>
+                <p style={{ fontSize: '9px', letterSpacing: '0.3em', color: GOLD_DIM, margin: '0 0 8px', textTransform: 'uppercase' }}>セット料金（税・サービス料込み）</p>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
                   <span style={{ fontSize: '12px', color: CREAM_DIM }}>{selectedSeat.label}　{selectedPlan.label}</span>
                   <span style={{ fontSize: '12px', color: CREAM }}>{fmt(selectedPlan.price)}</span>
                 </div>
                 {isNomi && extPlan && extQty > 0 && (
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
                     <span style={{ fontSize: '12px', color: CREAM_DIM }}>延長 ×{extQty}</span>
                     <span style={{ fontSize: '12px', color: CREAM }}>{fmt(extPlan.price * extQty)}</span>
                   </div>
                 )}
-              </>
-            )}
-            {cart.map(c => (
-              <div key={c.id + c.name} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                <span style={{ fontSize: '12px', color: CREAM_DIM, flex: 1, marginRight: '8px' }}>
-                  {c.name}{c.qty > 1 ? ` ×${c.qty}` : ''}
-                </span>
-                <span style={{ fontSize: '12px', color: CREAM, whiteSpace: 'nowrap' }}>{fmt(c.base * c.qty)}</span>
-              </div>
-            ))}
-            {cart.length > 0 && (
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                <span style={{ fontSize: '11px', color: 'rgba(201,169,97,0.55)' }}>消費税10% + サービス料35%</span>
-                <span style={{ fontSize: '11px', color: 'rgba(201,169,97,0.55)' }}>+{fmt(drinkTotal - cart.reduce((s,c) => s + c.base * c.qty, 0))}</span>
               </div>
             )}
-            <div style={{ height: '1px', background: 'rgba(201,169,97,0.2)', margin: '14px 0' }} />
+
+            {/* ドリンク明細ブロック */}
+            {cart.length > 0 && (() => {
+              const baseSum = cart.reduce((s, c) => s + c.base * c.qty, 0);
+              const taxService = drinkTotal - baseSum;
+              return (
+                <div style={{ marginBottom: '16px' }}>
+                  <p style={{ fontSize: '9px', letterSpacing: '0.3em', color: GOLD_DIM, margin: '0 0 8px', textTransform: 'uppercase' }}>ドリンク（メニュー表記価格）</p>
+                  {cart.map(c => (
+                    <div key={c.id + c.name} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                      <span style={{ fontSize: '12px', color: CREAM_DIM, flex: 1, marginRight: '8px' }}>{c.name}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <span style={{ fontSize: '11px', color: 'rgba(245,239,224,0.35)' }}>{fmt(c.base)} × {c.qty}</span>
+                        <span style={{ fontSize: '12px', color: CREAM, minWidth: '72px', textAlign: 'right' }}>{fmt(c.base * c.qty)}</span>
+                      </div>
+                    </div>
+                  ))}
+                  {/* ドリンク小計 */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px', paddingTop: '8px', borderTop: '1px solid rgba(201,169,97,0.12)' }}>
+                    <span style={{ fontSize: '11px', color: 'rgba(245,239,224,0.45)' }}>ドリンク小計</span>
+                    <span style={{ fontSize: '11px', color: 'rgba(245,239,224,0.45)' }}>{fmt(baseSum)}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '4px' }}>
+                    <span style={{ fontSize: '11px', color: 'rgba(201,169,97,0.5)' }}>消費税10% + サービス料35%</span>
+                    <span style={{ fontSize: '11px', color: 'rgba(201,169,97,0.5)' }}>+{fmt(taxService)}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '4px' }}>
+                    <span style={{ fontSize: '12px', color: CREAM_DIM, fontWeight: 600 }}>ドリンク合計</span>
+                    <span style={{ fontSize: '12px', color: CREAM, fontWeight: 600 }}>{fmt(drinkTotal)}</span>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* 最終合計 */}
+            <div style={{ height: '1px', background: 'rgba(201,169,97,0.3)', margin: '4px 0 16px' }} />
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontSize: '13px', letterSpacing: '0.1em', color: GOLD, fontFamily: 'var(--font-cinzel)' }}>合計目安</span>
-              <span style={{ fontSize: '28px', fontWeight: 700, color: overBudget ? '#ff7070' : GOLD_BRIGHT, fontFamily: 'var(--font-display)' }}>
+              <span style={{ fontSize: '30px', fontWeight: 700, color: overBudget ? '#ff7070' : GOLD_BRIGHT, fontFamily: 'var(--font-display)' }}>
                 {fmt(total)}
               </span>
             </div>
