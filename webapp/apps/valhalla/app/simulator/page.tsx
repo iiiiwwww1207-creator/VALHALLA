@@ -184,29 +184,26 @@ function fmt(n: number) {
 
 type CartItem = { id: string; name: string; base: number; price: number; qty: number };
 
-const BUDGET_PRESETS = [10000, 20000, 30000, 50000, 80000, 100000, 150000, 200000, 300000, 500000];
-
 export default function SimulatorPage() {
-  const [budget, setBudget] = useState<number>(0);
   const [seatId, setSeatId] = useState<string>('');
   const [planId, setPlanId] = useState<string>('');
   const [extQty, setExtQty] = useState<number>(0);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [openCat, setOpenCat] = useState<string>('');
-  const [variantOpen, setVariantOpen] = useState<string>('');
 
   const selectedSeat = SEATS.find(s => s.id === seatId);
   const selectedPlan = selectedSeat?.plans.find(p => p.id === planId);
   const isNomi = planId.startsWith('nomi_');
   const extPlan = seatId ? EXT_PLANS[seatId] : null;
   const setPrice = (selectedPlan?.price ?? 0) + (isNomi && extPlan ? extPlan.price * extQty : 0);
-
   const drinkTotal = cart.reduce((sum, c) => sum + c.price * c.qty, 0);
   const total = setPrice + drinkTotal;
-  const remaining = budget > 0 ? budget - total : null;
-  const overBudget = remaining !== null && remaining < 0;
 
-  function addDrinkDirect(id: string, name: string, basePrice: number) {
+  function getQty(id: string, name: string) {
+    return cart.find(c => c.id === id && c.name === name)?.qty ?? 0;
+  }
+
+  function addItem(id: string, name: string, basePrice: number) {
     const price = calc(basePrice);
     setCart(prev => {
       const existing = prev.find(c => c.id === id && c.name === name);
@@ -223,7 +220,29 @@ export default function SimulatorPage() {
     }));
   }
 
-  const divider = <div style={{ height: '1px', background: 'linear-gradient(to right, transparent, rgba(201,169,97,0.2), transparent)', margin: '0' }} />;
+  const divider = <div style={{ height: '1px', background: 'linear-gradient(to right, transparent, rgba(201,169,97,0.2), transparent)' }} />;
+
+  // カウンターUI（各ドリンク行に表示）
+  function Counter({ id, name, base }: { id: string; name: string; base: number }) {
+    const qty = getQty(id, name);
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+        {qty > 0 && (
+          <button onClick={(e) => { e.stopPropagation(); removeItem(id, name); }}
+            style={{ width: '26px', height: '26px', border: '1px solid rgba(201,169,97,0.35)', background: 'transparent', color: GOLD_DIM, fontSize: '15px', cursor: 'pointer', borderRadius: '50%', lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            −
+          </button>
+        )}
+        {qty > 0 && (
+          <span style={{ fontSize: '14px', fontWeight: 700, color: GOLD_BRIGHT, minWidth: '16px', textAlign: 'center' }}>{qty}</span>
+        )}
+        <button onClick={(e) => { e.stopPropagation(); addItem(id, name, base); }}
+          style={{ width: '26px', height: '26px', border: `1px solid ${qty > 0 ? GOLD : 'rgba(201,169,97,0.35)'}`, background: qty > 0 ? 'rgba(201,169,97,0.15)' : 'transparent', color: qty > 0 ? GOLD_BRIGHT : GOLD_DIM, fontSize: '15px', cursor: 'pointer', borderRadius: '50%', lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          ＋
+        </button>
+      </div>
+    );
+  }
 
   return (
     <main style={{ minHeight: '100dvh', backgroundColor: DARK, color: CREAM, fontFamily: 'var(--font-body)', overflowX: 'hidden' }}>
@@ -245,48 +264,16 @@ export default function SimulatorPage() {
             料金シミュレーター
           </h1>
           <p style={{ fontSize: '12px', color: CREAM_DIM, lineHeight: '22px' }}>
-            予算を決めて→プランを選ぶ→ドリンクを追加<br />
-            「この金額で何が頼めるか」がひと目でわかります。
+            席・プランを選んでドリンクの個数を入力すると合計金額の目安がわかります。
           </p>
         </section>
 
         {divider}
 
-        {/* STEP 0 予算入力 */}
-        <section style={{ paddingTop: '24px', paddingBottom: '24px' }}>
-          <p style={{ fontSize: '9px', letterSpacing: '0.4em', color: GOLD, textTransform: 'uppercase', marginBottom: '14px', fontFamily: 'var(--font-cinzel)' }}>
-            Step 01 — 予算を決める
-          </p>
-          <p style={{ fontSize: '11px', color: CREAM_DIM, marginBottom: '14px' }}>今日使える金額を選んでください。</p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-            {BUDGET_PRESETS.map(b => {
-              const active = budget === b;
-              return (
-                <button
-                  key={b}
-                  onClick={() => setBudget(active ? 0 : b)}
-                  style={{
-                    padding: '8px 14px',
-                    border: active ? `1px solid ${GOLD}` : '1px solid rgba(201,169,97,0.25)',
-                    background: active ? 'rgba(201,169,97,0.15)' : 'rgba(255,255,255,0.03)',
-                    color: active ? GOLD_BRIGHT : 'rgba(245,239,224,0.7)',
-                    fontSize: '13px', fontWeight: active ? 700 : 400,
-                    cursor: 'pointer', borderRadius: '4px',
-                  }}
-                >
-                  {fmt(b)}
-                </button>
-              );
-            })}
-          </div>
-        </section>
-
-        {divider}
-
-        {/* STEP 2 席を選ぶ */}
+        {/* STEP 1 席を選ぶ */}
         <section style={{ paddingTop: '24px', paddingBottom: '24px' }}>
           <p style={{ fontSize: '9px', letterSpacing: '0.4em', color: GOLD, textTransform: 'uppercase', marginBottom: '6px', fontFamily: 'var(--font-cinzel)' }}>
-            Step 02 — 席を選ぶ
+            Step 01 — 席を選ぶ
           </p>
           <p style={{ fontSize: '11px', color: CREAM_DIM, marginBottom: '14px' }}>どのエリアに座りますか？</p>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
@@ -317,7 +304,7 @@ export default function SimulatorPage() {
             {divider}
             <section style={{ paddingTop: '24px', paddingBottom: '24px' }}>
               <p style={{ fontSize: '9px', letterSpacing: '0.4em', color: GOLD, textTransform: 'uppercase', marginBottom: '6px', fontFamily: 'var(--font-cinzel)' }}>
-                Step 03 — プランを選ぶ
+                Step 02 — プランを選ぶ
               </p>
               <p style={{ fontSize: '11px', color: CREAM_DIM, marginBottom: '14px' }}>
                 <span style={{ color: GOLD_BRIGHT, fontWeight: 700 }}>{selectedSeat.label}</span> でのプランを選んでください。
@@ -388,20 +375,23 @@ export default function SimulatorPage() {
 
         {divider}
 
-        {/* STEP 2 ドリンク選択 */}
+        {/* STEP 3 ドリンク選択（カウンター方式） */}
         <section style={{ paddingTop: '24px', paddingBottom: '24px' }}>
-          <p style={{ fontSize: '9px', letterSpacing: '0.4em', color: GOLD, textTransform: 'uppercase', marginBottom: '14px', fontFamily: 'var(--font-cinzel)' }}>
-            Step 04 — ドリンク・フードを追加
-          </p>
-          <p style={{ fontSize: '11px', color: CREAM_DIM, marginBottom: '4px', lineHeight: '20px' }}>
-            カテゴリをタップして追加。価格はメニュー表記の金額です。
+          <p style={{ fontSize: '9px', letterSpacing: '0.4em', color: GOLD, textTransform: 'uppercase', marginBottom: '6px', fontFamily: 'var(--font-cinzel)' }}>
+            Step 03 — ドリンク・フードを選ぶ
           </p>
           <p style={{ fontSize: '10px', color: 'rgba(201,169,97,0.6)', marginBottom: '16px', lineHeight: '18px' }}>
-            ※全て消費税10%・サービス料35%となります（合計欄に反映）
+            価格はメニュー表記。全て消費税10%・サービス料35%となります（合計欄に反映）
           </p>
           <div style={{ display: 'grid', gap: '6px' }}>
             {DRINKS.map(cat => {
               const isOpen = openCat === cat.cat;
+              const catTotal = cat.items.reduce((sum, item) => {
+                if (item.variants) {
+                  return sum + item.variants.reduce((s, v) => s + (getQty(`${item.id}_${v.label}`, `${item.name} ${v.label}`) * v.base), 0);
+                }
+                return sum + getQty(item.id, item.name) * item.base;
+              }, 0);
               return (
                 <div key={cat.cat} style={{ border: '1px solid rgba(201,169,97,0.15)', borderRadius: '4px', overflow: 'hidden' }}>
                   <button
@@ -409,73 +399,49 @@ export default function SimulatorPage() {
                     style={{
                       width: '100%', textAlign: 'left', padding: '12px 16px',
                       background: isOpen ? 'rgba(201,169,97,0.07)' : 'rgba(255,255,255,0.02)',
-                      border: 'none', cursor: 'pointer', color: isOpen ? GOLD_BRIGHT : CREAM,
-                      fontSize: '13px', fontWeight: 600, display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                      border: 'none', cursor: 'pointer',
+                      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                     }}
                   >
-                    <span>{cat.cat}</span>
-                    <span style={{ fontSize: '10px', color: GOLD_DIM }}>{isOpen ? '▲' : '▼'}</span>
+                    <span style={{ fontSize: '13px', fontWeight: 600, color: isOpen ? GOLD_BRIGHT : CREAM }}>{cat.cat}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      {catTotal > 0 && <span style={{ fontSize: '11px', color: GOLD_BRIGHT, fontWeight: 700 }}>{fmt(catTotal)}</span>}
+                      <span style={{ fontSize: '10px', color: GOLD_DIM }}>{isOpen ? '▲' : '▼'}</span>
+                    </div>
                   </button>
                   {isOpen && (
                     <div style={{ borderTop: '1px solid rgba(201,169,97,0.1)' }}>
                       {cat.items.map(item => {
-                        const isVarOpen = variantOpen === item.id;
-                        const displayPrice = calc(item.base);
-
                         if (item.variants) {
                           return (
                             <div key={item.id} style={{ borderBottom: '1px solid rgba(201,169,97,0.08)' }}>
-                              <button
-                                onClick={() => setVariantOpen(isVarOpen ? '' : item.id)}
-                                style={{
-                                  width: '100%', textAlign: 'left', padding: '10px 16px',
-                                  background: isVarOpen ? 'rgba(201,169,97,0.05)' : 'transparent',
-                                  border: 'none', cursor: 'pointer',
-                                  display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                                }}
-                              >
-                                <span style={{ fontSize: '12px', color: CREAM }}>{item.name}</span>
-                                <span style={{ fontSize: '10px', color: GOLD_DIM }}>種類を選ぶ ▶</span>
-                              </button>
-                              {isVarOpen && (
-                                <div style={{ background: 'rgba(201,169,97,0.04)', padding: '4px 0' }}>
-                                  {item.variants!.map(v => (
-                                    <button
-                                      key={v.label}
-                                      onClick={() => addDrinkDirect(`${item.id}_${v.label}`, `${item.name} ${v.label}`, v.base)}
-                                      style={{
-                                        width: '100%', textAlign: 'left', padding: '8px 24px',
-                                        background: 'transparent', border: 'none', cursor: 'pointer',
-                                        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                                      }}
-                                    >
-                                      <span style={{ fontSize: '12px', color: 'rgba(245,239,224,0.8)' }}>{v.label}</span>
-                                      <span style={{ fontSize: '12px', color: GOLD_BRIGHT, fontWeight: 600 }}>
-                                        {fmt(v.base)}
-                                      </span>
-                                    </button>
-                                  ))}
-                                </div>
-                              )}
+                              <div style={{ padding: '8px 16px 4px' }}>
+                                <span style={{ fontSize: '11px', color: 'rgba(245,239,224,0.5)', fontWeight: 600 }}>{item.name}</span>
+                              </div>
+                              {item.variants.map(v => {
+                                const vid = `${item.id}_${v.label}`;
+                                const vname = `${item.name} ${v.label}`;
+                                return (
+                                  <div key={v.label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 16px 8px 24px', borderTop: '1px solid rgba(201,169,97,0.05)' }}>
+                                    <div>
+                                      <span style={{ fontSize: '12px', color: CREAM }}>{v.label}</span>
+                                      <span style={{ fontSize: '11px', color: GOLD_DIM, marginLeft: '8px' }}>{fmt(v.base)}</span>
+                                    </div>
+                                    <Counter id={vid} name={vname} base={v.base} />
+                                  </div>
+                                );
+                              })}
                             </div>
                           );
                         }
-
                         return (
-                          <button
-                            key={item.id}
-                            onClick={() => addDrinkDirect(item.id, item.name, item.base)}
-                            style={{
-                              width: '100%', textAlign: 'left', padding: '10px 16px',
-                              background: 'transparent', border: 'none', borderBottom: '1px solid rgba(201,169,97,0.08)',
-                              cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                            }}
-                          >
-                            <span style={{ fontSize: '12px', color: CREAM, flex: 1, marginRight: '8px' }}>{item.name}</span>
-                            <span style={{ fontSize: '13px', color: GOLD_BRIGHT, fontWeight: 600, whiteSpace: 'nowrap' }}>
-                              {fmt(item.base)}
-                            </span>
-                          </button>
+                          <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 16px', borderBottom: '1px solid rgba(201,169,97,0.08)' }}>
+                            <div style={{ flex: 1, marginRight: '12px' }}>
+                              <p style={{ fontSize: '12px', color: CREAM, margin: 0 }}>{item.name}</p>
+                              <p style={{ fontSize: '11px', color: GOLD_DIM, margin: '2px 0 0' }}>{fmt(item.base)}</p>
+                            </div>
+                            <Counter id={item.id} name={item.name} base={item.base} />
+                          </div>
                         );
                       })}
                     </div>
@@ -488,81 +454,24 @@ export default function SimulatorPage() {
 
         {divider}
 
-        {/* カート */}
-        {cart.length > 0 && (
-          <>
-            <section style={{ paddingTop: '24px', paddingBottom: '24px' }}>
-              <p style={{ fontSize: '9px', letterSpacing: '0.4em', color: GOLD, textTransform: 'uppercase', marginBottom: '14px', fontFamily: 'var(--font-cinzel)' }}>
-                Selected Items
-              </p>
-              <div style={{ display: 'grid', gap: '6px' }}>
-                {cart.map(c => (
-                  <div key={c.id + c.name} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 14px', border: '1px solid rgba(201,169,97,0.15)', borderRadius: '4px', background: 'rgba(201,169,97,0.04)' }}>
-                    <div style={{ flex: 1, marginRight: '8px' }}>
-                      <p style={{ fontSize: '12px', color: CREAM, margin: 0 }}>{c.name}</p>
-                      <p style={{ fontSize: '11px', color: GOLD_DIM, margin: '2px 0 0' }}>{fmt(c.base)}{c.qty > 1 ? ` × ${c.qty}` : ''}</p>
-                    </div>
-                    <p style={{ fontSize: '13px', fontWeight: 700, color: GOLD_BRIGHT, marginRight: '12px', whiteSpace: 'nowrap' }}>
-                      {fmt(c.base * c.qty)}
-                    </p>
-                    <button
-                      onClick={() => removeItem(c.id, c.name)}
-                      style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(201,169,97,0.2)', color: GOLD_DIM, width: '28px', height: '28px', borderRadius: '50%', cursor: 'pointer', fontSize: '14px', flexShrink: 0 }}
-                    >
-                      −
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </section>
-            {divider}
-          </>
-        )}
-
-        {/* 合計 & 残り予算 */}
+        {/* 合計 */}
         <section style={{ paddingTop: '28px' }}>
           <p style={{ fontSize: '9px', letterSpacing: '0.4em', color: GOLD, textTransform: 'uppercase', marginBottom: '16px', fontFamily: 'var(--font-cinzel)' }}>
             Result
           </p>
 
-          {/* 予算プログレスバー */}
-          {budget > 0 && (
-            <div style={{ marginBottom: '20px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
-                <span style={{ fontSize: '11px', color: CREAM_DIM }}>予算 {fmt(budget)}</span>
-                <span style={{ fontSize: '11px', color: overBudget ? '#ff7070' : 'rgba(100,220,160,0.9)', fontWeight: 700 }}>
-                  {overBudget ? `予算オーバー ${fmt(Math.abs(remaining!))}` : `残り ${fmt(remaining!)}`}
-                </span>
-              </div>
-              <div style={{ height: '6px', background: 'rgba(255,255,255,0.07)', borderRadius: '3px', overflow: 'hidden' }}>
-                <div style={{
-                  height: '100%',
-                  width: `${Math.min((total / budget) * 100, 100)}%`,
-                  background: overBudget
-                    ? 'linear-gradient(to right, #ff5050, #ff3030)'
-                    : total / budget > 0.85
-                    ? 'linear-gradient(to right, #E8CB85, #ffaa30)'
-                    : 'linear-gradient(to right, #C9A961, #E8CB85)',
-                  borderRadius: '3px',
-                  transition: 'width 0.3s ease',
-                }} />
-              </div>
-            </div>
-          )}
+          <div style={{ border: 'rgba(201,169,97,0.35) solid 1px', borderRadius: '4px', padding: '20px', background: 'linear-gradient(135deg, rgba(201,169,97,0.08), rgba(7,5,10,0.6))' }}>
 
-          {/* 内訳 */}
-          <div style={{ border: `1px solid ${overBudget ? 'rgba(255,80,80,0.4)' : 'rgba(201,169,97,0.35)'}`, borderRadius: '4px', padding: '20px', background: 'linear-gradient(135deg, rgba(201,169,97,0.08), rgba(7,5,10,0.6))' }}>
-
-            {/* セット料金ブロック */}
+            {/* セット料金 */}
             {selectedSeat && selectedPlan && (
-              <div style={{ marginBottom: '16px' }}>
-                <p style={{ fontSize: '9px', letterSpacing: '0.3em', color: GOLD_DIM, margin: '0 0 8px', textTransform: 'uppercase' }}>セット料金（税・サービス料込み）</p>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+              <div style={{ marginBottom: '14px' }}>
+                <p style={{ fontSize: '9px', letterSpacing: '0.3em', color: GOLD_DIM, margin: '0 0 6px', textTransform: 'uppercase' }}>セット料金（税・サービス料込み）</p>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ fontSize: '12px', color: CREAM_DIM }}>{selectedSeat.label}　{selectedPlan.label}</span>
                   <span style={{ fontSize: '12px', color: CREAM }}>{fmt(selectedPlan.price)}</span>
                 </div>
                 {isNomi && extPlan && extQty > 0 && (
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '4px' }}>
                     <span style={{ fontSize: '12px', color: CREAM_DIM }}>延長 ×{extQty}</span>
                     <span style={{ fontSize: '12px', color: CREAM }}>{fmt(extPlan.price * extQty)}</span>
                   </div>
@@ -570,70 +479,46 @@ export default function SimulatorPage() {
               </div>
             )}
 
-            {/* ドリンク明細ブロック */}
+            {/* ドリンク明細 */}
             {cart.length > 0 && (() => {
               const baseSum = cart.reduce((s, c) => s + c.base * c.qty, 0);
               const taxService = drinkTotal - baseSum;
               return (
-                <div style={{ marginBottom: '16px' }}>
-                  <p style={{ fontSize: '9px', letterSpacing: '0.3em', color: GOLD_DIM, margin: '0 0 8px', textTransform: 'uppercase' }}>ドリンク（メニュー表記価格）</p>
+                <div style={{ marginBottom: '14px' }}>
+                  <p style={{ fontSize: '9px', letterSpacing: '0.3em', color: GOLD_DIM, margin: '0 0 6px', textTransform: 'uppercase' }}>ドリンク明細</p>
                   {cart.map(c => (
-                    <div key={c.id + c.name} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                    <div key={c.id + c.name} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
                       <span style={{ fontSize: '12px', color: CREAM_DIM, flex: 1, marginRight: '8px' }}>{c.name}</span>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <span style={{ fontSize: '11px', color: 'rgba(245,239,224,0.35)' }}>{fmt(c.base)} × {c.qty}</span>
-                        <span style={{ fontSize: '12px', color: CREAM, minWidth: '72px', textAlign: 'right' }}>{fmt(c.base * c.qty)}</span>
-                      </div>
+                      <span style={{ fontSize: '11px', color: 'rgba(245,239,224,0.4)', marginRight: '8px' }}>{fmt(c.base)} × {c.qty}</span>
+                      <span style={{ fontSize: '12px', color: CREAM, minWidth: '64px', textAlign: 'right' }}>{fmt(c.base * c.qty)}</span>
                     </div>
                   ))}
-                  {/* ドリンク小計 */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px', paddingTop: '8px', borderTop: '1px solid rgba(201,169,97,0.12)' }}>
-                    <span style={{ fontSize: '11px', color: 'rgba(245,239,224,0.45)' }}>ドリンク小計</span>
-                    <span style={{ fontSize: '11px', color: 'rgba(245,239,224,0.45)' }}>{fmt(baseSum)}</span>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '4px' }}>
-                    <span style={{ fontSize: '11px', color: 'rgba(201,169,97,0.5)' }}>消費税10% + サービス料35%</span>
-                    <span style={{ fontSize: '11px', color: 'rgba(201,169,97,0.5)' }}>+{fmt(taxService)}</span>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '4px' }}>
-                    <span style={{ fontSize: '12px', color: CREAM_DIM, fontWeight: 600 }}>ドリンク合計</span>
-                    <span style={{ fontSize: '12px', color: CREAM, fontWeight: 600 }}>{fmt(drinkTotal)}</span>
+                  <div style={{ borderTop: '1px solid rgba(201,169,97,0.12)', marginTop: '8px', paddingTop: '8px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '3px' }}>
+                      <span style={{ fontSize: '11px', color: 'rgba(245,239,224,0.4)' }}>小計</span>
+                      <span style={{ fontSize: '11px', color: 'rgba(245,239,224,0.4)' }}>{fmt(baseSum)}</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '3px' }}>
+                      <span style={{ fontSize: '11px', color: 'rgba(201,169,97,0.5)' }}>消費税10% + サービス料35%</span>
+                      <span style={{ fontSize: '11px', color: 'rgba(201,169,97,0.5)' }}>+{fmt(taxService)}</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <span style={{ fontSize: '12px', color: CREAM_DIM, fontWeight: 600 }}>ドリンク合計</span>
+                      <span style={{ fontSize: '12px', color: CREAM, fontWeight: 600 }}>{fmt(drinkTotal)}</span>
+                    </div>
                   </div>
                 </div>
               );
             })()}
 
             {/* 最終合計 */}
-            <div style={{ height: '1px', background: 'rgba(201,169,97,0.3)', margin: '4px 0 16px' }} />
+            <div style={{ height: '1px', background: 'rgba(201,169,97,0.3)', margin: '4px 0 14px' }} />
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontSize: '13px', letterSpacing: '0.1em', color: GOLD, fontFamily: 'var(--font-cinzel)' }}>合計目安</span>
-              <span style={{ fontSize: '30px', fontWeight: 700, color: overBudget ? '#ff7070' : GOLD_BRIGHT, fontFamily: 'var(--font-display)' }}>
+              <span style={{ fontSize: '30px', fontWeight: 700, color: GOLD_BRIGHT, fontFamily: 'var(--font-display)' }}>
                 {fmt(total)}
               </span>
             </div>
-
-            {/* 残り予算でのドリンク提案 */}
-            {budget > 0 && !overBudget && remaining! > 0 && (
-              <div style={{ marginTop: '16px', padding: '12px', background: 'rgba(201,169,97,0.06)', border: '1px solid rgba(201,169,97,0.15)', borderRadius: '4px' }}>
-                <p style={{ fontSize: '10px', color: GOLD_DIM, marginBottom: '8px', letterSpacing: '0.1em' }}>残り {fmt(remaining!)} で追加できるドリンク例</p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                  {DRINKS.flatMap(cat => cat.items.filter(item => !item.variants)).filter(item => calc(item.base) <= remaining!).slice(0, 6).map(item => (
-                    <button
-                      key={item.id}
-                      onClick={() => addDrinkDirect(item.id, item.name, item.base)}
-                      style={{
-                        padding: '5px 10px', fontSize: '11px',
-                        border: '1px solid rgba(201,169,97,0.3)',
-                        background: 'rgba(201,169,97,0.08)',
-                        color: GOLD_BRIGHT, cursor: 'pointer', borderRadius: '20px',
-                      }}
-                    >
-                      {item.name.length > 12 ? item.name.slice(0, 12) + '…' : item.name}　{fmt(item.base)}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
 
           <p style={{ fontSize: '10px', color: 'rgba(245,239,224,0.3)', marginTop: '12px', lineHeight: '18px' }}>
@@ -642,16 +527,10 @@ export default function SimulatorPage() {
             ※実際の料金はお店の状況によって異なる場合があります。
           </p>
 
-          {/* リセット */}
-          {(budget > 0 || seatId || cart.length > 0) && (
+          {(seatId || cart.length > 0) && (
             <button
-              onClick={() => { setBudget(0); setSeatId(''); setPlanId(''); setExtQty(0); setCart([]); }}
-              style={{
-                marginTop: '20px', width: '100%', padding: '12px',
-                border: '1px solid rgba(201,169,97,0.2)', background: 'transparent',
-                color: GOLD_DIM, fontSize: '12px', cursor: 'pointer', letterSpacing: '0.1em',
-                borderRadius: '4px',
-              }}
+              onClick={() => { setSeatId(''); setPlanId(''); setExtQty(0); setCart([]); }}
+              style={{ marginTop: '20px', width: '100%', padding: '12px', border: '1px solid rgba(201,169,97,0.2)', background: 'transparent', color: GOLD_DIM, fontSize: '12px', cursor: 'pointer', letterSpacing: '0.1em', borderRadius: '4px' }}
             >
               リセット
             </button>
