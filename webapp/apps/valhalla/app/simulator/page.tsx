@@ -69,10 +69,7 @@ const DRINKS: DrinkCategory[] = [
       { id: 'cristal_car', name: 'クリスタリーノ観覧車', base: 150000 },
       { id: 'tequila_globe', name: 'テキーラ地球儀', base: 100000 },
       { id: 'aneho_globe', name: 'アネホ地球儀', base: 150000 },
-      { id: 'cristal_globe', name: 'クリスタリーノ地球儀', base: 220000 },
       { id: 'tequila_ship', name: 'テキーラシップ', base: 130000 },
-      { id: 'aneho_ship', name: 'アネホシップ', base: 180000 },
-      { id: 'cristal_ship', name: 'クリスタリーノシップ', base: 280000 },
     ],
   },
   {
@@ -89,21 +86,13 @@ const DRINKS: DrinkCategory[] = [
     cat: 'ワイン',
     items: [
       { id: 'chablis', name: 'ルイ ラトゥール シャブリ（白）', base: 120000 },
-      { id: 'puligny', name: 'ピュリニー・モンラッシェ（白）', base: 280000 },
       { id: 'sixeight', name: 'シックスエイト（赤）', base: 120000 },
-      { id: 'lagrange', name: 'シャトーラグランジュ（赤）', base: 280000 },
-      { id: 'calon', name: 'シャトー カロンセギュール（赤）', base: 350000 },
     ],
   },
   {
     cat: 'ブランデー',
     items: [
       { id: 'remy_vsop', name: 'レミーマルタン VSOP', base: 100000 },
-      { id: 'hennessy_vsop', name: 'ヘネシー VSOP', base: 180000 },
-      { id: 'martel_blue', name: 'マーテル コンドンブルー', base: 280000 },
-      { id: 'remy_xo', name: 'レミーマルタン XO', base: 350000 },
-      { id: 'hennessy_xo', name: 'ヘネシー XO', base: 300000 },
-      { id: 'martel_chantel', name: 'マーテル シャンタール', base: 600000 },
     ],
   },
   {
@@ -111,7 +100,6 @@ const DRINKS: DrinkCategory[] = [
     items: [
       { id: 'laphroig', name: 'ラフロイグ 10年', base: 100000 },
       { id: 'macallan', name: 'ザ マッカラン 12年', base: 150000 },
-      { id: 'chita', name: '知多 他', base: 200000 },
     ],
   },
   {
@@ -119,7 +107,6 @@ const DRINKS: DrinkCategory[] = [
     items: [
       { id: 'shamai_rose', name: 'シャメイロゼ', base: 100000 },
       { id: 'shamai_gold', name: 'シャメイゴールド', base: 150000 },
-      { id: 'shamai_plat', name: 'シャメイプラチナ', base: 200000 },
     ],
   },
   {
@@ -131,7 +118,6 @@ const DRINKS: DrinkCategory[] = [
       { id: 'mapam', name: 'マパム・グラシア', base: 120000 },
       { id: 'vuv_yellow', name: 'ヴーヴ・グリコ イエロー', base: 70000 },
       { id: 'vuv_white', name: 'ヴーヴ・グリコ ホワイト', base: 80000 },
-      { id: 'bellepoque', name: 'ベルエポック', base: 400000 },
       {
         id: 'roger',
         name: 'ロジャーグラード',
@@ -139,9 +125,6 @@ const DRINKS: DrinkCategory[] = [
         variants: [
           { label: 'ロゼ', base: 100000 },
           { label: 'ゴールド', base: 150000 },
-          { label: 'プラチナ', base: 200000 },
-          { label: 'ブラック', base: 250000 },
-          { label: 'ブラックロゼ', base: 300000 },
         ],
       },
       {
@@ -152,20 +135,6 @@ const DRINKS: DrinkCategory[] = [
           { label: 'ホワイト', base: 90000 },
           { label: 'ロゼ', base: 140000 },
           { label: 'ネクター ブラック', base: 150000 },
-          { label: 'アイスアンペリアル', base: 160000 },
-          { label: 'ネクターロゼ', base: 180000 },
-        ],
-      },
-      {
-        id: 'angel',
-        name: 'エンジェルシャンパン',
-        base: 500000,
-        variants: [
-          { label: 'ブラック', base: 500000 },
-          { label: 'ヘイロー', base: 550000 },
-          { label: 'ホワイト', base: 700000 },
-          { label: 'ドゥミセック', base: 900000 },
-          { label: 'ドゥミセックロゼ', base: 1100000 },
         ],
       },
       {
@@ -175,20 +144,8 @@ const DRINKS: DrinkCategory[] = [
         variants: [
           { label: '¥100,000', base: 100000 },
           { label: '¥150,000', base: 150000 },
-          { label: '¥200,000', base: 200000 },
-          { label: '¥300,000', base: 300000 },
-          { label: '¥500,000', base: 500000 },
         ],
       },
-    ],
-  },
-  {
-    cat: 'シャンパン II',
-    items: [
-      { id: 'champ2', name: 'シャンパン II', base: 450000 },
-      { id: 'krug_white', name: 'クリュグ ホワイト', base: 500000 },
-      { id: 'krug_rose', name: 'クリュグ ロゼ', base: 800000 },
-      { id: 'donperi', name: 'ドン・ペリニヨン', base: 600000 },
     ],
   },
   {
