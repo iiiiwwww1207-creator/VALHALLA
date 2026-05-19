@@ -30,7 +30,7 @@ const SEATS: SeatType[] = [
     label: 'Main Floor',
     desc: 'メインフロア',
     plans: [
-      { id: 'quick',     label: 'クイック（60分・時間制限）', price: 10000, note: 'スラット・淡麗・お茶割り・JJ茉莉花のいずれか2セット無料。3セット目以降、またはそれ以外のドリンクは別途料金。60分でチェックアウト。' },
+      { id: 'quick',     label: 'クイック（60分・時間制限）', price: 10000, note: '缶物（スラット・淡麗・お茶割り・JJ茉莉花）2セット、またはノンアルコールドリンクのピッチャー2杯が無料。3セット目以降またはそれ以外のドリンクは別途料金。60分でチェックアウト。' },
       { id: 'normal',    label: '通常（フリータイム）',       price: 21000, note: 'ドリンクは別途。閉店まで滞在可能。' },
       { id: 'nomi_main', label: '飲み放題（90分）',           price: 30000, note: '一部ドリンクは別途。延長¥15,000 / 60分。' },
     ],
@@ -357,11 +357,12 @@ export default function SimulatorPage() {
               {planId === 'quick' && (
                 <div style={{ marginTop: '14px', padding: '12px 14px', background: 'rgba(100,200,150,0.07)', border: '1px solid rgba(100,200,150,0.25)', borderRadius: '4px' }}>
                   <p style={{ fontSize: '11px', color: 'rgba(100,220,160,0.9)', fontWeight: 700, margin: '0 0 6px' }}>✓ 無料で付く2セット（缶物）</p>
-                  <p style={{ fontSize: '12px', color: CREAM_DIM, margin: 0, lineHeight: '20px' }}>
-                    スラット・淡麗・お茶割り・JJ茉莉花 のいずれか
+                  <p style={{ fontSize: '12px', color: CREAM_DIM, margin: 0, lineHeight: '22px' }}>
+                    缶物：スラット・淡麗・お茶割り・JJ茉莉花 のいずれか 2セット<br />
+                    または ノンアルコールドリンク ピッチャー 2杯
                   </p>
                   <p style={{ fontSize: '10px', color: 'rgba(245,239,224,0.35)', margin: '6px 0 0', lineHeight: '18px' }}>
-                    ※3セット目以降、またはそれ以外のドリンクを追加した場合は下の「ドリンク追加」から選んで料金に加算してください。
+                    ※3セット目以降、またはそれ以外のドリンクを追加した場合は下から選んで料金に加算してください。
                   </p>
                 </div>
               )}
