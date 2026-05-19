@@ -16,21 +16,133 @@ function calc(base: number) {
 }
 
 // ===================== セット料金 =====================
-const SETS = [
-  { id: 'first90', label: '初回料金', sub: '90分・Main Floor', price: 3000 },
-  { id: 'first60', label: '初回料金', sub: '60分・Main Floor', price: 2000 },
-  { id: 'quick', label: 'クイック', sub: '1時間・Main Floor（缶2本込み）', price: 10000 },
-  { id: 'normal', label: '通常料金', sub: 'フリータイム・Main Floor', price: 21000 },
-  { id: 'vip_sofa', label: 'V.I.P.Sofa', sub: 'フリータイム', price: 30000 },
-  { id: 'vip_box', label: 'V.I.P.Box', sub: 'フリータイム', price: 35000 },
-  { id: 'exe', label: 'Executive Room', sub: 'フリータイム', price: 50000 },
-  { id: 'nomi_early', label: '早飲み放題', sub: '90分・Main Floor（19:30〜限定）', price: 15000 },
-  { id: 'nomi_main', label: '飲み放題', sub: '90分・Main Floor', price: 30000 },
-  { id: 'nomi_ext', label: '延長料金', sub: '60分・Main Floor', price: 15000 },
-  { id: 'nomi_vip', label: 'VIP飲み放題', sub: '90分・V.I.P Floor', price: 50000 },
-  { id: 'nomi_vip_ext', label: 'VIP延長', sub: '60分・V.I.P Floor', price: 25000 },
-  { id: 'nomi_exe', label: 'Executive飲み放題', sub: '90分', price: 100000 },
-  { id: 'nomi_exe_ext', label: 'Executive延長', sub: '60分', price: 50000 },
+type SetItem = {
+  id: string;
+  label: string;
+  sub: string;
+  price: number;
+  note?: string;
+  tag?: string;
+};
+
+type SetGroup = { group: string; items: SetItem[] };
+
+const SET_GROUPS: SetGroup[] = [
+  {
+    group: 'Main Floor',
+    items: [
+      {
+        id: 'quick',
+        label: 'クイック',
+        sub: '60分・時間制限制',
+        price: 10000,
+        note: '缶物2本込み。60分でチェックアウト。',
+        tag: '時間制限',
+      },
+      {
+        id: 'normal',
+        label: '通常',
+        sub: 'フリータイム',
+        price: 21000,
+        note: 'ドリンクは別途。閉店まで滞在可能。',
+        tag: 'フリータイム',
+      },
+      {
+        id: 'nomi_main',
+        label: '飲み放題',
+        sub: '90分',
+        price: 30000,
+        note: '一部ドリンクは別途。延長は60分ごとに¥15,000。',
+        tag: '90分',
+      },
+    ],
+  },
+  {
+    group: '飲み放題 延長',
+    items: [
+      {
+        id: 'nomi_ext',
+        label: '延長料金',
+        sub: '60分ごと',
+        price: 15000,
+        note: '飲み放題の延長料金（60分単位）。',
+      },
+    ],
+  },
+  {
+    group: 'V.I.P Floor',
+    items: [
+      {
+        id: 'vip_sofa',
+        label: 'V.I.P.Sofa',
+        sub: 'フリータイム',
+        price: 30000,
+        note: 'ドリンクは別途。',
+      },
+      {
+        id: 'vip_box',
+        label: 'V.I.P.Box',
+        sub: 'フリータイム',
+        price: 35000,
+        note: 'ドリンクは別途。',
+      },
+      {
+        id: 'nomi_vip',
+        label: 'VIP飲み放題',
+        sub: '90分',
+        price: 50000,
+        note: '一部ドリンクは別途。',
+      },
+      {
+        id: 'nomi_vip_ext',
+        label: 'VIP延長',
+        sub: '60分ごと',
+        price: 25000,
+      },
+    ],
+  },
+  {
+    group: 'Executive Room',
+    items: [
+      {
+        id: 'exe',
+        label: 'Executive Room',
+        sub: 'フリータイム',
+        price: 50000,
+        note: 'ドリンクは別途。',
+      },
+      {
+        id: 'nomi_exe',
+        label: 'Executive飲み放題',
+        sub: '90分',
+        price: 100000,
+        note: '一部ドリンクは別途。',
+      },
+      {
+        id: 'nomi_exe_ext',
+        label: 'Executive延長',
+        sub: '60分ごと',
+        price: 50000,
+      },
+    ],
+  },
+  {
+    group: 'その他',
+    items: [
+      {
+        id: 'jonai_set',
+        label: '場内指名',
+        sub: '税・サービス料別',
+        price: 1000,
+      },
+      {
+        id: 'dohan_set',
+        label: '同伴料金',
+        sub: '税・サービス料別',
+        price: 3000,
+      },
+    ],
+  },
 ];
 
 // ===================== ドリンクメニュー =====================
@@ -182,7 +294,8 @@ export default function SimulatorPage() {
   const [openCat, setOpenCat] = useState<string>('');
   const [variantOpen, setVariantOpen] = useState<string>('');
 
-  const selectedSet = SETS.find(s => s.id === setId);
+  const allSets = SET_GROUPS.flatMap(g => g.items);
+  const selectedSet = allSets.find(s => s.id === setId);
   const setPrice = selectedSet ? selectedSet.price : 0;
 
   const drinkTotal = cart.reduce((sum, c) => sum + c.price * c.qty, 0);
@@ -235,37 +348,103 @@ export default function SimulatorPage() {
 
         {/* STEP 1 セット選択 */}
         <section style={{ paddingTop: '24px', paddingBottom: '24px' }}>
-          <p style={{ fontSize: '9px', letterSpacing: '0.4em', color: GOLD, textTransform: 'uppercase', marginBottom: '14px', fontFamily: 'var(--font-cinzel)' }}>
+          <p style={{ fontSize: '9px', letterSpacing: '0.4em', color: GOLD, textTransform: 'uppercase', marginBottom: '6px', fontFamily: 'var(--font-cinzel)' }}>
             Step 01 — セット料金
           </p>
-          <div style={{ display: 'grid', gap: '8px' }}>
-            {SETS.map(s => {
+          <p style={{ fontSize: '11px', color: CREAM_DIM, marginBottom: '18px', lineHeight: '20px' }}>
+            料金形態を1つ選んでください。
+          </p>
+
+          {/* 料金形態3種（Main Floor）を目立たせる */}
+          <div style={{ display: 'grid', gap: '10px', marginBottom: '20px' }}>
+            {SET_GROUPS[0].items.map(s => {
               const active = setId === s.id;
+              const tagColors: Record<string, string> = {
+                '時間制限': 'rgba(255,100,100,0.8)',
+                'フリータイム': 'rgba(100,200,150,0.8)',
+                '90分': 'rgba(100,160,255,0.8)',
+              };
               return (
                 <button
                   key={s.id}
                   onClick={() => setSetId(active ? '' : s.id)}
                   style={{
-                    width: '100%', textAlign: 'left', padding: '12px 16px',
-                    border: active ? `1px solid ${GOLD}` : '1px solid rgba(201,169,97,0.2)',
-                    background: active ? 'rgba(201,169,97,0.1)' : 'rgba(255,255,255,0.02)',
+                    width: '100%', textAlign: 'left', padding: '16px 16px',
+                    border: active ? `1px solid ${GOLD}` : '1px solid rgba(201,169,97,0.25)',
+                    background: active ? 'rgba(201,169,97,0.1)' : 'rgba(255,255,255,0.03)',
                     cursor: 'pointer', borderRadius: '4px',
-                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                    transition: 'all 0.15s',
                   }}
                 >
-                  <div>
-                    <p style={{ fontSize: '13px', fontWeight: 600, color: active ? GOLD_BRIGHT : CREAM, margin: 0 }}>{s.label}</p>
-                    <p style={{ fontSize: '11px', color: CREAM_DIM, margin: '2px 0 0' }}>{s.sub}</p>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                        <p style={{ fontSize: '15px', fontWeight: 700, color: active ? GOLD_BRIGHT : CREAM, margin: 0 }}>{s.label}</p>
+                        {s.tag && (
+                          <span style={{ fontSize: '9px', padding: '2px 7px', borderRadius: '20px', border: `1px solid ${tagColors[s.tag] ?? GOLD_DIM}`, color: tagColors[s.tag] ?? GOLD_DIM }}>
+                            {s.tag}
+                          </span>
+                        )}
+                      </div>
+                      {s.note && <p style={{ fontSize: '11px', color: 'rgba(245,239,224,0.45)', margin: 0, lineHeight: '18px' }}>{s.note}</p>}
+                    </div>
+                    <p style={{ fontSize: '16px', fontWeight: 700, color: active ? GOLD_BRIGHT : GOLD_DIM, whiteSpace: 'nowrap', marginLeft: '14px' }}>
+                      {fmt(s.price)}
+                    </p>
                   </div>
-                  <p style={{ fontSize: '14px', fontWeight: 700, color: active ? GOLD_BRIGHT : GOLD_DIM, whiteSpace: 'nowrap', marginLeft: '12px' }}>
-                    {fmt(s.price)}
-                  </p>
                 </button>
               );
             })}
           </div>
-          <p style={{ fontSize: '10px', color: 'rgba(245,239,224,0.35)', marginTop: '10px', lineHeight: '18px' }}>
+
+          {/* その他のセット（折りたたみ） */}
+          {SET_GROUPS.slice(1).map(g => {
+            const isOpen = openCat === g.group;
+            return (
+              <div key={g.group} style={{ border: '1px solid rgba(201,169,97,0.12)', borderRadius: '4px', overflow: 'hidden', marginBottom: '6px' }}>
+                <button
+                  onClick={() => setOpenCat(isOpen ? '' : g.group)}
+                  style={{
+                    width: '100%', textAlign: 'left', padding: '11px 16px',
+                    background: isOpen ? 'rgba(201,169,97,0.06)' : 'rgba(255,255,255,0.02)',
+                    border: 'none', cursor: 'pointer',
+                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                  }}
+                >
+                  <span style={{ fontSize: '12px', color: isOpen ? GOLD_BRIGHT : 'rgba(245,239,224,0.7)', fontWeight: 600 }}>{g.group}</span>
+                  <span style={{ fontSize: '10px', color: GOLD_DIM }}>{isOpen ? '▲' : '▼'}</span>
+                </button>
+                {isOpen && (
+                  <div style={{ borderTop: '1px solid rgba(201,169,97,0.1)' }}>
+                    {g.items.map(s => {
+                      const active = setId === s.id;
+                      return (
+                        <button
+                          key={s.id}
+                          onClick={() => setSetId(active ? '' : s.id)}
+                          style={{
+                            width: '100%', textAlign: 'left', padding: '11px 16px',
+                            background: active ? 'rgba(201,169,97,0.08)' : 'transparent',
+                            border: 'none', borderBottom: '1px solid rgba(201,169,97,0.07)',
+                            cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                          }}
+                        >
+                          <div>
+                            <p style={{ fontSize: '13px', fontWeight: 600, color: active ? GOLD_BRIGHT : CREAM, margin: 0 }}>{s.label}</p>
+                            <p style={{ fontSize: '11px', color: CREAM_DIM, margin: '2px 0 0' }}>{s.sub}</p>
+                          </div>
+                          <p style={{ fontSize: '13px', fontWeight: 700, color: active ? GOLD_BRIGHT : GOLD_DIM, whiteSpace: 'nowrap', marginLeft: '12px' }}>
+                            {fmt(s.price)}
+                          </p>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+
+          <p style={{ fontSize: '10px', color: 'rgba(245,239,224,0.3)', marginTop: '10px', lineHeight: '18px' }}>
             ※セット料金は税・サービス料込みの金額です。
           </p>
         </section>
