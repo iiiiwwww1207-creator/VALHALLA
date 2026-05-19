@@ -188,9 +188,7 @@ export default function SimulatorPage() {
   const [seatId, setSeatId] = useState<string>('');
   const [planId, setPlanId] = useState<string>('');
   const [extQty, setExtQty] = useState<number>(0);
-  const [jounaiQty, setJounaiQty] = useState<number>(0);
-  const [doubanQty, setDoubanQty] = useState<number>(0);
-  const [cart, setCart] = useState<CartItem[]>([]);
+const [cart, setCart] = useState<CartItem[]>([]);
   const [openCat, setOpenCat] = useState<string>('');
 
   const selectedSeat = SEATS.find(s => s.id === seatId);
@@ -199,8 +197,7 @@ export default function SimulatorPage() {
   const extPlan = seatId ? EXT_PLANS[seatId] : null;
   const setPrice = (selectedPlan?.price ?? 0) + (isNomi && extPlan ? extPlan.price * extQty : 0);
   const drinkTotal = cart.reduce((sum, c) => sum + c.price * c.qty, 0);
-  const optionTotal = calc(1000) * jounaiQty + calc(3000) * doubanQty;
-  const total = setPrice + drinkTotal + optionTotal;
+  const total = setPrice + drinkTotal;
 
   function getQty(id: string, name: string) {
     return cart.find(c => c.id === id && c.name === name)?.qty ?? 0;
@@ -379,44 +376,6 @@ export default function SimulatorPage() {
 
         {divider}
 
-        {/* 場内指名・同伴 */}
-        <section style={{ paddingTop: '24px', paddingBottom: '24px' }}>
-          <p style={{ fontSize: '9px', letterSpacing: '0.4em', color: GOLD, textTransform: 'uppercase', marginBottom: '12px', fontFamily: 'var(--font-cinzel)' }}>
-            場内指名 · 同伴
-          </p>
-          <div style={{ display: 'grid', gap: '8px' }}>
-
-            {/* 場内指名 */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 16px', border: '1px solid rgba(201,169,97,0.2)', borderRadius: '4px', background: 'rgba(255,255,255,0.02)' }}>
-              <div>
-                <p style={{ fontSize: '14px', fontWeight: 700, color: CREAM, margin: '0 0 2px' }}>場内指名</p>
-                <p style={{ fontSize: '11px', color: GOLD_DIM, margin: 0 }}>¥1,000（税抜）/ 1名</p>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <button onClick={() => setJounaiQty(q => Math.max(0, q - 1))} style={{ width: '30px', height: '30px', border: '1px solid rgba(201,169,97,0.3)', background: 'transparent', color: GOLD_DIM, fontSize: '16px', cursor: 'pointer', borderRadius: '50%' }}>−</button>
-                <span style={{ fontSize: '16px', fontWeight: 700, color: jounaiQty > 0 ? GOLD_BRIGHT : 'rgba(245,239,224,0.4)', minWidth: '20px', textAlign: 'center' }}>{jounaiQty}</span>
-                <button onClick={() => setJounaiQty(q => q + 1)} style={{ width: '30px', height: '30px', border: '1px solid rgba(201,169,97,0.3)', background: 'transparent', color: GOLD_DIM, fontSize: '16px', cursor: 'pointer', borderRadius: '50%' }}>＋</button>
-              </div>
-            </div>
-
-            {/* 同伴 */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 16px', border: '1px solid rgba(201,169,97,0.2)', borderRadius: '4px', background: 'rgba(255,255,255,0.02)' }}>
-              <div>
-                <p style={{ fontSize: '14px', fontWeight: 700, color: CREAM, margin: '0 0 2px' }}>同伴</p>
-                <p style={{ fontSize: '11px', color: GOLD_DIM, margin: 0 }}>¥3,000（税抜）/ 1名</p>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <button onClick={() => setDoubanQty(q => Math.max(0, q - 1))} style={{ width: '30px', height: '30px', border: '1px solid rgba(201,169,97,0.3)', background: 'transparent', color: GOLD_DIM, fontSize: '16px', cursor: 'pointer', borderRadius: '50%' }}>−</button>
-                <span style={{ fontSize: '16px', fontWeight: 700, color: doubanQty > 0 ? GOLD_BRIGHT : 'rgba(245,239,224,0.4)', minWidth: '20px', textAlign: 'center' }}>{doubanQty}</span>
-                <button onClick={() => setDoubanQty(q => q + 1)} style={{ width: '30px', height: '30px', border: '1px solid rgba(201,169,97,0.3)', background: 'transparent', color: GOLD_DIM, fontSize: '16px', cursor: 'pointer', borderRadius: '50%' }}>＋</button>
-              </div>
-            </div>
-
-          </div>
-        </section>
-
-        {divider}
-
         {/* STEP 3 ドリンク選択 */}
         <section style={{ paddingTop: '24px', paddingBottom: '24px' }}>
           <p style={{ fontSize: '9px', letterSpacing: '0.4em', color: GOLD, textTransform: 'uppercase', marginBottom: '12px', fontFamily: 'var(--font-cinzel)' }}>
@@ -537,25 +496,6 @@ export default function SimulatorPage() {
               </div>
             )}
 
-            {/* 場内指名・同伴明細 */}
-            {(jounaiQty > 0 || doubanQty > 0) && (
-              <div style={{ marginBottom: '14px' }}>
-                <p style={{ fontSize: '9px', letterSpacing: '0.3em', color: GOLD_DIM, margin: '0 0 6px', textTransform: 'uppercase' }}>場内指名・同伴</p>
-                {jounaiQty > 0 && (
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
-                    <span style={{ fontSize: '12px', color: CREAM_DIM }}>場内指名 ×{jounaiQty}</span>
-                    <span style={{ fontSize: '12px', color: CREAM }}>{fmt(calc(1000) * jounaiQty)}</span>
-                  </div>
-                )}
-                {doubanQty > 0 && (
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
-                    <span style={{ fontSize: '12px', color: CREAM_DIM }}>同伴 ×{doubanQty}</span>
-                    <span style={{ fontSize: '12px', color: CREAM }}>{fmt(calc(3000) * doubanQty)}</span>
-                  </div>
-                )}
-              </div>
-            )}
-
             {/* ドリンク明細 */}
             {cart.length > 0 && (() => {
               const baseSum = cart.reduce((s, c) => s + c.base * c.qty, 0);
@@ -606,7 +546,7 @@ export default function SimulatorPage() {
 
           {(seatId || cart.length > 0) && (
             <button
-              onClick={() => { setSeatId(''); setPlanId(''); setExtQty(0); setJounaiQty(0); setDoubanQty(0); setCart([]); }}
+              onClick={() => { setSeatId(''); setPlanId(''); setExtQty(0); setCart([]); }}
               style={{ marginTop: '20px', width: '100%', padding: '12px', border: '1px solid rgba(201,169,97,0.2)', background: 'transparent', color: GOLD_DIM, fontSize: '12px', cursor: 'pointer', letterSpacing: '0.1em', borderRadius: '4px' }}
             >
               リセット
