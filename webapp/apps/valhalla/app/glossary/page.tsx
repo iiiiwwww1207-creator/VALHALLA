@@ -9,6 +9,14 @@ import { Card, CardContent } from '@/components/ui/card';
 
 const glossary = [
   {
+    term: '本担（ほんたん）',
+    reading: 'ほんたん',
+    short: '一番メインで指名しているホスト',
+    detail:
+      '「本命担当」の略。自分が一番メインで通っているホストのこと。お客様にとって特別な存在で、そのホストのために売上を作ることを目標にする人も多い。本担との関係はホストクラブの醍醐味のひとつ。',
+    emoji: '💎',
+  },
+  {
     term: 'サブ担（サブたん）',
     reading: 'さぶたん',
     short: '本担以外で指名しているホスト',
