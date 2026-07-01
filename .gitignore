@@ -15,3 +15,12 @@ gigafile_images/
 .DS_Store
 download_cast.sh
 serve.py
+# --- large media / archives / secrets (auto) ---
+*.mp4
+*.mov
+*.zip
+*.tif
+*.TIF
+*.pem
+*.key
+.credentials.json

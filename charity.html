@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>VALHALLA CHARITY LIVE 2026 ｜ 全額寄付チャリティーライブ</title>
+<meta name="description" content="2026.10.18 東京大学 × 渋谷 CÉ LA VI。社美緒・KØU・零によるチャリティーライブ。収益の全額を寄付します。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* 黒・金・紫の3色で統一（ダークテーマ・高コントラスト維持） */
+    --bg:#0B0710; --card:#181022; --ink:#F5EFE4; --sub:rgba(245,239,228,.74);
+    --line:rgba(201,169,97,.22);
+    --gold:#C9A961; --gold-d:#DBBA6A; --hero:#0B0710; --cream:#F5EFE4;
+    --blue:#2E6FE0; --blue-d:#13317F; --ok:#5BD39A;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);
+    font-family:"Noto Sans JP",sans-serif;font-size:16px;line-height:1.95;
+    -webkit-font-smoothing:antialiased;max-width:640px;margin:0 auto;padding-bottom:84px}
+  a{color:inherit;text-decoration:none}
+  .en{font-family:"Cinzel",serif}
+  .tbd{color:var(--gold-d);background:rgba(46,111,224,.22);border-radius:4px;padding:0 5px;font-weight:500}
+
+  /* ---- HERO ---- */
+  .hero{background:radial-gradient(ellipse at 50% 0%, rgba(46,111,224,.32), transparent 62%), var(--hero);
+    color:var(--cream);padding:40px 24px 34px;text-align:center}
+  /* 一番上：VALHALLA ／× 東大 の2分割ビジュアル（バンド3人は全員収まるcontain） */
+  .split{position:relative;height:240px;margin:-40px -24px 24px;overflow:hidden;background:#000}
+  .split .p{position:absolute;inset:0;background-repeat:no-repeat}
+  .split .a{left:0;top:0;width:56%;height:100%;
+    background-image:linear-gradient(180deg,rgba(11,7,16,.05),rgba(11,7,16,.7)),url('assets/charity/group_band.jpg');
+    background-size:cover,contain;background-position:center,30% center}
+  .split .b{clip-path:polygon(54% 0,100% 0,100% 100%,44% 100%);
+    background-image:linear-gradient(180deg,rgba(11,7,16,.12),rgba(11,7,16,.7)),url('assets/charity/venue/yasuda1.jpg');
+    background-size:cover;background-position:center}
+  .split .line{position:absolute;top:-8%;left:50%;width:3px;height:116%;z-index:3;
+    background:linear-gradient(180deg,transparent,#E8CB85,#C9A961,#E8CB85,transparent);
+    transform:translateX(-50%) skewX(-9deg);box-shadow:0 0 14px rgba(201,169,97,.7)}
+  .split .x{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:4;
+    width:54px;height:54px;border-radius:50%;background:rgba(11,7,16,.72);border:1.5px solid #E8CB85;
+    display:flex;align-items:center;justify-content:center;color:#E8CB85;
+    font-family:'Cinzel',serif;font-size:25px;font-weight:700;box-shadow:0 0 18px rgba(0,0,0,.55)}
+  .split .lab{position:absolute;bottom:14px;z-index:4;color:#fff;font-weight:700;
+    font-size:12px;line-height:1.3;text-shadow:0 1px 6px rgba(0,0,0,.9);
+    background:rgba(11,7,16,.5);padding:5px 10px;border-radius:8px;backdrop-filter:blur(2px)}
+  .split .lab b{display:block;font-family:'Cinzel',serif;color:#E8CB85;font-size:16px;letter-spacing:.03em}
+  .split .la{left:14px}
+  .split .lc{right:14px;text-align:right}
+  .split::after{content:"";position:absolute;left:0;right:0;bottom:0;height:56px;z-index:5;
+    background:linear-gradient(transparent,var(--hero))}
+  .hero .badge{display:inline-block;font-size:12px;letter-spacing:.25em;color:#E8CB85;
+    border:1px solid rgba(232,203,133,.5);border-radius:999px;padding:6px 16px;margin-bottom:18px}
+  .hero h1{font-family:"Cinzel",serif;font-size:34px;line-height:1.1;color:#EBD9A8;font-weight:700}
+  .hero .jptitle{font-size:16px;font-weight:700;margin-top:8px;color:#fff}
+  .hero .tagline{font-size:20px;font-weight:700;margin:18px 0 6px;line-height:1.6}
+  .hero .meta{font-size:14px;color:#D8CFBE;line-height:1.8}
+  .hero .meta b{color:#EBD9A8;font-weight:700}
+  .hero .cd{display:flex;gap:12px;justify-content:center;margin:20px 0 4px}
+  .hero .cd div{background:rgba(255,255,255,.07);border:1px solid rgba(232,203,133,.25);
+    border-radius:10px;padding:8px 12px;min-width:58px}
+  .hero .cd .n{font-size:24px;font-weight:900;color:#EBD9A8;line-height:1}
+  .hero .cd .u{font-size:10px;color:#C9Bfac;letter-spacing:.1em;margin-top:4px}
+
+  /* progress */
+  .raise{background:#211913;border:1px solid rgba(232,203,133,.25);border-radius:14px;
+    padding:18px 18px;margin:18px auto 0;max-width:380px}
+  .raise .now{font-size:26px;font-weight:900;color:#fff}
+  .raise .now small{font-size:13px;color:#C9Bfac;font-weight:500}
+  .raise .bar{height:12px;background:rgba(255,255,255,.12);border-radius:99px;margin:12px 0 8px;overflow:hidden}
+  .raise .fill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#C9A961,#EBD9A8);transition:width 1s ease}
+  .raise .info{font-size:13px;color:#D8CFBE;display:flex;justify-content:space-between}
+  .raise .info b{color:#EBD9A8}
+
+  .btn{display:block;text-align:center;background:linear-gradient(135deg,#C9A961,#A6802F);
+    color:#211913;font-weight:900;font-size:17px;padding:16px;border-radius:12px;margin-top:18px;
+    box-shadow:0 4px 16px rgba(166,128,47,.3)}
+
+  /* ---- SECTION ---- */
+  section{padding:40px 24px;border-bottom:1px solid var(--line)}
+  .num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;
+    background:var(--gold);color:#fff;border-radius:50%;font-size:13px;font-weight:700;margin-right:10px}
+  /* 見出し＝統一カラーの帯ブロック（変更は --hbar / --hbar-ink の2色だけ） */
+  :root{--hbar:#1C46C0; --hbar-ink:#FFFFFF}  /* 見出し帯＝青×白（番号は金） */
+  h2{display:flex;align-items:center;gap:12px;background:var(--hbar);color:var(--hbar-ink);
+    font-size:20px;font-weight:900;line-height:1.45;padding:15px 18px;border-radius:12px;
+    margin-bottom:12px;box-shadow:0 3px 12px rgba(0,0,0,.14)}
+  .sub-h{font-size:13px;color:var(--gold-d);font-weight:700;letter-spacing:.06em;margin-bottom:18px;padding-left:4px}
+  p.body{font-size:16px;line-height:1.95;color:var(--ink);margin-bottom:14px}
+  p.body.muted{color:var(--sub)}
+  .lead-strong{font-size:18px;font-weight:700;line-height:1.8;margin-bottom:16px}
+
+  /* members */
+  .members{display:flex;flex-direction:column;gap:16px}
+  .m-card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    display:flex;gap:14px;align-items:stretch;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+  .m-card img{width:120px;height:150px;object-fit:cover;object-position:top;flex-shrink:0;background:#eee}
+  .m-card .m-body{padding:14px 14px 14px 0}
+  .m-card .m-name{font-size:18px;font-weight:900}
+  .m-card .m-role{font-size:12px;color:var(--gold-d);font-weight:700;margin:2px 0 8px}
+  .m-card .m-msg{font-size:13.5px;color:var(--sub);line-height:1.7}
+  .group-photo{width:100%;border-radius:14px;margin-bottom:18px;display:block;border:1px solid var(--line)}
+
+  /* event */
+  .ev{display:flex;flex-direction:column;gap:14px}
+  .ev .c{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .ev .t{font-size:12px;font-weight:700;color:#fff;background:var(--gold);display:inline-block;
+    padding:3px 12px;border-radius:99px;letter-spacing:.05em}
+  .ev h3{font-size:18px;font-weight:900;margin:10px 0 2px}
+  .ev .where{font-size:13px;color:var(--sub);margin-bottom:8px}
+  .ev .time{font-size:15px;font-weight:700;color:var(--gold-d)}
+
+  /* returns */
+  .ret{display:flex;flex-direction:column;gap:16px}
+  .r{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;position:relative}
+  .r.feat{border:2px solid var(--gold)}
+  .r .badge{position:absolute;top:14px;right:14px;font-size:11px;font-weight:700;color:#fff;
+    background:var(--blue);border-radius:99px;padding:3px 10px}
+  .r .rn{font-size:18px;font-weight:900}
+  .r .rp{font-size:30px;font-weight:900;margin:4px 0 2px}
+  .r .rp small{font-size:14px;color:var(--sub);font-weight:500}
+  .r .lim{font-size:12px;color:var(--gold-d);font-weight:700;margin-bottom:10px}
+  .r ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+  .r li{font-size:14px;color:var(--ink);padding-left:20px;position:relative;line-height:1.6}
+  .r li::before{content:"✓";position:absolute;left:0;color:var(--gold);font-weight:900}
+  .r .oshi{margin-top:10px;font-size:12.5px;background:rgba(46,111,224,.18);color:var(--gold-d);
+    border:1px solid rgba(46,111,224,.45);border-radius:8px;padding:8px 10px;font-weight:700}
+
+  /* use of funds */
+  .use{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .use .big{font-size:40px;font-weight:900;color:var(--gold-d);line-height:1}
+  .use .big small{display:block;font-size:15px;color:var(--ink);font-weight:700;margin-top:6px}
+  .use .row{margin-top:16px}
+  .use .rl{display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px}
+  .use .track{height:12px;background:rgba(255,255,255,.10);border-radius:99px;overflow:hidden}
+  .use .seg{height:100%;border-radius:99px}
+
+  /* faq */
+  .faq details{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:10px}
+  .faq summary{cursor:pointer;list-style:none;padding:16px;font-weight:700;font-size:15px;position:relative}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";position:absolute;right:18px;color:var(--gold);font-size:20px;font-weight:700}
+  .faq details[open] summary::after{content:"–"}
+  .faq p{padding:0 16px 16px;font-size:14px;color:var(--sub);line-height:1.8}
+
+  /* sticky cta */
+  .sticky{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(11,7,16,.92);
+    border-top:1px solid var(--line);padding:10px 16px;max-width:640px;margin:0 auto;
+    box-shadow:0 -4px 20px rgba(0,0,0,.45);backdrop-filter:blur(8px)}
+  .sticky a{display:flex;align-items:center;justify-content:center;gap:8px;
+    background:linear-gradient(135deg,#C9A961,#A6802F);color:#211913;font-weight:900;font-size:16px;
+    padding:14px;border-radius:12px}
+  .sticky .mini{font-size:11px;color:var(--sub);text-align:center;margin-top:4px}
+
+  .foot{padding:24px;text-align:center;font-size:11px;color:var(--sub)}
+  .foot .legal{text-align:left;font-size:10.5px;line-height:1.8;background:rgba(255,255,255,.04);border-radius:10px;
+    padding:14px;margin-bottom:14px;color:rgba(245,239,228,.55)}
+  /* flyer + video */
+  .flyer{width:100%;display:block}
+  .video-wrap{position:relative;width:100%;aspect-ratio:16/9;background:#15100C;border-radius:14px;
+    overflow:hidden;border:1px solid var(--line)}
+  .video-wrap iframe,.video-wrap video{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .video-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:8px;color:#EBD9A8;font-weight:700;font-size:15px}
+  .video-ph .play{width:62px;height:62px;border-radius:50%;border:2px solid #EBD9A8;display:flex;
+    align-items:center;justify-content:center;font-size:24px}
+  /* venue */
+  .ev .c{padding:0;overflow:hidden}
+  .ev-img{width:100%;height:190px;object-fit:cover;display:block}
+  .ev .cbody{padding:16px 18px 18px}
+  .vgal{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+  .vgal figure{margin:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card)}
+  .vgal img{width:100%;height:130px;object-fit:cover;display:block}
+  .vgal figcaption{font-size:11px;color:var(--sub);padding:7px 10px}
+  .credits{font-size:10px;color:#8a8278;line-height:1.7;margin-top:14px;text-align:left}
+  .daynote{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);
+    border-radius:12px;padding:12px;margin-top:18px}
+  .daynote img{width:104px;height:78px;object-fit:cover;border-radius:8px;flex-shrink:0}
+  .daynote .dtag{font-size:11px;color:var(--gold-d);font-weight:700}
+  .daynote .dttl{font-size:15px;font-weight:900;margin:2px 0 4px}
+  .daynote p{font-size:12.5px;color:var(--sub);line-height:1.6;margin:0}
+  /* scroll reveal (slide in from side) */
+  .reveal{opacity:0;transform:translateX(var(--dx,-46px));
+    transition:opacity .65s ease, transform .65s cubic-bezier(.2,.7,.2,1);will-change:opacity,transform}
+  .reveal.in{opacity:1;transform:translateX(0)}
+  @media (prefers-reduced-motion: reduce){ .reveal{opacity:1!important;transform:none!important} }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <div class="split">
+    <div class="p a"></div>
+    <div class="p b"></div>
+    <div class="line"></div>
+    <div class="x">×</div>
+    <div class="lab la"><b>VALHALLA</b>夜・ライブ</div>
+    <div class="lab lc"><b>東京大学</b>昼・ショー</div>
+  </div>
+  <div class="badge">CHARITY LIVE 2026</div>
+  <h1>VALHALLA<br>CHARITY LIVE</h1>
+  <div class="jptitle"><span class="tbd">【イベント名・調整中】</span></div>
+  <div class="tagline">その夜の全てを、寄付へ。</div>
+  <div class="meta"><b>2026年10月18日（日）</b><br>夜：CÉ LA VI 渋谷（メイン会場）<br><span style="font-size:12.5px;opacity:.82">＋ 昼：東京大学でのショーも通し券に付属</span></div>
+
+  <div class="cd">
+    <div><div class="n" id="cd-d">--</div><div class="u">日</div></div>
+    <div><div class="n" id="cd-h">--</div><div class="u">時間</div></div>
+    <div><div class="n" id="cd-m">--</div><div class="u">分</div></div>
+  </div>
+
+  <div class="raise" data-goal="3000000" data-current="0">
+    <div class="now">¥<span id="r-now">0</span> <small>/ 目標 ¥<span id="r-goal">3,000,000</span></small></div>
+    <div class="bar"><div class="fill" id="r-fill"></div></div>
+    <div class="info"><span>達成率 <b id="r-pct">0%</b></span><span>支援 <b id="r-cnt">0</b>人</span></div>
+  </div>
+  <a href="#apply" class="btn">この想いを支援する</a>
+</header>
+
+<!-- ===== FLYER ===== -->
+<img class="flyer" src="assets/charity/flyer.jpg" alt="VALHALLA CHARITY LIVE フライヤー｜CÉ LA VI × 東京大学">
+
+<!-- ===== ① STORY ===== -->
+<section>
+  <h2><span class="num">1</span>なぜ、いまこれをやるのか？</h2>
+  <div class="sub-h">Our Story</div>
+  <p class="lead-strong">夜の世界から、社会へ。</p>
+  <p class="body muted">華やかなステージの裏で、私たちは多くの人に支えられてきました。その恩を、今度は社会へ還す番だと考えています。</p>
+  <p class="body muted">このチャリティーライブでいただいた支援は、運営に必要な実費を除いた<b style="color:var(--ink)">収益の全額</b>を <span class="tbd">【寄付先・調整中】</span> へ寄付します。収支はすべて公開し、「どこに・いくら届いたか」を後日ご報告します。</p>
+</section>
+
+<!-- ===== ② MEMBERS ===== -->
+<section>
+  <h2><span class="num">2</span>誰が、ステージに立つのか？</h2>
+  <div class="sub-h">バンド「VALHALLA」</div>
+  <img class="group-photo" src="assets/charity/group.jpg" alt="VALHALLA メンバー">
+  <div class="members">
+    <div class="m-card">
+      <img src="assets/charity/mio.jpg" alt="社美緒">
+      <div class="m-body">
+        <div class="m-name">社美緒 <span style="font-size:13px;color:var(--sub)">／ Mio</span></div>
+        <div class="m-role">Guitar・主宰</div>
+        <div class="m-msg"><span class="tbd">【本人メッセージ・調整中】</span></div>
+      </div>
+    </div>
+    <div class="m-card">
+      <img src="assets/charity/kou.jpg" alt="KØU">
+      <div class="m-body">
+        <div class="m-name">KØU</div>
+        <div class="m-role">Member</div>
+        <div class="m-msg"><span class="tbd">【本人メッセージ・調整中】</span></div>
+      </div>
+    </div>
+    <div class="m-card">
+      <img src="assets/charity/rei.jpg" alt="零">
+      <div class="m-body">
+        <div class="m-name">零 <span style="font-size:13px;color:var(--sub)">／ Rei</span></div>
+        <div class="m-role">Member</div>
+        <div class="m-msg"><span class="tbd">【本人メッセージ・調整中】</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ③ MOVIE ===== -->
+<section>
+  <h2><span class="num">3</span>どんな一夜になるのか？</h2>
+  <div class="sub-h">Movie</div>
+  <div class="video-wrap">
+    <!-- 動画が決まったら、この中に YouTube/Vimeo の <iframe> か <video> を入れる -->
+    <div class="video-ph"><div class="play">▶</div><span class="tbd">動画は近日公開（ここに埋め込み）</span></div>
+  </div>
+</section>
+
+<!-- ===== ④ EVENT ===== -->
+<section>
+  <h2><span class="num">4</span>当日、何が起こるのか？</h2>
+  <div class="sub-h">メインは、夜のセラビ・ライブ</div>
+  <div class="ev">
+    <div class="c">
+      <img class="ev-img" src="assets/charity/venue/club.jpg" alt="CÉ LA VI 17F" style="height:230px">
+      <div class="cbody">
+        <span class="t">夜の部・メイン会場</span>
+        <h3>バンドライブ「VALHALLA」</h3>
+        <div class="where">会場：CÉ LA VI TOKYO（渋谷・東急プラザ17F）</div>
+        <div class="time">開場 20:00 ／ ライブ 20:30〜21:10</div>
+        <p class="body muted" style="font-size:13.5px;margin:8px 0 0">渋谷の夜景を望むルーフトップで、一夜限りのライブを。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="vgal">
+    <figure><img src="assets/charity/venue/dj.jpg" alt="メインステージ・DJブース"><figcaption>メインステージ／DJブース</figcaption></figure>
+    <figure><img src="assets/charity/venue/stage.jpg" alt="円形ステージ"><figcaption>円形ステージ</figcaption></figure>
+    <figure><img src="assets/charity/venue/roof.jpg" alt="屋上テラス"><figcaption>屋上テラス</figcaption></figure>
+    <figure><img src="assets/charity/venue/roofnight.jpg" alt="屋上から渋谷の夜景"><figcaption>屋上から渋谷の夜景</figcaption></figure>
+  </div>
+
+  <div class="daynote">
+    <img src="assets/charity/venue/yasuda1.jpg" alt="東京大学 安田講堂">
+    <div>
+      <div class="dtag">＋ 昼の部（通し券に付属）</div>
+      <div class="dttl">東京大学・スペシャルショー</div>
+      <p>昼は東京大学で <span class="tbd">久保塚さん</span> ほかゲストのショー。通し券なら昼夜どちらも楽しめます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ④ RETURNS ===== -->
+<section id="support">
+  <h2><span class="num">5</span>あなたは、どう応援する？</h2>
+  <div class="sub-h">支援コース（リターン）</div>
+  <div class="ret">
+
+    <div class="r">
+      <div class="rn">夜スタンディング</div>
+      <div class="rp">¥17,500<small>〜</small></div>
+      <div class="lim">約100名</div>
+      <ul>
+        <li>夜の部ライブ観覧</li>
+        <li>ワンドリンク等の飲食込み</li>
+        <li>21:30 完全退店</li>
+      </ul>
+    </div>
+
+    <div class="r">
+      <div class="rn">通し券（昼＋夜）</div>
+      <div class="rp">¥50,000</div>
+      <div class="lim">限定 22 席</div>
+      <ul>
+        <li>昼の部スペシャルショー（東京大学）</li>
+        <li>夜の部ライブ（CÉ LA VI）</li>
+      </ul>
+    </div>
+
+    <div class="r">
+      <div class="rn">数量限定 オリジナルシャンパン 🍾</div>
+      <div class="rp">¥<span class="tbd">40,000</span></div>
+      <div class="lim">当日限定ラベル</div>
+      <ul>
+        <li>この日だけの VALHALLA オリジナルラベル</li>
+        <li>1本につき <span class="tbd">¥◯◯,◯◯◯</span> を寄付に充当</li>
+      </ul>
+      <div class="oshi">🎯 推しメン指定OK：ボトルに推しメンのサイン／コール付き</div>
+    </div>
+
+    <div class="r feat">
+      <div class="badge">最上級</div>
+      <div class="rn">VVIP 席</div>
+      <div class="rp">¥300,000</div>
+      <div class="lim">限定 3〜5 席</div>
+      <ul>
+        <li>最上級の専用席でライブ鑑賞</li>
+        <li>ライブ後、別フロアの特別ラウンジへご案内</li>
+        <li>バンドメンバーが各テーブルを回り、直接歓談</li>
+        <li>専用のお料理・おもてなし付き</li>
+      </ul>
+      <div class="oshi">🎯 推しメン指定OK：推しとのツーショット撮影／歓談時間の延長など段階あり（調整中）</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== ⑤ USE OF FUNDS ===== -->
+<section>
+  <h2><span class="num">6</span>その支援は、どこへ届く？</h2>
+  <div class="sub-h">集めたお金の使い道・透明性</div>
+  <div class="use">
+    <div class="big">100%<small>収益の全額を、寄付へ。</small></div>
+    <div class="row">
+      <div class="rl"><span>寄付</span><span>70%</span></div>
+      <div class="track"><div class="seg" style="width:70%;background:var(--gold)"></div></div>
+    </div>
+    <div class="row">
+      <div class="rl"><span>会場・制作費</span><span>22%</span></div>
+      <div class="track"><div class="seg" style="width:22%;background:var(--blue)"></div></div>
+    </div>
+    <div class="row">
+      <div class="rl"><span>運営実費</span><span>8%</span></div>
+      <div class="track"><div class="seg" style="width:8%;background:rgba(245,239,228,.35)"></div></div>
+    </div>
+    <p class="body muted" style="font-size:13px;margin-top:14px;margin-bottom:0">※割合は目安です。イベント後、実際の収支報告と寄付完了の証憑を公開します。</p>
+  </div>
+</section>
+
+<!-- ===== ⑥ FAQ ===== -->
+<section>
+  <h2><span class="num">7</span>まだ、気になることがある？</h2>
+  <div class="sub-h">FAQ</div>
+  <div class="faq">
+    <details><summary>支援したお金はどう使われますか？</summary>
+      <p>運営に必要な実費を除いた収益の全額を寄付します。収支と寄付完了の証憑はイベント後に公開します。</p></details>
+    <details><summary>チケットはどう受け取りますか？</summary>
+      <p>お申し込み後、ご登録の連絡先へ当日のご案内をお送りします。</p></details>
+    <details><summary>「推しメン指定」とは？</summary>
+      <p>オリジナルシャンパンやVVIP特典で、応援したいメンバー（社美緒・KØU・零）を指定できます。</p></details>
+    <details><summary>支払い方法は？</summary>
+      <p>お申し込みフォーム送信後、お支払い方法をご案内します（<span class="tbd">調整中</span>）。</p></details>
+  </div>
+</section>
+
+<!-- ===== APPLY ===== -->
+<section id="apply" style="text-align:center;border-bottom:none">
+  <h2 style="justify-content:center"><span class="num">8</span>一緒に、つくりませんか？</h2>
+  <p class="body muted">下のフォームから、ご希望のコースでお申し込みください。一夜限りの特別な体験を、一緒に。</p>
+  <a href="#" id="form-btn" class="btn" style="max-width:380px;margin:18px auto 0">申し込みフォームへ</a>
+</section>
+
+<div class="foot">
+  <div class="legal">【特定商取引法・寄付に関する表記（公開前に必ず記載）】 主催者名／所在地／連絡先／販売価格／支払時期・方法／キャンセル規定／寄付先・寄付割合 等。</div>
+  <div class="credits">
+    画像クレジット：安田講堂 © Kakidai (CC BY-SA 4.0) — via Wikimedia Commons.<br>
+    セラビ会場写真：主催者撮影。
+  </div>
+  © 2026 VALHALLA / Group Yggdrasill
+</div>
+
+<!-- ===== STICKY CTA ===== -->
+<div class="sticky">
+  <a href="#apply">この想いを支援する</a>
+  <div class="mini">2026.10.18 SUN ／ 残り <span id="cd-d2">--</span>日</div>
+</div>
+
+<script>
+  const EV = new Date("2026-10-18T20:00:00+09:00");
+  const pad=n=>String(n).padStart(2,'0');
+  function tick(){
+    const diff=EV-new Date(); const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+    if(diff<=0){['cd-d','cd-h','cd-m'].forEach(i=>set(i,'0'));set('cd-d2','0');return;}
+    const d=Math.floor(diff/86400000);
+    set('cd-d',d); set('cd-d2',d);
+    set('cd-h',pad(Math.floor((diff/3600000)%24)));
+    set('cd-m',pad(Math.floor((diff/60000)%60)));
+  }
+  tick(); setInterval(tick,1000);
+  (function(){
+    const b=document.querySelector('.raise');
+    const goal=+b.dataset.goal, cur=+b.dataset.current;
+    const pct=Math.min(100,goal?Math.round(cur/goal*100):0);
+    const yen=n=>n.toLocaleString('ja-JP');
+    document.getElementById('r-now').textContent=yen(cur);
+    document.getElementById('r-goal').textContent=yen(goal);
+    document.getElementById('r-pct').textContent=pct+'%';
+    setTimeout(()=>document.getElementById('r-fill').style.width=pct+'%',300);
+  })();
+  // ---- scroll reveal: slide in from the side, alternating per section
+  (function(){
+    if(location.search.indexOf('noanim')>=0) return;   // 静止プレビュー用
+    if(!('IntersectionObserver' in window)) return;
+    const io=new IntersectionObserver((es)=>{es.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });},{threshold:0.12, rootMargin:'0px 0px -8% 0px'});
+    function reveal(el,dx,delay){
+      el.classList.add('reveal');
+      el.style.setProperty('--dx', dx+'px');
+      el.style.transitionDelay=delay+'ms';
+      io.observe(el);
+    }
+    const fl=document.querySelector('.flyer'); if(fl) reveal(fl,0,0);
+    document.querySelectorAll('section').forEach((sec,si)=>{
+      const dir = si%2===0 ? -1 : 1;     // odd sections from left, even from right
+      Array.from(sec.children).forEach((el,i)=> reveal(el, dir*46, i*70));
+    });
+  })();
+
+  const FORM_URL="";
+  const fb=document.getElementById('form-btn');
+  if(FORM_URL){fb.href=FORM_URL;fb.target="_blank";}
+  else fb.addEventListener('click',e=>{e.preventDefault();alert('申込フォームURLを設定してください（charity.html の FORM_URL）。');});
+</script>
+</body>
+</html>
