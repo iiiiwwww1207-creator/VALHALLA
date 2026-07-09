@@ -45,6 +45,12 @@ jobs:
       - name: Add .nojekyll
         run: touch webapp/apps/valhalla/out/.nojekyll
 
+      - name: Add charity LP (root static) to Pages output
+        run: |
+          cp charity.html charity-blue.html webapp/apps/valhalla/out/
+          mkdir -p webapp/apps/valhalla/out/assets
+          cp -r assets/charity webapp/apps/valhalla/out/assets/
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: webapp/apps/valhalla/out
