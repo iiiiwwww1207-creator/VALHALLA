@@ -47,7 +47,7 @@ jobs:
 
       - name: Add charity LP (root static) to Pages output
         run: |
-          cp charity.html charity-blue.html proposal.html webapp/apps/valhalla/out/
+          cp charity.html charity-blue.html proposal.html charity-proposal.pdf webapp/apps/valhalla/out/
           mkdir -p webapp/apps/valhalla/out/assets
           cp -r assets/charity webapp/apps/valhalla/out/assets/
 
