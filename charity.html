@@ -78,6 +78,11 @@
   .btn{display:block;text-align:center;background:linear-gradient(135deg,#C9A961,#A6802F);
     color:#211913;font-weight:900;font-size:17px;padding:16px;border-radius:12px;margin-top:18px;
     box-shadow:0 4px 16px rgba(166,128,47,.3)}
+  /* Stripe決済ボタン（各コース） */
+  .pay-btn{display:block;text-align:center;margin-top:14px;
+    background:linear-gradient(135deg,#C9A961,#A6802F);color:#211913;font-weight:900;font-size:15px;
+    padding:13px;border-radius:10px;box-shadow:0 3px 12px rgba(166,128,47,.3)}
+  .pay-btn.soon{background:#241C30;color:var(--sub);box-shadow:none;border:1px solid var(--line)}
 
   /* ---- SECTION ---- */
   section{padding:40px 24px;border-bottom:1px solid var(--line)}
@@ -218,7 +223,7 @@
     <div class="bar"><div class="fill" id="r-fill"></div></div>
     <div class="info"><span>達成率 <b id="r-pct">0%</b></span><span>支援 <b id="r-cnt">0</b>人</span></div>
   </div>
-  <a href="#apply" class="btn">この想いを支援する</a>
+  <a href="#support" class="btn">この想いを支援する</a>
 </header>
 
 <!-- ===== FLYER ===== -->
@@ -327,6 +332,7 @@
         <li>ワンドリンク等の飲食込み</li>
         <li>21:30 完全退店</li>
       </ul>
+      <a class="pay-btn" data-pay="standing">このコースで支援する</a>
     </div>
 
     <div class="r">
@@ -337,6 +343,7 @@
         <li>昼の部スペシャルショー（東京大学）</li>
         <li>夜の部ライブ（CÉ LA VI）</li>
       </ul>
+      <a class="pay-btn" data-pay="tooshi">このコースで支援する</a>
     </div>
 
     <div class="r">
@@ -348,6 +355,7 @@
         <li>1本につき <span class="tbd">¥◯◯,◯◯◯</span> を寄付に充当</li>
       </ul>
       <div class="oshi">🎯 推しメン指定OK：ボトルに推しメンのサイン／コール付き</div>
+      <a class="pay-btn" data-pay="osha">このコースで支援する</a>
     </div>
 
     <div class="r feat">
@@ -362,6 +370,7 @@
         <li>専用のお料理・おもてなし付き</li>
       </ul>
       <div class="oshi">🎯 推しメン指定OK：推しとのツーショット撮影／歓談時間の延長など段階あり（調整中）</div>
+      <a class="pay-btn" data-pay="vvip">このコースで支援する</a>
     </div>
 
   </div>
@@ -396,8 +405,8 @@
 <!-- ===== APPLY ===== -->
 <section id="apply" style="text-align:center;border-bottom:none">
   <h2 style="justify-content:center"><span class="num">8</span>一緒に、つくりませんか？</h2>
-  <p class="body muted">下のフォームから、ご希望のコースでお申し込みください。一夜限りの特別な体験を、一緒に。</p>
-  <a href="#" id="form-btn" class="btn" style="max-width:380px;margin:18px auto 0">申し込みフォームへ</a>
+  <p class="body muted">ご希望のコースを選んで、そのままカード決済でお申し込みいただけます。一夜限りの特別な体験を、一緒に。</p>
+  <a href="#support" class="btn" style="max-width:380px;margin:18px auto 0">支援コースを選ぶ</a>
 </section>
 
 <div class="foot">
@@ -411,7 +420,7 @@
 
 <!-- ===== STICKY CTA ===== -->
 <div class="sticky">
-  <a href="#apply">この想いを支援する</a>
+  <a href="#support">この想いを支援する</a>
   <div class="mini">2026.10.18 SUN ／ 残り <span id="cd-d2">--</span>日</div>
 </div>
 
@@ -457,10 +466,18 @@
     });
   })();
 
-  const FORM_URL="";
-  const fb=document.getElementById('form-btn');
-  if(FORM_URL){fb.href=FORM_URL;fb.target="_blank";}
-  else fb.addEventListener('click',e=>{e.preventDefault();alert('申込フォームURLを設定してください（charity.html の FORM_URL）。');});
+  // ---- Stripe Payment Links：各コースの決済URLをここに貼るだけ（buy.stripe.com/...）
+  const STRIPE = {
+    standing: "",   // 夜スタンディング
+    tooshi:   "",   // 通し券（昼＋夜）
+    osha:     "",   // オリジナルシャンパン
+    vvip:     ""    // VVIP席
+  };
+  document.querySelectorAll('.pay-btn').forEach(b=>{
+    const url = STRIPE[b.dataset.pay];
+    if(url){ b.href=url; b.target="_blank"; b.rel="noopener"; }
+    else { b.classList.add('soon'); b.textContent="決済リンク準備中"; b.addEventListener('click',e=>e.preventDefault()); }
+  });
 </script>
 </body>
 </html>
