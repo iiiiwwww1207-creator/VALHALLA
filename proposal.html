@@ -55,6 +55,15 @@
   .check li::before{content:"☑";position:absolute;left:0;color:var(--gold-d);font-weight:700}
   .check li.todo::before{content:"□";color:var(--sub)}
   .check b{color:var(--navy)}
+  /* 支援コース（表→カード：スマホでも見やすい） */
+  .courses{display:flex;flex-direction:column;gap:10px;margin:12px 0 6px}
+  .course{border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:9px;
+    padding:12px 14px;background:var(--panel);display:flex;flex-wrap:wrap;align-items:baseline;gap:3px 12px}
+  .course .cn{font-weight:700;color:var(--ink);font-size:15.5px}
+  .course .cp{font-weight:700;color:var(--gold-d);font-size:16px;margin-left:auto;white-space:nowrap;
+    font-variant-numeric:tabular-nums}
+  .course .cm{flex-basis:100%;font-size:13px;color:var(--sub);line-height:1.65;margin-top:1px}
+  .course .cm b{color:var(--navy)}
   /* ===== iPhone / モバイル最適化 ===== */
   @media(max-width:600px){
     .doc{padding:24px 15px 56px;font-size:15px}
@@ -187,19 +196,14 @@
 
   <h2><span class="no">6</span>チケット・支援設計</h2>
   <p class="muted">来場者の予算に応じて選択できるよう、価格帯を段階的に設計する。飲食はチケットに含む（オールインクルーシブ）とし、来場者が個別に選択する要素は「オリジナルシャンパンの購入」のみとする。</p>
-  <div class="tablewrap">
-  <table>
-    <caption>支援コース（価格・定員は暫定）</caption>
-    <thead><tr><th>コース</th><th class="num">価格</th><th class="num">定員</th><th>主な内容</th></tr></thead>
-    <tbody>
-      <tr><td>夜スタンディング</td><td class="num">¥15,000〜20,000</td><td class="num">約100</td><td>夜の部ライブ観覧（17F）／飲食込</td></tr>
-      <tr><td>通し券（昼＋夜）</td><td class="num">¥50,000</td><td class="num">22</td><td>昼のイベント＋夜のライブ</td></tr>
-      <tr><td>VVIP席</td><td class="num">¥300,000</td><td class="num">3〜5</td><td>専用席／18Fでメンバー交流・ファンミ・専用料理</td></tr>
-      <tr><td>オリジナルシャンパン</td><td class="num">変動</td><td class="num">—</td><td>当日限定ラベル／1本ごとに一定額を寄付</td></tr>
-      <tr><td>協賛（法人）</td><td class="num">応相談</td><td class="num">—</td><td>会場LEDスクリーンへのロゴ掲出等</td></tr>
-    </tbody>
-  </table>
+  <div class="courses">
+    <div class="course"><span class="cn">夜スタンディング</span><span class="cp">¥15,000〜20,000</span><span class="cm"><b>約100名</b> ／ 夜の部ライブ観覧（17F）・飲食込</span></div>
+    <div class="course"><span class="cn">通し券（昼＋夜）</span><span class="cp">¥50,000</span><span class="cm"><b>限定22席</b> ／ 昼のイベント＋夜のライブ</span></div>
+    <div class="course"><span class="cn">VVIP席</span><span class="cp">¥300,000</span><span class="cm"><b>限定3〜5席</b> ／ 専用席・18Fでメンバー交流・ファンミ・専用料理</span></div>
+    <div class="course"><span class="cn">オリジナルシャンパン</span><span class="cp">変動</span><span class="cm">当日限定ラベル ／ 1本ごとに一定額を寄付</span></div>
+    <div class="course"><span class="cn">協賛（法人）</span><span class="cp">応相談</span><span class="cm">会場LEDスクリーンへのロゴ掲出 等</span></div>
   </div>
+  <p class="muted" style="font-size:12px;margin-top:4px">※価格・定員は暫定。</p>
 
   <h2><span class="no">7</span>収支・寄付の考え方</h2>
   <p class="muted"><strong>クラウドファンディング（総売上）の20%を必要経費とし、これに加えてライブ機材費（約40万円）を別途差し引いた残りの全額を、東京大学のAIリテラシー育成へ寄付する。</strong></p>
