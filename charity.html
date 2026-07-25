@@ -7,7 +7,7 @@
 <meta name="description" content="2026.10.18 東京大学 × 渋谷 CÉ LA VI。社美緒・KØU・零によるチャリティーライブ。実費を除いた収益を東京大学へ寄付します。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Oswald:wght@200;300;400;500&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root{
     /* 黒・金・クリムゾン（GACKT系ゴシック・ダーク・高コントラスト） */
@@ -229,15 +229,32 @@
   figure{border-radius:0 !important}
 
   .num{display:none}   /* 見出しの番号バッジは非表示 */
-  /* GACKT系：各章の背景に極薄の巨大英字（ゴースト） */
-  section{position:relative; isolation:isolate; overflow:hidden}
-  .ghost{position:absolute; top:-14px; left:-4px; z-index:-1; pointer-events:none;
-    font-family:'Cinzel',serif; font-weight:900; font-size:82px; line-height:.9;
-    letter-spacing:.04em; text-transform:uppercase; white-space:nowrap;
-    color:rgba(233,213,175,.055)}
-  /* ── 斜めカットは題名(見出し帯)だけ。切り口は章のスライド入り方向に合わせる ── */
-  h2{clip-path:polygon(0 0, calc(100% - 64px) 0, 100% 100%, 0 100%); padding-right:76px}   /* 右辺斜め→右に余白 */
-  h2.cut-left{clip-path:polygon(64px 0, 100% 0, 100% 100%, 0 100%); padding-left:76px; padding-right:18px}  /* 左辺斜め→左に余白 */
+
+  /* ===== GACKT流エレガント：塗り帯を廃し、細字タイポ＋余白＋巨大ゴースト英字 ===== */
+  section{position:relative; isolation:isolate; overflow:hidden; padding:58px 24px;
+    border-bottom:1px solid rgba(255,255,255,.05)}
+  /* 各章の背景に極薄の巨大英字（Oswald 極細） */
+  .ghost{position:absolute; top:-20px; left:-4px; z-index:-1; pointer-events:none;
+    font-family:'Oswald',sans-serif; font-weight:200; font-size:94px; line-height:.9;
+    letter-spacing:.06em; text-transform:uppercase; white-space:nowrap;
+    color:rgba(233,213,175,.06)}
+  /* 見出し＝塗り帯なし・細字・字間ワイド・左に細い赤ティック */
+  h2{background:none !important; color:var(--cream) !important;
+     clip-path:none !important; box-shadow:none !important; border:none !important;
+     border-radius:0 !important; border-left:2px solid var(--blue) !important;
+     justify-content:flex-start !important;
+     font-family:'Noto Sans JP',sans-serif; font-weight:500; font-size:22px;
+     letter-spacing:.12em; line-height:1.5; margin:0 0 2px;
+     padding:2px 0 2px 18px !important}
+  h2.cut-left{padding:2px 0 2px 18px !important}
+  /* 英字キッカー＝Oswald・大文字・字間ワイド・くすみ金 */
+  .sub-h{font-family:'Oswald',sans-serif !important; text-transform:uppercase;
+    letter-spacing:.34em !important; font-size:11px !important; font-weight:300 !important;
+    color:var(--gold-d) !important; opacity:.82; margin:9px 0 26px !important;
+    padding-left:20px !important}
+  /* カードもより静かに（余白・細ウェイト） */
+  .r,.use,.faq details summary,.promise,.ev .c,.daynote{padding-top:22px;padding-bottom:22px}
+  .r .rn,.m-name,.ev h3,.promise h3,.daynote .dttl{font-weight:700}
 </style>
 </head>
 <body>
