@@ -228,18 +228,17 @@
   .foot .legal,
   figure{border-radius:0 !important}
 
-  /* ── 角を斜めにカット（台形の片側／差し込み風の鋭利なエッジ）── */
-  :root{--notch:16px}
+  /* ── 右下の角を左斜め上へスパッと大きくそぐ（浅い角度の鋭利なカット）── */
   .m-card,.ev .c,.r,.use,.faq details,.video-wrap,.daynote,.promise,.raise,.foot .legal{
     border:none !important;
-    clip-path:polygon(0 0, calc(100% - var(--notch)) 0, 100% var(--notch), 100% 100%, 0 100%);
+    clip-path:polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 64px) 100%, 0 100%);
   }
   .r.feat{box-shadow:inset 0 0 0 2px var(--gold)}
   .pay-btn.soon{border:none !important}
-  h2{clip-path:polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%)}
-  .btn,.pay-btn,.sticky a{clip-path:polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%)}
-  .split .lab{clip-path:polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%)}
-  .badge{clip-path:polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 0 100%)}
+  h2{clip-path:polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 44px) 100%, 0 100%)}
+  .btn,.pay-btn,.sticky a{clip-path:polygon(0 0, 100% 0, 100% calc(100% - 13px), calc(100% - 40px) 100%, 0 100%)}
+  .split .lab{clip-path:polygon(0 0, 100% 0, 100% calc(100% - 7px), calc(100% - 20px) 100%, 0 100%)}
+  .badge{clip-path:polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 18px) 100%, 0 100%)}
 </style>
 </head>
 <body>
