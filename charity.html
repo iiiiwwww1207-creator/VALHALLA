@@ -187,10 +187,10 @@
   .daynote .dtag{font-size:11px;color:var(--gold-d);font-weight:700}
   .daynote .dttl{font-size:15px;font-weight:900;margin:2px 0 4px}
   .daynote p{font-size:12.5px;color:var(--sub);line-height:1.6;margin:0}
-  /* scroll reveal (斜めにスパッと滑り込む・左右交互) */
-  .reveal{opacity:0;transform:translate(var(--dx,-90px), 30px);
+  /* scroll reveal (章ごとに左右からスパッと入る) */
+  .reveal{opacity:0;transform:translateX(var(--dx,-90px));
     transition:opacity .45s ease, transform .6s cubic-bezier(.16,1,.3,1);will-change:opacity,transform}
-  .reveal.in{opacity:1;transform:translate(0,0)}
+  .reveal.in{opacity:1;transform:translateX(0)}
   @media (prefers-reduced-motion: reduce){ .reveal{opacity:1!important;transform:none!important} }
 
   /* 3つの約束（魅力3ポイント） */
@@ -228,19 +228,9 @@
   .foot .legal,
   figure{border-radius:0 !important}
 
-  /* ── 右下の角を起点に、上辺へ向かって左斜め上へ一直線にスパッと切る（右辺が斜め）── */
-  .m-card,.ev .c,.r,.use,.faq details,.video-wrap,.daynote,.promise,.raise,.foot .legal{
-    border:none !important;
-    clip-path:polygon(0 0, calc(100% - 96px) 0, 100% 100%, 0 100%);
-  }
-  .r.feat{box-shadow:inset 0 0 0 2px var(--gold)}
-  .r.feat .badge{top:16px;left:18px;right:auto}   /* 斜めカットに切られないよう左上へ */
-  .r.feat .rn{margin-top:26px}
-  .pay-btn.soon{border:none !important}
-  h2{clip-path:polygon(0 0, calc(100% - 76px) 0, 100% 100%, 0 100%)}
-  .btn,.pay-btn,.sticky a{clip-path:polygon(0 0, calc(100% - 68px) 0, 100% 100%, 0 100%)}
-  .split .lab{clip-path:polygon(0 0, calc(100% - 24px) 0, 100% 100%, 0 100%)}
-  .badge{clip-path:polygon(0 0, calc(100% - 22px) 0, 100% 100%, 0 100%)}
+  /* ── 斜めカットは題名(見出し帯)だけ。切り口は章のスライド入り方向に合わせる ── */
+  h2{clip-path:polygon(0 0, calc(100% - 64px) 0, 100% 100%, 0 100%)}   /* 右から入る章：右辺を斜め */
+  h2.cut-left{clip-path:polygon(64px 0, 100% 0, 100% 100%, 0 100%)}    /* 左から入る章：左辺を斜め */
 </style>
 </head>
 <body>
@@ -542,18 +532,14 @@
       el.style.transitionDelay=delay+'ms';
       io.observe(el);
     }
-    let gi=0;   // 項目ごとに左右交互（ページ通し番号）
-    const GROUP='.ret,.members,.promise-wrap,.vgal,.ev';   // カードを内包するコンテナ
-    const put=(el,delay)=>{ reveal(el, gi%2===0?-1:1, delay); gi++; };
-    const fl=document.querySelector('.flyer'); if(fl) put(fl,0);
+    let si=0;   // 章(セクション)ごとに左右交互
+    const fl=document.querySelector('.flyer'); if(fl) reveal(fl,-1,0);
     document.querySelectorAll('section').forEach((sec)=>{
-      Array.from(sec.children).forEach((el,i)=>{
-        if(el.matches(GROUP)){   // コンテナは中のカードを1枚ずつ左右交互で
-          Array.from(el.children).forEach((c,j)=> put(c, j*55));
-        } else {
-          put(el, i*55);
-        }
-      });
+      const dir = si%2===0 ? -1 : 1;                 // -1:左から / +1:右から
+      const h=sec.querySelector('h2');
+      if(h && dir<0) h.classList.add('cut-left');    // 入ってくる方向側の角を斜めに
+      Array.from(sec.children).forEach((el,i)=> reveal(el, dir, i*55));
+      si++;
     });
   })();
 
