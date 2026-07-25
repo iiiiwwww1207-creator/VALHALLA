@@ -12,8 +12,8 @@
   :root{
     /* 黒・金・クリムゾン（GACKT系ゴシック・ダーク・高コントラスト） */
     --bg:#050307; --card:#150c10; --ink:#F5EFE4; --sub:rgba(245,239,228,.74);
-    --line:rgba(201,169,97,.22);
-    --gold:#C9A961; --gold-d:#DBBA6A; --hero:#050307; --cream:#F5EFE4;
+    --line:rgba(255,255,255,.10);
+    --gold:#C6C6CD; --gold-d:#9C9CA4; --hero:#050307; --cream:#F5EFE4;
     --blue:#C1121F; --blue-d:#6E0A12; --ok:#5BD39A;
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -255,6 +255,25 @@
   /* カードもより静かに（余白・細ウェイト） */
   .r,.use,.faq details summary,.promise,.ev .c,.daynote{padding-top:22px;padding-bottom:22px}
   .r .rn,.m-name,.ev h3,.promise h3,.daynote .dttl{font-weight:700}
+
+  /* ===== 赤×黒×グレー統一（ゴールドはCTAボタンだけ）===== */
+  .hero h1, .hero .meta b, .raise .info b, .hero .cd .n{color:var(--cream) !important}
+  .split .lab b{color:#fff !important}
+  .split .x{border-color:#fff !important; color:#fff !important}
+  .hero .badge{color:#D6D6DC !important; border-color:rgba(255,255,255,.32) !important}
+  .hero .cd div{border-color:rgba(255,255,255,.16) !important}
+  .split .line{background:linear-gradient(180deg,transparent,var(--blue),var(--blue),transparent) !important}
+  .raise{border-color:rgba(255,255,255,.14) !important}
+  .raise .fill{background:linear-gradient(90deg,#6E0A12,var(--blue)) !important}
+  .video-ph .play{border-color:#fff !important; color:var(--cream) !important}
+  /* 赤アクセントのマーカー */
+  .r li::before, .faq summary::after{color:var(--blue) !important}
+  .r.feat{border-color:var(--blue) !important}
+  .promise::before{background:var(--blue) !important}
+  .ev .t{background:var(--blue) !important}
+  .trust{border-left-color:var(--blue) !important}
+  /* 背景ゴースト英字＝グレーで濃く */
+  .ghost{color:rgba(214,214,220,.16) !important}
 </style>
 </head>
 <body>
