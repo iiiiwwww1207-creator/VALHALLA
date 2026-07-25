@@ -192,6 +192,22 @@
     transition:opacity .65s ease, transform .65s cubic-bezier(.2,.7,.2,1);will-change:opacity,transform}
   .reveal.in{opacity:1;transform:translateX(0)}
   @media (prefers-reduced-motion: reduce){ .reveal{opacity:1!important;transform:none!important} }
+
+  /* 3つの約束（魅力3ポイント） */
+  .promise-lead{font-size:14px;color:var(--sub);line-height:1.85;margin:2px 0 14px}
+  .promise-lead b{color:var(--ink)}
+  .promise-wrap{display:grid;gap:12px}
+  .promise{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 18px 16px 22px;position:relative;overflow:hidden}
+  .promise::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+    background:linear-gradient(180deg,var(--gold),var(--blue))}
+  .promise .pn{font-size:12px;letter-spacing:.18em;font-weight:800;color:var(--gold-d)}
+  .promise h3{font-size:17px;font-weight:900;margin:4px 0 7px;color:var(--ink);line-height:1.45}
+  .promise p{font-size:13.5px;color:var(--sub);line-height:1.78;margin:0}
+  /* 信頼感の一言 */
+  .trust{font-size:13px;color:var(--sub);line-height:1.8;
+    border-left:2px solid var(--gold);padding:2px 0 2px 12px;margin:0 0 14px}
+  .trust b{color:var(--ink)}
 </style>
 </head>
 <body>
@@ -238,10 +254,35 @@
   <p class="body muted">このチャリティーライブでいただいた支援は、会場・制作・運営にかかる実費を除いたうえで、その収益を<b style="color:var(--ink)">東京大学</b>へ寄付します。収支はすべて公開し、「どこに・いくら届いたか」を後日ご報告します。</p>
 </section>
 
+<!-- ===== 3つの約束（魅力3ポイント）===== -->
+<section>
+  <h2 style="justify-content:center">あなたの支援が生むもの</h2>
+  <div class="sub-h">3つの約束</div>
+  <p class="promise-lead">「応援したい。でも、寄付ってなんだか難しそう」——そんな気持ちに、私たちはこう答えます。<b>あなたが受け取るのは、3つの約束です。</b></p>
+  <div class="promise-wrap">
+    <div class="promise">
+      <div class="pn">PROMISE 01</div>
+      <h3>一夜限りの、最高の体験</h3>
+      <p>渋谷の夜景を望むルーフトップで、VALHALLA一夜限りのライブ。昼は東京大学でのスペシャルショー。ここでしか味わえない一日を、あなたに。</p>
+    </div>
+    <div class="promise">
+      <div class="pn">PROMISE 02</div>
+      <h3>「楽しむ」が、そのまま社会貢献になる</h3>
+      <p>実費を除いた収益は、まるごと<b style="color:var(--ink)">東京大学</b>へ寄付。難しいことは何もいりません。あなたが楽しむことが、そのまま未来の教育を支える力になります。</p>
+    </div>
+    <div class="promise">
+      <div class="pn">PROMISE 03</div>
+      <h3>V系バンド文化を、未来へ残す</h3>
+      <p>夜の世界から生まれたこのステージで、ヴィジュアル系バンドという日本の文化を絶やさず、次の世代へと手渡していきます。</p>
+    </div>
+  </div>
+</section>
+
 <!-- ===== ② MEMBERS ===== -->
 <section>
   <h2><span class="num">2</span>誰が、ステージに立つのか？</h2>
   <div class="sub-h">バンド「VALHALLA」</div>
+  <p class="trust">主宰は <b>Group Yggdrasill 会長・社美緒</b>。歌舞伎町を拠点に全国へ展開するホストグループが、その総力を挙げて創り上げる一夜です。</p>
   <img class="group-photo" src="assets/charity/group.jpg" alt="VALHALLA メンバー">
   <div class="members">
     <div class="m-card">
