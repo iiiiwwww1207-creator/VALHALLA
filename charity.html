@@ -7,7 +7,7 @@
 <meta name="description" content="2026.10.18 東京大学 × 渋谷 CÉ LA VI。社美緒・KØU・零によるチャリティーライブ。実費を除いた収益を東京大学へ寄付します。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Oswald:wght@200;300;400;500&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:wght@400;500;600&family=Oswald:wght@200;300;400;500&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root{
     /* 黒・金・クリムゾン（GACKT系ゴシック・ダーク・高コントラスト） */
@@ -234,8 +234,8 @@
   section{position:relative; isolation:isolate; overflow:hidden; padding:58px 24px;
     border-bottom:1px solid rgba(255,255,255,.05)}
   /* 各章の背景に極薄の巨大英字（Oswald 極細） */
-  .ghost{position:absolute; top:-20px; left:-4px; z-index:-1; pointer-events:none;
-    font-family:'Oswald',sans-serif; font-weight:200; font-size:94px; line-height:.9;
+  .ghost{position:absolute; top:6px; left:-2px; z-index:-1; pointer-events:none;
+    font-family:'Oswald',sans-serif; font-weight:200; font-size:80px; line-height:.9;
     letter-spacing:.06em; text-transform:uppercase; white-space:nowrap;
     color:rgba(233,213,175,.06)}
   /* 見出し＝塗り帯なし・細字・字間ワイド・左に細い赤ティック */
@@ -258,6 +258,9 @@
 
   /* ===== 赤×黒×グレー統一（ゴールドはCTAボタンだけ）===== */
   .hero h1, .hero .meta b, .raise .info b, .hero .cd .n{color:var(--cream) !important}
+  /* 題名＝細く尖ったエレガントなセリフ（丸いCinzelをやめる） */
+  .hero h1{font-family:'Cormorant Garamond',serif !important; font-weight:500 !important;
+    font-size:46px !important; letter-spacing:.10em !important; line-height:1.08 !important}
   .split .lab b{color:#fff !important}
   .split .x{border-color:#fff !important; color:#fff !important}
   .hero .badge{color:#D6D6DC !important; border-color:rgba(255,255,255,.32) !important}
