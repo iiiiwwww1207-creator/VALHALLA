@@ -48,6 +48,8 @@
     font-size:12px;line-height:1.3;text-shadow:0 1px 6px rgba(0,0,0,.9);
     background:rgba(11,7,16,.5);padding:5px 10px;border-radius:8px;backdrop-filter:blur(2px)}
   .split .lab b{display:block;font-family:'Cinzel',serif;color:#E8CB85;font-size:16px;letter-spacing:.03em}
+  /* 日本語ラベルは Cinzel(欧文専用)だと崩れるので和文フォントに上書き */
+  .split .lab b.jp{font-family:"Noto Sans JP",sans-serif;font-weight:900;font-size:15px;letter-spacing:.08em}
   .split .la{left:14px}
   .split .lc{right:14px;text-align:right}
   .split::after{content:"";position:absolute;left:0;right:0;bottom:0;height:56px;z-index:5;
@@ -242,7 +244,7 @@
     <div class="line"></div>
     <div class="x">×</div>
     <div class="lab la"><b>VALHALLA</b>夜・ライブ</div>
-    <div class="lab lc"><b>東京大学</b>昼・ショー</div>
+    <div class="lab lc"><b class="jp">東京大学</b>昼・ショー</div>
   </div>
   <div class="badge">CHARITY LIVE 2026</div>
   <h1>VALHALLA<br>CHARITY LIVE</h1>
