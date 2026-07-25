@@ -230,8 +230,8 @@
 
   .num{display:none}   /* 見出しの番号バッジは非表示 */
   /* ── 斜めカットは題名(見出し帯)だけ。切り口は章のスライド入り方向に合わせる ── */
-  h2{clip-path:polygon(0 0, calc(100% - 64px) 0, 100% 100%, 0 100%)}   /* 右から入る章：右辺を斜め */
-  h2.cut-left{clip-path:polygon(64px 0, 100% 0, 100% 100%, 0 100%)}    /* 左から入る章：左辺を斜め */
+  h2{clip-path:polygon(0 0, calc(100% - 64px) 0, 100% 100%, 0 100%); padding-right:76px}   /* 右辺斜め→右に余白 */
+  h2.cut-left{clip-path:polygon(64px 0, 100% 0, 100% 100%, 0 100%); padding-left:76px; padding-right:18px}  /* 左辺斜め→左に余白 */
 </style>
 </head>
 <body>
