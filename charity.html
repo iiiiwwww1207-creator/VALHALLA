@@ -278,6 +278,15 @@
   /* 背景ゴースト英字＝グレーで濃く */
   .ghost{color:rgba(214,214,220,.16) !important}
 
+  /* ===== 背景にセラビ（CÉ LA VI 夜景）をうっすら浮かべる ===== */
+  html{background:#050307}
+  body{background:transparent !important}
+  body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+    background:url('assets/charity/venue/roofnight.jpg') center/cover no-repeat;
+    opacity:.18}
+  body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:linear-gradient(180deg, rgba(5,3,7,.55), rgba(5,3,7,.82))}
+
   /* ===== 「開催への想い」と同じ字組みに全体統一（字間ワイド・細字・上品）===== */
   body{letter-spacing:.02em}
   .r .rn,.m-name,.ev h3,.promise h3,.daynote .dttl,.lead-strong,
