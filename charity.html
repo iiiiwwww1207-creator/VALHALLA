@@ -537,7 +537,7 @@
     document.querySelectorAll('section').forEach((sec)=>{
       const dir = si%2===0 ? -1 : 1;                 // -1:左から / +1:右から
       const h=sec.querySelector('h2');
-      if(h && dir<0) h.classList.add('cut-left');    // 入ってくる方向側の角を斜めに
+      if(h && dir>0) h.classList.add('cut-left');    // 進む先(先端)側の角を斜めに
       Array.from(sec.children).forEach((el,i)=> reveal(el, dir, i*55));
       si++;
     });
