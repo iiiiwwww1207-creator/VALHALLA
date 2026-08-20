@@ -6,8 +6,8 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>VALHALLA CHARITY LIVE 2026 ｜ 東京大学へ寄付するチャリティーライブ</title>
-<meta name="description" content="2026.10.18 東京大学 × 渋谷 CÉ LA VI。社美緒・KØU・零によるチャリティーライブ。実費を除いた収益を東京大学へ寄付します。">
+<title>VALHALLA × Wrapping The Earth ｜ CÉ LA VI アフターパーティー</title>
+<meta name="description" content="2026.10.18 夜、渋谷 CÉ LA VI。VALHALLA（MIO・KØU・RAY）によるチャリティー・アフターパーティー。実費を除いた収益を東京大学へ寄付します。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:wght@400;500;600&family=Oswald:wght@200;300;400;500&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -83,7 +83,7 @@
   .btn{display:block;text-align:center;background:#C9A961;
     color:#0C0A10;font-weight:600;font-size:15px;letter-spacing:.16em;padding:18px;border-radius:12px;margin-top:18px;
     box-shadow:none}
-  /* Stripe決済ボタン（各コース） */
+  /* 各コースの申込ボタン */
   .pay-btn{display:block;text-align:center;margin-top:14px;
     background:#C9A961;color:#0C0A10;font-weight:600;font-size:14px;letter-spacing:.12em;
     padding:15px;border-radius:10px;box-shadow:none}
@@ -122,6 +122,13 @@
   .ev h3{font-size:18px;font-weight:900;margin:10px 0 2px}
   .ev .where{font-size:13px;color:var(--sub);margin-bottom:8px}
   .ev .time{font-size:15px;font-weight:700;color:var(--gold-d)}
+
+  /* timetable */
+  .tt{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 20px;margin-bottom:16px}
+  .tt .row{display:flex;gap:16px;padding:9px 0;border-bottom:1px dashed rgba(255,255,255,.08)}
+  .tt .row:last-child{border-bottom:none}
+  .tt .tm{font-family:'Oswald',sans-serif;font-weight:500;font-size:17px;color:var(--cream);min-width:112px;letter-spacing:.04em}
+  .tt .ds{font-size:13.5px;color:var(--sub);line-height:1.6;align-self:center}
 
   /* returns */
   .ret{display:flex;flex-direction:column;gap:16px}
@@ -168,8 +175,7 @@
   .foot{padding:24px;text-align:center;font-size:11px;color:var(--sub)}
   .foot .legal{text-align:left;font-size:10.5px;line-height:1.8;background:rgba(255,255,255,.04);border-radius:10px;
     padding:14px;margin-bottom:14px;color:rgba(245,239,228,.55)}
-  /* flyer + video */
-  .flyer{width:100%;display:block}
+  /* video */
   .video-wrap{position:relative;width:100%;aspect-ratio:16/9;background:#15100C;border-radius:14px;
     overflow:hidden;border:1px solid var(--line)}
   .video-wrap iframe,.video-wrap video{position:absolute;inset:0;width:100%;height:100%;border:0}
@@ -219,7 +225,7 @@
   .raise,.raise .bar,.raise .fill,
   .btn,.pay-btn,.sticky a,
   .split .lab,
-  .num,
+  .num,.tt,
   h2,
   .m-card,.group-photo,.m-card img,.members img,
   .ev .c,.ev .t,.ev-img,
@@ -322,14 +328,14 @@
     <div class="p b"></div>
     <div class="line"></div>
     <div class="x">×</div>
-    <div class="lab la"><b>VALHALLA</b>夜・ライブ</div>
-    <div class="lab lc"><b class="jp">東京大学</b>昼・ショー</div>
+    <div class="lab la"><b>VALHALLA</b>夜・アフパ</div>
+    <div class="lab lc"><b class="jp">東京大学</b>昼・本編</div>
   </div>
-  <div class="badge">CHARITY LIVE 2026</div>
-  <h1>VALHALLA<br>CHARITY LIVE</h1>
+  <div class="badge">CHARITY AFTERPARTY 2026</div>
+  <h1>VALHALLA<br>AFTERPARTY</h1>
   <div class="jptitle"><span class="tbd">【イベント名・調整中】</span></div>
-  <div class="tagline">収益はすべて、東京大学へ寄付します。</div>
-  <div class="meta"><b>2026年10月18日（日）</b><br>夜：CÉ LA VI 渋谷（メイン会場）<br><span style="font-size:12.5px;opacity:.82">＋ 昼：東京大学でのショーも通し券に付属</span></div>
+  <div class="tagline">実費を除いた収益を、東京大学へ。</div>
+  <div class="meta"><b>2026年10月18日（日）</b><br>夜：CÉ LA VI 渋谷 17F<br><span style="font-size:12.5px;opacity:.82">＋ 昼：Wrapping The Earth（東京大学 安田講堂）</span></div>
 
   <div class="cd">
     <div><div class="n" id="cd-d">--</div><div class="u">日</div></div>
@@ -337,61 +343,58 @@
     <div><div class="n" id="cd-m">--</div><div class="u">分</div></div>
   </div>
 
-  <div class="raise" data-goal="3000000" data-current="0">
-    <div class="now">¥<span id="r-now">0</span> <small>/ 目標 ¥<span id="r-goal">3,000,000</span></small></div>
+  <div class="raise" data-goal="7000000" data-current="0">
+    <div class="now">¥<span id="r-now">0</span> <small>/ 目標 ¥<span id="r-goal">7,000,000</span></small></div>
     <div class="bar"><div class="fill" id="r-fill"></div></div>
     <div class="info"><span>達成率 <b id="r-pct">0%</b></span><span>支援 <b id="r-cnt">0</b>人</span></div>
   </div>
   <a href="#support" class="btn">この想いを支援する</a>
 </header>
 
-<!-- ===== FLYER ===== -->
-<img class="flyer" src="assets/charity/flyer.jpg" alt="VALHALLA CHARITY LIVE フライヤー｜CÉ LA VI × 東京大学">
-
 <!-- ===== ① STORY ===== -->
 <section>
-  <h2><span class="num">1</span>開催への想い</h2>
+  <h2>開催への想い</h2>
   <div class="sub-h">Our Story</div>
   <p class="lead-strong">支えてくれた人たちへ、恩返しがしたい。</p>
-  <p class="body muted">華やかなステージの裏側で、僕たちはたくさんのお客様やスタッフに支えられてきました。今度はその恩を社会に還していきたくて、このチャリティーライブを企画しました。</p>
-  <p class="body muted">いただいた支援は、会場・制作・運営にかかった実費を除いて、収益をすべて<b style="color:var(--ink)">東京大学</b>へ寄付します。集まった金額と使い道はあとで公開し、どこにいくら届いたかもご報告します。</p>
+  <p class="body muted">華やかなステージの裏側で、僕たちはたくさんのお客様やスタッフに支えられてきました。今度はその恩を社会に還していきたくて、このアフターパーティーを企画しました。</p>
+  <p class="body muted">昼、東京大学・安田講堂で開かれる文化チャリティ「Wrapping The Earth」。その特別な一日の夜を、VALHALLA が受け継ぎます。いただいた支援は、会場・制作・運営にかかった実費を除いて、収益をすべて<b style="color:var(--ink)">東京大学</b>へ寄付します。</p>
 </section>
 
-<!-- ===== 支援でできること（3ポイント）===== -->
+<!-- ===== ② POINTS ===== -->
 <section>
-  <h2 style="justify-content:center">支援でできる3つのこと</h2>
+  <h2 style="justify-content:center">この夜でできる3つのこと</h2>
   <div class="sub-h">3 Points</div>
-  <p class="promise-lead">寄付というと少し身構えてしまうかもしれませんが、やることはシンプルです。ライブを楽しむだけで、次の3つにつながります。</p>
+  <p class="promise-lead">寄付というと少し身構えてしまうかもしれませんが、やることはシンプルです。この夜を楽しむだけで、次の3つにつながります。</p>
   <div class="promise-wrap">
     <div class="promise">
       <div class="pn">01</div>
-      <h3>最高のライブを楽しめる</h3>
-      <p>渋谷の夜景が見えるルーフトップで、VALHALLA一夜限りのライブ。昼は東京大学でのショーもあります。</p>
+      <h3>一夜限りのライブを楽しめる</h3>
+      <p>渋谷の夜景を見渡すルーフトップ CÉ LA VI 17F で、VALHALLA のアコースティックライブ。昼は東京大学・安田講堂での本編もあります。</p>
     </div>
     <div class="promise">
       <div class="pn">02</div>
       <h3>楽しみながら寄付になる</h3>
-      <p>かかった費用を除いた収益は、すべて<b style="color:var(--ink)">東京大学</b>への寄付にあてます。ライブを楽しむことが、そのまま寄付につながります。</p>
+      <p>かかった費用を除いた収益は、すべて<b style="color:var(--ink)">東京大学</b>への寄付にあてます。この夜を楽しむことが、そのまま寄付につながります。</p>
     </div>
     <div class="promise">
       <div class="pn">03</div>
-      <h3>V系バンド文化を残せる</h3>
-      <p>ヴィジュアル系バンドという文化を、次の世代にも残していきたい。その想いを込めたステージです。</p>
+      <h3>MIO と、この夜だけの距離で</h3>
+      <p>チェキ・動画・「やしろ語録動画」、そして各卓をまわるホストコール体験。ここでしか叶わない距離で MIO と過ごせます。</p>
     </div>
   </div>
 </section>
 
-<!-- ===== ② MEMBERS ===== -->
+<!-- ===== ③ MEMBER ===== -->
 <section>
-  <h2><span class="num">2</span>出演メンバー</h2>
-  <div class="sub-h">バンド「VALHALLA」</div>
-  <p class="trust">主宰は <b>Group Yggdrasill の会長・社美緒</b>。歌舞伎町を拠点に全国へ店舗を展開するホストグループが、本気で創るライブです。</p>
+  <h2>出演メンバー</h2>
+  <div class="sub-h">Band VALHALLA</div>
+  <p class="trust">主宰は <b>Group Yggdrasill 会長・MIO（社美緒）</b>。YouTube「Mio Yashiro TV」登録27万人、歌舞伎町を拠点に全国へ展開するホストグループが、本気で創る一夜です。</p>
   <img class="group-photo" src="assets/charity/group.jpg" alt="VALHALLA メンバー">
   <div class="members">
     <div class="m-card">
-      <img src="assets/charity/mio.jpg" alt="社美緒">
+      <img src="assets/charity/mio.jpg" alt="MIO">
       <div class="m-body">
-        <div class="m-name">社美緒 <span style="font-size:13px;color:var(--sub)">／ Mio</span></div>
+        <div class="m-name">MIO <span style="font-size:13px;color:var(--sub)">／ 社美緒</span></div>
         <div class="m-role">Guitar・主宰</div>
         <div class="m-msg"><span class="tbd">【本人メッセージ・調整中】</span></div>
       </div>
@@ -405,9 +408,9 @@
       </div>
     </div>
     <div class="m-card">
-      <img src="assets/charity/rei.jpg" alt="零">
+      <img src="assets/charity/rei.jpg" alt="RAY">
       <div class="m-body">
-        <div class="m-name">零 <span style="font-size:13px;color:var(--sub)">／ Rei</span></div>
+        <div class="m-name">RAY <span style="font-size:13px;color:var(--sub)">／ 零</span></div>
         <div class="m-role">Member</div>
         <div class="m-msg"><span class="tbd">【本人メッセージ・調整中】</span></div>
       </div>
@@ -415,9 +418,9 @@
   </div>
 </section>
 
-<!-- ===== ③ MOVIE ===== -->
+<!-- ===== ④ MOVIE ===== -->
 <section>
-  <h2><span class="num">3</span>ダイジェスト映像</h2>
+  <h2>ダイジェスト映像</h2>
   <div class="sub-h">Movie</div>
   <div class="video-wrap">
     <!-- PV: Scynchro（Google Drive 埋め込み）※公開には Drive を「リンクを知っている全員」に設定が必要 -->
@@ -427,19 +430,29 @@
   </div>
 </section>
 
-<!-- ===== ④ EVENT ===== -->
+<!-- ===== ⑤ EVENT ===== -->
 <section>
-  <h2><span class="num">4</span>当日の流れ・会場</h2>
-  <div class="sub-h">メインは夜のセラビ・ライブ</div>
+  <h2>当日の流れ・会場</h2>
+  <div class="sub-h">Timetable &amp; Venue</div>
+
+  <div class="tt">
+    <div class="row"><div class="tm">18:00</div><div class="ds">機材設置・リハーサル</div></div>
+    <div class="row"><div class="tm">19:00</div><div class="ds">開場</div></div>
+    <div class="row"><div class="tm">19:30</div><div class="ds">スタート／アコースティックライブ（5〜6曲）</div></div>
+    <div class="row"><div class="tm">20:00〜20:20</div><div class="ds">MIO席 体験タイム</div></div>
+    <div class="row"><div class="tm">20:30〜</div><div class="ds">VVIP ホストコール体験</div></div>
+    <div class="row"><div class="tm">22:00</div><div class="ds">完全終演</div></div>
+  </div>
+
   <div class="ev">
     <div class="c">
       <img class="ev-img" src="assets/charity/venue/club.jpg" alt="CÉ LA VI 17F" style="height:230px">
       <div class="cbody">
-        <span class="t">夜の部・メイン会場</span>
-        <h3>バンドライブ「VALHALLA」</h3>
-        <div class="where">会場：CÉ LA VI TOKYO（渋谷・東急プラザ17F）</div>
-        <div class="time">開場 20:00 ／ ライブ 20:30〜21:10</div>
-        <p class="body muted" style="font-size:13.5px;margin:8px 0 0">渋谷の夜景を見渡すルーフトップで開く、一夜限りのライブです。</p>
+        <span class="t">メイン会場</span>
+        <h3>CÉ LA VI TOKYO（渋谷・17F）</h3>
+        <div class="where">渋谷の夜景を見渡すルーフトップ・ラウンジ</div>
+        <div class="time">開場 19:00 ／ スタート 19:30</div>
+        <p class="body muted" style="font-size:13.5px;margin:8px 0 0">この夜のすべてを、17F フロアで完結します。</p>
       </div>
     </div>
   </div>
@@ -456,109 +469,98 @@
     <figcaption style="font-size:12.5px;color:var(--sub);padding:12px 14px;line-height:1.75">
       <b style="color:var(--ink)">会場レイアウト（CÉ LA VI 17F）</b><br>
       中央の<b style="color:var(--gold-d)">DJブースが、当日はメインステージ</b>になります。<br>
-      <b style="color:var(--gold-d)">V1〜V6＝VIPテーブル席</b>（通し券・VVIP）／<b style="color:var(--gold-d)">S1〜S4＝スタンディングエリア</b>／中央下＝BAR
+      <b style="color:var(--gold-d)">VVIP＝各卓を MIO が巡回</b>／MIO席・ライブ席は 17F 内で体験します。
     </figcaption>
   </figure>
 
   <div class="daynote">
     <img src="assets/charity/venue/yasuda1.jpg" alt="東京大学 安田講堂">
     <div>
-      <div class="dtag">＋ 昼の部（通し券に付属）</div>
-      <div class="dttl">東京大学・スペシャルショー</div>
-      <p>昼は東京大学で <span class="tbd">窪塚洋介さん</span> ほかゲストのショー。通し券なら昼夜どちらも楽しめます。</p>
+      <div class="dtag">＋ 昼の本編（同日開催）</div>
+      <div class="dttl">Wrapping The Earth ／ 東京大学 安田講堂</div>
+      <p>昼は東大・安田講堂で文化チャリティ本編。窪塚洋介・May J. ほか出演（主催：公益財団法人クロノス保全財団）。その夜を、このアフパが受け継ぎます。</p>
     </div>
   </div>
 </section>
 
-<!-- ===== ④ RETURNS ===== -->
+<!-- ===== ⑥ SUPPORT ===== -->
 <section id="support">
-  <h2><span class="num">5</span>支援コース</h2>
+  <h2>支援コース</h2>
   <div class="sub-h">Support</div>
   <div class="ret">
 
     <div class="r">
-      <div class="rn">夜スタンディング</div>
-      <div class="rp">¥15,000<small>〜20,000</small></div>
-      <div class="lim">約100名</div>
+      <div class="rn">ライブ席</div>
+      <div class="rp">¥15,000</div>
+      <div class="lim">100名</div>
       <ul>
-        <li>夜の部ライブ観覧</li>
-        <li>ワンドリンク等の飲食込み</li>
-        <li>21:30 完全退店</li>
+        <li>アコースティックライブ観覧</li>
       </ul>
-      <a class="pay-btn" data-pay="standing">このコースで支援する</a>
+      <a class="pay-btn" data-pay="live">このコースで支援する</a>
     </div>
 
     <div class="r">
-      <div class="rn">通し券（昼＋夜）</div>
-      <div class="rp">¥50,000</div>
-      <div class="lim">限定 22 席</div>
+      <div class="rn">MIO席</div>
+      <div class="rp">¥110,000</div>
+      <div class="lim">20席 ／ 20:00〜20:20</div>
       <ul>
-        <li>昼の部スペシャルショー（東京大学）</li>
-        <li>夜の部ライブ（CÉ LA VI）</li>
+        <li>MIO とチェキ（1分）／動画撮影OK</li>
+        <li>やしろ語録動画（MIO の言葉を1つ選び、本人に語ってもらい撮影）</li>
+        <li>限定名刺（QRから“限定シャンパンコール”が見れる）</li>
+        <li>アコースティックライブ観覧</li>
       </ul>
-      <a class="pay-btn" data-pay="tooshi">このコースで支援する</a>
-    </div>
-
-    <div class="r">
-      <div class="rn">数量限定 オリジナルシャンパン 🍾</div>
-      <div class="rp">¥<span class="tbd">40,000</span></div>
-      <div class="lim">当日限定ラベル</div>
-      <ul>
-        <li>この日だけの VALHALLA オリジナルラベル</li>
-        <li>1本につき <span class="tbd">¥◯◯,◯◯◯</span> を寄付に充当</li>
-      </ul>
-      <div class="oshi">🎯 推しメン指定OK：ボトルに推しメンのサイン／コール付き</div>
-      <a class="pay-btn" data-pay="osha">このコースで支援する</a>
+      <a class="pay-btn" data-pay="mio">このコースで支援する</a>
     </div>
 
     <div class="r feat">
       <div class="badge">最上級</div>
-      <div class="rn">VVIP 席</div>
-      <div class="rp">¥300,000</div>
-      <div class="lim">限定 3〜5 席</div>
+      <div class="rn">VVIP席</div>
+      <div class="rp">¥330,000</div>
+      <div class="lim">10卓 ／ 20:30〜</div>
       <ul>
-        <li>最上級の専用席でライブ鑑賞</li>
-        <li>ライブ後、別フロアの特別ラウンジへご案内</li>
-        <li>バンドメンバーが各テーブルを回り、直接歓談</li>
-        <li>専用のお料理・おもてなし付き</li>
+        <li>MIO が各卓を5分前後ずつ巡回（ホストコール体験＝直接会話）</li>
+        <li>チェキ／写真／動画OK</li>
+        <li>限定名刺（QRから“限定シャンパンコール”が見れる）</li>
+        <li>アコースティックライブ観覧</li>
+        <li>【別日】Zoomグループセッション（女性に喜ばれる男性の心構え講座／30分）</li>
       </ul>
-      <div class="oshi">🎯 推しメン指定OK：推しとのツーショット撮影／歓談時間の延長など段階あり（調整中）</div>
       <a class="pay-btn" data-pay="vvip">このコースで支援する</a>
     </div>
 
   </div>
 </section>
 
-<!-- ===== ⑤ USE OF FUNDS ===== -->
+<!-- ===== ⑦ DONATE ===== -->
 <section>
-  <h2><span class="num">6</span>寄付の使い道</h2>
-  <div class="sub-h">集めたお金の使い道</div>
+  <h2>寄付の使い道</h2>
+  <div class="sub-h">Use of Funds</div>
   <div class="use">
     <p class="body" style="margin-bottom:8px">いただいた支援は、会場・制作・運営にかかった実費を除いて、収益をすべて<b style="color:var(--ink)">東京大学</b>へ寄付します。</p>
-    <p class="body muted" style="font-size:13px;margin-top:0;margin-bottom:0">※イベントのあと、実際の収支と寄付が完了したことがわかる証憑を公開します。</p>
+    <p class="body muted" style="font-size:13px;margin-top:0;margin-bottom:0">※イベントのあと、実際の収支と寄付が完了したことがわかる証憑を公開します。使途・配分の最新は CAMPFIRE で明示します。</p>
   </div>
 </section>
 
-<!-- ===== ⑥ FAQ ===== -->
+<!-- ===== ⑧ FAQ ===== -->
 <section>
-  <h2><span class="num">7</span>よくある質問</h2>
+  <h2>よくある質問</h2>
   <div class="sub-h">FAQ</div>
   <div class="faq">
     <details><summary>支援したお金はどう使われますか？</summary>
       <p>会場・制作・運営にかかる実費を除いた収益を、東京大学へ寄付します。収支と寄付完了の証憑はイベント後に公開します。</p></details>
+    <details><summary>「やしろ語録動画」とは？</summary>
+      <p>MIO（社美緒）の名言の中から好きな一言をリクエストすると、その言葉を本人が目の前で語り、動画に収められる MIO席の特典です。</p></details>
     <details><summary>チケットはどう受け取りますか？</summary>
       <p>お申し込み後、ご登録の連絡先へ当日のご案内をお送りします。</p></details>
-    <details><summary>「推しメン指定」とは？</summary>
-      <p>オリジナルシャンパンやVVIP特典で、応援したいメンバー（社美緒・KØU・零）を指定できます。</p></details>
     <details><summary>支払い方法は？</summary>
-      <p>お申し込みフォーム送信後、お支払い方法をご案内します（<span class="tbd">調整中</span>）。</p></details>
+      <p>CAMPFIRE を通じて、寄付またはチケット付き支援でお申し込みいただけます（<span class="tbd">案内準備中</span>）。</p></details>
   </div>
 </section>
 
-<!-- ===== APPLY ===== -->
+<!-- ===== ⑨ ENTRY ===== -->
 <section id="apply" style="text-align:center;border-bottom:none">
-  <h2 style="justify-content:center"><span class="num">8</span>お申し込み</h2>
-  <p class="body muted">ご希望のコースを選んで、カード決済でそのままお申し込みいただけます。当日、会場でお会いできるのを楽しみにしています。</p>
+  <h2 style="justify-content:center">お申し込み</h2>
+  <div class="sub-h" style="text-align:center;padding-left:0 !important">Join</div>
+  <p class="body muted">ご希望のコースを選んで、CAMPFIRE からお申し込みいただけます。当日、CÉ LA VI でお会いできるのを楽しみにしています。</p>
   <a href="#support" class="btn" style="max-width:380px;margin:18px auto 0">支援コースを選ぶ</a>
 </section>
 
@@ -566,7 +568,7 @@
   <div class="legal">【特定商取引法・寄付に関する表記（公開前に必ず記載）】 主催者名／所在地／連絡先／販売価格／支払時期・方法／キャンセル規定／寄付先・寄付割合 等。</div>
   <div class="credits">
     画像クレジット：安田講堂 © Kakidai (CC BY-SA 4.0) — via Wikimedia Commons.<br>
-    セラビ会場写真：主催者撮影。
+    セラビ会場写真：主催者撮影。／ 昼の本編「Wrapping The Earth」主催：公益財団法人クロノス保全財団。
   </div>
   © 2026 VALHALLA / Group Yggdrasill
 </div>
@@ -578,7 +580,7 @@
 </div>
 
 <script>
-  const EV = new Date("2026-10-18T20:00:00+09:00");
+  const EV = new Date("2026-10-18T19:30:00+09:00");
   const pad=n=>String(n).padStart(2,'0');
   function tick(){
     const diff=EV-new Date(); const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
@@ -613,7 +615,6 @@
       io.observe(el);
     }
     let si=0;   // 章(セクション)ごとに左右交互
-    const fl=document.querySelector('.flyer'); if(fl) reveal(fl,-1,0);
     document.querySelectorAll('section').forEach((sec)=>{
       const dir = si%2===0 ? -1 : 1;                 // -1:左から / +1:右から
       const h=sec.querySelector('h2');
@@ -634,17 +635,16 @@
     });
   })();
 
-  // ---- Stripe Payment Links：各コースの決済URLをここに貼るだけ（buy.stripe.com/...）
-  const STRIPE = {
-    standing: "",   // 夜スタンディング
-    tooshi:   "",   // 通し券（昼＋夜）
-    osha:     "",   // オリジナルシャンパン
-    vvip:     ""    // VVIP席
+  // ---- CAMPFIRE / 決済リンク：各コースのURLをここに貼るだけ
+  const PAYLINK = {
+    live: "",   // ライブ席
+    mio:  "",   // MIO席
+    vvip: ""    // VVIP席
   };
   document.querySelectorAll('.pay-btn').forEach(b=>{
-    const url = STRIPE[b.dataset.pay];
+    const url = PAYLINK[b.dataset.pay];
     if(url){ b.href=url; b.target="_blank"; b.rel="noopener"; }
-    else { b.classList.add('soon'); b.textContent="決済リンク準備中"; b.addEventListener('click',e=>e.preventDefault()); }
+    else { b.classList.add('soon'); b.textContent="申込リンク準備中"; b.addEventListener('click',e=>e.preventDefault()); }
   });
 </script>
 </body>
