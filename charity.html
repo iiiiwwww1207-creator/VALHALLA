@@ -10,7 +10,7 @@
 <meta name="description" content="2026.10.18 夜、渋谷 CÉ LA VI。VALHALLA（MIO・KØU・RAY）によるチャリティー・アフターパーティー。実費を除いた収益を東京大学へ寄付します。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:wght@400;500;600&family=Oswald:wght@200;300;400;500&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Oswald:wght@200;300;400;500&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root{
     /* 黒・金・クリムゾン（GACKT系ゴシック・ダーク・高コントラスト） */
@@ -317,6 +317,20 @@
   .r .rp small{font-size:16px !important; font-weight:300 !important}
   .raise .now{font-size:31px !important; font-weight:500 !important}
   .use .big{font-size:50px !important; font-weight:500 !important}
+
+  /* ===== lp-v2 のDNA注入 ① 英字ラベルを JetBrains Mono（等幅・字間ワイド）===== */
+  .hero .badge, .sub-h, .tt .tm, .foot .credits, .sticky .mini{
+    font-family:'JetBrains Mono', ui-monospace, monospace !important}
+  .hero .badge{letter-spacing:.20em !important; font-weight:400; font-size:11px}
+  .sub-h{letter-spacing:.20em !important; font-weight:400 !important; font-size:11px !important; opacity:.7}
+  .tt .tm{letter-spacing:.01em !important; font-weight:500 !important}
+  .foot .credits, .sticky .mini{letter-spacing:.02em !important}
+
+  /* ===== lp-v2 のDNA注入 ② 静謐化：罫線をより細く・カード余白をゆったり ===== */
+  section{border-bottom:1px solid rgba(255,255,255,.045) !important}
+  .r,.use,.tt,.faq details,.m-card,.ev .c,.daynote,.promise{
+    border-color:rgba(255,255,255,.08) !important}
+  .tt .row{border-bottom-color:rgba(255,255,255,.06) !important}
 </style>
 </head>
 <body>
