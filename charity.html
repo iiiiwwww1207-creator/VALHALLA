@@ -331,6 +331,25 @@
   .r,.use,.tt,.faq details,.m-card,.ev .c,.daynote,.promise{
     border-color:rgba(255,255,255,.08) !important}
   .tt .row{border-bottom-color:rgba(255,255,255,.06) !important}
+
+  /* ===== シネマティック演出①：ヒーロー写真を Ken Burns でゆっくり動かす（写真のみ／動画は後日）===== */
+  @keyframes kb-a{ from{transform:scale(1.02)} to{transform:scale(1.15) translate(-2.5%,-2%)} }
+  @keyframes kb-b{ from{transform:scale(1.05) translate(1.5%,0)} to{transform:scale(1.17) translate(-1%,-2.5%)} }
+  @keyframes kb-bg{ from{transform:scale(1.06)} to{transform:scale(1.18) translate(1.5%,1.2%)} }
+  .split .a{animation:kb-a 24s ease-in-out infinite alternate; will-change:transform}
+  .split .b{animation:kb-b 29s ease-in-out infinite alternate; will-change:transform}
+  body::before{animation:kb-bg 48s ease-in-out infinite alternate; will-change:transform}
+
+  /* ===== シネマティック演出②：映画的ヴィネット＋レターボックス風の締め ===== */
+  .split::before{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;
+    box-shadow:inset 0 0 130px 34px rgba(5,3,7,.72)}
+  .hero{position:relative}
+  .hero::after{content:"";position:absolute;left:0;right:0;top:0;height:5px;z-index:6;
+    pointer-events:none;background:#050307}
+
+  @media (prefers-reduced-motion: reduce){
+    .split .a,.split .b,body::before{animation:none !important}
+  }
 </style>
 </head>
 <body>
