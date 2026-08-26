@@ -25,3 +25,6 @@ serve.py
 *.key
 .credentials.json
 .claude/settings.local.json
+# keep web-optimized afterparty videos (small, for GitHub Pages)
+!assets/charity/video/bg_loop.mp4
+!assets/charity/video/synchro_digest.mp4
