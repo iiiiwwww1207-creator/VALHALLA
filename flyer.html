@@ -3,41 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>VALHALLA CHARITY AFTER PARTY ｜ フライヤー（A4 表裏）</title>
+<title>VALHALLA AFTERPARTY ｜ フライヤー（A4 表裏）</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Oswald:wght@200;300;400;500;600&family=Noto+Sans+JP:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;600;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
-  /* ============================================================
-     VALHALLA CHARITY AFTER PARTY / A4 フライヤー（表・裏）
-     デザインDNA: charity.html（黒 × 金 × クリムゾン／Oswald + Noto Sans JP）
-     ============================================================ */
+  /* ==========================================================
+     VALHALLA CHARITY AFTERPARTY / A4 フライヤー（表・裏）
+     デザインDNA = charity.html（LP）をそのまま移植
+       ・角丸ゼロ（硬派なエッジ）
+       ・赤(#C1121F) × 黒 × グレー。金はロゴのみ
+       ・見出し＝塗り帯なし／左に細い赤ティック／細字・字間ワイド
+       ・英字キッカー＝Oswald 300 uppercase 字間.34em
+       ・章の背景に巨大ゴースト英字（Oswald 200）
+       ・背景にセラビ夜景をうっすら固定
+     ========================================================== */
   :root{
-    --ink:#050307;          /* 紙面のベース黒 */
-    --cream:#F5EFE4;
-    --gold:#E8CB85;
-    --gold-d:#C9A961;
-    --gold-dd:#8E7643;
-    --crimson:#C1121F;
-    --crimson-d:#7A0B14;
-    --sub:rgba(245,239,228,.66);
-    --line:rgba(232,203,133,.28);
+    --bg:#050307; --card:#150c10;
+    --ink:#F5EFE4; --sub:rgba(245,239,228,.74);
+    --line:rgba(255,255,255,.10);
+    --grey:#C6C6CD; --grey-d:#9C9CA4;
+    --crimson:#C1121F; --crimson-d:#6E0A12;
+    --ghost:rgba(214,214,220,.15);
   }
-  *{box-sizing:border-box;margin:0;padding:0}
-
+  *{box-sizing:border-box;margin:0;padding:0;border-radius:0}
   @page{ size:A4 portrait; margin:0; }
 
-  html,body{background:#1a1a1c;-webkit-font-smoothing:antialiased}
-  body{font-family:"Noto Sans JP",sans-serif;color:var(--cream);
+  html,body{background:#1a1a1c}
+  body{font-family:"Noto Sans JP",sans-serif;color:var(--ink);
+       -webkit-font-smoothing:antialiased;
        display:flex;flex-direction:column;align-items:center;gap:10mm;padding:10mm 0}
 
-  .page{
-    position:relative;width:210mm;height:297mm;overflow:hidden;
-    background:var(--ink);
-    -webkit-print-color-adjust:exact;print-color-adjust:exact;
-  }
+  .page{position:relative;width:210mm;height:297mm;overflow:hidden;background:var(--bg);
+        isolation:isolate;
+        -webkit-print-color-adjust:exact;print-color-adjust:exact}
 
-  /* 印刷時：1ページずつ・余白ゼロ */
   @media print{
     body{display:block;padding:0;gap:0;background:#fff}
     .page{box-shadow:none;margin:0;break-after:page;page-break-after:always}
@@ -45,293 +45,287 @@
   }
   @media screen{ .page{box-shadow:0 8px 40px rgba(0,0,0,.6)} }
 
-  .en{font-family:'Oswald',sans-serif;font-weight:300}
-  .mincho{font-family:"Noto Serif JP",serif}
+  /* 背景：セラビ夜景を全面にうっすら（LPの body::before と同じ役割） */
+  .bg{position:absolute;inset:0;z-index:-3;
+      background:url('assets/charity/venue/roofnight.jpg') center/cover no-repeat;opacity:.34}
+  .veil{position:absolute;inset:0;z-index:-2;
+      background:linear-gradient(180deg,rgba(5,3,7,.72) 0%,rgba(5,3,7,.88) 45%,rgba(5,3,7,.96) 100%)}
 
-  /* =========================================================
+  /* ---------- LP共通パーツ ---------- */
+  .ghost{position:absolute;z-index:-1;pointer-events:none;
+    font-family:'Oswald',sans-serif;font-weight:200;line-height:.9;
+    letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;color:var(--ghost)}
+
+  h2{border-left:2px solid var(--crimson);padding:0 0 0 4.5mm;
+     font-family:"Noto Sans JP",sans-serif;font-weight:500;font-size:4.9mm;
+     letter-spacing:.12em;line-height:1.5;color:var(--ink)}
+  .sub-h{font-family:'Oswald',sans-serif;text-transform:uppercase;
+     letter-spacing:.34em;font-size:2.7mm;font-weight:300;color:var(--grey-d);
+     opacity:.85;margin:1.4mm 0 3mm;padding-left:5mm}
+
+  /* クリムゾンのCTA帯（LPの .btn をそのまま紙に） */
+  .cta{position:relative;z-index:2;display:flex;align-items:center;gap:5mm;
+       background:var(--crimson);padding:4mm 6mm}
+  .cta .qr{width:23mm;height:23mm;background:#fff;padding:1.6mm;flex:none}
+  .cta .qr img{width:100%;height:100%;display:block}
+  .cta .ct{flex:1;color:#fff}
+  .cta .ct b{display:block;font-size:4.2mm;font-weight:700;letter-spacing:.14em;line-height:1.3}
+  .cta .ct span{display:block;margin-top:2mm;font-size:2.7mm;font-weight:400;
+       letter-spacing:.04em;line-height:1.6;color:rgba(255,255,255,.86)}
+  .cta .ct u{display:block;margin-top:1.6mm;font-family:'Oswald',sans-serif;font-weight:300;
+       text-decoration:none;font-size:2.8mm;letter-spacing:.02em;color:#fff;word-break:break-all}
+
+  /* ==========================================================
      A面（表）
-     ========================================================= */
+     ========================================================== */
+  .pa .hero-glow{position:absolute;inset:0;z-index:-1;
+     background:radial-gradient(ellipse 80% 34% at 50% 24%, rgba(176,20,28,.42), transparent 68%)}
 
-  /* 会場の実写を最下層に薄く敷く（CSSでは合成できない“実在感”） */
-  .pa .ground{
-    position:absolute;inset:0;
-    background:url('assets/charity/venue/club.jpg') center 60%/cover no-repeat;
-    opacity:.26;filter:saturate(.7) contrast(1.05);
-  }
-  .pa .glow{
-    position:absolute;inset:0;
-    background:
-      radial-gradient(ellipse 70% 42% at 50% 4%, rgba(193,18,31,.30), transparent 70%),
-      radial-gradient(ellipse 90% 55% at 50% 100%, rgba(122,11,20,.34), transparent 72%),
-      linear-gradient(180deg, rgba(5,3,7,.55) 0%, rgba(5,3,7,.86) 40%, rgba(5,3,7,.97) 100%);
-  }
+  /* LPヒーローの2分割（夜のアフパ ／ 昼の東大） */
+  .split{position:relative;height:84mm;overflow:hidden;background:#000}
+  .split .a{position:absolute;left:0;top:0;width:56%;height:100%;
+    background-image:linear-gradient(180deg,rgba(5,3,7,.03) 38%,rgba(5,3,7,.30) 56%,rgba(5,3,7,.72) 70%,rgba(5,3,7,.96) 84%),url('assets/charity/group_band.jpg');
+    background-size:cover,contain;background-position:center,center top;background-repeat:no-repeat}
+  .split .b{position:absolute;inset:0;clip-path:polygon(54% 0,100% 0,100% 100%,44% 100%);
+    background-image:linear-gradient(180deg,rgba(5,3,7,.14),rgba(5,3,7,.72)),url('assets/charity/venue/yasuda1.jpg');
+    background-size:cover,150% auto;background-position:center,15% 35%;background-repeat:no-repeat}
+  .split .line{position:absolute;top:-8%;left:50%;width:1.1mm;height:116%;z-index:3;
+    background:linear-gradient(180deg,transparent,var(--crimson),var(--crimson),transparent);
+    transform:translateX(-50%) skewX(-9deg)}
+  .split .x{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:4;
+    width:15mm;height:15mm;border-radius:50%;background:rgba(5,3,7,.72);border:.4mm solid #fff;
+    display:flex;align-items:center;justify-content:center;color:#fff;
+    font-family:"Noto Sans JP",sans-serif;font-size:6.4mm;font-weight:300;line-height:1;padding-bottom:.4mm}
+  .split .lab{position:absolute;bottom:5mm;z-index:4;color:#fff;
+    font-size:2.5mm;font-weight:400;letter-spacing:.06em;line-height:1.35;
+    background:rgba(5,3,7,.5);padding:1.8mm 3mm}
+  .split .lab b{display:block;font-family:'Oswald',sans-serif;font-weight:400;
+    font-size:3.4mm;letter-spacing:.14em;color:#fff}
+  .split .lab b.jp{font-family:"Noto Sans JP",sans-serif;font-weight:700;font-size:3.2mm;letter-spacing:.10em}
+  .split .la{left:6mm}
+  .split .lc{right:6mm;text-align:right}
+  .split::after{content:"";position:absolute;left:0;right:0;bottom:0;height:22mm;z-index:5;
+    background:linear-gradient(transparent,var(--bg))}
 
-  /* バンド実写：白バックの宣材を黒紙面に溶かし込む */
-  .pa .photo{
-    position:absolute;left:0;right:0;top:8mm;height:116mm;
-    background:url('assets/charity/group_band.jpg') center top/100% auto no-repeat;
-  }
-  .pa .photo::after{
-    content:"";position:absolute;inset:-1mm -1mm -1mm -1mm;
-    background:
-      linear-gradient(90deg, rgba(5,3,7,.55) 0%, rgba(5,3,7,0) 11%, rgba(5,3,7,0) 89%, rgba(5,3,7,.55) 100%),
-      linear-gradient(180deg,
-        rgba(5,3,7,1) 0%, rgba(5,3,7,.55) 6%, rgba(5,3,7,0) 17%,
-        rgba(5,3,7,0) 34%, rgba(5,3,7,.30) 47%, rgba(5,3,7,.72) 58%, rgba(5,3,7,.94) 68%, rgba(5,3,7,1) 78%);
-  }
+  .pa .stack{position:relative;z-index:2;text-align:center;padding:0 18mm;margin-top:-8mm}
+  .pa .mark{display:block;width:62mm;margin:0 auto 6mm;
+    filter:drop-shadow(0 2mm 8mm rgba(0,0,0,.8))}
+  .pa .badge{display:inline-block;font-family:'Oswald',sans-serif;font-weight:300;
+    font-size:2.9mm;letter-spacing:.34em;text-indent:.34em;color:#D6D6DC;
+    border:.25mm solid rgba(255,255,255,.32);padding:2.2mm 6mm}
+  .pa h1{margin-top:5mm;font-family:'Oswald',sans-serif;font-weight:400;
+    font-size:16mm;line-height:1.05;letter-spacing:.14em;text-indent:.14em;
+    text-transform:uppercase;color:var(--ink)}
+  .pa .tagline{margin-top:4mm;font-size:6.4mm;font-weight:700;letter-spacing:.08em;
+    line-height:1.5;color:#fff}
+  .pa .meta{margin-top:5mm;font-size:3.4mm;font-weight:400;line-height:1.85;color:#D8CFBE}
+  .pa .meta b{font-weight:700;color:var(--ink)}
+  .pa .meta .small{font-size:3mm;color:var(--sub)}
+  .pa .cast{margin-top:5mm;padding-top:5mm;border-top:.25mm solid var(--line)}
+  .pa .cast .nm{font-family:'Oswald',sans-serif;font-weight:400;font-size:6.6mm;
+    letter-spacing:.26em;text-indent:.26em;color:#fff;line-height:1}
+  .pa .cast .rl{margin-top:2.4mm;font-family:'Oswald',sans-serif;font-weight:300;
+    font-size:2.7mm;letter-spacing:.34em;text-indent:.34em;color:var(--grey-d)}
+  .pa .donate{margin-top:5mm;display:table;margin-left:auto;margin-right:auto;
+    border-left:2px solid var(--crimson);padding:1mm 0 1mm 4mm;text-align:left;font-size:3.3mm;font-weight:500;
+    letter-spacing:.05em;line-height:1.6;color:var(--ink)}
+  .pa .donate span{display:block;font-size:2.7mm;font-weight:400;color:var(--sub)}
 
-  .pa .kicker{
-    position:absolute;top:9mm;left:0;right:0;z-index:4;text-align:center;
-    font-family:'Oswald',sans-serif;font-weight:300;
-    font-size:3.5mm;letter-spacing:.62em;color:var(--gold);text-indent:.62em;
-  }
-  .pa .kicker span{display:block;margin-top:1.6mm;font-family:"Noto Sans JP",sans-serif;
-    font-weight:400;font-size:2.6mm;letter-spacing:.34em;color:rgba(245,239,228,.55)}
+  /* 席サマリー：表だけで価格が分かるように3列で */
+  .pa .seats{margin-top:6mm;display:grid;grid-template-columns:repeat(3,1fr);
+    border-top:.25mm solid var(--line);border-bottom:.25mm solid var(--line);
+    padding:4.4mm 0}
+  .pa .seats > div{padding:0 3mm;border-left:.25mm solid var(--line)}
+  .pa .seats > div:first-child{border-left:0}
+  .pa .seats .sn{font-size:3.1mm;font-weight:700;letter-spacing:.08em;color:var(--ink)}
+  .pa .seats .sp{margin-top:1.6mm;font-family:'Oswald',sans-serif;font-weight:400;
+    font-size:6.4mm;letter-spacing:.01em;line-height:1;color:#fff}
+  .pa .seats .sl{margin-top:1.6mm;font-size:2.5mm;letter-spacing:.05em;color:var(--grey-d)}
+  .pa .seats .feat .sn{color:#fff}
+  .pa .seats .feat .sn::after{content:"最上級";margin-left:2mm;background:var(--crimson);
+    color:#fff;font-size:2.1mm;font-weight:700;letter-spacing:.06em;padding:.7mm 1.6mm;vertical-align:.5mm}
 
-  .pa .stack{position:absolute;left:0;right:0;top:86mm;z-index:5;text-align:center;padding:0 16mm}
+  .pa .cta{position:absolute;left:0;right:0;bottom:0}
 
-  .pa .mark{display:block;width:76mm;margin:0 auto;
-    filter:drop-shadow(0 3mm 10mm rgba(0,0,0,.85)) drop-shadow(0 0 6mm rgba(232,203,133,.22))}
-
-  .pa h1{margin-top:2mm;font-family:'Oswald',sans-serif;font-weight:300;
-    font-size:7.4mm;line-height:1;letter-spacing:.30em;text-indent:.30em;color:var(--cream)}
-  .pa h1 em{display:block;font-style:normal;font-weight:400;font-size:4.5mm;
-    letter-spacing:.42em;text-indent:.42em;color:var(--gold);margin-bottom:2mm}
-
-  .pa .tagline{margin-top:5mm;font-family:"Noto Serif JP",serif;font-weight:600;
-    font-size:7.0mm;letter-spacing:.10em;line-height:1.4;color:#fff;
-    text-shadow:0 1mm 4mm rgba(0,0,0,.8)}
-
-  .pa .rule{width:44mm;height:1px;margin:5mm auto;border:0;
-    background:linear-gradient(90deg,transparent,var(--gold-d),transparent)}
-
-  .pa .collab{font-family:'Cormorant Garamond',serif;font-weight:500;
-    font-size:4.2mm;letter-spacing:.13em;color:var(--gold);line-height:1.5}
-  .pa .collab-jp{margin-top:1.6mm;font-size:3.0mm;font-weight:400;
-    letter-spacing:.22em;color:var(--sub)}
-
-  .pa .date{margin-top:6mm;font-family:'Oswald',sans-serif;font-weight:300;
-    font-size:11.4mm;line-height:1;letter-spacing:.16em;text-indent:.16em;color:var(--gold)}
-  .pa .date small{font-size:6.4mm;letter-spacing:.14em}
-  .pa .time{margin-top:2.6mm;font-size:3.4mm;font-weight:500;letter-spacing:.22em;color:var(--cream)}
-  .pa .place{margin-top:2mm;font-size:3.1mm;font-weight:400;letter-spacing:.14em;color:var(--sub)}
-
-  .pa .members{margin-top:5mm;font-family:'Oswald',sans-serif;font-weight:400;
-    font-size:5.8mm;letter-spacing:.28em;text-indent:.28em;color:#fff}
-  .pa .members-role{margin-top:1.4mm;font-size:2.6mm;letter-spacing:.30em;color:var(--sub)}
-
-  .pa .pill{display:inline-block;margin-top:5.5mm;padding:3mm 8mm;
-    border:1px solid var(--gold-d);border-radius:99mm;
-    font-size:3.4mm;font-weight:700;letter-spacing:.14em;color:var(--gold);
-    background:rgba(5,3,7,.5)}
-
-  /* A面フッター：QR動線 */
-  .pa .foot{position:absolute;left:16mm;right:16mm;bottom:11mm;z-index:5;
-    display:flex;align-items:center;gap:6mm;
-    border-top:1px solid var(--line);padding-top:6mm}
-  .pa .foot .qr{width:23mm;height:23mm;background:#fff;padding:1.6mm;border-radius:1.5mm;flex:none}
-  .pa .foot .qr img{width:100%;height:100%;display:block}
-  .pa .foot .ftxt{text-align:left;flex:1}
-  .pa .foot .ftxt b{display:block;font-size:3.4mm;font-weight:700;letter-spacing:.10em;color:var(--cream)}
-  .pa .foot .ftxt span{display:block;margin-top:1.4mm;font-size:2.5mm;letter-spacing:.04em;color:var(--sub);line-height:1.6}
-  .pa .foot .ftxt u{display:block;margin-top:1.4mm;font-family:'Oswald',sans-serif;
-    text-decoration:none;font-size:2.6mm;letter-spacing:.03em;color:var(--gold-d);word-break:break-all}
-
-  /* =========================================================
+  /* ==========================================================
      B面（裏）
-     ========================================================= */
-  .pb{padding:0;background:var(--ink)}
-  .pb .ground{position:absolute;inset:0;
-    background:url('assets/charity/venue/roofnight.jpg') center/cover no-repeat;opacity:.20}
-  .pb .glow{position:absolute;inset:0;
-    background:
-      radial-gradient(ellipse 80% 30% at 50% 0%, rgba(193,18,31,.22), transparent 70%),
-      linear-gradient(180deg, rgba(5,3,7,.88) 0%, rgba(5,3,7,.96) 55%, rgba(5,3,7,1) 100%)}
-  .pb .wrap{position:relative;z-index:3;padding:9mm 13mm 9mm;height:100%;display:flex;flex-direction:column}
+     ========================================================== */
+  .pb .wrap{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;
+    padding:8mm 16mm 0}
 
-  .pb .bhead{text-align:center;border-bottom:1px solid var(--line);padding-bottom:4.5mm}
-  .pb .bhead .bmark{display:block;width:38mm;margin:0 auto 2mm;opacity:.95}
-  .pb .bhead h2{font-family:'Oswald',sans-serif;font-weight:300;font-size:4.8mm;
-    letter-spacing:.30em;text-indent:.30em;color:var(--gold)}
-  .pb .bhead p{margin-top:2mm;font-size:3.0mm;font-weight:500;letter-spacing:.12em;color:var(--cream)}
+  .pb .bhead{display:flex;align-items:center;gap:5mm;
+    border-bottom:.25mm solid var(--line);padding-bottom:3.5mm}
+  .pb .bhead img{width:26mm;flex:none}
+  .pb .bhead .bt{flex:1}
+  .pb .bhead .bt b{display:block;font-family:'Oswald',sans-serif;font-weight:400;
+    font-size:5.0mm;letter-spacing:.20em;text-transform:uppercase;color:var(--ink);line-height:1}
+  .pb .bhead .bt span{display:block;margin-top:2.2mm;font-size:2.9mm;font-weight:400;
+    letter-spacing:.06em;color:var(--sub)}
 
-  .pb .sec{margin-top:5mm}
-  .pb .sec > h3{display:flex;align-items:center;gap:3mm;
-    font-family:'Oswald',sans-serif;font-weight:400;font-size:4.0mm;
-    letter-spacing:.26em;color:var(--gold);margin-bottom:3mm}
-  .pb .sec > h3::after{content:"";flex:1;height:1px;background:var(--line)}
-  .pb .sec > h3 i{font-style:normal;font-family:"Noto Sans JP",sans-serif;
-    font-size:2.7mm;font-weight:500;letter-spacing:.14em;color:var(--sub)}
+  .pb .sec{position:relative;margin-top:5.5mm}
+  .pb .sec .ghost{top:-3mm;left:-3mm;font-size:17mm}
 
   /* タイムテーブル */
-  .tt{display:grid;grid-template-columns:25mm 1fr;row-gap:1.9mm;column-gap:4mm;align-items:baseline}
-  .tt dt{font-family:'Oswald',sans-serif;font-weight:400;font-size:3.6mm;
-    letter-spacing:.06em;color:var(--gold)}
-  .tt dd{font-size:3.1mm;font-weight:400;letter-spacing:.04em;color:var(--cream)}
-  .tt dd small{color:var(--sub);font-size:2.65mm}
+  .tt{display:grid;grid-template-columns:27mm 1fr;row-gap:1.8mm;column-gap:4mm;align-items:baseline}
+  .tt dt{font-family:'Oswald',sans-serif;font-weight:300;font-size:3.5mm;
+    letter-spacing:.08em;color:var(--grey)}
+  .tt dd{font-size:3.05mm;font-weight:400;letter-spacing:.03em;color:var(--ink)}
+  .tt dd small{color:var(--sub);font-size:2.7mm}
 
-  /* 支援コース */
-  .plans{display:grid;grid-template-columns:1fr;gap:2.4mm}
-  .plan{border:1px solid var(--line);border-radius:2.2mm;padding:3.2mm 4.4mm;
-    background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.012))}
-  .plan.feat{border-color:rgba(232,203,133,.62);
-    background:linear-gradient(180deg,rgba(232,203,133,.10),rgba(193,18,31,.07))}
-  .plan .top{display:flex;align-items:baseline;justify-content:space-between;gap:4mm}
-  .plan .nm{font-size:3.9mm;font-weight:900;letter-spacing:.08em;color:#fff;white-space:nowrap}
-  .plan .nm b{display:inline-block;margin-left:2.5mm;padding:.8mm 2.4mm;border-radius:.8mm;
-    background:var(--crimson);color:#fff;font-size:2.3mm;font-weight:700;
-    letter-spacing:.10em;vertical-align:.6mm}
-  .plan .pr{font-family:'Oswald',sans-serif;font-weight:400;font-size:5.4mm;
-    letter-spacing:.02em;color:var(--gold);white-space:nowrap;line-height:1}
-  .plan .lim{margin-top:1mm;font-family:'Oswald',sans-serif;font-size:2.8mm;
-    letter-spacing:.10em;color:var(--sub)}
-  .plan ul{margin-top:2.2mm;padding-left:0;list-style:none;
-    display:grid;gap:1.1mm}
-  .plan li{position:relative;padding-left:3.6mm;font-size:2.7mm;line-height:1.5;color:rgba(245,239,228,.86)}
-  .plan li::before{content:"";position:absolute;left:0;top:1.5mm;width:1.6mm;height:1.6mm;
-    border:1px solid var(--gold-d);transform:rotate(45deg)}
+  /* 支援コース（LPの .r をそのまま） */
+  .plans{display:grid;gap:2.2mm}
+  .plan{position:relative;background:var(--card);border:.25mm solid var(--line);padding:3mm 4.4mm}
+  .plan.feat{border-color:var(--crimson)}
+  .plan .tag{position:absolute;top:0;right:0;background:var(--crimson);color:#fff;
+    font-size:2.4mm;font-weight:700;letter-spacing:.10em;padding:1.4mm 3mm}
+  .plan .rn{font-size:3.8mm;font-weight:700;letter-spacing:.10em;color:var(--ink)}
+  .plan .rp{margin-top:.5mm;font-size:5.8mm;font-weight:900;letter-spacing:.01em;
+    color:#fff;line-height:1.15}
+  .plan .lim{margin-top:.6mm;font-size:2.7mm;font-weight:400;letter-spacing:.06em;color:var(--grey-d)}
+  .plan ul{margin-top:2.2mm;list-style:none;display:grid;gap:1mm}
+  .plan li{position:relative;padding-left:4.6mm;font-size:2.65mm;line-height:1.45;color:rgba(245,239,228,.88)}
+  .plan li::before{content:"✓";position:absolute;left:0;top:0;color:var(--crimson);
+    font-size:3mm;font-weight:700;line-height:1.5}
+  .plan.slim{display:flex;align-items:baseline;gap:4mm}
+  .plan.slim .rn{flex:none}
+  .plan.slim .rp{margin-top:0;flex:1}
+  .plan.slim .lim{margin-top:0;flex:none}
 
-  .plans-note{margin-top:2.4mm;font-size:2.6mm;letter-spacing:.04em;color:var(--sub)}
+  .plans-note{margin-top:3mm;font-size:2.6mm;letter-spacing:.03em;color:var(--sub)}
 
-  /* 昼の本編＋寄付の約束（2カラムで足元に収める） */
-  .btm{display:grid;grid-template-columns:1fr 1fr;gap:3.4mm;align-items:stretch}
-
-  .day{display:flex;gap:3.4mm;align-items:stretch;
-    border:1px solid var(--line);border-radius:2.2mm;overflow:hidden;background:rgba(255,255,255,.03)}
-  .day img{width:24mm;object-fit:cover;flex:none;filter:grayscale(.45) brightness(.82) contrast(1.05) sepia(.18)}
-  .day .dbody{padding:3.2mm 3.6mm 3.2mm 0}
-  .day .dtag{font-family:'Oswald',sans-serif;font-size:2.5mm;letter-spacing:.16em;color:var(--gold)}
-  .day .dttl{margin-top:1.2mm;font-size:3.2mm;font-weight:700;letter-spacing:.05em;color:#fff}
+  /* 昼の本編＋寄付 */
+  .btm{display:grid;grid-template-columns:1fr 1fr;gap:4mm;align-items:stretch}
+  .day{display:flex;gap:3.4mm;background:var(--card);border:.25mm solid var(--line);overflow:hidden}
+  .day img{width:24mm;object-fit:cover;flex:none;filter:grayscale(.55) brightness(.8) contrast(1.06)}
+  .day .db{padding:3mm 3.4mm 3mm 0}
+  .day .dtag{font-family:'Oswald',sans-serif;font-weight:300;font-size:2.5mm;
+    letter-spacing:.18em;color:var(--grey-d)}
+  .day .dttl{margin-top:1.2mm;font-size:3.2mm;font-weight:700;letter-spacing:.05em;color:var(--ink)}
   .day p{margin-top:1.6mm;font-size:2.55mm;line-height:1.55;color:var(--sub)}
 
-  /* 寄付の約束 */
-  .promise{border:1px solid rgba(193,18,31,.45);border-radius:2.2mm;
-    padding:3.2mm 4mm;background:rgba(193,18,31,.10)}
-  .promise b{display:block;font-size:3.1mm;font-weight:900;letter-spacing:.08em;color:#fff}
-  .promise p{margin-top:1.4mm;font-size:2.55mm;line-height:1.55;color:rgba(245,239,228,.82)}
+  .promise{position:relative;background:var(--card);border:.25mm solid var(--line);
+    padding:3mm 3.6mm 3mm 4.6mm}
+  .promise::before{content:"";position:absolute;left:0;top:0;bottom:0;width:1mm;background:var(--crimson)}
+  .promise b{display:block;font-size:3.2mm;font-weight:700;letter-spacing:.06em;color:#fff}
+  .promise p{margin-top:1.6mm;font-size:2.55mm;line-height:1.55;color:var(--sub)}
 
-  /* B面フッター */
-  .pb .bfoot{margin-top:auto;padding-top:5mm;border-top:1px solid var(--line);
-    display:flex;align-items:center;gap:6mm}
-  .pb .bfoot .qr{width:24mm;height:24mm;background:#fff;padding:1.8mm;border-radius:1.5mm;flex:none}
-  .pb .bfoot .qr img{width:100%;height:100%;display:block}
-  .pb .bfoot .btxt{flex:1}
-  .pb .bfoot .btxt b{display:block;font-size:3.2mm;font-weight:700;letter-spacing:.10em;color:var(--cream)}
-  .pb .bfoot .btxt u{display:block;margin-top:1.4mm;font-family:'Oswald',sans-serif;text-decoration:none;
-    font-size:2.6mm;letter-spacing:.02em;color:var(--gold-d);word-break:break-all}
-  .pb .bfoot .btxt > span{display:block;margin-top:1.8mm;font-size:2.35mm;line-height:1.55;color:var(--sub)}
-  .tbd{display:inline;color:var(--gold-d);border-bottom:1px dashed rgba(193,18,31,.6);padding:0 .3mm;font-style:normal}
+  .pb .legal{margin-top:3mm;font-size:2.2mm;line-height:1.55;color:rgba(245,239,228,.46)}
+  .pb .cta{margin:auto -16mm 0}
+  .tbd{display:inline;color:var(--grey-d);border-bottom:.2mm dashed rgba(193,18,31,.7);padding:0 .3mm;font-style:normal}
 </style>
 </head>
 <body>
 
-<!-- ============================ A面（表） ============================ -->
+<!-- ======================= A面（表） ======================= -->
 <section class="page pa">
-  <div class="ground"></div>
-  <div class="glow"></div>
-  <div class="photo"></div>
+  <div class="bg"></div><div class="veil"></div><div class="hero-glow"></div>
 
-  <div class="kicker">CHARITY AFTER PARTY 2026
-    <span>収益を東京大学へ寄付するチャリティー・アフターパーティー</span>
+  <div class="split">
+    <div class="a"></div>
+    <div class="b"></div>
+    <div class="line"></div>
+    <div class="x">×</div>
+    <div class="lab la"><b>VALHALLA</b>夜・アフパ</div>
+    <div class="lab lc"><b class="jp">東京大学</b>昼・本編</div>
   </div>
 
   <div class="stack">
     <img class="mark" src="assets/charity/logo_gold.webp" alt="VALHALLA">
-    <h1><em>CHARITY</em>AFTER PARTY</h1>
-
+    <div class="badge">CHARITY AFTERPARTY 2026</div>
+    <h1>AFTERPARTY</h1>
     <p class="tagline">その夜の全てを、寄付へ。</p>
 
-    <hr class="rule">
+    <p class="meta">
+      <b>2026年10月18日（日）</b><br>
+      夜：CÉ LA VI 渋谷 17F ／ 開場 19:00 ・ 開演 19:30<br>
+      <span class="small">＋ 昼：Wrapping The Earth（東京大学 安田講堂）</span>
+    </p>
 
-    <p class="collab">CÉ LA VI SHIBUYA &nbsp;×&nbsp; THE UNIVERSITY of TOKYO</p>
-    <p class="collab-jp">渋谷 セラヴィ ／ 東京大学 チャリティー</p>
+    <div class="cast">
+      <div class="nm">MIO ／ KØU ／ RAY</div>
+      <div class="rl">VALHALLA ACOUSTIC LIVE</div>
+    </div>
 
-    <p class="date">2026 . 10 . 18 <small>SUN</small></p>
-    <p class="time">OPEN 19:00 ／ START 19:30</p>
-    <p class="place">CÉ LA VI TOKYO（渋谷・17F）</p>
+    <div class="seats">
+      <div><div class="sn">ライブ席</div><div class="sp">¥15,000</div><div class="sl">100名</div></div>
+      <div><div class="sn">MIO席</div><div class="sp">¥110,000</div><div class="sl">20席 ／ 20:00〜</div></div>
+      <div class="feat"><div class="sn">VVIP席</div><div class="sp">¥330,000</div><div class="sl">10卓 ／ 20:30〜</div></div>
+    </div>
 
-    <p class="members">MIO ／ KØU ／ RAY</p>
-    <p class="members-role">VALHALLA ACOUSTIC LIVE</p>
-
-    <div class="pill">実費を除いた収益は、全額 東京大学へ寄付します</div>
+    <div class="donate">実費を除いた収益は、全額 東京大学へ寄付します。
+      <span>収支と寄付完了の証憑はイベント後に公開します。</span></div>
   </div>
 
-  <div class="foot">
-    <div class="qr"><img src="assets/charity/qr_lp.svg" alt="詳細ページQRコード"></div>
-    <div class="ftxt">
-      <b>詳細・お申し込みはこちら</b>
+  <div class="cta">
+    <div class="ct">
+      <b>この想いを支援する</b>
       <span>支援コース／タイムテーブル／寄付の使い道は特設ページで公開しています。</span>
-      <u>iiiiwwww1207-creator.github.io/VALHALLA/charity.html</u>
+      <u>https://iiiiwwww1207-creator.github.io/VALHALLA/charity.html</u>
     </div>
+    <div class="qr"><img src="assets/charity/qr_lp.svg" alt="特設ページQRコード"></div>
   </div>
 </section>
 
-<!-- ============================ B面（裏） ============================ -->
+<!-- ======================= B面（裏） ======================= -->
 <section class="page pb">
-  <div class="ground"></div>
-  <div class="glow"></div>
+  <div class="bg"></div><div class="veil"></div>
 
   <div class="wrap">
 
     <div class="bhead">
-      <img class="bmark" src="assets/charity/logo_gold.webp" alt="VALHALLA">
-      <h2>CHARITY AFTER PARTY</h2>
-      <p>2026年10月18日（日）／ CÉ LA VI TOKYO 渋谷 17F ／ OPEN 19:00</p>
+      <img src="assets/charity/logo_gold.webp" alt="VALHALLA">
+      <div class="bt">
+        <b>Charity Afterparty</b>
+        <span>2026年10月18日（日）／ CÉ LA VI 渋谷 17F ／ 開場 19:00 ・ 開演 19:30</span>
+      </div>
     </div>
 
     <div class="sec">
-      <h3>TIME TABLE <i>当日の流れ</i></h3>
+      <div class="ghost">TIME</div>
+      <h2>当日の流れ</h2>
+      <div class="sub-h">Time Table</div>
       <dl class="tt">
         <dt>19:00</dt><dd>開場</dd>
         <dt>19:30</dt><dd>スタート ／ アコースティックライブ <small>（5〜6曲）</small></dd>
-        <dt>20:00 – 20:20</dt><dd>MIO席 体験タイム</dd>
-        <dt>20:30 –</dt><dd>VVIP席 ホストコール体験</dd>
+        <dt>20:00〜20:20</dt><dd>MIO席 体験タイム</dd>
+        <dt>20:30〜</dt><dd>VVIP席 ホストコール体験</dd>
         <dt>22:00</dt><dd>終演</dd>
       </dl>
     </div>
 
     <div class="sec">
-      <h3>SUPPORT <i>支援コース</i></h3>
+      <div class="ghost">SUPPORT</div>
+      <h2>支援コース</h2>
+      <div class="sub-h">Support</div>
       <div class="plans">
 
-        <div class="plan">
-          <div class="top">
-            <div>
-              <div class="nm">ライブ席</div>
-              <div class="lim">100 SEATS</div>
-            </div>
-            <div class="pr">¥15,000</div>
-          </div>
+        <div class="plan slim">
+          <div class="rn">ライブ席</div>
+          <div class="rp">¥15,000</div>
+          <div class="lim">100名</div>
         </div>
 
         <div class="plan">
-          <div class="top">
-            <div>
-              <div class="nm">MIO席</div>
-              <div class="lim">20 SEATS ／ 20:00 – 20:20</div>
-            </div>
-            <div class="pr">¥110,000</div>
-          </div>
+          <div class="rn">MIO席</div>
+          <div class="rp">¥110,000</div>
+          <div class="lim">20席 ／ 20:00〜20:20</div>
           <ul>
-            <li>MIO とチェキ（1分）／ 動画撮影OK</li>
-            <li>やしろ語録動画 — MIO の言葉を1つ選び、本人に語ってもらい撮影</li>
-            <li>限定名刺（QRから“限定シャンパンコール”）</li>
+            <li>MIO とチェキ（1分）／動画撮影OK</li>
+            <li>やしろ語録動画（MIO の言葉を1つ選び、本人に語ってもらい撮影）</li>
+            <li>限定名刺（QRから“限定シャンパンコール”が見れる）</li>
           </ul>
         </div>
 
         <div class="plan feat">
-          <div class="top">
-            <div>
-              <div class="nm">VVIP席 <b>最上級</b></div>
-              <div class="lim">10 TABLES ／ 20:30 –</div>
-            </div>
-            <div class="pr">¥330,000</div>
-          </div>
+          <div class="tag">最上級</div>
+          <div class="rn">VVIP席</div>
+          <div class="rp">¥330,000</div>
+          <div class="lim">10卓 ／ 20:30〜</div>
           <ul>
             <li>MIO が各卓を5分前後ずつ巡回（ホストコール体験＝直接会話）</li>
-            <li>チェキ ／ 写真 ／ 動画OK</li>
-            <li>限定名刺（QRから“限定シャンパンコール”）</li>
-            <li>【別日】Zoomグループセッション（30分・女性に喜ばれる男性の心構え講座）</li>
+            <li>チェキ／写真／動画OK</li>
+            <li>限定名刺（QRから“限定シャンパンコール”が見れる）</li>
+            <li>【別日】Zoomグループセッション（女性に喜ばれる男性の心構え講座／30分）</li>
           </ul>
         </div>
 
@@ -340,31 +334,32 @@
     </div>
 
     <div class="sec">
-      <h3>DAYTIME &amp; DONATION <i>昼の本編と、寄付について</i></h3>
+      <div class="ghost">DONATION</div>
+      <h2>昼の本編と、寄付について</h2>
+      <div class="sub-h">Daytime &amp; Donation</div>
       <div class="btm">
-      <div class="day">
-        <img src="assets/charity/venue/yasuda1.jpg" alt="東京大学 安田講堂">
-        <div class="dbody">
-          <div class="dtag">WRAPPING THE EARTH</div>
-          <div class="dttl">東京大学 安田講堂</div>
-          <p>昼は東大・安田講堂で文化チャリティ本編（主催：公益財団法人クロノス保全財団）。その特別な一日の夜を、このアフパが受け継ぎます。</p>
+        <div class="day">
+          <img src="assets/charity/venue/yasuda1.jpg" alt="東京大学 安田講堂">
+          <div class="db">
+            <div class="dtag">WRAPPING THE EARTH</div>
+            <div class="dttl">東京大学 安田講堂</div>
+            <p>昼は東大・安田講堂で文化チャリティ本編（主催：公益財団法人クロノス保全財団）。その特別な一日の夜を、このアフパが受け継ぎます。</p>
+          </div>
+        </div>
+        <div class="promise">
+          <b>楽しむことが、そのまま寄付に。</b>
+          <p>会場・制作・運営にかかった実費を除いて、収益はすべて東京大学へ寄付します。イベント後に実際の収支と、寄付完了の証憑を公開します。</p>
         </div>
       </div>
-
-      <div class="promise">
-        <b>楽しむことが、そのまま寄付に。</b>
-        <p>会場・制作・運営にかかった実費を除いて、収益はすべて東京大学へ寄付します。イベント後に実際の収支と、寄付完了の証憑を公開します。</p>
-      </div>
-      </div>
+      <p class="legal">お申し込みは CAMPFIRE にて受付予定（<i class="tbd">案内準備中</i>）。主催・お問い合わせ先／特定商取引法に基づく表記は特設ページに掲載します。<br>画像クレジット：安田講堂 © Kakidai（CC BY-SA 4.0）via Wikimedia Commons ／ セラビ会場写真：主催者撮影。</p>
     </div>
 
-    <div class="bfoot">
-      <div class="qr"><img src="assets/charity/qr_lp.svg" alt="特設ページQRコード"></div>
-      <div class="btxt">
-        <b>特設ページ ／ お申し込み</b>
+    <div class="cta">
+      <div class="ct">
+        <b>この想いを支援する</b>
         <u>https://iiiiwwww1207-creator.github.io/VALHALLA/charity.html</u>
-        <span>お申し込みは CAMPFIRE にて受付予定（<i class="tbd">案内準備中</i>）。主催・お問い合わせ先／特定商取引法に基づく表記は特設ページに掲載します。</span>
       </div>
+      <div class="qr"><img src="assets/charity/qr_lp.svg" alt="特設ページQRコード"></div>
     </div>
 
   </div>

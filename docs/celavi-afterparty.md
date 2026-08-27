@@ -70,7 +70,9 @@
     - 書き出し: `assets/charity/flyer/flyer_afterparty.pdf`（印刷用A4 2ページ）
     - SNS/LINE用: `assets/charity/flyer/flyer_afterparty_a.jpg` ／ `_b.jpg`
     - QR: `assets/charity/qr_lp.svg` → `charity.html`（LP）へ誘導
-    - デザインDNAは `charity.html` に合わせた（黒×金×クリムゾン／Oswald + Noto Sans JP）
+    - デザインDNAは LP（`charity.html`）の様式をそのまま移植：
+      角丸ゼロ／赤(#C1121F)×黒×グレー（金はロゴのみ）／見出しは塗り帯なし＋左に赤ティック／
+      英字キッカー Oswald 300 字間.34em／章の背景に巨大ゴースト英字／2分割ヒーロー（夜×昼）
   - ⏳ LP（`charity.html`）は公開中だが CAMPFIRE 決済リンクが未設定
 
 ## 決定の経緯・メモ
