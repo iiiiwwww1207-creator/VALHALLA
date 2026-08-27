@@ -35,7 +35,7 @@
   .split{position:relative;height:240px;margin:-40px -24px 24px;overflow:hidden;background:#000}
   .split .p{position:absolute;inset:0;background-repeat:no-repeat}
   .split .a{left:0;top:0;width:56%;height:100%;
-    background-image:linear-gradient(180deg,rgba(11,7,16,.05),rgba(11,7,16,.7)),url('assets/charity/group_field.jpg');
+    background-image:linear-gradient(180deg,rgba(11,7,16,.05),rgba(11,7,16,.7)),url('assets/charity/group_field_panel.jpg');
     background-size:cover,cover;background-position:center,center 24%}
   .split .b{clip-path:polygon(54% 0,100% 0,100% 100%,44% 100%);
     background-image:linear-gradient(180deg,rgba(11,7,16,.12),rgba(11,7,16,.7)),url('assets/charity/venue/yasuda1.jpg');
@@ -348,7 +348,8 @@
   @keyframes kb-a{ from{transform:scale(1.02)} to{transform:scale(1.15) translate(-2.5%,-2%)} }
   @keyframes kb-b{ from{transform:scale(1.05) translate(1.5%,0)} to{transform:scale(1.17) translate(-1%,-2.5%)} }
   @keyframes kb-bg{ from{transform:scale(1.06)} to{transform:scale(1.18) translate(1.5%,1.2%)} }
-  .split .a{animation:kb-a 24s ease-in-out infinite alternate; will-change:transform}
+  /* 左（メンバー写真）はズームさせない：拡大でボケ＆顔が中央からズレるのを防ぐ */
+  .split .a{transform:none; image-rendering:auto}
   .split .b{animation:kb-b 29s ease-in-out infinite alternate; will-change:transform}
   body::before{animation:kb-bg 48s ease-in-out infinite alternate; will-change:transform}
 
