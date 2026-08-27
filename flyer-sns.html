@@ -54,12 +54,12 @@
   .board.feed45 .bg,.board.square .bg,.board.story .bg{
       background-image:url('assets/charity/group_field.jpg');
       background-size:cover;opacity:1;filter:none}
-  .board.feed45 .bg{background-position:center 145%}
-  .board.square .bg{background-position:center 88%}
-  .board.story  .bg{background-size:150% auto;background-position:center 100%}
+  .board.feed45 .bg{background-size:113% auto;background-position:center 101%}
+  .board.square .bg{background-position:center 86%}
+  .board.story  .bg{background-size:166% auto;background-position:center 87%}
   .board.feed45 .veil,.board.square .veil,.board.story .veil{
       background:linear-gradient(180deg,
-        rgba(5,3,7,.72) 0%, rgba(5,3,7,.44) 9%, rgba(5,3,7,.08) 20%, rgba(5,3,7,.22) 36%,
+        rgba(5,3,7,.34) 0%, rgba(5,3,7,.10) 12%, rgba(5,3,7,.08) 22%, rgba(5,3,7,.22) 36%,
         rgba(5,3,7,.66) 48%, rgba(5,3,7,.92) 56%, rgba(5,3,7,.985) 64%, #050307 74%)}
   .board.feed45 .glow,.board.square .glow,.board.story .glow{
       background:radial-gradient(ellipse 84% 22% at 50% 84%, rgba(176,20,28,.26), transparent 74%)}
@@ -68,15 +68,6 @@
   .board.feed45 .cta,.board.square .cta,.board.story .cta{margin-top:0}
   .cast-line{font-family:'Oswald',sans-serif;font-weight:400;letter-spacing:.22em;
     text-indent:.22em;color:#fff;line-height:1}
-  /* 1枚目のロゴは文字組みの中ではなく紙面上部に置く（中央だと人物に被るため） */
-  .board.feed45 .head .mark,.board.square .head .mark,.board.story .head .mark{display:none}
-  .topmark{position:absolute;left:0;right:0;z-index:3;text-align:center}
-  .topmark img{position:relative;z-index:2;display:block;margin:0 auto;
-    filter:drop-shadow(0 4px 14px rgba(5,3,7,.95))}
-  .topmark::after{content:"";position:absolute;left:50%;top:50%;z-index:1;
-    transform:translate(-50%,-50%);
-    background:radial-gradient(ellipse at center,
-      rgba(5,3,7,.92) 0%, rgba(5,3,7,.72) 38%, rgba(5,3,7,.28) 62%, transparent 76%)}
 
   /* ── （2枚目では未使用）キャスト3枚並び ── */
   .cast{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;flex:none}
@@ -180,11 +171,8 @@
      サイズ別の寸法
      ========================================================== */
   /* ---- 1080x1350（Instagram フィード・Xタイムラインで最も大きく出る） ---- */
-  .feed45 .topmark{top:40px}
-  .feed45 .topmark img{width:186px}
-  .feed45 .topmark::after{width:620px;height:290px}
   .feed45 .head{padding:0 70px 0}
-  .feed45 .head .mark{width:168px;margin-bottom:14px}
+  .feed45 .head .mark{width:118px;margin-bottom:12px}
   .feed45 .head h1{font-size:47px}
   .feed45 .head .ruled{margin-top:13px}
   .feed45 .head .ruled span{font-size:21px}
@@ -207,11 +195,8 @@
   .feed45 .cta u{margin-top:10px;font-size:23px}
 
   /* ---- 1080x1080（グリッド・X） ---- */
-  .square .topmark{top:34px}
-  .square .topmark img{width:160px}
-  .square .topmark::after{width:540px;height:250px}
   .square .head{padding:0 70px 0}
-  .square .head .mark{width:150px;margin-bottom:12px}
+  .square .head .mark{width:104px;margin-bottom:10px}
   .square .head h1{font-size:42px}
   .square .head .ruled{margin-top:16px}
   .square .head .ruled span{font-size:21px}
@@ -280,11 +265,8 @@
   /* ---- 1080x1920（ストーリー／リール）
          上下 240px は端末UIに隠れやすいのでセーフエリアを空ける ---- */
   .story{padding:120px 0 50px}
-  .story .topmark{top:170px}
-  .story .topmark img{width:224px}
-  .story .topmark::after{width:740px;height:340px}
   .story .head{padding:0 80px 0}
-  .story .head .mark{width:220px;margin-bottom:20px}
+  .story .head .mark{width:146px;margin-bottom:14px}
   .story .head h1{font-size:60px}
   .story .head .ruled{margin-top:28px}
   .story .head .ruled span{font-size:27px}
@@ -312,7 +294,6 @@
 <!-- ============ 1080 x 1350 ／ Instagram フィード・X ============ -->
 <section class="board feed45">
   <div class="bg"></div><div class="veil"></div><div class="glow"></div>
-  <div class="topmark"><img src="assets/charity/logo_gold.webp" alt="VALHALLA"></div>
   <div class="head">
     <img class="mark" src="assets/charity/logo_gold.webp" alt="VALHALLA">
     <h1>Charity Afterparty</h1>
@@ -338,7 +319,6 @@
 <!-- ============ 1080 x 1080 ／ グリッド・X ============ -->
 <section class="board square">
   <div class="bg"></div><div class="veil"></div><div class="glow"></div>
-  <div class="topmark"><img src="assets/charity/logo_gold.webp" alt="VALHALLA"></div>
   <div class="head">
     <img class="mark" src="assets/charity/logo_gold.webp" alt="VALHALLA">
     <h1>Charity Afterparty</h1>
@@ -360,7 +340,6 @@
 <!-- ============ 1080 x 1920 ／ ストーリー・リール ============ -->
 <section class="board story">
   <div class="bg"></div><div class="veil"></div><div class="glow"></div>
-  <div class="topmark"><img src="assets/charity/logo_gold.webp" alt="VALHALLA"></div>
   <div class="head">
     <img class="mark" src="assets/charity/logo_gold.webp" alt="VALHALLA">
     <h1>Charity Afterparty</h1>
