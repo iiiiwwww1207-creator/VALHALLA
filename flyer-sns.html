@@ -35,12 +35,18 @@
   .board.story {height:1920px}
 
   .bg{position:absolute;inset:0;z-index:-3;
-      background:url('assets/charity/venue/yasuda2.jpg') center 24%/cover no-repeat;
+      background:url('assets/charity/venue/yasuda_exterior_hq.jpg') center 24%/cover no-repeat;
       opacity:.62;filter:grayscale(.42) sepia(.14) brightness(1.0) contrast(1.24)}
   .veil{position:absolute;inset:0;z-index:-2;
       background:linear-gradient(180deg,rgba(5,3,7,.52) 0%,rgba(5,3,7,.60) 26%,rgba(5,3,7,.82) 50%,rgba(5,3,7,.92) 72%,rgba(5,3,7,.96) 100%)}
   .glow{position:absolute;inset:0;z-index:-1;
       background:radial-gradient(ellipse 76% 26% at 50% 40%, rgba(176,20,28,.40), transparent 70%)}
+  /* 2枚目（席の説明）は安田講堂の“中”を透かす。客席が「席」の話と呼応する */
+  .board.detail45 .bg,.board.detail11 .bg{
+      background-image:url('assets/charity/venue/yasuda_hall_hq.jpg');
+      background-position:center 46%;opacity:.50}
+  .board.detail45 .veil,.board.detail11 .veil{
+      background:linear-gradient(180deg,rgba(5,3,7,.72) 0%,rgba(5,3,7,.80) 26%,rgba(5,3,7,.90) 52%,rgba(5,3,7,.95) 100%)}
 
   /* ── キャスト3枚（名前は写真の下部にオーバーレイして省スペース） ── */
   .cast{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;flex:none}
