@@ -51,12 +51,20 @@
       background:linear-gradient(180deg,rgba(5,3,7,.72) 0%,rgba(5,3,7,.80) 26%,rgba(5,3,7,.90) 52%,rgba(5,3,7,.95) 100%)}
 
   /* ── 1枚目：集合写真をフルブリードで敷き、下半分にスクリムで文字を載せる ── */
+  /* 引いた写真の左右の隙間を、同じ写真のぼかしで埋める（フルブリードを保つ） */
   .board.feed45 .bg,.board.square .bg,.board.story .bg{
       background-image:url('assets/charity/group_field.jpg');
-      background-size:cover;opacity:1;filter:none}
-  .board.feed45 .bg{background-size:100% auto;background-position:center -452px}
-  .board.square .bg{background-size:100% auto;background-position:center -452px}
-  .board.story  .bg{background-size:125% auto;background-position:center -566px}
+      background-size:cover;background-position:center 34%;opacity:1;
+      filter:blur(46px) brightness(.42) saturate(.8);transform:scale(1.2)}
+  /* 前面の実寸写真 */
+  .bgf{position:absolute;inset:0;z-index:-3;background-repeat:no-repeat;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%);
+    mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%)}
+  .board.feed45 .bgf,.board.square .bgf,.board.story .bgf{
+      background-image:url('assets/charity/group_field.jpg')}
+  .board.feed45 .bgf{background-size:88% auto;background-position:center -399px}
+  .board.square .bgf{background-size:88% auto;background-position:center -399px}
+  .board.story  .bgf{background-size:100% auto;background-position:center -454px}
   .board.feed45 .veil,.board.square .veil,.board.story .veil{
       background:linear-gradient(180deg,
         rgba(5,3,7,.34) 0%, rgba(5,3,7,.10) 12%, rgba(5,3,7,.08) 22%, rgba(5,3,7,.22) 36%,
@@ -293,7 +301,7 @@
 
 <!-- ============ 1080 x 1350 ／ Instagram フィード・X ============ -->
 <section class="board feed45">
-  <div class="bg"></div><div class="veil"></div><div class="glow"></div>
+  <div class="bg"></div><div class="bgf"></div><div class="veil"></div><div class="glow"></div>
   <div class="head">
     <img class="mark" src="assets/charity/logo_gold.webp" alt="VALHALLA">
     <h1>Charity Afterparty</h1>
@@ -318,7 +326,7 @@
 
 <!-- ============ 1080 x 1080 ／ グリッド・X ============ -->
 <section class="board square">
-  <div class="bg"></div><div class="veil"></div><div class="glow"></div>
+  <div class="bg"></div><div class="bgf"></div><div class="veil"></div><div class="glow"></div>
   <div class="head">
     <img class="mark" src="assets/charity/logo_gold.webp" alt="VALHALLA">
     <h1>Charity Afterparty</h1>
@@ -339,7 +347,7 @@
 
 <!-- ============ 1080 x 1920 ／ ストーリー・リール ============ -->
 <section class="board story">
-  <div class="bg"></div><div class="veil"></div><div class="glow"></div>
+  <div class="bg"></div><div class="bgf"></div><div class="veil"></div><div class="glow"></div>
   <div class="head">
     <img class="mark" src="assets/charity/logo_gold.webp" alt="VALHALLA">
     <h1>Charity Afterparty</h1>
