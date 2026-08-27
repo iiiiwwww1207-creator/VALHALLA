@@ -44,9 +44,10 @@
   @media screen{ .page{box-shadow:0 8px 40px rgba(0,0,0,.6)} }
 
   .bg{position:absolute;inset:0;z-index:-3;
-      background:url('assets/charity/venue/roofnight.jpg') center/cover no-repeat;opacity:.30}
+      background:url('assets/charity/venue/yasuda2.jpg') center 22%/cover no-repeat;
+      opacity:.60;filter:grayscale(.42) sepia(.14) brightness(1.0) contrast(1.24)}
   .veil{position:absolute;inset:0;z-index:-2;
-      background:linear-gradient(180deg,rgba(5,3,7,.86) 0%,rgba(5,3,7,.93) 46%,rgba(5,3,7,.97) 100%)}
+      background:linear-gradient(180deg,rgba(5,3,7,.55) 0%,rgba(5,3,7,.62) 28%,rgba(5,3,7,.84) 52%,rgba(5,3,7,.93) 72%,rgba(5,3,7,.96) 100%)}
   .glow{position:absolute;inset:0;z-index:-1;
       background:radial-gradient(ellipse 74% 24% at 50% 33%, rgba(176,20,28,.34), transparent 70%)}
 
@@ -55,6 +56,9 @@
   .ruled::before,.ruled::after{content:"";height:.25mm;background:var(--rule);flex:1;max-width:40mm}
   .ruled span{font-family:'Oswald',sans-serif;font-weight:300;font-size:2.9mm;
     letter-spacing:.34em;text-indent:.34em;text-transform:uppercase;color:#E8CB85;white-space:nowrap}
+  /* 和文を入れる見出し（Oswaldは欧文専用のため和文フォントに切り替える） */
+  .ruled span.jp{font-family:"Noto Sans JP",sans-serif;font-weight:500;
+    font-size:3.1mm;letter-spacing:.16em;text-indent:.16em;text-transform:none}
 
   /* ==========================================================
      ① キャストバンド（横一列）
@@ -222,7 +226,7 @@
   <div class="title">
     <img class="mark" src="assets/charity/logo_gold.webp" alt="VALHALLA">
     <h1>Charity Afterparty</h1>
-    <div class="ruled when"><span>Cé La Vi Shibuya 2026</span></div>
+    <div class="ruled when"><span class="jp">昼 東京大学 安田講堂 ／ 夜 CÉ LA VI 渋谷</span></div>
     <p class="tagline">ビジュアル系文化を守り、継ぐ。</p>
     <p class="kind">アコースティックライブ<i>&amp;</i>ホストコール体験</p>
   </div>
