@@ -66,9 +66,10 @@
 ## 準備タスク
 - **社美緒シャンパンコールの歌詞作成（〜10/31）**
 - LP／フライヤー制作（**期日: 16日**）
-  - ✅ フライヤー（A4 表裏）作成済み → `flyer.html`（ソース）
-    - 書き出し: `assets/charity/flyer/flyer_afterparty.pdf`（印刷用A4 2ページ）
-    - SNS/LINE用: `assets/charity/flyer/flyer_afterparty_a.jpg` ／ `_b.jpg`
+  - ✅ フライヤー（**A4 片面 1枚**）作成済み → `flyer.html`（ソース）
+    - 書き出し: `assets/charity/flyer/flyer_afterparty.pdf`（印刷用A4 1ページ）
+    - SNS/LINE用: `assets/charity/flyer/flyer_afterparty.jpg`
+    - ⚠️ 表面の最大文字は現在「AFTERPARTY」。**イベント名が確定したら差し替える**
     - QR: `assets/charity/qr_lp.svg` → `charity.html`（LP）へ誘導
     - デザインDNAは LP（`charity.html`）の様式をそのまま移植：
       角丸ゼロ／赤(#C1121F)×黒×グレー（金はロゴのみ）／見出しは塗り帯なし＋左に赤ティック／
