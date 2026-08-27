@@ -3,24 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>VALHALLA AFTERPARTY ｜ フライヤー（A4 片面）</title>
+<title>VALHALLA CHARITY AFTERPARTY ｜ フライヤー（A4 片面）</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
   /* ==========================================================
      VALHALLA CHARITY AFTERPARTY / A4 フライヤー（片面 1枚）
-     デザインDNA = charity.html（LP）をそのまま移植
-       ・角丸ゼロ ・赤(#C1121F)×黒×グレー（金はロゴのみ）
-       ・見出し＝塗り帯なし／左に赤ティック
-       ・英字キッカー Oswald 300 字間.34em
-       ・2分割ヒーロー（夜×昼）＋赤い斜線＋白円の ×
-       ・背景にセラビ夜景をうっすら
+
+     構図 = 昼の本編フライヤー「WRAPPING THE EARTH TOKYO 2026」を参照
+       ・最上部にキャストを横一列（枠付き写真＋名前＋ロール）
+       ・中央寄せの見出しを細い罫線で挟む（─ TEXT ─）
+       ・横長の会場写真をひと帯
+       ・中央に情報、その左右に枠付き写真を従える3カラム
+       ・最下部は 日時／チケット／QR の3分割インフォ帯＋細字クレジット
+
+     視覚言語 = charity.html（LP）
+       ・角丸ゼロ ・クリムゾン(#C1121F)がアクセント ・Oswald + Noto Sans JP
+       ・VALHALLAの金ロゴ ・背景にセラビ夜景をうっすら
      ========================================================== */
   :root{
-    --bg:#050307; --card:#150c10;
-    --ink:#F5EFE4; --sub:rgba(245,239,228,.74);
-    --line:rgba(255,255,255,.10);
+    --bg:#050307; --card:#120a0e;
+    --ink:#F5EFE4; --sub:rgba(245,239,228,.72);
+    --line:rgba(255,255,255,.13);
+    --rule:rgba(232,203,133,.45);      /* 昼フライヤーと揃える細い金の罫 */
     --grey:#C6C6CD; --grey-d:#9C9CA4;
     --crimson:#C1121F;
   }
@@ -29,219 +35,273 @@
 
   html,body{background:#1a1a1c}
   body{font-family:"Noto Sans JP",sans-serif;color:var(--ink);
-       -webkit-font-smoothing:antialiased;
-       display:flex;justify-content:center;padding:10mm 0}
+       -webkit-font-smoothing:antialiased;display:flex;justify-content:center;padding:10mm 0}
 
   .page{position:relative;width:210mm;height:297mm;overflow:hidden;background:var(--bg);
         isolation:isolate;display:flex;flex-direction:column;
         -webkit-print-color-adjust:exact;print-color-adjust:exact}
-
   @media print{ body{display:block;padding:0;background:#fff} .page{box-shadow:none} }
   @media screen{ .page{box-shadow:0 8px 40px rgba(0,0,0,.6)} }
 
   .bg{position:absolute;inset:0;z-index:-3;
-      background:url('assets/charity/venue/roofnight.jpg') center/cover no-repeat;opacity:.34}
+      background:url('assets/charity/venue/roofnight.jpg') center/cover no-repeat;opacity:.30}
   .veil{position:absolute;inset:0;z-index:-2;
-      background:linear-gradient(180deg,rgba(5,3,7,.72) 0%,rgba(5,3,7,.88) 45%,rgba(5,3,7,.96) 100%)}
-  .hero-glow{position:absolute;inset:0;z-index:-1;
-      background:radial-gradient(ellipse 80% 30% at 50% 22%, rgba(176,20,28,.40), transparent 68%)}
+      background:linear-gradient(180deg,rgba(5,3,7,.86) 0%,rgba(5,3,7,.93) 46%,rgba(5,3,7,.97) 100%)}
+  .glow{position:absolute;inset:0;z-index:-1;
+      background:radial-gradient(ellipse 74% 24% at 50% 33%, rgba(176,20,28,.34), transparent 70%)}
 
-  /* ---------- 2分割ヒーロー（LPのヒーローをそのまま） ---------- */
-  .split{position:relative;height:64mm;overflow:hidden;background:#000;flex:none}
-  .split .a{position:absolute;left:0;top:0;width:56%;height:100%;display:flex;background:#000}
-  .split .a i{position:relative;flex:1;overflow:hidden;border-left:.35mm solid var(--bg)}
-  .split .a i:first-child{border-left:0}
-  .split .a img{position:absolute;left:50%;transform:translateX(-50%);
-    width:auto;max-width:none;
-    filter:saturate(.86) contrast(1.06) brightness(.93)}
-  /* 3枚は撮影時の寄り引きが違うので、目線の高さと顔の大きさを個別に揃える */
-  .split .a i:nth-child(1) img{height:132%;top:1%}
-  .split .a i:nth-child(2) img{height:134%;top:-2%}
-  .split .a i:nth-child(3) img{height:150%;top:-11%}
-  .split .a::after{content:"";position:absolute;inset:0;z-index:2;
-    background:linear-gradient(180deg,rgba(5,3,7,.02) 34%,rgba(5,3,7,.34) 58%,rgba(5,3,7,.80) 74%,rgba(5,3,7,.98) 90%)}
-  .split .b{position:absolute;inset:0;clip-path:polygon(54% 0,100% 0,100% 100%,44% 100%);
-    background-image:linear-gradient(180deg,rgba(5,3,7,.14),rgba(5,3,7,.78)),url('assets/charity/venue/yasuda1.jpg');
-    background-size:cover,150% auto;background-position:center,15% 35%;background-repeat:no-repeat}
-  .split .line{position:absolute;top:-8%;left:50%;width:1.1mm;height:116%;z-index:3;
-    background:linear-gradient(180deg,transparent,var(--crimson),var(--crimson),transparent);
-    transform:translateX(-50%) skewX(-9deg)}
-  .split .x{position:absolute;top:48%;left:50%;transform:translate(-50%,-50%);z-index:4;
-    width:13mm;height:13mm;border-radius:50%;background:rgba(5,3,7,.72);border:.35mm solid #fff;
-    display:flex;align-items:center;justify-content:center;color:#fff;
-    font-size:5.6mm;font-weight:300;line-height:1;padding-bottom:.4mm}
-  .split .lab{position:absolute;bottom:4mm;z-index:4;color:#fff;
-    font-size:2.3mm;font-weight:400;letter-spacing:.06em;line-height:1.35;
-    background:rgba(5,3,7,.5);padding:1.5mm 2.6mm}
-  .split .lab b{display:block;font-family:'Oswald',sans-serif;font-weight:400;
-    font-size:3.1mm;letter-spacing:.14em;color:#fff}
-  .split .lab b.jp{font-family:"Noto Sans JP",sans-serif;font-weight:700;font-size:2.9mm;letter-spacing:.10em}
-  .split .la{left:6mm}
-  .split .lc{right:6mm;text-align:right}
-  .split::after{content:"";position:absolute;left:0;right:0;bottom:0;height:16mm;z-index:5;
-    background:linear-gradient(transparent,var(--bg))}
+  /* ── 罫線で挟んだ中央見出し（昼フライヤーの ─ ABOUT THIS NIGHT ─ ） ── */
+  .ruled{display:flex;align-items:center;justify-content:center;gap:4mm}
+  .ruled::before,.ruled::after{content:"";height:.25mm;background:var(--rule);flex:1;max-width:40mm}
+  .ruled span{font-family:'Oswald',sans-serif;font-weight:300;font-size:2.9mm;
+    letter-spacing:.34em;text-indent:.34em;text-transform:uppercase;color:#E8CB85;white-space:nowrap}
 
-  /* ---------- タイトルブロック ---------- */
-  .title{position:relative;z-index:2;text-align:center;padding:2mm 16mm 0;flex:none}
-  .title .mark{display:block;width:44mm;margin:0 auto 3.4mm;
-    filter:drop-shadow(0 2mm 7mm rgba(0,0,0,.8))}
-  .title .badge{display:inline-block;font-family:'Oswald',sans-serif;font-weight:300;
-    font-size:2.7mm;letter-spacing:.34em;text-indent:.34em;color:#D6D6DC;
-    border:.25mm solid rgba(255,255,255,.32);padding:1.7mm 5mm}
-  .title h1{margin-top:3.5mm;font-family:'Oswald',sans-serif;font-weight:400;
-    font-size:12.4mm;line-height:1.05;letter-spacing:.14em;text-indent:.14em;
-    text-transform:uppercase;color:var(--ink)}
-  .title .tagline{margin-top:3mm;font-size:5.6mm;font-weight:700;letter-spacing:.08em;
+  /* ==========================================================
+     ① キャストバンド（横一列）
+     ========================================================== */
+  .cast{display:grid;grid-template-columns:repeat(3,1fr);gap:3.4mm;
+        padding:4mm 6mm 0;flex:none}
+  .cast figure{display:block}
+  .cast .ph{position:relative;height:50mm;overflow:hidden;
+    border:.25mm solid rgba(255,255,255,.26);background:#000}
+  .cast .ph img{position:absolute;left:50%;transform:translateX(-50%);
+    width:auto;max-width:none;filter:saturate(.85) contrast(1.06) brightness(.93)}
+  /* 3枚は撮影の寄り引きが違うので目線と顔の大きさを個別に揃える */
+  .cast figure:nth-child(1) .ph img{height:196%;top:-6%}
+  .cast figure:nth-child(2) .ph img{height:200%;top:-16%}
+  .cast figure:nth-child(3) .ph img{height:210%;top:-22%}
+  .cast .ph::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,transparent 62%,rgba(5,3,7,.55) 88%,rgba(5,3,7,.8) 100%)}
+  .cast figcaption{text-align:center;padding-top:2.6mm}
+  .cast .nm{font-family:'Oswald',sans-serif;font-weight:400;font-size:4.8mm;
+    letter-spacing:.20em;text-indent:.20em;color:var(--ink);line-height:1}
+  .cast .jp{margin-top:1.2mm;font-size:2.4mm;letter-spacing:.14em;color:var(--sub)}
+  .cast .rl{margin-top:1.6mm;font-family:'Oswald',sans-serif;font-weight:300;font-size:2.3mm;
+    letter-spacing:.30em;text-indent:.30em;color:var(--grey-d)}
+
+  /* ==========================================================
+     ② タイトルブロック
+     ========================================================== */
+  .title{position:relative;z-index:2;text-align:center;padding:5mm 14mm 0;flex:none}
+  .title .mark{display:block;width:34mm;margin:0 auto 3.6mm;
+    filter:drop-shadow(0 2mm 7mm rgba(0,0,0,.85))}
+  .title h1{font-family:'Oswald',sans-serif;font-weight:300;font-size:9.2mm;
+    line-height:1.05;letter-spacing:.19em;text-indent:.19em;text-transform:uppercase;
+    color:var(--ink)}
+  .title .when{margin-top:3.5mm}
+  .title .tagline{margin-top:4mm;font-size:5.6mm;font-weight:700;letter-spacing:.10em;
     line-height:1.4;color:#fff}
-  .title .meta{margin-top:3.5mm;font-size:3.2mm;font-weight:400;line-height:1.7;color:#D8CFBE}
-  .title .meta b{font-weight:700;color:var(--ink)}
-  .title .meta .small{font-size:2.9mm;color:var(--sub)}
-  .title .cast{margin-top:3.5mm;padding-top:3.5mm;border-top:.25mm solid var(--line)}
-  .title .cast .nm{font-family:'Oswald',sans-serif;font-weight:400;font-size:5.8mm;
-    letter-spacing:.26em;text-indent:.26em;color:#fff;line-height:1}
-  .title .cast .rl{margin-top:1.8mm;font-family:'Oswald',sans-serif;font-weight:300;
-    font-size:2.5mm;letter-spacing:.34em;text-indent:.34em;color:var(--grey-d)}
+  .title .kind{margin-top:2.6mm;font-size:2.9mm;font-weight:400;letter-spacing:.22em;
+    color:var(--sub)}
+  .title .kind i{font-style:normal;color:var(--rule);margin:0 2.5mm}
 
-  /* ---------- 横のタイムライン ---------- */
-  .flow{position:relative;z-index:2;margin:3.4mm 16mm 0;padding:2.8mm 0;
-    border-top:.25mm solid var(--line);border-bottom:.25mm solid var(--line);
-    display:grid;grid-template-columns:repeat(3,1fr);flex:none}
-  .flow > div{text-align:center;border-left:.25mm solid var(--line)}
-  .flow > div:first-child{border-left:0}
-  .flow .t{font-family:'Oswald',sans-serif;font-weight:300;font-size:4.3mm;
-    letter-spacing:.06em;color:#fff;line-height:1}
-  .flow .l{margin-top:1.2mm;font-size:2.6mm;letter-spacing:.14em;color:var(--grey-d)}
+  /* ==========================================================
+     ③ 会場写真（横長のひと帯）
+     ========================================================== */
+  .stage{position:relative;margin:5mm 14mm 0;height:27mm;overflow:hidden;
+    border:.25mm solid rgba(255,255,255,.20);flex:none}
+  .stage img{width:100%;height:100%;object-fit:cover;object-position:center 58%;
+    filter:brightness(1.14) contrast(1.02) saturate(1.05)}
+  .stage figcaption{position:absolute;left:0;bottom:0;
+    background:rgba(5,3,7,.62);padding:1.6mm 3mm;
+    font-size:2.4mm;letter-spacing:.10em;color:#fff}
+  .stage figcaption b{font-family:'Oswald',sans-serif;font-weight:400;letter-spacing:.14em}
 
-  /* ---------- 支援コース（3カラム） ---------- */
-  .plans{position:relative;z-index:2;margin:3.4mm 16mm 0;
-    display:grid;grid-template-columns:repeat(3,1fr);gap:2.6mm;flex:none}
-  .plan{position:relative;background:var(--card);border:.25mm solid var(--line);
-    padding:3mm 3.2mm 3.4mm}
-  .plan.feat{border-color:var(--crimson)}
-  .plan .tag{position:absolute;top:0;right:0;background:var(--crimson);color:#fff;
-    font-size:2.1mm;font-weight:700;letter-spacing:.08em;padding:1.1mm 2.2mm}
-  .plan .rn{font-size:3.4mm;font-weight:700;letter-spacing:.08em;color:var(--ink)}
-  .plan .rp{margin-top:.8mm;font-size:5.6mm;font-weight:900;letter-spacing:0;
-    color:#fff;line-height:1.1}
-  .plan .lim{margin-top:1.2mm;font-size:2.4mm;font-weight:400;letter-spacing:.04em;color:var(--grey-d)}
-  .plan ul{margin-top:2.4mm;padding-top:2.4mm;border-top:.25mm solid var(--line);
-    list-style:none;display:grid;gap:1.2mm}
-  .plan li{position:relative;padding-left:3.8mm;font-size:2.4mm;line-height:1.42;
-    color:rgba(245,239,228,.88)}
-  .plan li::before{content:"✓";position:absolute;left:0;top:0;color:var(--crimson);
-    font-size:2.6mm;font-weight:700;line-height:1.42}
-  .note{position:relative;z-index:2;margin:1.8mm 16mm 0;font-size:2.5mm;
-    letter-spacing:.03em;color:var(--sub);flex:none}
+  /* ==========================================================
+     ④ 中央の情報＋左右の枠付き写真（3カラム）
+     ========================================================== */
+  .info{display:grid;grid-template-columns:33mm 1fr 33mm;gap:4.5mm;
+    margin:5mm 14mm 0;flex:none;align-items:start}
+  .side figure{display:block}
+  .side .ph{position:relative;height:38mm;overflow:hidden;
+    border:.25mm solid rgba(255,255,255,.20);background:#000}
+  .side .ph img{width:100%;height:100%;object-fit:cover;
+    filter:grayscale(.25) brightness(1.02) contrast(1.05)}
+  .side figcaption{padding-top:2mm;text-align:center}
+  .side .ct{font-size:2.5mm;font-weight:700;letter-spacing:.06em;color:var(--ink);line-height:1.4}
+  .side .cs{margin-top:1mm;font-family:'Oswald',sans-serif;font-weight:300;
+    font-size:2.1mm;letter-spacing:.22em;color:var(--grey-d)}
 
-  /* ---------- 寄付の約束 ---------- */
-  .donate{position:relative;z-index:2;margin:2.6mm 16mm 4mm;border-left:2px solid var(--crimson);
-    padding:.6mm 0 .6mm 4mm;flex:none}
-  .donate b{display:block;font-size:3.2mm;font-weight:700;letter-spacing:.05em;color:var(--ink)}
-  .donate span{display:block;margin-top:1mm;font-size:2.45mm;font-weight:400;
-    line-height:1.5;color:var(--sub)}
+  .about{text-align:center}
+  .about p{margin-top:2.6mm;font-size:2.55mm;line-height:1.7;color:var(--sub)}
+  .about p b{color:var(--ink);font-weight:700}
 
-  /* ---------- クリムゾンCTA帯（LPの .btn を紙に） ---------- */
-  .cta{position:relative;z-index:2;margin-top:auto;display:flex;align-items:center;gap:5mm;
-       background:var(--crimson);padding:4mm 6mm}
-  .cta .qr{width:23mm;height:23mm;background:#fff;padding:1.5mm;flex:none}
-  .cta .qr img{width:100%;height:100%;display:block}
-  .cta .ct{flex:1;color:#fff}
-  .cta .ct b{display:block;font-size:4.2mm;font-weight:700;letter-spacing:.14em;line-height:1.3}
-  .cta .ct span{display:block;margin-top:1.8mm;font-size:2.5mm;font-weight:400;
-       letter-spacing:.03em;line-height:1.55;color:rgba(255,255,255,.88)}
-  .cta .ct u{display:block;margin-top:1.4mm;font-family:'Oswald',sans-serif;font-weight:300;
-       text-decoration:none;font-size:2.6mm;letter-spacing:.02em;color:#fff;word-break:break-all}
-  .tbd{display:inline;border-bottom:.2mm dashed rgba(255,255,255,.6);padding:0 .3mm;font-style:normal}
+  .support{margin-top:4mm}
+  .plans{margin-top:2.6mm;display:grid;gap:1.6mm;text-align:left}
+  .plan{position:relative;border-left:.7mm solid var(--line);padding-left:3.4mm}
+  .plan.feat{border-left-color:var(--crimson)}
+  .plan .hd{display:flex;align-items:baseline;justify-content:space-between;gap:3mm}
+  .plan .rn{font-size:3.1mm;font-weight:700;letter-spacing:.08em;color:var(--ink);white-space:nowrap}
+  .plan .rn em{font-style:normal;margin-left:2mm;background:var(--crimson);color:#fff;
+    font-size:2mm;font-weight:700;letter-spacing:.06em;padding:.6mm 1.6mm;vertical-align:.5mm}
+  .plan .rp{font-family:'Oswald',sans-serif;font-weight:400;font-size:4.4mm;
+    letter-spacing:.01em;color:#fff;line-height:1;white-space:nowrap}
+  .plan .rp small{font-family:"Noto Sans JP",sans-serif;font-size:2.2mm;font-weight:400;
+    letter-spacing:.06em;color:var(--grey-d);margin-left:2mm}
+  .plan .rd{margin-top:.8mm;font-size:2.25mm;line-height:1.45;color:var(--sub)}
+  .note{margin-top:2mm;font-size:2.15mm;letter-spacing:.02em;color:rgba(245,239,228,.5)}
+
+  /* ==========================================================
+     ⑤ 下部インフォ帯（日時／寄付・チケット／QR）
+     ========================================================== */
+  .foot{margin-top:auto;position:relative;z-index:2;
+    border-top:.25mm solid var(--rule);background:rgba(5,3,7,.55);
+    display:grid;grid-template-columns:auto 1fr auto;gap:7mm;
+    padding:4mm 14mm 4mm;align-items:center}
+  .foot .when .d{font-family:'Oswald',sans-serif;font-weight:300;font-size:5.8mm;
+    letter-spacing:.10em;color:#fff;line-height:1}
+  .foot .when .t{margin-top:2.2mm;font-family:'Oswald',sans-serif;font-weight:300;
+    font-size:3mm;letter-spacing:.10em;color:var(--grey)}
+  .foot .when .v{margin-top:2mm;font-size:2.9mm;font-weight:700;letter-spacing:.06em;color:var(--ink)}
+  .foot .when .v span{display:block;margin-top:.8mm;font-size:2.3mm;font-weight:400;color:var(--sub)}
+
+  .foot .mid{text-align:center;border-left:.25mm solid var(--line);
+    border-right:.25mm solid var(--line);padding:0 6mm}
+  .foot .mid .k{font-size:2.5mm;letter-spacing:.18em;color:var(--grey-d)}
+  .foot .mid .m{margin-top:1.6mm;font-size:3.5mm;font-weight:700;letter-spacing:.06em;
+    line-height:1.5;color:#fff}
+  .foot .mid .m b{color:#E8CB85}
+  .foot .mid .s{margin-top:1.8mm;font-size:2.4mm;color:var(--sub)}
+
+  .foot .qr{text-align:center}
+  .foot .qr .box{width:20mm;height:20mm;background:#fff;padding:1.3mm}
+  .foot .qr img{width:100%;height:100%;display:block}
+  .foot .qr .cap{margin-top:1.6mm;font-family:'Oswald',sans-serif;font-weight:300;
+    font-size:2.1mm;letter-spacing:.16em;color:var(--grey-d)}
+
+  .credit{position:relative;z-index:2;background:rgba(5,3,7,.55);
+    padding:0 14mm 3mm;font-size:1.95mm;line-height:1.55;color:rgba(245,239,228,.42)}
+
+  /* 最下段：LPのクリムゾンCTAを細い帯で残す */
+  .cta{position:relative;z-index:2;background:var(--crimson);color:#fff;
+    display:flex;align-items:center;justify-content:center;gap:9mm;
+    padding:3mm 14mm}
+  .cta b{font-size:3.4mm;font-weight:700;letter-spacing:.14em}
+  .cta u{font-family:'Oswald',sans-serif;font-weight:300;text-decoration:none;
+    font-size:2.7mm;letter-spacing:.02em;color:#fff}
+  .tbd{display:inline;border-bottom:.2mm dashed rgba(245,239,228,.55);padding:0 .3mm;font-style:normal}
 </style>
 </head>
 <body>
 
 <section class="page">
-  <div class="bg"></div><div class="veil"></div><div class="hero-glow"></div>
+  <div class="bg"></div><div class="veil"></div><div class="glow"></div>
 
-  <div class="split">
-    <div class="a">
-      <i><img src="assets/charity/mio.jpg" alt="MIO"></i>
-      <i><img src="assets/charity/kou.jpg" alt="KØU"></i>
-      <i><img src="assets/charity/rei.jpg" alt="RAY"></i>
-    </div>
-    <div class="b"></div>
-    <div class="line"></div>
-    <div class="x">×</div>
-    <div class="lab la"><b>VALHALLA</b>夜・アフパ</div>
-    <div class="lab lc"><b class="jp">東京大学</b>昼・本編</div>
+  <!-- ① キャスト -->
+  <div class="cast">
+    <figure>
+      <div class="ph"><img src="assets/charity/mio.jpg" alt="MIO"></div>
+      <figcaption>
+        <div class="nm">MIO</div>
+        <div class="jp">社美緒</div>
+        <div class="rl">LIVE / HOST CALL</div>
+      </figcaption>
+    </figure>
+    <figure>
+      <div class="ph"><img src="assets/charity/kou.jpg" alt="KØU"></div>
+      <figcaption>
+        <div class="nm">KØU</div>
+        <div class="jp">コウ</div>
+        <div class="rl">LIVE</div>
+      </figcaption>
+    </figure>
+    <figure>
+      <div class="ph"><img src="assets/charity/rei.jpg" alt="RAY"></div>
+      <figcaption>
+        <div class="nm">RAY</div>
+        <div class="jp">零</div>
+        <div class="rl">LIVE</div>
+      </figcaption>
+    </figure>
   </div>
 
+  <!-- ② タイトル -->
   <div class="title">
     <img class="mark" src="assets/charity/logo_gold.webp" alt="VALHALLA">
-    <div class="badge">CHARITY AFTERPARTY 2026</div>
-    <h1>AFTERPARTY</h1>
+    <h1>Charity Afterparty</h1>
+    <div class="ruled when"><span>Cé La Vi Shibuya 2026</span></div>
     <p class="tagline">その夜の全てを、寄付へ。</p>
-    <p class="meta">
-      <b>2026年10月18日（日）</b><br>
-      夜：CÉ LA VI 渋谷 17F<br>
-      <span class="small">＋ 昼：Wrapping The Earth（東京大学 安田講堂）</span>
-    </p>
-    <div class="cast">
-      <div class="nm">MIO ／ KØU ／ RAY</div>
-      <div class="rl">VALHALLA ACOUSTIC LIVE</div>
+    <p class="kind">アコースティックライブ<i>&amp;</i>ホストコール体験</p>
+  </div>
+
+  <!-- ③ 会場 -->
+  <figure class="stage">
+    <img src="assets/charity/venue/club.jpg" alt="CÉ LA VI TOKYO 17F">
+    <figcaption><b>CÉ LA VI TOKYO</b> ／ 渋谷・17F ルーフトップラウンジ</figcaption>
+  </figure>
+
+  <!-- ④ 情報 -->
+  <div class="info">
+    <div class="side">
+      <figure>
+        <div class="ph"><img src="assets/charity/venue/yasuda1.jpg" alt="東京大学 安田講堂"></div>
+        <figcaption>
+          <div class="ct">東京大学 安田講堂</div>
+          <div class="cs">Daytime / Main</div>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="about">
+      <div class="ruled"><span>About This Night</span></div>
+      <p>昼、東京大学・安田講堂で開かれる文化チャリティ「WRAPPING THE EARTH TOKYO 2026」。
+        その特別な一日の夜を、VALHALLA が受け継ぎます。<b>実費を除いた収益は、全額 東京大学へ寄付します。</b></p>
+
+      <div class="support">
+        <div class="ruled"><span>Support / 支援コース</span></div>
+        <div class="plans">
+          <div class="plan">
+            <div class="hd"><div class="rn">ライブ席</div><div class="rp">¥15,000<small>100名</small></div></div>
+            <div class="rd">アコースティックライブ観覧（5〜6曲）</div>
+          </div>
+          <div class="plan">
+            <div class="hd"><div class="rn">MIO席</div><div class="rp">¥110,000<small>20席 ／ 20:00〜</small></div></div>
+            <div class="rd">チェキ（1分）／動画OK ・ やしろ語録動画 ・ 限定名刺（QR→限定シャンパンコール）</div>
+          </div>
+          <div class="plan feat">
+            <div class="hd"><div class="rn">VVIP席 <em>最上級</em></div><div class="rp">¥330,000<small>10卓 ／ 20:30〜</small></div></div>
+            <div class="rd">各卓を5分前後ずつ巡回（ホストコール体験）・ チェキ／写真／動画OK ・ 限定名刺 ・【別日】Zoom講座（30分）</div>
+          </div>
+        </div>
+        <p class="note">※ 全コース共通で アコースティックライブ観覧 が付きます。</p>
+      </div>
+    </div>
+
+    <div class="side">
+      <figure>
+        <div class="ph"><img src="assets/charity/venue/dj.jpg" alt="CÉ LA VI メインステージ／DJブース"></div>
+        <figcaption>
+          <div class="ct">メインステージ</div>
+          <div class="cs">Cé La Vi 17F</div>
+        </figcaption>
+      </figure>
     </div>
   </div>
 
-  <div class="flow">
-    <div><div class="t">19:00</div><div class="l">開場</div></div>
-    <div><div class="t">19:30</div><div class="l">開演・ライブ</div></div>
-    <div><div class="t">22:00</div><div class="l">終演</div></div>
-  </div>
-
-  <div class="plans">
-    <div class="plan">
-      <div class="rn">ライブ席</div>
-      <div class="rp">¥15,000</div>
-      <div class="lim">100名</div>
-      <ul>
-        <li>アコースティックライブ観覧（5〜6曲）</li>
-      </ul>
+  <!-- ⑤ 下部インフォ帯 -->
+  <div class="foot">
+    <div class="when">
+      <div class="d">2026.10.18 SUN</div>
+      <div class="t">19:00 OPEN ｜ 19:30 START ｜ 22:00 END</div>
+      <div class="v">CÉ LA VI TOKYO（渋谷・17F）
+        <span>＋ 昼：東京大学 安田講堂</span></div>
     </div>
-
-    <div class="plan">
-      <div class="rn">MIO席</div>
-      <div class="rp">¥110,000</div>
-      <div class="lim">20席 ／ 20:00〜20:20</div>
-      <ul>
-        <li>チェキ（1分）／動画撮影OK</li>
-        <li>やしろ語録動画（本人が目の前で語る）</li>
-        <li>限定名刺（QR→限定シャンパンコール）</li>
-      </ul>
+    <div class="mid">
+      <div class="k">文化継承 × チャリティ × ホストカルチャー</div>
+      <div class="m">実費を除いた収益は<br><b>全額 東京大学へ寄付</b>します</div>
+      <div class="s">支援チケット ¥15,000 〜 ／ 収支と寄付完了の証憑はイベント後に公開</div>
     </div>
-
-    <div class="plan feat">
-      <div class="tag">最上級</div>
-      <div class="rn">VVIP席</div>
-      <div class="rp">¥330,000</div>
-      <div class="lim">10卓 ／ 20:30〜</div>
-      <ul>
-        <li>各卓を5分前後ずつ巡回（ホストコール体験）</li>
-        <li>チェキ／写真／動画OK</li>
-        <li>限定名刺（QR→限定シャンパンコール）</li>
-        <li>【別日】Zoomグループセッション（30分）</li>
-      </ul>
+    <div class="qr">
+      <div class="box"><img src="assets/charity/qr_lp.svg" alt="特設ページQRコード"></div>
+      <div class="cap">特設ページ</div>
     </div>
   </div>
-  <p class="note">※ 全コース共通で アコースティックライブ観覧 が付きます。</p>
 
-  <div class="donate">
-    <b>実費を除いた収益は、全額 東京大学へ寄付します。</b>
-    <span>昼の本編「Wrapping The Earth」（主催：公益財団法人クロノス保全財団）の夜を、このアフパが受け継ぎます。収支と寄付完了の証憑はイベント後に公開します。</span>
-  </div>
+  <p class="credit">昼の本編「WRAPPING THE EARTH TOKYO 2026」主催：公益財団法人クロノス保全財団。／ お申し込みは CAMPFIRE にて受付予定（<i class="tbd">案内準備中</i>）。主催・お問い合わせ先／特定商取引法に基づく表記は特設ページに掲載します。／ 画像クレジット：安田講堂 © Kakidai（CC BY-SA 4.0）via Wikimedia Commons ／ セラビ会場写真：主催者撮影。</p>
 
   <div class="cta">
-    <div class="ct">
-      <b>この想いを支援する</b>
-      <span>お申し込みは CAMPFIRE にて受付予定（<i class="tbd">案内準備中</i>）。主催・お問い合わせ先／特商法表記は特設ページに掲載。</span>
-      <u>https://iiiiwwww1207-creator.github.io/VALHALLA/charity.html</u>
-    </div>
-    <div class="qr"><img src="assets/charity/qr_lp.svg" alt="特設ページQRコード"></div>
+    <b>この想いを支援する</b>
+    <u>https://iiiiwwww1207-creator.github.io/VALHALLA/charity.html</u>
   </div>
 </section>
 
