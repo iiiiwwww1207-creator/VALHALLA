@@ -48,9 +48,18 @@
 
   /* ---------- 2分割ヒーロー（LPのヒーローをそのまま） ---------- */
   .split{position:relative;height:64mm;overflow:hidden;background:#000;flex:none}
-  .split .a{position:absolute;left:0;top:0;width:56%;height:100%;
-    background-image:linear-gradient(180deg,rgba(5,3,7,.03) 34%,rgba(5,3,7,.34) 56%,rgba(5,3,7,.78) 72%,rgba(5,3,7,.98) 88%),url('assets/charity/group_band.jpg');
-    background-size:cover,contain;background-position:center,center top;background-repeat:no-repeat}
+  .split .a{position:absolute;left:0;top:0;width:56%;height:100%;display:flex;background:#000}
+  .split .a i{position:relative;flex:1;overflow:hidden;border-left:.35mm solid var(--bg)}
+  .split .a i:first-child{border-left:0}
+  .split .a img{position:absolute;left:50%;transform:translateX(-50%);
+    width:auto;max-width:none;
+    filter:saturate(.86) contrast(1.06) brightness(.93)}
+  /* 3枚は撮影時の寄り引きが違うので、目線の高さと顔の大きさを個別に揃える */
+  .split .a i:nth-child(1) img{height:132%;top:1%}
+  .split .a i:nth-child(2) img{height:134%;top:-2%}
+  .split .a i:nth-child(3) img{height:150%;top:-11%}
+  .split .a::after{content:"";position:absolute;inset:0;z-index:2;
+    background:linear-gradient(180deg,rgba(5,3,7,.02) 34%,rgba(5,3,7,.34) 58%,rgba(5,3,7,.80) 74%,rgba(5,3,7,.98) 90%)}
   .split .b{position:absolute;inset:0;clip-path:polygon(54% 0,100% 0,100% 100%,44% 100%);
     background-image:linear-gradient(180deg,rgba(5,3,7,.14),rgba(5,3,7,.78)),url('assets/charity/venue/yasuda1.jpg');
     background-size:cover,150% auto;background-position:center,15% 35%;background-repeat:no-repeat}
@@ -151,7 +160,11 @@
   <div class="bg"></div><div class="veil"></div><div class="hero-glow"></div>
 
   <div class="split">
-    <div class="a"></div>
+    <div class="a">
+      <i><img src="assets/charity/mio.jpg" alt="MIO"></i>
+      <i><img src="assets/charity/kou.jpg" alt="KØU"></i>
+      <i><img src="assets/charity/rei.jpg" alt="RAY"></i>
+    </div>
     <div class="b"></div>
     <div class="line"></div>
     <div class="x">×</div>
