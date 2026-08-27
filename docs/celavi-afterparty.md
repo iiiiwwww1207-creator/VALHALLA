@@ -80,6 +80,13 @@
     - **視覚言語は LP（`charity.html`）**：角丸ゼロ／クリムゾン(#C1121F)がアクセント／
       Oswald + Noto Sans JP／VALHALLAの金ロゴ／背景にセラビ夜景／最下段にクリムゾンCTA帯
     - メンバー写真は最新の宣材（blue-fence 2026-08-26）
+  - ✅ **SNS用フライヤー**（拡散のメインは X / Instagram）→ `flyer-sns.html`（ソース）
+    - `assets/charity/flyer/sns/afterparty_ig_feed_1080x1350.jpg` … Instagramフィード・X（**最も大きく表示される。まずこれ**）
+    - `assets/charity/flyer/sns/afterparty_square_1080x1080.jpg` … プロフィールグリッド・X
+    - `assets/charity/flyer/sns/afterparty_story_1080x1920.jpg` … ストーリー／リール（上下220pxはUIに隠れる前提のセーフエリア確保済み）
+    - A4版の縮小ではなく**タイムライン閲覧前提でレイアウトを組み直している**
+      （情報を「顔・イベント名・日時会場・価格・寄付」に絞り、最小文字26px。
+      　QRは載せない＝スマホで見ている人は読めないため、URL／プロフィール誘導にした）
   - ⏳ LP（`charity.html`）は公開中だが CAMPFIRE 決済リンクが未設定
 
 ## 決定の経緯・メモ
