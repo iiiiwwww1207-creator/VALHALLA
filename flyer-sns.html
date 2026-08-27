@@ -97,6 +97,47 @@
     text-decoration:none;letter-spacing:.02em;color:#fff}
 
   /* ==========================================================
+     ② 2枚目：席の中身と、価格の理由
+     ========================================================== */
+  .board.detail45{height:1350px}
+  .board.detail11{height:1080px}
+
+  /* 上部の細いヘッダー（1枚目と組であることを示す） */
+  .dhead{display:flex;align-items:center;justify-content:center;gap:20px;flex:none;
+    border-bottom:1px solid var(--line)}
+  .dhead img{display:block}
+  .dhead .dt{text-align:left}
+  .dhead .dt b{display:block;font-family:'Oswald',sans-serif;font-weight:400;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--ink);line-height:1}
+  .dhead .dt span{display:block;font-weight:500;letter-spacing:.06em;color:var(--sub)}
+
+  /* 見出しとリード（＝価格の考え方） */
+  .lead{text-align:center;flex:none}
+  .lead p{color:var(--sub);line-height:1.7}
+  .lead p b{color:var(--ink);font-weight:700}
+  .lead p i{font-style:normal;color:var(--gold);font-weight:700}
+
+  /* コースカード */
+  .cards{display:grid;flex:none}
+  .card{position:relative;background:rgba(255,255,255,.035);
+    border:1px solid var(--line);border-left-width:5px}
+  .card.feat{border-color:var(--crimson);background:linear-gradient(180deg,rgba(193,18,31,.12),rgba(193,18,31,.04))}
+  .card .top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}
+  .card .nm{font-weight:700;letter-spacing:.08em;color:var(--ink);line-height:1.2}
+  .card .nm em{font-style:normal;display:inline-block;margin-left:12px;
+    background:var(--crimson);color:#fff;font-weight:700;vertical-align:3px}
+  .card .lim{color:var(--grey-d);letter-spacing:.04em}
+  .card .pr{font-family:'Oswald',sans-serif;font-weight:400;color:#fff;
+    line-height:1;white-space:nowrap;text-align:right}
+  .card ul{list-style:none;display:grid}
+  .card li{position:relative;color:rgba(245,239,228,.9);line-height:1.5}
+  .card li::before{content:"✓";position:absolute;left:0;top:0;color:var(--crimson);font-weight:700}
+  .card li b{color:var(--gold);font-weight:700}
+  .card .note{color:var(--grey-d)}
+
+  .allnote{text-align:center;color:var(--sub);flex:none}
+
+  /* ==========================================================
      サイズ別の寸法
      ========================================================== */
   /* ---- 1080x1350（Instagram フィード・Xタイムラインで最も大きく出る） ---- */
@@ -146,6 +187,50 @@
   .square .cta{padding:19px 40px 21px}
   .square .cta b{font-size:28px}
   .square .cta u{margin-top:8px;font-size:21px}
+
+  /* ---- 2枚目 1080x1350 ---- */
+  .detail45 .dhead{padding:26px 60px;gap:22px}
+  .detail45 .dhead img{width:110px}
+  .detail45 .dhead .dt b{font-size:32px}
+  .detail45 .dhead .dt span{margin-top:9px;font-size:22px}
+  .detail45 .lead{padding:26px 60px 0}
+  .detail45 .lead .ruled span{font-size:24px}
+  .detail45 .lead p{margin-top:20px;font-size:26px}
+  .detail45 .cards{margin:22px 46px 0;gap:14px}
+  .detail45 .card{padding:20px 26px}
+  .detail45 .card .nm{font-size:34px}
+  .detail45 .card .nm em{font-size:19px;padding:4px 10px}
+  .detail45 .card .lim{margin-top:9px;font-size:23px}
+  .detail45 .card .pr{font-size:48px}
+  .detail45 .card ul{margin-top:16px;gap:9px}
+  .detail45 .card li{padding-left:36px;font-size:26px}
+  .detail45 .card li::before{font-size:27px}
+  .detail45 .allnote{margin-top:14px;font-size:22px}
+  .detail45 .cta{padding:24px 40px 26px}
+  .detail45 .cta b{font-size:32px}
+  .detail45 .cta u{margin-top:10px;font-size:23px}
+
+  /* ---- 2枚目 1080x1080 ---- */
+  .detail11 .dhead{padding:20px 60px;gap:20px}
+  .detail11 .dhead img{width:92px}
+  .detail11 .dhead .dt b{font-size:27px}
+  .detail11 .dhead .dt span{margin-top:7px;font-size:19px}
+  .detail11 .lead{padding:22px 60px 0}
+  .detail11 .lead .ruled span{font-size:21px}
+  .detail11 .lead p{margin-top:15px;font-size:23px}
+  .detail11 .cards{margin:20px 46px 0;gap:12px}
+  .detail11 .card{padding:17px 22px}
+  .detail11 .card .nm{font-size:29px}
+  .detail11 .card .nm em{font-size:17px;padding:3px 8px}
+  .detail11 .card .lim{margin-top:7px;font-size:20px}
+  .detail11 .card .pr{font-size:40px}
+  .detail11 .card ul{margin-top:12px;gap:7px}
+  .detail11 .card li{padding-left:32px;font-size:23px}
+  .detail11 .card li::before{font-size:24px}
+  .detail11 .allnote{margin-top:14px;font-size:19px}
+  .detail11 .cta{padding:19px 40px 21px}
+  .detail11 .cta b{font-size:28px}
+  .detail11 .cta u{margin-top:8px;font-size:21px}
 
   /* ---- 1080x1920（ストーリー／リール）
          上下 240px は端末UIに隠れやすいのでセーフエリアを空ける ---- */
@@ -272,6 +357,135 @@
   <div class="cta">
     <b>詳しくはプロフィールのリンクから</b>
     <u>iiiiwwww1207-creator.github.io/VALHALLA/charity.html</u>
+  </div>
+</section>
+
+
+<!-- ============ 2枚目：席の中身と、価格の理由（1080x1350 / 1080x1080） ============ -->
+<section class="board detail45">
+  <div class="bg"></div><div class="veil"></div><div class="glow"></div>
+
+  <div class="dhead">
+    <img src="assets/charity/logo_gold.webp" alt="VALHALLA">
+    <div class="dt">
+      <b>Charity Afterparty</b>
+      <span>2026.10.18 SUN ／ CÉ LA VI TOKYO 渋谷・17F</span>
+    </div>
+  </div>
+
+  <div class="lead">
+    <div class="ruled"><span>Support / 席でできること</span></div>
+    <p>この夜の席は、<b>MIO と過ごす時間そのもの</b>です。<br>
+      いただいた支援は、実費を除いて <i>全額 東京大学へ寄付</i> します。</p>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="top">
+        <div>
+          <div class="nm">ライブ席</div>
+          <div class="lim">100名限定</div>
+        </div>
+        <div class="pr">¥15,000</div>
+      </div>
+      <ul>
+        <li>VALHALLA アコースティックライブ観覧（5〜6曲）</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="top">
+        <div>
+          <div class="nm">MIO席</div>
+          <div class="lim">20席限定 ／ 20:00〜20:20 の20分</div>
+        </div>
+        <div class="pr">¥110,000</div>
+      </div>
+      <ul>
+        <li>MIO とチェキ（1分）／ 動画撮影OK</li>
+        <li><b>やしろ語録動画</b> — 好きな一言を、本人が目の前で語る</li>
+        <li><b>限定名刺</b> — QRから完全オリジナルのシャンパンコール</li>
+      </ul>
+    </div>
+
+    <div class="card feat">
+      <div class="top">
+        <div>
+          <div class="nm">VVIP席 <em>最上級</em></div>
+          <div class="lim">10卓限定 ／ 20:30〜</div>
+        </div>
+        <div class="pr">¥330,000</div>
+      </div>
+      <ul>
+        <li><b>ホストコール体験</b> — MIO が各卓を5分前後ずつ巡回して直接会話</li>
+        <li>チェキ ／ 写真 ／ 動画OK</li>
+        <li><b>限定名刺</b> — QRから完全オリジナルのシャンパンコール</li>
+        <li><b>【別日】社塾 参加権</b> — 社美緒の経営論を学ぶオンライン塾（Zoom）</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="allnote">※ 全コース共通で アコースティックライブ観覧 が付きます。</p>
+
+  <div class="cta">
+    <b>収益は全額 東京大学へ寄付します</b>
+    <u>収支と寄付完了の証憑はイベント後に公開します</u>
+  </div>
+</section>
+
+<section class="board detail11">
+  <div class="bg"></div><div class="veil"></div><div class="glow"></div>
+
+  <div class="dhead">
+    <img src="assets/charity/logo_gold.webp" alt="VALHALLA">
+    <div class="dt">
+      <b>Charity Afterparty</b>
+      <span>2026.10.18 SUN ／ CÉ LA VI TOKYO 渋谷・17F</span>
+    </div>
+  </div>
+
+  <div class="lead">
+    <div class="ruled"><span>Support / 席でできること</span></div>
+    <p>この夜の席は、<b>MIO と過ごす時間そのもの</b>。<br>支援は実費を除いて <i>全額 東京大学へ寄付</i> します。</p>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="top">
+        <div><div class="nm">ライブ席</div><div class="lim">100名限定</div></div>
+        <div class="pr">¥15,000</div>
+      </div>
+      <ul><li>アコースティックライブ観覧（5〜6曲）</li></ul>
+    </div>
+
+    <div class="card">
+      <div class="top">
+        <div><div class="nm">MIO席</div><div class="lim">20席限定 ／ 20:00〜20:20 の20分</div></div>
+        <div class="pr">¥110,000</div>
+      </div>
+      <ul>
+        <li>チェキ（1分）／ 動画撮影OK</li>
+        <li><b>やしろ語録動画</b> — 本人が目の前で語る</li>
+        <li><b>限定名刺</b> — QRから限定シャンパンコール</li>
+      </ul>
+    </div>
+
+    <div class="card feat">
+      <div class="top">
+        <div><div class="nm">VVIP席 <em>最上級</em></div><div class="lim">10卓限定 ／ 20:30〜</div></div>
+        <div class="pr">¥330,000</div>
+      </div>
+      <ul>
+        <li><b>ホストコール体験</b> — 各卓を5分前後ずつ巡回</li>
+        <li>チェキ ／ 写真 ／ 動画OK ・ 限定名刺</li>
+        <li><b>【別日】社塾 参加権</b> — 社美緒の経営論（Zoom）</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cta">
+    <b>収益は全額 東京大学へ寄付します</b>
+    <u>※ 全コース共通でライブ観覧付き</u>
   </div>
 </section>
 
