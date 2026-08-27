@@ -50,7 +50,26 @@
   .board.detail45 .veil,.board.detail11 .veil{
       background:linear-gradient(180deg,rgba(5,3,7,.72) 0%,rgba(5,3,7,.80) 26%,rgba(5,3,7,.90) 52%,rgba(5,3,7,.95) 100%)}
 
-  /* ── キャスト3枚（名前は写真の下部にオーバーレイして省スペース） ── */
+  /* ── 1枚目：集合写真をフルブリードで敷き、下半分にスクリムで文字を載せる ── */
+  .board.feed45 .bg,.board.square .bg,.board.story .bg{
+      background-image:url('assets/charity/group_field.jpg');
+      background-size:cover;opacity:1;filter:none}
+  .board.feed45 .bg{background-position:center 145%}
+  .board.square .bg{background-position:center 88%}
+  .board.story  .bg{background-size:150% auto;background-position:center 100%}
+  .board.feed45 .veil,.board.square .veil,.board.story .veil{
+      background:linear-gradient(180deg,
+        rgba(5,3,7,.36) 0%, rgba(5,3,7,.06) 18%, rgba(5,3,7,.22) 36%,
+        rgba(5,3,7,.66) 48%, rgba(5,3,7,.92) 56%, rgba(5,3,7,.985) 64%, #050307 74%)}
+  .board.feed45 .glow,.board.square .glow,.board.story .glow{
+      background:radial-gradient(ellipse 84% 22% at 50% 84%, rgba(176,20,28,.26), transparent 74%)}
+  /* 文字は下寄せ（写真の上側を空けて3人を見せる） */
+  .board.feed45 .head,.board.square .head,.board.story .head{margin-top:auto}
+  .board.feed45 .cta,.board.square .cta,.board.story .cta{margin-top:0}
+  .cast-line{font-family:'Oswald',sans-serif;font-weight:400;letter-spacing:.22em;
+    text-indent:.22em;color:#fff;line-height:1}
+
+  /* ── （2枚目では未使用）キャスト3枚並び ── */
   .cast{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;flex:none}
   .cast .c{position:relative;overflow:hidden;background:#000}
   .cast img{position:absolute;left:50%;transform:translateX(-50%);
@@ -152,41 +171,39 @@
      サイズ別の寸法
      ========================================================== */
   /* ---- 1080x1350（Instagram フィード・Xタイムラインで最も大きく出る） ---- */
-  .feed45 .cast{height:522px}
-  .feed45 .cast .nm{font-size:44px;bottom:24px}
-  .feed45 .head{padding:22px 70px 0}
-  .feed45 .head .mark{width:230px;margin-bottom:20px}
-  .feed45 .head h1{font-size:60px}
-  .feed45 .head .ruled{margin-top:16px}
-  .feed45 .head .ruled span{font-size:24px}
-  .feed45 .tagline{margin-top:26px;font-size:50px}
-  .feed45 .when{margin-top:24px}
-  .feed45 .when .d{font-size:62px}
-  .feed45 .when .t{margin-top:14px;font-size:28px}
-  .feed45 .when .v{margin-top:14px;font-size:30px}
+  .feed45 .head{padding:0 70px 0}
+  .feed45 .head .mark{width:168px;margin-bottom:14px}
+  .feed45 .head h1{font-size:47px}
+  .feed45 .head .ruled{margin-top:13px}
+  .feed45 .head .ruled span{font-size:21px}
+  .feed45 .tagline{margin-top:18px;font-size:41px}
+  .feed45 .cast-line{margin-top:15px;font-size:29px}
+  .feed45 .when{margin-top:18px}
+  .feed45 .when .d{font-size:50px}
+  .feed45 .when .t{margin-top:11px;font-size:26px}
+  .feed45 .when .v{margin-top:11px;font-size:28px}
   .feed45 .price{margin:18px 60px 0;padding:15px 0}
   .feed45 .price .n{font-size:26px}
   .feed45 .price .p{margin-top:12px;font-size:44px}
   .feed45 .price .l{margin-top:10px;font-size:21px}
   .feed45 .price .feat .n::after{font-size:17px;padding:3px 8px}
-  .feed45 .donate{margin-top:22px;padding:0 70px}
-  .feed45 .donate b{font-size:31px}
-  .feed45 .donate span{margin-top:10px;font-size:22px}
+  .feed45 .donate{margin-top:16px;padding:0 70px}
+  .feed45 .donate b{font-size:28px}
+  .feed45 .donate span{margin-top:8px;font-size:21px;padding-bottom:16px}
   .feed45 .cta{padding:24px 40px 26px}
   .feed45 .cta b{font-size:32px}
   .feed45 .cta u{margin-top:10px;font-size:23px}
 
   /* ---- 1080x1080（グリッド・X） ---- */
-  .square .cast{height:404px}
-  .square .cast .nm{font-size:38px;bottom:20px}
-  .square .head{padding:18px 70px 0}
-  .square .head .mark{width:196px;margin-bottom:16px}
-  .square .head h1{font-size:52px}
+  .square .head{padding:0 70px 0}
+  .square .head .mark{width:150px;margin-bottom:12px}
+  .square .head h1{font-size:42px}
   .square .head .ruled{margin-top:16px}
   .square .head .ruled span{font-size:21px}
-  .square .tagline{margin-top:22px;font-size:44px}
-  .square .when{margin-top:20px}
-  .square .when .d{font-size:54px}
+  .square .tagline{margin-top:15px;font-size:37px}
+  .square .cast-line{margin-top:13px;font-size:26px}
+  .square .when{margin-top:15px}
+  .square .when .d{font-size:44px}
   .square .when .t{margin-top:11px;font-size:25px}
   .square .when .v{margin-top:11px;font-size:26px}
   .square .price{margin:14px 60px 0;padding:13px 0}
@@ -194,7 +211,7 @@
   .square .price .p{margin-top:9px;font-size:37px}
   .square .price .l{margin-top:8px;font-size:19px}
   .square .price .feat .n::after{font-size:15px;padding:2px 7px}
-  .square .donate{margin-top:18px;padding:0 60px}
+  .square .donate{margin-top:14px;padding:0 60px;padding-bottom:14px}
   .square .donate b{font-size:27px}
   .square .donate span{margin-top:9px;font-size:20px}
   .square .cta{padding:19px 40px 21px}
@@ -248,17 +265,15 @@
   /* ---- 1080x1920（ストーリー／リール）
          上下 240px は端末UIに隠れやすいのでセーフエリアを空ける ---- */
   .story{padding:120px 0 50px}
-  .story .bg{background-position:center 46%}
-  .story .cast{height:686px}
-  .story .cast .nm{font-size:52px;bottom:28px}
-  .story .head{padding:36px 80px 0}
-  .story .head .mark{width:290px;margin-bottom:28px}
-  .story .head h1{font-size:74px}
+  .story .head{padding:0 80px 0}
+  .story .head .mark{width:220px;margin-bottom:20px}
+  .story .head h1{font-size:60px}
   .story .head .ruled{margin-top:28px}
   .story .head .ruled span{font-size:27px}
-  .story .tagline{margin-top:30px;font-size:54px}
-  .story .when{margin-top:28px}
-  .story .when .d{font-size:84px}
+  .story .tagline{margin-top:24px;font-size:48px}
+  .story .cast-line{margin-top:18px;font-size:33px}
+  .story .when{margin-top:22px}
+  .story .when .d{font-size:66px}
   .story .when .t{margin-top:18px;font-size:33px}
   .story .when .v{margin-top:18px;font-size:35px}
   .story .price{margin:28px 70px 0;padding:22px 0}
@@ -266,7 +281,7 @@
   .story .price .p{margin-top:14px;font-size:52px}
   .story .price .l{margin-top:12px;font-size:24px}
   .story .price .feat .n::after{font-size:19px;padding:4px 10px}
-  .story .donate{margin-top:24px;padding:0 80px}
+  .story .donate{margin-top:20px;padding:0 80px;padding-bottom:18px}
   .story .donate b{font-size:38px}
   .story .donate span{margin-top:14px;font-size:26px}
   .story .cta{margin-bottom:0;padding:32px 40px 34px}
@@ -279,16 +294,12 @@
 <!-- ============ 1080 x 1350 ／ Instagram フィード・X ============ -->
 <section class="board feed45">
   <div class="bg"></div><div class="veil"></div><div class="glow"></div>
-  <div class="cast">
-    <div class="c"><img src="assets/charity/mio.jpg" alt="MIO"><div class="nm">MIO</div></div>
-    <div class="c"><img src="assets/charity/kou.jpg" alt="KØU"><div class="nm">KØU</div></div>
-    <div class="c"><img src="assets/charity/rei.jpg" alt="RAY"><div class="nm">RAY</div></div>
-  </div>
   <div class="head">
     <img class="mark" src="assets/charity/logo_gold.webp" alt="VALHALLA">
     <h1>Charity Afterparty</h1>
     <div class="ruled"><span class="jp">昼 東京大学 安田講堂 ／ 夜 CÉ LA VI 渋谷</span></div>
     <p class="tagline">ビジュアル系文化を守り、継ぐ。</p>
+    <p class="cast-line">MIO ／ KØU ／ RAY</p>
   </div>
   <div class="when">
     <div class="d">2026.10.18 SUN</div>
@@ -308,16 +319,12 @@
 <!-- ============ 1080 x 1080 ／ グリッド・X ============ -->
 <section class="board square">
   <div class="bg"></div><div class="veil"></div><div class="glow"></div>
-  <div class="cast">
-    <div class="c"><img src="assets/charity/mio.jpg" alt="MIO"><div class="nm">MIO</div></div>
-    <div class="c"><img src="assets/charity/kou.jpg" alt="KØU"><div class="nm">KØU</div></div>
-    <div class="c"><img src="assets/charity/rei.jpg" alt="RAY"><div class="nm">RAY</div></div>
-  </div>
   <div class="head">
     <img class="mark" src="assets/charity/logo_gold.webp" alt="VALHALLA">
     <h1>Charity Afterparty</h1>
     <div class="ruled"><span class="jp">昼 東京大学 安田講堂 ／ 夜 CÉ LA VI 渋谷</span></div>
     <p class="tagline">ビジュアル系文化を守り、継ぐ。</p>
+    <p class="cast-line">MIO ／ KØU ／ RAY</p>
   </div>
   <div class="when">
     <div class="d">2026.10.18 SUN</div>
@@ -333,16 +340,12 @@
 <!-- ============ 1080 x 1920 ／ ストーリー・リール ============ -->
 <section class="board story">
   <div class="bg"></div><div class="veil"></div><div class="glow"></div>
-  <div class="cast">
-    <div class="c"><img src="assets/charity/mio.jpg" alt="MIO"><div class="nm">MIO</div></div>
-    <div class="c"><img src="assets/charity/kou.jpg" alt="KØU"><div class="nm">KØU</div></div>
-    <div class="c"><img src="assets/charity/rei.jpg" alt="RAY"><div class="nm">RAY</div></div>
-  </div>
   <div class="head">
     <img class="mark" src="assets/charity/logo_gold.webp" alt="VALHALLA">
     <h1>Charity Afterparty</h1>
     <div class="ruled"><span class="jp">昼 東京大学 安田講堂 ／ 夜 CÉ LA VI 渋谷</span></div>
     <p class="tagline">ビジュアル系文化を守り、継ぐ。</p>
+    <p class="cast-line">MIO ／ KØU ／ RAY</p>
   </div>
   <div class="when">
     <div class="d">2026.10.18 SUN</div>
