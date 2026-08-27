@@ -1,6 +1,6 @@
 # CÉ LA VI アフターパーティー 企画まとめ（Mac⇄VPS 同期用）
 
-最終更新: 2026-08-13
+最終更新: 2026-08-27
 
 > このファイルは Mac 側と VPS(Telegram) 側の Claude で同じ情報を共有するための同期ドキュメント。
 > 内容が更新されたら commit → push し、もう片方は git pull で最新化する。
@@ -66,6 +66,12 @@
 ## 準備タスク
 - **社美緒シャンパンコールの歌詞作成（〜10/31）**
 - LP／フライヤー制作（**期日: 16日**）
+  - ✅ フライヤー（A4 表裏）作成済み → `flyer.html`（ソース）
+    - 書き出し: `assets/charity/flyer/flyer_afterparty.pdf`（印刷用A4 2ページ）
+    - SNS/LINE用: `assets/charity/flyer/flyer_afterparty_a.jpg` ／ `_b.jpg`
+    - QR: `assets/charity/qr_lp.svg` → `charity.html`（LP）へ誘導
+    - デザインDNAは `charity.html` に合わせた（黒×金×クリムゾン／Oswald + Noto Sans JP）
+  - ⏳ LP（`charity.html`）は公開中だが CAMPFIRE 決済リンクが未設定
 
 ## 決定の経緯・メモ
 - アイドル席（5.5万・密着チェキ/限定Tシャツ/2ペア対決）は **廃止**
