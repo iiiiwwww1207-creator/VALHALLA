@@ -44,7 +44,9 @@
   /* 2枚目（席の説明）は安田講堂の“中”を透かす。客席が「席」の話と呼応する */
   .board.detail45 .bg,.board.detail11 .bg{
       background-image:url('assets/charity/venue/yasuda_hall_hq.jpg');
-      background-position:center 46%;opacity:.50}
+      /* 寄せると何の建物か分からないので、横幅いっぱいに“引き”で全景を見せる */
+      background-size:112% auto;background-position:center 40%;opacity:.72}
+  .board.detail11 .bg{background-size:104% auto;background-position:center 44%}
   .board.detail45 .veil,.board.detail11 .veil{
       background:linear-gradient(180deg,rgba(5,3,7,.72) 0%,rgba(5,3,7,.80) 26%,rgba(5,3,7,.90) 52%,rgba(5,3,7,.95) 100%)}
 
@@ -150,16 +152,16 @@
      サイズ別の寸法
      ========================================================== */
   /* ---- 1080x1350（Instagram フィード・Xタイムラインで最も大きく出る） ---- */
-  .feed45 .cast{height:398px}
-  .feed45 .cast .nm{font-size:40px;bottom:22px}
+  .feed45 .cast{height:522px}
+  .feed45 .cast .nm{font-size:44px;bottom:24px}
   .feed45 .head{padding:22px 70px 0}
-  .feed45 .head .mark{width:198px;margin-bottom:16px}
-  .feed45 .head h1{font-size:54px}
+  .feed45 .head .mark{width:230px;margin-bottom:20px}
+  .feed45 .head h1{font-size:60px}
   .feed45 .head .ruled{margin-top:16px}
   .feed45 .head .ruled span{font-size:24px}
-  .feed45 .tagline{margin-top:20px;font-size:44px}
-  .feed45 .when{margin-top:22px}
-  .feed45 .when .d{font-size:56px}
+  .feed45 .tagline{margin-top:26px;font-size:50px}
+  .feed45 .when{margin-top:24px}
+  .feed45 .when .d{font-size:62px}
   .feed45 .when .t{margin-top:14px;font-size:28px}
   .feed45 .when .v{margin-top:14px;font-size:30px}
   .feed45 .price{margin:18px 60px 0;padding:15px 0}
@@ -167,7 +169,7 @@
   .feed45 .price .p{margin-top:12px;font-size:44px}
   .feed45 .price .l{margin-top:10px;font-size:21px}
   .feed45 .price .feat .n::after{font-size:17px;padding:3px 8px}
-  .feed45 .donate{margin-top:15px;padding:0 70px}
+  .feed45 .donate{margin-top:22px;padding:0 70px}
   .feed45 .donate b{font-size:31px}
   .feed45 .donate span{margin-top:10px;font-size:22px}
   .feed45 .cta{padding:24px 40px 26px}
@@ -175,16 +177,16 @@
   .feed45 .cta u{margin-top:10px;font-size:23px}
 
   /* ---- 1080x1080（グリッド・X） ---- */
-  .square .cast{height:350px}
-  .square .cast .nm{font-size:34px;bottom:18px}
+  .square .cast{height:404px}
+  .square .cast .nm{font-size:38px;bottom:20px}
   .square .head{padding:18px 70px 0}
-  .square .head .mark{width:170px;margin-bottom:13px}
-  .square .head h1{font-size:46px}
+  .square .head .mark{width:196px;margin-bottom:16px}
+  .square .head h1{font-size:52px}
   .square .head .ruled{margin-top:16px}
   .square .head .ruled span{font-size:21px}
-  .square .tagline{margin-top:16px;font-size:38px}
-  .square .when{margin-top:15px}
-  .square .when .d{font-size:48px}
+  .square .tagline{margin-top:22px;font-size:44px}
+  .square .when{margin-top:20px}
+  .square .when .d{font-size:54px}
   .square .when .t{margin-top:11px;font-size:25px}
   .square .when .v{margin-top:11px;font-size:26px}
   .square .price{margin:14px 60px 0;padding:13px 0}
@@ -192,7 +194,9 @@
   .square .price .p{margin-top:9px;font-size:37px}
   .square .price .l{margin-top:8px;font-size:19px}
   .square .price .feat .n::after{font-size:15px;padding:2px 7px}
-  .square .donate{display:none}
+  .square .donate{margin-top:18px;padding:0 60px}
+  .square .donate b{font-size:27px}
+  .square .donate span{margin-top:9px;font-size:20px}
   .square .cta{padding:19px 40px 21px}
   .square .cta b{font-size:28px}
   .square .cta u{margin-top:8px;font-size:21px}
@@ -244,16 +248,17 @@
   /* ---- 1080x1920（ストーリー／リール）
          上下 240px は端末UIに隠れやすいのでセーフエリアを空ける ---- */
   .story{padding:120px 0 50px}
-  .story .cast{height:566px}
-  .story .cast .nm{font-size:46px;bottom:26px}
+  .story .bg{background-position:center 46%}
+  .story .cast{height:686px}
+  .story .cast .nm{font-size:52px;bottom:28px}
   .story .head{padding:36px 80px 0}
-  .story .head .mark{width:252px;margin-bottom:24px}
-  .story .head h1{font-size:66px}
+  .story .head .mark{width:290px;margin-bottom:28px}
+  .story .head h1{font-size:74px}
   .story .head .ruled{margin-top:28px}
   .story .head .ruled span{font-size:27px}
-  .story .tagline{margin-top:26px;font-size:54px}
-  .story .when{margin-top:34px}
-  .story .when .d{font-size:76px}
+  .story .tagline{margin-top:30px;font-size:54px}
+  .story .when{margin-top:28px}
+  .story .when .d{font-size:84px}
   .story .when .t{margin-top:18px;font-size:33px}
   .story .when .v{margin-top:18px;font-size:35px}
   .story .price{margin:28px 70px 0;padding:22px 0}
@@ -290,11 +295,6 @@
     <div class="t">OPEN 19:00 ｜ START 19:30</div>
     <div class="v">CÉ LA VI TOKYO（渋谷・17F）</div>
   </div>
-  <div class="price">
-    <div><div class="n">ライブ席</div><div class="p">¥15,000</div><div class="l">100名</div></div>
-    <div><div class="n">MIO席</div><div class="p">¥110,000</div><div class="l">20席</div></div>
-    <div class="feat"><div class="n">VVIP席</div><div class="p">¥330,000</div><div class="l">10卓</div></div>
-  </div>
   <div class="donate">
     <b>イベント収益は <i>東京大学に寄付</i> します</b>
     <span>VALHALLA アコースティックライブ ／ ホストコール体験</span>
@@ -324,11 +324,6 @@
     <div class="t">OPEN 19:00 ｜ START 19:30</div>
     <div class="v">CÉ LA VI TOKYO（渋谷・17F）</div>
   </div>
-  <div class="price">
-    <div><div class="n">ライブ席</div><div class="p">¥15,000</div><div class="l">100名</div></div>
-    <div><div class="n">MIO席</div><div class="p">¥110,000</div><div class="l">20席</div></div>
-    <div class="feat"><div class="n">VVIP席</div><div class="p">¥330,000</div><div class="l">10卓</div></div>
-  </div>
   <div class="cta">
     <b>イベント収益は東京大学に寄付します</b>
     <u>iiiiwwww1207-creator.github.io/VALHALLA/charity.html</u>
@@ -353,11 +348,6 @@
     <div class="d">2026.10.18 SUN</div>
     <div class="t">OPEN 19:00 ｜ START 19:30</div>
     <div class="v">CÉ LA VI TOKYO（渋谷・17F）</div>
-  </div>
-  <div class="price">
-    <div><div class="n">ライブ席</div><div class="p">¥15,000</div><div class="l">100名</div></div>
-    <div><div class="n">MIO席</div><div class="p">¥110,000</div><div class="l">20席</div></div>
-    <div class="feat"><div class="n">VVIP席</div><div class="p">¥330,000</div><div class="l">10卓</div></div>
   </div>
   <div class="donate">
     <b>イベント収益は <i>東京大学に寄付</i> します</b>
