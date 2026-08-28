@@ -9,16 +9,16 @@
 <style>
   /* ==========================================================
      告知用ティザー（内容確定前の第一報）
-     狙い: 「東京大学 × VALHALLA」を最大に見せる。それ以外は捨てる。
-       ・価格／タイムテーブル／席の特典／社塾／シャンパンコールは載せない
-       ・LPの2分割ヒーロー（赤い斜線＋白丸の ×）を主役に据える
-     ⚠️ 「コラボ／共催／後援」は東大の許諾が要る表現のため使わない。
-        事実（昼の本編の会場・収益の寄付先）のまま最大化する。
+     構成（kazuma 指示 2026-08-28）:
+       ・画面を「横の斜めスラッシュ」で上下に分割
+       ・上半分 = VALHALLA（上端に向かうほどくっきり）
+       ・下半分 = 東京大学 安田講堂（下端に向かうほどくっきり）
+       ・中央は暗く落とし、そこに文字を置く
+     ⚠️「コラボ／共催／後援」は東大の許諾が要る表現のため使わない。
      ========================================================== */
   :root{
     --bg:#050307; --ink:#F5EFE4; --sub:rgba(245,239,228,.74);
-    --line:rgba(255,255,255,.14); --rule:rgba(232,203,133,.5);
-    --gold:#E8CB85; --grey-d:#9C9CA4; --crimson:#C1121F;
+    --rule:rgba(232,203,133,.5); --gold:#E8CB85; --grey-d:#9C9CA4; --crimson:#C1121F;
   }
   *{box-sizing:border-box;margin:0;padding:0;border-radius:0}
   html,body{background:#141416}
@@ -27,203 +27,182 @@
        align-items:center;gap:40px;padding:40px 0}
 
   .board{position:relative;width:1080px;overflow:hidden;background:var(--bg);
-    display:flex;flex-direction:column;isolation:isolate;
+    isolation:isolate;
+    /* 斜めの落差（左端が下・右端が上）。全サイズ共通で角度を揃える */
+    --drop:62px;
     -webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .board.t45{height:1350px}
-  .board.t11{height:1080px}
-  .board.t916{height:1920px}
+  .board.t45{height:1350px;--mid:640px}
+  .board.t11{height:1080px;--mid:512px}
+  .board.t916{height:1920px;--mid:930px}
 
-  .glow{position:absolute;inset:0;z-index:-1;
-    background:radial-gradient(ellipse 80% 26% at 50% 76%, rgba(176,20,28,.34), transparent 74%)}
+  /* ── 上半分：VALHALLA ── */
+  .up{position:absolute;inset:0;z-index:0;background-repeat:no-repeat;
+    clip-path:polygon(0 0,100% 0,100% calc(var(--mid) - var(--drop)),0 calc(var(--mid) + var(--drop)))}
+  /* ── 下半分：東京大学 安田講堂 ── */
+  .dn{position:absolute;inset:0;z-index:0;background-repeat:no-repeat;
+    clip-path:polygon(0 calc(var(--mid) + var(--drop)),100% calc(var(--mid) - var(--drop)),100% 100%,0 100%)}
 
-  /* ── 2分割ビジュアル（VALHALLA × 東京大学） ── */
-  .split{position:relative;flex:none;overflow:hidden;background:#000}
-  .split .a{position:absolute;left:0;top:0;width:56%;height:100%;
-    background-image:linear-gradient(180deg,rgba(5,3,7,.04) 40%,rgba(5,3,7,.45) 62%,rgba(5,3,7,.9) 84%,rgba(5,3,7,.97) 100%),url('assets/charity/group_field.jpg');
-    background-size:cover,cover;background-repeat:no-repeat}
-  .split .b{position:absolute;inset:0;clip-path:polygon(54% 0,100% 0,100% 100%,44% 100%);
-    background-image:linear-gradient(180deg,rgba(5,3,7,.06) 40%,rgba(5,3,7,.45) 62%,rgba(5,3,7,.9) 84%,rgba(5,3,7,.97) 100%),url('assets/charity/venue/yasuda1.jpg');
-    background-size:cover,150% auto;background-repeat:no-repeat}
-  .split .line{position:absolute;top:-8%;left:50%;z-index:3;
-    background:linear-gradient(180deg,transparent,var(--crimson),var(--crimson),transparent);
-    transform:translateX(-50%) skewX(-9deg)}
-  .split .x{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:4;
-    border-radius:50%;background:rgba(5,3,7,.74);border:3px solid #fff;color:#fff;
-    display:flex;align-items:center;justify-content:center;font-weight:300;line-height:1}
-  .split .lab{position:absolute;bottom:0;z-index:4;color:#fff;text-align:center}
-  .split .lab b{display:block;font-family:'Oswald',sans-serif;font-weight:400;color:#fff;line-height:1}
-  .split .lab b.jp{font-family:"Noto Sans JP",sans-serif;font-weight:700}
-  .split .lab span{display:block;color:rgba(245,239,228,.72)}
-  .split .la{left:0;width:52%}
-  .split .lc{right:0;width:44%}
-  .split::after{content:"";position:absolute;left:0;right:0;bottom:0;z-index:5;
-    background:linear-gradient(transparent,var(--bg))}
+  /* 中央に向かって暗く落とすスクリム（写真の上に重ねる） */
+  .up::after,.dn::after{content:"";position:absolute;inset:0}
+  .up::after{background:linear-gradient(180deg,
+      rgba(5,3,7,.18) 0%, rgba(5,3,7,.06) 14%, rgba(5,3,7,.20) 27%,
+      rgba(5,3,7,.54) 35%, rgba(5,3,7,.86) 41%, rgba(5,3,7,.98) 46%, #050307 51%)}
+  .dn::after{background:linear-gradient(0deg,
+      rgba(5,3,7,.18) 0%, rgba(5,3,7,.08) 13%, rgba(5,3,7,.28) 23%,
+      rgba(5,3,7,.66) 30%, rgba(5,3,7,.92) 36%, rgba(5,3,7,.98) 42%, #050307 48%)}
 
-  /* ── 文字 ── */
-  .body{position:relative;z-index:2;text-align:center;flex:1;
-    display:flex;flex-direction:column;justify-content:center}
+  /* 分割の斜線（クリムゾン） */
+  .slash{position:absolute;left:-14%;width:128%;z-index:2;
+    top:calc(var(--mid) - 3px);height:6px;
+    background:linear-gradient(90deg,transparent 0,var(--crimson) 9%,var(--crimson) 27%,
+      transparent 36%,transparent 64%,var(--crimson) 73%,var(--crimson) 91%,transparent 100%);
+    transform:rotate(-6.55deg)}
+
+  /* 端に置く小さなラベル */
+  .tag{position:absolute;z-index:3;color:#fff;letter-spacing:.10em;
+    text-shadow:0 2px 14px rgba(5,3,7,.95),0 0 30px rgba(5,3,7,.8)}
+  .tag b{display:block;font-family:'Oswald',sans-serif;font-weight:400;letter-spacing:.20em;color:#fff}
+  .tag b.jp{font-family:"Noto Sans JP",sans-serif;font-weight:700;letter-spacing:.12em}
+  .tag span{display:block;color:rgba(245,239,228,.7)}
+  .tag.up-tag{left:0;right:0;text-align:center}
+  .tag.dn-tag{left:0;right:0;text-align:center}
+
+  /* ── 中央の文字 ── */
+  .body{position:absolute;left:0;right:0;z-index:4;text-align:center;
+    top:var(--mid);transform:translateY(-50%)}
+  .pair{font-weight:700;color:#fff;letter-spacing:.10em;line-height:1}
+  .pair i{font-style:normal;color:var(--crimson);font-weight:400;
+    font-family:'Oswald',sans-serif;margin:0 .5em}
+  .pair em{font-style:normal;font-family:'Oswald',sans-serif;font-weight:400;letter-spacing:.14em}
   .mark{display:block;margin:0 auto;filter:drop-shadow(0 6px 22px rgba(0,0,0,.9))}
   h1{font-family:'Oswald',sans-serif;font-weight:300;line-height:1.04;
     letter-spacing:.16em;text-indent:.16em;text-transform:uppercase;color:var(--ink)}
   .date{font-family:'Oswald',sans-serif;font-weight:300;letter-spacing:.10em;color:#fff;line-height:1}
-  .ruled{display:flex;align-items:center;justify-content:center;gap:20px}
-  .ruled::before,.ruled::after{content:"";height:1px;background:var(--rule);flex:1;max-width:130px}
+  .ruled{display:flex;align-items:center;justify-content:center;gap:18px}
+  .ruled::before,.ruled::after{content:"";height:1px;background:var(--rule);flex:1;max-width:120px}
   .ruled span{font-weight:500;color:var(--gold);white-space:nowrap}
   .donate{font-weight:700;color:#fff}
   .donate i{font-style:normal;color:var(--gold)}
-
-  .cta{background:var(--crimson);color:#fff;text-align:center;flex:none}
-  .cta b{display:block;font-weight:700;letter-spacing:.14em}
-  .cta u{display:block;font-family:'Oswald',sans-serif;font-weight:300;
-    text-decoration:none;letter-spacing:.02em;color:#fff}
+  .more{color:rgba(245,239,228,.86)}
+  .more u{display:block;font-family:'Oswald',sans-serif;font-weight:300;
+    text-decoration:none;color:var(--grey-d)}
 
   /* ---------- 1080x1350 ---------- */
-  .t45 .split{height:660px}
-  .t45 .split .a{background-position:center,center 40%}
-  .t45 .split .b{background-position:center,15% 35%}
-  .t45 .split .line{width:5px;height:116%}
-  .t45 .split .x{width:96px;height:96px;font-size:44px;padding-bottom:4px}
-  .t45 .split .lab{bottom:26px}
-  .t45 .split .lab b{font-size:34px;letter-spacing:.18em}
-  .t45 .split .lab b.jp{font-size:31px;letter-spacing:.10em}
-  .t45 .split .lab span{margin-top:9px;font-size:20px;letter-spacing:.10em}
-  .t45 .split::after{height:120px}
-  .t45 .body{padding:0 70px}
-  .t45 .mark{width:200px;margin-bottom:22px}
+  .t45 .up{background-image:url('assets/charity/group_field.jpg');
+    background-size:100% auto;background-position:center -492px}
+  .t45 .dn{background-image:url('assets/charity/venue/yasuda1.jpg');
+    background-size:145% auto;background-position:48% 640px}
+  .t45 .up-tag{top:34px}
+  .t45 .dn-tag{bottom:30px}
+  .t45 .tag b{font-size:29px}
+  .t45 .tag b.jp{font-size:27px}
+  .t45 .tag span{margin-top:8px;font-size:19px}
+  .t45 .pair{font-size:33px}
+  .t45 .pair i{font-size:36px}
+  .t45 .pair em{font-size:35px}
+  .t45 .mark{width:150px;margin:22px auto 16px}
   .t45 h1{font-size:66px}
-  .t45 .ruled{margin-top:24px}
-  .t45 .ruled span{font-size:25px}
-  .t45 .date{margin-top:28px;font-size:64px}
-  .t45 .donate{margin-top:30px;font-size:31px}
-  .t45 .cta{padding:24px 40px 26px}
-  .t45 .cta b{font-size:31px}
-  .t45 .cta u{margin-top:10px;font-size:23px}
+  .t45 .ruled{margin-top:20px}
+  .t45 .ruled span{font-size:23px}
+  .t45 .date{margin-top:24px;font-size:60px}
+  .t45 .donate{margin-top:24px;font-size:29px}
+  .t45 .more{margin-top:20px;font-size:22px}
+  .t45 .more u{margin-top:8px;font-size:20px}
 
   /* ---------- 1080x1080 ---------- */
-  .t11 .split{height:540px}
-  .t11 .split .a{background-position:center,center 40%}
-  .t11 .split .b{background-position:center,15% 35%}
-  .t11 .split .line{width:5px;height:116%}
-  .t11 .split .x{width:84px;height:84px;font-size:38px;padding-bottom:4px}
-  .t11 .split .lab{bottom:22px}
-  .t11 .split .lab b{font-size:30px;letter-spacing:.18em}
-  .t11 .split .lab b.jp{font-size:27px;letter-spacing:.10em}
-  .t11 .split .lab span{margin-top:8px;font-size:18px;letter-spacing:.10em}
-  .t11 .split::after{height:100px}
-  .t11 .body{padding:0 70px}
-  .t11 .mark{width:168px;margin-bottom:17px}
-  .t11 h1{font-size:56px}
-  .t11 .ruled{margin-top:19px}
-  .t11 .ruled span{font-size:22px}
-  .t11 .date{margin-top:22px;font-size:54px}
-  .t11 .donate{margin-top:22px;font-size:27px}
-  .t11 .cta{padding:19px 40px 21px}
-  .t11 .cta b{font-size:28px}
-  .t11 .cta u{margin-top:8px;font-size:21px}
+  .t11 .up{background-image:url('assets/charity/group_field.jpg');
+    background-size:100% auto;background-position:center -484px}
+  .t11 .dn{background-image:url('assets/charity/venue/yasuda1.jpg');
+    background-size:145% auto;background-position:48% 510px}
+  .t11 .up-tag{top:28px}
+  .t11 .dn-tag{bottom:24px}
+  .t11 .tag b{font-size:26px}
+  .t11 .tag b.jp{font-size:24px}
+  .t11 .tag span{margin-top:7px;font-size:18px}
+  .t11 .pair{font-size:29px}
+  .t11 .pair i{font-size:32px}
+  .t11 .pair em{font-size:31px}
+  .t11 .mark{width:126px;margin:17px auto 13px}
+  .t11 h1{font-size:55px}
+  .t11 .ruled{margin-top:16px}
+  .t11 .ruled span{font-size:20px}
+  .t11 .date{margin-top:19px;font-size:50px}
+  .t11 .donate{margin-top:19px;font-size:26px}
+  .t11 .more{margin-top:16px;font-size:20px}
+  .t11 .more u{margin-top:7px;font-size:18px}
 
-  /* ---------- 1080x1920（ストーリー／リール） ---------- */
-  .t916{padding:110px 0 44px}
-  .t916 .split{height:900px}
-  .t916 .split .a{background-position:center,center 40%}
-  .t916 .split .b{background-position:center,15% 35%}
-  .t916 .split .line{width:6px;height:116%}
-  .t916 .split .x{width:118px;height:118px;font-size:54px;padding-bottom:5px}
-  .t916 .split .lab{bottom:32px}
-  .t916 .split .lab b{font-size:40px;letter-spacing:.18em}
-  .t916 .split .lab b.jp{font-size:36px;letter-spacing:.10em}
-  .t916 .split .lab span{margin-top:11px;font-size:23px;letter-spacing:.10em}
-  .t916 .split::after{height:150px}
-  .t916 .body{padding:0 80px}
-  .t916 .mark{width:250px;margin-bottom:28px}
-  .t916 h1{font-size:80px}
-  .t916 .ruled{margin-top:30px}
-  .t916 .ruled span{font-size:30px}
-  .t916 .date{margin-top:36px;font-size:78px}
-  .t916 .donate{margin-top:38px;font-size:37px}
-  .t916 .cta{padding:30px 40px 32px}
-  .t916 .cta b{font-size:37px}
-  .t916 .cta u{margin-top:12px;font-size:26px}
+  /* ---------- 1080x1920 ---------- */
+  .t916 .up{background-image:url('assets/charity/group_field.jpg');
+    background-size:100% auto;background-position:center -220px}
+  .t916 .dn{background-image:url('assets/charity/venue/yasuda1.jpg');
+    background-size:165% auto;background-position:48% 930px}
+  .t916 .up-tag{top:150px}
+  .t916 .dn-tag{bottom:120px}
+  .t916 .tag b{font-size:34px}
+  .t916 .tag b.jp{font-size:32px}
+  .t916 .tag span{margin-top:10px;font-size:22px}
+  .t916 .pair{font-size:39px}
+  .t916 .pair i{font-size:43px}
+  .t916 .pair em{font-size:41px}
+  .t916 .mark{width:180px;margin:28px auto 20px}
+  .t916 h1{font-size:78px}
+  .t916 .ruled{margin-top:26px}
+  .t916 .ruled span{font-size:27px}
+  .t916 .date{margin-top:30px;font-size:72px}
+  .t916 .donate{margin-top:30px;font-size:35px}
+  .t916 .more{margin-top:26px;font-size:26px}
+  .t916 .more u{margin-top:9px;font-size:23px}
 </style>
 </head>
 <body>
 
 <section class="board t45">
-  <div class="glow"></div>
+  <div class="up"></div>
+  <div class="dn"></div>
+  <div class="slash"></div>
 
-  <div class="split">
-    <div class="a"></div>
-    <div class="b"></div>
-    <div class="line"></div>
-    <div class="x">×</div>
-    <div class="lab la"><b>VALHALLA</b><span>MIO ／ KØU ／ RAY</span></div>
-    <div class="lab lc"><b class="jp">東京大学</b><span>安田講堂</span></div>
-  </div>
 
   <div class="body">
-    <img class="mark" src="assets/charity/logo_gold.webp" alt="VALHALLA">
+    <div class="pair"><em>VALHALLA</em><i>×</i>東京大学</div>
     <h1>Charity Live</h1>
     <div class="ruled"><span>昼 東京大学 安田講堂 ／ 夜 CÉ LA VI 渋谷</span></div>
     <div class="date">2026.10.18 SUN</div>
     <div class="donate">イベント収益は <i>東京大学に寄付</i> します</div>
-  </div>
-
-  <div class="cta">
-    <b>詳細は追ってお知らせします</b>
-    <u>iiiiwwww1207-creator.github.io/VALHALLA/charity.html</u>
+    <div class="more">詳細は追ってお知らせします</div>
   </div>
 </section>
 
 
 <section class="board t11">
-  <div class="glow"></div>
+  <div class="up"></div>
+  <div class="dn"></div>
+  <div class="slash"></div>
 
-  <div class="split">
-    <div class="a"></div>
-    <div class="b"></div>
-    <div class="line"></div>
-    <div class="x">×</div>
-    <div class="lab la"><b>VALHALLA</b><span>MIO ／ KØU ／ RAY</span></div>
-    <div class="lab lc"><b class="jp">東京大学</b><span>安田講堂</span></div>
-  </div>
 
   <div class="body">
-    <img class="mark" src="assets/charity/logo_gold.webp" alt="VALHALLA">
+    <div class="pair"><em>VALHALLA</em><i>×</i>東京大学</div>
     <h1>Charity Live</h1>
     <div class="ruled"><span>昼 東京大学 安田講堂 ／ 夜 CÉ LA VI 渋谷</span></div>
     <div class="date">2026.10.18 SUN</div>
     <div class="donate">イベント収益は <i>東京大学に寄付</i> します</div>
-  </div>
-
-  <div class="cta">
-    <b>詳細は追ってお知らせします</b>
-    <u>iiiiwwww1207-creator.github.io/VALHALLA/charity.html</u>
+    <div class="more">詳細は追ってお知らせします</div>
   </div>
 </section>
 
 
 <section class="board t916">
-  <div class="glow"></div>
+  <div class="up"></div>
+  <div class="dn"></div>
+  <div class="slash"></div>
 
-  <div class="split">
-    <div class="a"></div>
-    <div class="b"></div>
-    <div class="line"></div>
-    <div class="x">×</div>
-    <div class="lab la"><b>VALHALLA</b><span>MIO ／ KØU ／ RAY</span></div>
-    <div class="lab lc"><b class="jp">東京大学</b><span>安田講堂</span></div>
-  </div>
 
   <div class="body">
-    <img class="mark" src="assets/charity/logo_gold.webp" alt="VALHALLA">
+    <div class="pair"><em>VALHALLA</em><i>×</i>東京大学</div>
     <h1>Charity Live</h1>
     <div class="ruled"><span>昼 東京大学 安田講堂 ／ 夜 CÉ LA VI 渋谷</span></div>
     <div class="date">2026.10.18 SUN</div>
     <div class="donate">イベント収益は <i>東京大学に寄付</i> します</div>
-  </div>
-
-  <div class="cta">
-    <b>詳細は追ってお知らせします</b>
-    <u>iiiiwwww1207-creator.github.io/VALHALLA/charity.html</u>
+    <div class="more">詳細は追ってお知らせします</div>
   </div>
 </section>
 
