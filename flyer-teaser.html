@@ -36,8 +36,15 @@
   .board.t916{height:1920px;--mid:930px}
 
   /* ── 上半分：VALHALLA ── */
-  .up{position:absolute;inset:0;z-index:0;background-repeat:no-repeat;
+  .upbg,.up{position:absolute;inset:0;z-index:0;background-repeat:no-repeat;
     clip-path:polygon(0 0,100% 0,100% calc(var(--mid) - var(--drop)),0 calc(var(--mid) + var(--drop)))}
+  /* 隙間を埋めるぼかし面 */
+  .upbg{background-image:url('assets/charity/group_field.jpg');
+    background-size:cover;background-position:center 28%;
+    filter:blur(44px) brightness(.46) saturate(.85);transform:scale(1.2)}
+  /* 前面の実寸写真（左右をフェードさせてぼかし面に溶かす） */
+  .up{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%);
+    mask-image:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%)}
   /* ── 下半分：東京大学 安田講堂 ── */
   .dn{position:absolute;inset:0;z-index:0;background-repeat:no-repeat;
     clip-path:polygon(0 calc(var(--mid) + var(--drop)),100% calc(var(--mid) - var(--drop)),100% 100%,0 100%)}
@@ -45,8 +52,8 @@
   /* 中央に向かって暗く落とすスクリム（写真の上に重ねる） */
   .up::after,.dn::after{content:"";position:absolute;inset:0}
   .up::after{background:linear-gradient(180deg,
-      rgba(5,3,7,.18) 0%, rgba(5,3,7,.06) 14%, rgba(5,3,7,.20) 27%,
-      rgba(5,3,7,.54) 35%, rgba(5,3,7,.86) 41%, rgba(5,3,7,.98) 46%, #050307 51%)}
+      rgba(5,3,7,.18) 0%, rgba(5,3,7,.05) 16%, rgba(5,3,7,.14) 30%,
+      rgba(5,3,7,.46) 37%, rgba(5,3,7,.84) 43%, rgba(5,3,7,.97) 47%, #050307 52%)}
   .dn::after{background:linear-gradient(0deg,
       rgba(5,3,7,.18) 0%, rgba(5,3,7,.08) 13%, rgba(5,3,7,.28) 23%,
       rgba(5,3,7,.66) 30%, rgba(5,3,7,.92) 36%, rgba(5,3,7,.98) 42%, #050307 48%)}
@@ -89,9 +96,9 @@
 
   /* ---------- 1080x1350 ---------- */
   .t45 .up{background-image:url('assets/charity/group_field.jpg');
-    background-size:100% auto;background-position:center -492px}
+    background-size:88% auto;background-position:center -419px}
   .t45 .dn{background-image:url('assets/charity/venue/yasuda1.jpg');
-    background-size:145% auto;background-position:48% 640px}
+    background-size:100% auto;background-position:center 649px}
   .t45 .up-tag{top:34px}
   .t45 .dn-tag{bottom:30px}
   .t45 .tag b{font-size:29px}
@@ -111,9 +118,9 @@
 
   /* ---------- 1080x1080 ---------- */
   .t11 .up{background-image:url('assets/charity/group_field.jpg');
-    background-size:100% auto;background-position:center -484px}
+    background-size:70% auto;background-position:center -337px}
   .t11 .dn{background-image:url('assets/charity/venue/yasuda1.jpg');
-    background-size:145% auto;background-position:48% 510px}
+    background-size:100% auto;background-position:center 379px}
   .t11 .up-tag{top:28px}
   .t11 .dn-tag{bottom:24px}
   .t11 .tag b{font-size:26px}
@@ -133,9 +140,9 @@
 
   /* ---------- 1080x1920 ---------- */
   .t916 .up{background-image:url('assets/charity/group_field.jpg');
-    background-size:100% auto;background-position:center -220px}
+    background-size:100% auto;background-position:center -400px}
   .t916 .dn{background-image:url('assets/charity/venue/yasuda1.jpg');
-    background-size:165% auto;background-position:48% 930px}
+    background-size:134% auto;background-position:48% 982px}
   .t916 .up-tag{top:150px}
   .t916 .dn-tag{bottom:120px}
   .t916 .tag b{font-size:34px}
@@ -157,6 +164,7 @@
 <body>
 
 <section class="board t45">
+  <div class="upbg"></div>
   <div class="up"></div>
   <div class="dn"></div>
   <div class="slash"></div>
@@ -174,6 +182,7 @@
 
 
 <section class="board t11">
+  <div class="upbg"></div>
   <div class="up"></div>
   <div class="dn"></div>
   <div class="slash"></div>
@@ -191,6 +200,7 @@
 
 
 <section class="board t916">
+  <div class="upbg"></div>
   <div class="up"></div>
   <div class="dn"></div>
   <div class="slash"></div>
