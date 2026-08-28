@@ -51,14 +51,14 @@
     clip-path:polygon(0 calc(var(--mb) + var(--drop)),100% calc(var(--mb) - var(--drop)),100% 100%,0 100%)}
   /* 中央帯：CÉ LA VI（この夜の舞台）。文字の下地も兼ねる */
   .md{position:absolute;inset:0;z-index:0;background-repeat:no-repeat;
-    background-image:url('assets/charity/venue/dj.jpg');
-    background-size:cover;background-position:center 42%;
+    background-image:url('assets/charity/venue/yasuda1.jpg');
+    filter:grayscale(.38) sepia(.12) contrast(1.14);
     clip-path:polygon(0 calc(var(--ma) + var(--drop)),100% calc(var(--ma) - var(--drop)),
                       100% calc(var(--mb) - var(--drop)),0 calc(var(--mb) + var(--drop)))}
   .md::after{content:"";position:absolute;inset:0;
     background:linear-gradient(180deg,
-      rgba(5,3,7,.94) 0%, rgba(5,3,7,.56) 13%, rgba(5,3,7,.44) 50%,
-      rgba(5,3,7,.60) 85%, rgba(5,3,7,.94) 100%)}
+      rgba(5,3,7,.95) 0%, rgba(5,3,7,.70) 13%, rgba(5,3,7,.62) 50%,
+      rgba(5,3,7,.74) 85%, rgba(5,3,7,.95) 100%)}
 
   /* 中央に向かって暗く落とすスクリム（写真の上に重ねる） */
   .up::after,.dn::after{content:"";position:absolute;inset:0}
@@ -107,10 +107,11 @@
     text-decoration:none;color:var(--grey-d)}
 
   /* ---------- 1080x1350 ---------- */
+  .t45 .md{background-size:100% auto;background-position:center 470px}
   .t45 .up{background-image:url('assets/charity/group_field.jpg');
     background-size:88% auto;background-position:center -419px}
-  .t45 .dn{background-image:url('assets/charity/venue/yasuda1.jpg');
-    background-size:100% auto;background-position:center 649px}
+  .t45 .dn{background-image:url('assets/charity/venue/dj.jpg');
+    background-size:100% auto;background-position:center 742px}
   .t45 .up-tag{top:34px}
   .t45 .dn-tag{bottom:30px}
   .t45 .tag b{font-size:29px}
@@ -129,10 +130,11 @@
   .t45 .more u{margin-top:8px;font-size:20px}
 
   /* ---------- 1080x1080 ---------- */
+  .t11 .md{background-size:100% auto;background-position:center 340px}
   .t11 .up{background-image:url('assets/charity/group_field.jpg');
     background-size:70% auto;background-position:center -337px}
-  .t11 .dn{background-image:url('assets/charity/venue/yasuda1.jpg');
-    background-size:100% auto;background-position:center 379px}
+  .t11 .dn{background-image:url('assets/charity/venue/dj.jpg');
+    background-size:100% auto;background-position:center 472px}
   .t11 .up-tag{top:28px}
   .t11 .dn-tag{bottom:24px}
   .t11 .tag b{font-size:26px}
@@ -151,10 +153,11 @@
   .t11 .more u{margin-top:7px;font-size:18px}
 
   /* ---------- 1080x1920 ---------- */
+  .t916 .md{background-size:100% auto;background-position:center 726px}
   .t916 .up{background-image:url('assets/charity/group_field.jpg');
     background-size:100% auto;background-position:center -500px}
-  .t916 .dn{background-image:url('assets/charity/venue/yasuda1.jpg');
-    background-size:118% auto;background-position:center 1093px}
+  .t916 .dn{background-image:url('assets/charity/venue/dj.jpg');
+    background-size:120% auto;background-position:center 1191px}
   .t916 .up-tag{top:150px}
   .t916 .dn-tag{bottom:120px}
   .t916 .tag b{font-size:34px}
