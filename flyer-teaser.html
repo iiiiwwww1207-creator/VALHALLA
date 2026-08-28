@@ -32,9 +32,9 @@
     --drop:62px;
     -webkit-print-color-adjust:exact;print-color-adjust:exact}
   /* --ma = 上の境界 / --mb = 下の境界。その間が CÉ LA VI の帯 */
-  .board.t45{height:1350px;--ma:498px;--mb:900px}
-  .board.t11{height:1080px;--ma:372px;--mb:742px}
-  .board.t916{height:1920px;--ma:700px;--mb:1252px}
+  .board.t45{height:1350px;--ma:470px;--mb:936px}
+  .board.t11{height:1080px;--ma:352px;--mb:764px}
+  .board.t916{height:1920px;--ma:660px;--mb:1336px}
 
   /* ── 上半分：VALHALLA ── */
   .upbg,.up{position:absolute;inset:0;z-index:0;background-repeat:no-repeat;
@@ -70,13 +70,18 @@
       rgba(5,3,7,.60) 27%, rgba(5,3,7,.88) 31%, rgba(5,3,7,.97) 35%, #050307 38%)}
 
   /* 分割の斜線（クリムゾン） */
-  .slash{position:absolute;left:-14%;width:128%;z-index:2;height:5px;
+  .slash{position:absolute;left:-14%;width:128%;z-index:2;height:8px;
     background:linear-gradient(90deg,transparent 0,var(--crimson) 9%,var(--crimson) 91%,transparent 100%);
     transform:rotate(-6.55deg)}
-  .slash.s1{top:calc(var(--ma) - 2.5px)}
-  .slash.s2{top:calc(var(--mb) - 2.5px)}
+  .slash.s1{top:calc(var(--ma) - 4px)}
+  .slash.s2{top:calc(var(--mb) - 4px)}
 
-  /* 端に置く小さなラベル */
+  /* 文字帯にクリムゾンの焦点を寄せる */
+  .focus{position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:radial-gradient(ellipse 92% 15% at 50% calc((var(--ma) + var(--mb)) / 2),
+      rgba(176,20,28,.42), transparent 72%)}
+
+  /* ── 中央の文字 ── */
   .tag{position:absolute;z-index:3;color:#fff;letter-spacing:.10em;
     text-shadow:0 2px 14px rgba(5,3,7,.95),0 0 30px rgba(5,3,7,.8)}
   .tag b{display:block;font-family:'Oswald',sans-serif;font-weight:400;letter-spacing:.20em;color:#fff}
@@ -90,13 +95,13 @@
     top:calc((var(--ma) + var(--mb)) / 2);transform:translateY(-50%);
     text-shadow:0 2px 14px rgba(5,3,7,.95),0 0 34px rgba(5,3,7,.85)}
   .pair{font-weight:700;color:#fff;letter-spacing:.10em;line-height:1}
-  .pair i{font-style:normal;color:var(--crimson);font-weight:400;
-    font-family:'Oswald',sans-serif;margin:0 .5em}
-  .pair em{font-style:normal;font-family:'Oswald',sans-serif;font-weight:400;letter-spacing:.14em}
+  .pair i{font-style:normal;color:var(--crimson);font-weight:500;
+    font-family:'Oswald',sans-serif;margin:0 .36em;vertical-align:-.06em}
+  .pair em{font-style:normal;font-family:'Oswald',sans-serif;font-weight:500;letter-spacing:.12em}
   .mark{display:block;margin:0 auto;filter:drop-shadow(0 6px 22px rgba(0,0,0,.9))}
-  h1{font-family:'Oswald',sans-serif;font-weight:300;line-height:1.04;
-    letter-spacing:.16em;text-indent:.16em;text-transform:uppercase;color:var(--ink)}
-  .date{font-family:'Oswald',sans-serif;font-weight:300;letter-spacing:.10em;color:#fff;line-height:1}
+  h1{font-family:'Oswald',sans-serif;font-weight:400;line-height:1.02;
+    letter-spacing:.13em;text-indent:.13em;text-transform:uppercase;color:#fff}
+  .date{font-family:'Oswald',sans-serif;font-weight:400;letter-spacing:.08em;color:#fff;line-height:1}
   .ruled{display:flex;align-items:center;justify-content:center;gap:18px}
   .ruled::before,.ruled::after{content:"";height:1px;background:var(--rule);flex:1;max-width:120px}
   .ruled span{font-weight:500;color:var(--gold);white-space:nowrap}
@@ -117,22 +122,22 @@
   .t45 .tag b{font-size:29px}
   .t45 .tag b.jp{font-size:27px}
   .t45 .tag span{margin-top:8px;font-size:19px}
-  .t45 .pair{font-size:33px}
-  .t45 .pair i{font-size:36px}
-  .t45 .pair em{font-size:35px}
+  .t45 .pair{font-size:46px}
+  .t45 .pair i{font-size:60px}
+  .t45 .pair em{font-size:48px}
   .t45 .mark{width:150px;margin:22px auto 16px}
-  .t45 h1{font-size:66px}
+  .t45 h1{margin-top:12px;font-size:84px}
   .t45 .ruled{margin-top:20px}
-  .t45 .ruled span{font-size:23px}
-  .t45 .date{margin-top:24px;font-size:60px}
-  .t45 .donate{margin-top:24px;font-size:29px}
-  .t45 .more{margin-top:20px;font-size:22px}
+  .t45 .ruled span{font-size:25px}
+  .t45 .date{margin-top:26px;font-size:72px}
+  .t45 .donate{margin-top:26px;font-size:33px}
+  .t45 .more{margin-top:22px;font-size:23px}
   .t45 .more u{margin-top:8px;font-size:20px}
 
   /* ---------- 1080x1080 ---------- */
   .t11 .md{background-size:100% auto;background-position:center 340px}
   .t11 .up{background-image:url('assets/charity/group_field.jpg');
-    background-size:70% auto;background-position:center -337px}
+    background-size:60% auto;background-position:center -294px}
   .t11 .dn{background-image:url('assets/charity/venue/dj.jpg');
     background-size:100% auto;background-position:center 472px}
   .t11 .up-tag{top:28px}
@@ -140,16 +145,16 @@
   .t11 .tag b{font-size:26px}
   .t11 .tag b.jp{font-size:24px}
   .t11 .tag span{margin-top:7px;font-size:18px}
-  .t11 .pair{font-size:29px}
-  .t11 .pair i{font-size:32px}
-  .t11 .pair em{font-size:31px}
+  .t11 .pair{font-size:40px}
+  .t11 .pair i{font-size:52px}
+  .t11 .pair em{font-size:42px}
   .t11 .mark{width:126px;margin:17px auto 13px}
-  .t11 h1{font-size:55px}
-  .t11 .ruled{margin-top:16px}
-  .t11 .ruled span{font-size:20px}
-  .t11 .date{margin-top:19px;font-size:50px}
-  .t11 .donate{margin-top:19px;font-size:26px}
-  .t11 .more{margin-top:16px;font-size:20px}
+  .t11 h1{margin-top:10px;font-size:70px}
+  .t11 .ruled{margin-top:17px}
+  .t11 .ruled span{font-size:21px}
+  .t11 .date{margin-top:21px;font-size:60px}
+  .t11 .donate{margin-top:21px;font-size:28px}
+  .t11 .more{margin-top:18px;font-size:20px}
   .t11 .more u{margin-top:7px;font-size:18px}
 
   /* ---------- 1080x1920 ---------- */
@@ -163,16 +168,16 @@
   .t916 .tag b{font-size:34px}
   .t916 .tag b.jp{font-size:32px}
   .t916 .tag span{margin-top:10px;font-size:22px}
-  .t916 .pair{font-size:39px}
-  .t916 .pair i{font-size:43px}
-  .t916 .pair em{font-size:41px}
+  .t916 .pair{font-size:60px}
+  .t916 .pair i{font-size:78px}
+  .t916 .pair em{font-size:62px}
   .t916 .mark{width:180px;margin:28px auto 20px}
-  .t916 h1{font-size:78px}
+  .t916 h1{margin-top:16px;font-size:104px}
   .t916 .ruled{margin-top:26px}
-  .t916 .ruled span{font-size:27px}
-  .t916 .date{margin-top:30px;font-size:72px}
-  .t916 .donate{margin-top:30px;font-size:35px}
-  .t916 .more{margin-top:26px;font-size:26px}
+  .t916 .ruled span{font-size:30px}
+  .t916 .date{margin-top:34px;font-size:88px}
+  .t916 .donate{margin-top:32px;font-size:40px}
+  .t916 .more{margin-top:28px;font-size:27px}
   .t916 .more u{margin-top:9px;font-size:23px}
 </style>
 </head>
@@ -185,6 +190,7 @@
   <div class="dn"></div>
   <div class="slash s1"></div>
   <div class="slash s2"></div>
+  <div class="focus"></div>
 
 
   <div class="body">
@@ -205,6 +211,7 @@
   <div class="dn"></div>
   <div class="slash s1"></div>
   <div class="slash s2"></div>
+  <div class="focus"></div>
 
 
   <div class="body">
@@ -225,6 +232,7 @@
   <div class="dn"></div>
   <div class="slash s1"></div>
   <div class="slash s2"></div>
+  <div class="focus"></div>
 
 
   <div class="body">
