@@ -32,9 +32,9 @@
     --drop:62px;
     -webkit-print-color-adjust:exact;print-color-adjust:exact}
   /* --ma = 上の境界 / --mb = 下の境界。その間が CÉ LA VI の帯 */
-  .board.t45{height:1350px;--ma:470px;--mb:936px}
-  .board.t11{height:1080px;--ma:352px;--mb:764px}
-  .board.t916{height:1920px;--ma:660px;--mb:1336px}
+  .board.t45{height:1350px;--ma:392px;--mb:1096px}
+  .board.t11{height:1080px;--ma:300px;--mb:900px}
+  .board.t916{height:1920px;--ma:520px;--mb:1450px}
 
   /* ── 上半分：VALHALLA ── */
   .upbg,.up{position:absolute;inset:0;z-index:0;background-repeat:no-repeat;
@@ -57,8 +57,8 @@
                       100% calc(var(--mb) - var(--drop)),0 calc(var(--mb) + var(--drop)))}
   .md::after{content:"";position:absolute;inset:0;
     background:linear-gradient(180deg,
-      rgba(5,3,7,.95) 0%, rgba(5,3,7,.70) 13%, rgba(5,3,7,.62) 50%,
-      rgba(5,3,7,.74) 85%, rgba(5,3,7,.95) 100%)}
+      rgba(5,3,7,.93) 0%, rgba(5,3,7,.74) 6%, rgba(5,3,7,.64) 20%, rgba(5,3,7,.60) 50%,
+      rgba(5,3,7,.66) 80%, rgba(5,3,7,.80) 94%, rgba(5,3,7,.93) 100%)}
 
   /* 中央に向かって暗く落とすスクリム（写真の上に重ねる） */
   .up::after,.dn::after{content:"";position:absolute;inset:0}
@@ -94,27 +94,44 @@
   .body{position:absolute;left:0;right:0;z-index:4;text-align:center;
     top:calc((var(--ma) + var(--mb)) / 2);transform:translateY(-50%);
     text-shadow:0 2px 14px rgba(5,3,7,.95),0 0 34px rgba(5,3,7,.85)}
-  .pair{font-weight:700;color:#fff;letter-spacing:.10em;line-height:1}
-  .pair i{font-style:normal;color:var(--crimson);font-weight:500;
-    font-family:'Oswald',sans-serif;margin:0 .36em;vertical-align:-.06em}
-  .pair em{font-style:normal;font-family:'Oswald',sans-serif;font-weight:500;letter-spacing:.12em}
-  .mark{display:block;margin:0 auto;filter:drop-shadow(0 6px 22px rgba(0,0,0,.9))}
+  .brand{font-family:'Oswald',sans-serif;font-weight:500;letter-spacing:.30em;
+    text-indent:.30em;color:#fff;line-height:1}
   h1{font-family:'Oswald',sans-serif;font-weight:400;line-height:1.02;
     letter-spacing:.13em;text-indent:.13em;text-transform:uppercase;color:#fff}
+  .tagline{font-weight:700;letter-spacing:.08em;line-height:1.4;color:#fff}
+  .rule{height:1px;background:var(--rule);margin-left:auto;margin-right:auto}
   .date{font-family:'Oswald',sans-serif;font-weight:400;letter-spacing:.08em;color:#fff;line-height:1}
-  .ruled{display:flex;align-items:center;justify-content:center;gap:18px}
-  .ruled::before,.ruled::after{content:"";height:1px;background:var(--rule);flex:1;max-width:120px}
-  .ruled span{font-weight:500;color:var(--gold);white-space:nowrap}
-  .donate{font-weight:700;color:#fff}
-  .donate i{font-style:normal;color:var(--gold)}
-  .more{color:rgba(245,239,228,.86)}
-  .more u{display:block;font-family:'Oswald',sans-serif;font-weight:300;
-    text-decoration:none;color:var(--grey-d)}
+  .venue{font-weight:500;letter-spacing:.06em;line-height:1.65;color:var(--ink)}
+  .venue b{color:var(--gold);font-weight:700}
+  .cast{font-family:'Oswald',sans-serif;font-weight:500;letter-spacing:.16em;color:#fff;line-height:1.5}
+  .cast span{font-family:"Noto Sans JP",sans-serif;font-weight:400;letter-spacing:.06em;
+    color:var(--sub);margin-left:.35em}
+  .kind{font-weight:500;letter-spacing:.10em;color:var(--sub)}
+  .cf{line-height:1.6;color:var(--sub)}
+  .cf b{display:block;color:var(--gold);font-weight:700}
+  .qrrow{display:flex;align-items:center;justify-content:center}
+  .qrrow .qr{background:#fff;flex:none}
+  .qrrow .qr img{display:block;width:100%;height:100%}
+  .qrrow .qt{text-align:left;color:var(--ink);line-height:1.55}
 
   /* ---------- 1080x1350 ---------- */
+  .t45 .brand{font-size:31px}
+  .t45 h1{margin-top:9px;font-size:74px}
+  .t45 .tagline{margin-top:18px;font-size:38px}
+  .t45 .rule{width:170px;margin-top:20px;margin-bottom:20px}
+  .t45 .date{font-size:64px}
+  .t45 .venue{margin-top:16px;font-size:24px}
+  .t45 .cast{margin-top:18px;font-size:30px}
+  .t45 .cast span{font-size:19px}
+  .t45 .kind{margin-top:12px;font-size:22px}
+  .t45 .cf{margin-top:19px;font-size:22px}
+  .t45 .cf b{margin-top:5px;font-size:25px}
+  .t45 .qrrow{margin-top:22px;gap:18px}
+  .t45 .qrrow .qr{width:104px;height:104px;padding:7px}
+  .t45 .qrrow .qt{font-size:20px}
   .t45 .md{background-size:100% auto;background-position:center 470px}
   .t45 .up{background-image:url('assets/charity/group_field.jpg');
-    background-size:88% auto;background-position:center -419px}
+    background-size:75% auto;background-position:center -366px}
   .t45 .dn{background-image:url('assets/charity/venue/dj.jpg');
     background-size:100% auto;background-position:center 742px}
   .t45 .up-tag{top:34px}
@@ -122,19 +139,23 @@
   .t45 .tag b{font-size:29px}
   .t45 .tag b.jp{font-size:27px}
   .t45 .tag span{margin-top:8px;font-size:19px}
-  .t45 .pair{font-size:46px}
-  .t45 .pair i{font-size:60px}
-  .t45 .pair em{font-size:48px}
   .t45 .mark{width:150px;margin:22px auto 16px}
-  .t45 h1{margin-top:12px;font-size:84px}
-  .t45 .ruled{margin-top:20px}
-  .t45 .ruled span{font-size:25px}
-  .t45 .date{margin-top:26px;font-size:72px}
-  .t45 .donate{margin-top:26px;font-size:33px}
-  .t45 .more{margin-top:22px;font-size:23px}
-  .t45 .more u{margin-top:8px;font-size:20px}
 
   /* ---------- 1080x1080 ---------- */
+  .t11 .brand{font-size:27px}
+  .t11 h1{margin-top:8px;font-size:62px}
+  .t11 .tagline{margin-top:15px;font-size:33px}
+  .t11 .rule{width:150px;margin-top:16px;margin-bottom:16px}
+  .t11 .date{font-size:54px}
+  .t11 .venue{margin-top:13px;font-size:21px}
+  .t11 .cast{margin-top:15px;font-size:26px}
+  .t11 .cast span{font-size:17px}
+  .t11 .kind{margin-top:10px;font-size:19px}
+  .t11 .cf{margin-top:16px;font-size:19px}
+  .t11 .cf b{margin-top:4px;font-size:22px}
+  .t11 .qrrow{margin-top:18px;gap:15px}
+  .t11 .qrrow .qr{width:90px;height:90px;padding:6px}
+  .t11 .qrrow .qt{font-size:18px}
   .t11 .md{background-size:100% auto;background-position:center 340px}
   .t11 .up{background-image:url('assets/charity/group_field.jpg');
     background-size:60% auto;background-position:center -294px}
@@ -145,19 +166,23 @@
   .t11 .tag b{font-size:26px}
   .t11 .tag b.jp{font-size:24px}
   .t11 .tag span{margin-top:7px;font-size:18px}
-  .t11 .pair{font-size:40px}
-  .t11 .pair i{font-size:52px}
-  .t11 .pair em{font-size:42px}
   .t11 .mark{width:126px;margin:17px auto 13px}
-  .t11 h1{margin-top:10px;font-size:70px}
-  .t11 .ruled{margin-top:17px}
-  .t11 .ruled span{font-size:21px}
-  .t11 .date{margin-top:21px;font-size:60px}
-  .t11 .donate{margin-top:21px;font-size:28px}
-  .t11 .more{margin-top:18px;font-size:20px}
-  .t11 .more u{margin-top:7px;font-size:18px}
 
   /* ---------- 1080x1920 ---------- */
+  .t916 .brand{font-size:40px}
+  .t916 h1{margin-top:12px;font-size:96px}
+  .t916 .tagline{margin-top:24px;font-size:48px}
+  .t916 .rule{width:210px;margin-top:28px;margin-bottom:28px}
+  .t916 .date{font-size:84px}
+  .t916 .venue{margin-top:22px;font-size:30px}
+  .t916 .cast{margin-top:24px;font-size:38px}
+  .t916 .cast span{font-size:23px}
+  .t916 .kind{margin-top:16px;font-size:27px}
+  .t916 .cf{margin-top:26px;font-size:27px}
+  .t916 .cf b{margin-top:6px;font-size:31px}
+  .t916 .qrrow{margin-top:30px;gap:22px}
+  .t916 .qrrow .qr{width:132px;height:132px;padding:9px}
+  .t916 .qrrow .qt{font-size:25px}
   .t916 .md{background-size:100% auto;background-position:center 726px}
   .t916 .up{background-image:url('assets/charity/group_field.jpg');
     background-size:100% auto;background-position:center -500px}
@@ -168,17 +193,7 @@
   .t916 .tag b{font-size:34px}
   .t916 .tag b.jp{font-size:32px}
   .t916 .tag span{margin-top:10px;font-size:22px}
-  .t916 .pair{font-size:60px}
-  .t916 .pair i{font-size:78px}
-  .t916 .pair em{font-size:62px}
   .t916 .mark{width:180px;margin:28px auto 20px}
-  .t916 h1{margin-top:16px;font-size:104px}
-  .t916 .ruled{margin-top:26px}
-  .t916 .ruled span{font-size:30px}
-  .t916 .date{margin-top:34px;font-size:88px}
-  .t916 .donate{margin-top:32px;font-size:40px}
-  .t916 .more{margin-top:28px;font-size:27px}
-  .t916 .more u{margin-top:9px;font-size:23px}
 </style>
 </head>
 <body>
@@ -194,12 +209,20 @@
 
 
   <div class="body">
-    <div class="pair"><em>VALHALLA</em><i>×</i>東京大学</div>
+    <div class="brand">VALHALLA</div>
     <h1>Charity Live</h1>
-    <div class="ruled"><span>昼 東京大学 安田講堂 ／ 夜 CÉ LA VI 渋谷</span></div>
+    <p class="tagline">ビジュアル系文化を守り、継ぐ。</p>
+    <div class="rule"></div>
     <div class="date">2026.10.18 SUN</div>
-    <div class="donate">イベント収益は <i>東京大学に寄付</i> します</div>
-    <div class="more">詳細は追ってお知らせします</div>
+    <div class="venue">昼／東京大学 安田講堂<br>夜／<b>CÉ LA VI TOKYO</b>（渋谷・17F）</div>
+    <div class="cast">MIO<span>社美緒</span>　RAY<span>零</span>　KØU<span>コウ</span></div>
+    <div class="kind">アコースティックライブ ＆ ホストコール体験</div>
+    <div class="cf">クラウドファンディング後日公開
+      <b>みんなの楽しいが寄付に繋がる</b></div>
+    <div class="qrrow">
+      <div class="qr"><img src="assets/charity/qr_lp.svg" alt="特設ページ"></div>
+      <div class="qt">チケット・詳細は後日、<br>特設ページにて発表します。</div>
+    </div>
   </div>
 </section>
 
@@ -215,12 +238,20 @@
 
 
   <div class="body">
-    <div class="pair"><em>VALHALLA</em><i>×</i>東京大学</div>
+    <div class="brand">VALHALLA</div>
     <h1>Charity Live</h1>
-    <div class="ruled"><span>昼 東京大学 安田講堂 ／ 夜 CÉ LA VI 渋谷</span></div>
+    <p class="tagline">ビジュアル系文化を守り、継ぐ。</p>
+    <div class="rule"></div>
     <div class="date">2026.10.18 SUN</div>
-    <div class="donate">イベント収益は <i>東京大学に寄付</i> します</div>
-    <div class="more">詳細は追ってお知らせします</div>
+    <div class="venue">昼／東京大学 安田講堂<br>夜／<b>CÉ LA VI TOKYO</b>（渋谷・17F）</div>
+    <div class="cast">MIO<span>社美緒</span>　RAY<span>零</span>　KØU<span>コウ</span></div>
+    <div class="kind">アコースティックライブ ＆ ホストコール体験</div>
+    <div class="cf">クラウドファンディング後日公開
+      <b>みんなの楽しいが寄付に繋がる</b></div>
+    <div class="qrrow">
+      <div class="qr"><img src="assets/charity/qr_lp.svg" alt="特設ページ"></div>
+      <div class="qt">チケット・詳細は後日、<br>特設ページにて発表します。</div>
+    </div>
   </div>
 </section>
 
@@ -236,12 +267,20 @@
 
 
   <div class="body">
-    <div class="pair"><em>VALHALLA</em><i>×</i>東京大学</div>
+    <div class="brand">VALHALLA</div>
     <h1>Charity Live</h1>
-    <div class="ruled"><span>昼 東京大学 安田講堂 ／ 夜 CÉ LA VI 渋谷</span></div>
+    <p class="tagline">ビジュアル系文化を守り、継ぐ。</p>
+    <div class="rule"></div>
     <div class="date">2026.10.18 SUN</div>
-    <div class="donate">イベント収益は <i>東京大学に寄付</i> します</div>
-    <div class="more">詳細は追ってお知らせします</div>
+    <div class="venue">昼／東京大学 安田講堂<br>夜／<b>CÉ LA VI TOKYO</b>（渋谷・17F）</div>
+    <div class="cast">MIO<span>社美緒</span>　RAY<span>零</span>　KØU<span>コウ</span></div>
+    <div class="kind">アコースティックライブ ＆ ホストコール体験</div>
+    <div class="cf">クラウドファンディング後日公開
+      <b>みんなの楽しいが寄付に繋がる</b></div>
+    <div class="qrrow">
+      <div class="qr"><img src="assets/charity/qr_lp.svg" alt="特設ページ"></div>
+      <div class="qt">チケット・詳細は後日、<br>特設ページにて発表します。</div>
+    </div>
   </div>
 </section>
 
