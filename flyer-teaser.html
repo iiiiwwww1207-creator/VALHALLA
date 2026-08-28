@@ -31,13 +31,14 @@
     /* 斜めの落差（左端が下・右端が上）。全サイズ共通で角度を揃える */
     --drop:62px;
     -webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .board.t45{height:1350px;--mid:640px}
-  .board.t11{height:1080px;--mid:512px}
-  .board.t916{height:1920px;--mid:930px}
+  /* --ma = 上の境界 / --mb = 下の境界。その間が CÉ LA VI の帯 */
+  .board.t45{height:1350px;--ma:498px;--mb:900px}
+  .board.t11{height:1080px;--ma:372px;--mb:742px}
+  .board.t916{height:1920px;--ma:700px;--mb:1252px}
 
   /* ── 上半分：VALHALLA ── */
   .upbg,.up{position:absolute;inset:0;z-index:0;background-repeat:no-repeat;
-    clip-path:polygon(0 0,100% 0,100% calc(var(--mid) - var(--drop)),0 calc(var(--mid) + var(--drop)))}
+    clip-path:polygon(0 0,100% 0,100% calc(var(--ma) - var(--drop)),0 calc(var(--ma) + var(--drop)))}
   /* 隙間を埋めるぼかし面 */
   .upbg{background-image:url('assets/charity/group_field.jpg');
     background-size:cover;background-position:center 28%;
@@ -47,23 +48,33 @@
     mask-image:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%)}
   /* ── 下半分：東京大学 安田講堂 ── */
   .dn{position:absolute;inset:0;z-index:0;background-repeat:no-repeat;
-    clip-path:polygon(0 calc(var(--mid) + var(--drop)),100% calc(var(--mid) - var(--drop)),100% 100%,0 100%)}
+    clip-path:polygon(0 calc(var(--mb) + var(--drop)),100% calc(var(--mb) - var(--drop)),100% 100%,0 100%)}
+  /* 中央帯：CÉ LA VI（この夜の舞台）。文字の下地も兼ねる */
+  .md{position:absolute;inset:0;z-index:0;background-repeat:no-repeat;
+    background-image:url('assets/charity/venue/dj.jpg');
+    background-size:cover;background-position:center 42%;
+    clip-path:polygon(0 calc(var(--ma) + var(--drop)),100% calc(var(--ma) - var(--drop)),
+                      100% calc(var(--mb) - var(--drop)),0 calc(var(--mb) + var(--drop)))}
+  .md::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,
+      rgba(5,3,7,.94) 0%, rgba(5,3,7,.56) 13%, rgba(5,3,7,.44) 50%,
+      rgba(5,3,7,.60) 85%, rgba(5,3,7,.94) 100%)}
 
   /* 中央に向かって暗く落とすスクリム（写真の上に重ねる） */
   .up::after,.dn::after{content:"";position:absolute;inset:0}
   .up::after{background:linear-gradient(180deg,
-      rgba(5,3,7,.18) 0%, rgba(5,3,7,.05) 16%, rgba(5,3,7,.14) 30%,
-      rgba(5,3,7,.46) 37%, rgba(5,3,7,.84) 43%, rgba(5,3,7,.97) 47%, #050307 52%)}
+      rgba(5,3,7,.18) 0%, rgba(5,3,7,.04) 18%, rgba(5,3,7,.12) 27%,
+      rgba(5,3,7,.34) 31%, rgba(5,3,7,.72) 34%, rgba(5,3,7,.93) 37%, #050307 40%)}
   .dn::after{background:linear-gradient(0deg,
-      rgba(5,3,7,.18) 0%, rgba(5,3,7,.08) 13%, rgba(5,3,7,.28) 23%,
-      rgba(5,3,7,.66) 30%, rgba(5,3,7,.92) 36%, rgba(5,3,7,.98) 42%, #050307 48%)}
+      rgba(5,3,7,.18) 0%, rgba(5,3,7,.06) 14%, rgba(5,3,7,.24) 22%,
+      rgba(5,3,7,.60) 27%, rgba(5,3,7,.88) 31%, rgba(5,3,7,.97) 35%, #050307 38%)}
 
   /* 分割の斜線（クリムゾン） */
-  .slash{position:absolute;left:-14%;width:128%;z-index:2;
-    top:calc(var(--mid) - 3px);height:6px;
-    background:linear-gradient(90deg,transparent 0,var(--crimson) 9%,var(--crimson) 27%,
-      transparent 36%,transparent 64%,var(--crimson) 73%,var(--crimson) 91%,transparent 100%);
+  .slash{position:absolute;left:-14%;width:128%;z-index:2;height:5px;
+    background:linear-gradient(90deg,transparent 0,var(--crimson) 9%,var(--crimson) 91%,transparent 100%);
     transform:rotate(-6.55deg)}
+  .slash.s1{top:calc(var(--ma) - 2.5px)}
+  .slash.s2{top:calc(var(--mb) - 2.5px)}
 
   /* 端に置く小さなラベル */
   .tag{position:absolute;z-index:3;color:#fff;letter-spacing:.10em;
@@ -76,7 +87,8 @@
 
   /* ── 中央の文字 ── */
   .body{position:absolute;left:0;right:0;z-index:4;text-align:center;
-    top:var(--mid);transform:translateY(-50%)}
+    top:calc((var(--ma) + var(--mb)) / 2);transform:translateY(-50%);
+    text-shadow:0 2px 14px rgba(5,3,7,.95),0 0 34px rgba(5,3,7,.85)}
   .pair{font-weight:700;color:#fff;letter-spacing:.10em;line-height:1}
   .pair i{font-style:normal;color:var(--crimson);font-weight:400;
     font-family:'Oswald',sans-serif;margin:0 .5em}
@@ -166,8 +178,10 @@
 <section class="board t45">
   <div class="upbg"></div>
   <div class="up"></div>
+  <div class="md"></div>
   <div class="dn"></div>
-  <div class="slash"></div>
+  <div class="slash s1"></div>
+  <div class="slash s2"></div>
 
 
   <div class="body">
@@ -184,8 +198,10 @@
 <section class="board t11">
   <div class="upbg"></div>
   <div class="up"></div>
+  <div class="md"></div>
   <div class="dn"></div>
-  <div class="slash"></div>
+  <div class="slash s1"></div>
+  <div class="slash s2"></div>
 
 
   <div class="body">
@@ -202,8 +218,10 @@
 <section class="board t916">
   <div class="upbg"></div>
   <div class="up"></div>
+  <div class="md"></div>
   <div class="dn"></div>
-  <div class="slash"></div>
+  <div class="slash s1"></div>
+  <div class="slash s2"></div>
 
 
   <div class="body">
