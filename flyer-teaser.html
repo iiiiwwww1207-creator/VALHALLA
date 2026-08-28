@@ -32,9 +32,9 @@
     --drop:62px;
     -webkit-print-color-adjust:exact;print-color-adjust:exact}
   /* --ma = 上の境界 / --mb = 下の境界。その間が CÉ LA VI の帯 */
-  .board.t45{height:1350px;--ma:392px;--mb:1096px}
-  .board.t11{height:1080px;--ma:300px;--mb:900px}
-  .board.t916{height:1920px;--ma:520px;--mb:1450px}
+  .board.t45{height:1350px;--ma:372px;--mb:1020px}
+  .board.t11{height:1080px;--ma:286px;--mb:838px}
+  .board.t916{height:1920px;--ma:566px;--mb:1382px}
 
   /* ── 上半分：VALHALLA ── */
   .upbg,.up{position:absolute;inset:0;z-index:0;background-repeat:no-repeat;
@@ -42,32 +42,33 @@
   /* 隙間を埋めるぼかし面 */
   .upbg{background-image:url('assets/charity/group_field.jpg');
     background-size:cover;background-position:center 28%;
-    filter:blur(44px) brightness(.46) saturate(.85);transform:scale(1.2)}
+    filter:blur(48px) brightness(.26) saturate(.7);transform:scale(1.22)}
   /* 前面の実寸写真（左右をフェードさせてぼかし面に溶かす） */
   .up{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%);
     mask-image:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%)}
-  /* ── 下半分：東京大学 安田講堂 ── */
-  .dn{position:absolute;inset:0;z-index:0;background-repeat:no-repeat;
-    clip-path:polygon(0 calc(var(--mb) + var(--drop)),100% calc(var(--mb) - var(--drop)),100% 100%,0 100%)}
-  /* 中央帯：CÉ LA VI（この夜の舞台）。文字の下地も兼ねる */
-  .md{position:absolute;inset:0;z-index:0;background-repeat:no-repeat;
-    background-image:url('assets/charity/venue/yasuda1.jpg');
-    filter:grayscale(.38) sepia(.12) contrast(1.14);
+  /* 中央帯：文字専用（東大・セラビは下段に実写で入る） */
+  .md{position:absolute;inset:0;z-index:0;background:#050307;
     clip-path:polygon(0 calc(var(--ma) + var(--drop)),100% calc(var(--ma) - var(--drop)),
                       100% calc(var(--mb) - var(--drop)),0 calc(var(--mb) + var(--drop)))}
-  .md::after{content:"";position:absolute;inset:0;
-    background:linear-gradient(180deg,
-      rgba(5,3,7,.93) 0%, rgba(5,3,7,.74) 6%, rgba(5,3,7,.64) 20%, rgba(5,3,7,.60) 50%,
-      rgba(5,3,7,.66) 80%, rgba(5,3,7,.80) 94%, rgba(5,3,7,.93) 100%)}
+
+  /* 下段：左＝東京大学 安田講堂／右＝CÉ LA VI。縦の斜線で分割 */
+  .dl,.dr{position:absolute;inset:0;z-index:0;background-repeat:no-repeat}
+  .dl{clip-path:polygon(0 calc(var(--mb) + var(--drop)),56% calc(var(--mb) - 8px),46% 100%,0 100%)}
+  .dr{clip-path:polygon(56% calc(var(--mb) - 8px),100% calc(var(--mb) - var(--drop)),100% 100%,46% 100%)}
+  .dl{filter:saturate(.82) brightness(.86) contrast(1.06)}
+  .dl::after,.dr::after{content:"";position:absolute;inset:0}
+  .dl::after{background:linear-gradient(0deg,rgba(5,3,7,.10) 0%,rgba(5,3,7,.14) 40%,rgba(5,3,7,.55) 78%,rgba(5,3,7,.9) 100%)}
+  .dr::after{background:linear-gradient(0deg,rgba(5,3,7,.10) 0%,rgba(5,3,7,.14) 40%,rgba(5,3,7,.55) 78%,rgba(5,3,7,.9) 100%)}
+  /* 下段を左右に割る縦の斜線 */
+  .vslash{position:absolute;z-index:2;left:51%;width:6px;
+    top:calc(var(--mb) - 10px);height:calc(100% - var(--mb) + 10px);
+    background:var(--crimson);transform:translateX(-50%) skewX(-12deg)}
 
   /* 中央に向かって暗く落とすスクリム（写真の上に重ねる） */
   .up::after,.dn::after{content:"";position:absolute;inset:0}
   .up::after{background:linear-gradient(180deg,
       rgba(5,3,7,.18) 0%, rgba(5,3,7,.04) 18%, rgba(5,3,7,.12) 27%,
       rgba(5,3,7,.34) 31%, rgba(5,3,7,.72) 34%, rgba(5,3,7,.93) 37%, #050307 40%)}
-  .dn::after{background:linear-gradient(0deg,
-      rgba(5,3,7,.18) 0%, rgba(5,3,7,.06) 14%, rgba(5,3,7,.24) 22%,
-      rgba(5,3,7,.60) 27%, rgba(5,3,7,.88) 31%, rgba(5,3,7,.97) 35%, #050307 38%)}
 
   /* 分割の斜線（クリムゾン） */
   .slash{position:absolute;left:-14%;width:128%;z-index:2;height:8px;
@@ -129,11 +130,12 @@
   .t45 .qrrow{margin-top:22px;gap:18px}
   .t45 .qrrow .qr{width:104px;height:104px;padding:7px}
   .t45 .qrrow .qt{font-size:20px}
-  .t45 .md{background-size:100% auto;background-position:center 470px}
+  .t45 .dl{background-image:url('assets/charity/venue/yasuda1.jpg');
+    background-size:900px auto;background-position:-160px 985px}
+  .t45 .dr{background-image:url('assets/charity/venue/dj.jpg');
+    background-size:800px auto;background-position:360px 1010px}
   .t45 .up{background-image:url('assets/charity/group_field.jpg');
     background-size:66% auto;background-position:center -320px}
-  .t45 .dn{background-image:url('assets/charity/venue/dj.jpg');
-    background-size:100% auto;background-position:center 742px}
   .t45 .up-tag{top:34px}
   .t45 .dn-tag{bottom:30px}
   .t45 .tag b{font-size:29px}
@@ -156,11 +158,12 @@
   .t11 .qrrow{margin-top:18px;gap:15px}
   .t11 .qrrow .qr{width:90px;height:90px;padding:6px}
   .t11 .qrrow .qt{font-size:18px}
-  .t11 .md{background-size:100% auto;background-position:center 340px}
+  .t11 .dl{background-image:url('assets/charity/venue/yasuda1.jpg');
+    background-size:860px auto;background-position:-150px 812px}
+  .t11 .dr{background-image:url('assets/charity/venue/dj.jpg');
+    background-size:760px auto;background-position:340px 838px}
   .t11 .up{background-image:url('assets/charity/group_field.jpg');
     background-size:48% auto;background-position:center -230px}
-  .t11 .dn{background-image:url('assets/charity/venue/dj.jpg');
-    background-size:100% auto;background-position:center 472px}
   .t11 .up-tag{top:28px}
   .t11 .dn-tag{bottom:24px}
   .t11 .tag b{font-size:26px}
@@ -183,11 +186,12 @@
   .t916 .qrrow{margin-top:30px;gap:22px}
   .t916 .qrrow .qr{width:132px;height:132px;padding:9px}
   .t916 .qrrow .qt{font-size:25px}
-  .t916 .md{background-size:100% auto;background-position:center 726px}
+  .t916 .dl{background-image:url('assets/charity/venue/yasuda1.jpg');
+    background-size:1000px auto;background-position:-190px 1300px}
+  .t916 .dr{background-image:url('assets/charity/venue/dj.jpg');
+    background-size:900px auto;background-position:400px 1370px}
   .t916 .up{background-image:url('assets/charity/group_field.jpg');
-    background-size:88% auto;background-position:center -420px}
-  .t916 .dn{background-image:url('assets/charity/venue/dj.jpg');
-    background-size:120% auto;background-position:center 1191px}
+    background-size:100% auto;background-position:center -500px}
   .t916 .up-tag{top:150px}
   .t916 .dn-tag{bottom:120px}
   .t916 .tag b{font-size:34px}
@@ -202,9 +206,11 @@
   <div class="upbg"></div>
   <div class="up"></div>
   <div class="md"></div>
-  <div class="dn"></div>
+  <div class="dl"></div>
+  <div class="dr"></div>
   <div class="slash s1"></div>
   <div class="slash s2"></div>
+  <div class="vslash"></div>
   <div class="focus"></div>
 
 
@@ -231,9 +237,11 @@
   <div class="upbg"></div>
   <div class="up"></div>
   <div class="md"></div>
-  <div class="dn"></div>
+  <div class="dl"></div>
+  <div class="dr"></div>
   <div class="slash s1"></div>
   <div class="slash s2"></div>
+  <div class="vslash"></div>
   <div class="focus"></div>
 
 
@@ -260,9 +268,11 @@
   <div class="upbg"></div>
   <div class="up"></div>
   <div class="md"></div>
-  <div class="dn"></div>
+  <div class="dl"></div>
+  <div class="dr"></div>
   <div class="slash s1"></div>
   <div class="slash s2"></div>
+  <div class="vslash"></div>
   <div class="focus"></div>
 
 
