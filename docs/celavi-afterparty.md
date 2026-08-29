@@ -235,5 +235,11 @@
    収録日（10/18より前に必要か、当日収録か）／権利の帰属（個人かグループか）／
    限定公開の実装（QR先の限定URLか、アプリ会員ゲートか）
 
+## 外部の人に手伝ってもらう場合（引き継ぎ）
+- **引き継ぎ資料: `docs/flyer-handoff.md`**（現状・確定コピー・編集方法・未確定事項・素材の権利）
+- 配布用ZIP（ソース＋使用素材＋書き出し済み＋書き出しスクリプト）は
+  `VALHALLA_CHARITY_LIVE_flyer_20260829.zip` として別途 kazuma が保持
+- 書き出しスクリプト: `tools/render-flyer.sh`（macOS + Google Chrome）
+
 ## 関連
 - LP 本体: 本リポジトリ `charity.html`
