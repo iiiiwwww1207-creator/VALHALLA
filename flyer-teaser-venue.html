@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>VALHALLA CHARITY LIVE ｜ 告知用ティザー（会場写真のみ版）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  /* ==========================================================
+     告知用ティザー（内容確定前の第一報）
+     ■ この版は「バンドメンバーの写真を抜いた」試作です（kazuma 依頼 2026-08-31）
+       上＝東京大学 安田講堂／下＝CÉ LA VI の2枠。斜めスラッシュで上下に分割。
+       ※ 会場写真は2枚とも横位置なので、縦に割ると細長く切れて建物が
+         判別できなくなる。そのため上下分割にしている。
+     元の構成（kazuma 指示 2026-08-28）:
+       ・画面を「横の斜めスラッシュ」で上下に分割
+       ・上半分 = VALHALLA（上端に向かうほどくっきり）
+       ・下半分 = 東京大学 安田講堂（下端に向かうほどくっきり）
+       ・中央は暗く落とし、そこに文字を置く
+     ⚠️「コラボ／共催／後援」は東大の許諾が要る表現のため使わない。
+     ========================================================== */
+  :root{
+    --bg:#050307; --ink:#F5EFE4; --sub:rgba(245,239,228,.74);
+    --rule:rgba(232,203,133,.5); --gold:#E8CB85; --grey-d:#9C9CA4; --crimson:#C1121F;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;border-radius:0}
+  html,body{background:#141416}
+  body{font-family:"Noto Sans JP",sans-serif;color:var(--ink);
+       -webkit-font-smoothing:antialiased;display:flex;flex-direction:column;
+       align-items:center;gap:40px;padding:40px 0}
+
+  .board{position:relative;width:1080px;overflow:hidden;background:var(--bg);
+    isolation:isolate;
+    /* 斜めの落差（左端が下・右端が上）。全サイズ共通で角度を揃える */
+    --drop:62px;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  /* --ma = 上の境界 / --mb = 下の境界。その間が CÉ LA VI の帯 */
+  .board.t45{height:1350px;--ma:630px;--tc:690px}
+  .board.t11{height:1080px;--ma:500px;--tc:548px}
+  .board.t916{height:1920px;--ma:900px;--tc:965px}
+
+  /* ── 上半分：VALHALLA ── */
+  .up{position:absolute;inset:0;z-index:0;background-repeat:no-repeat;
+    clip-path:polygon(0 0,100% 0,100% calc(var(--ma) - var(--drop)),0 calc(var(--ma) + var(--drop)))}
+  /* 下＝CÉ LA VI。斜線を挟んで下端まで */
+  .dn{position:absolute;inset:0;z-index:0;background-repeat:no-repeat;
+    clip-path:polygon(0 calc(var(--ma) + var(--drop)),100% calc(var(--ma) - var(--drop)),100% 100%,0 100%)}
+  /* 写真は「透けて」見える程度に落とす */
+  .up::after,.dn::after{content:"";position:absolute;inset:0}
+  .up::after{background:rgba(5,3,7,.46)}
+  .dn::after{background:rgba(5,3,7,.26)}
+  /* 文字の周りだけさらに落として可読性を確保 */
+  .scrim{position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:radial-gradient(ellipse 96% 26% at 50% var(--tc),
+      rgba(5,3,7,.92) 0%, rgba(5,3,7,.84) 46%, rgba(5,3,7,.46) 78%, transparent 100%)}
+
+  /* 中央に向かって暗く落とすスクリム（写真の上に重ねる） */
+
+  /* 分割の斜線（クリムゾン） */
+  .slash{position:absolute;left:-14%;width:128%;z-index:2;height:8px;
+    background:linear-gradient(90deg,transparent 0,var(--crimson) 9%,var(--crimson) 91%,transparent 100%);
+    transform:rotate(-6.55deg)}
+  .slash.s1{top:calc(var(--ma) - 4px)}
+
+  /* 文字帯にクリムゾンの焦点を寄せる */
+  .focus{position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:radial-gradient(ellipse 92% 13% at 50% var(--tc), rgba(176,20,28,.30), transparent 74%)}
+
+  /* ── 中央の文字 ── */
+  .tag{position:absolute;z-index:3;color:#fff;letter-spacing:.10em;
+    text-shadow:0 2px 14px rgba(5,3,7,.95),0 0 30px rgba(5,3,7,.8)}
+  .tag b{display:block;font-family:'Oswald',sans-serif;font-weight:400;letter-spacing:.20em;color:#fff}
+  .tag b.jp{font-family:"Noto Sans JP",sans-serif;font-weight:700;letter-spacing:.12em}
+  .tag span{display:block;color:rgba(245,239,228,.7)}
+  .tag.up-tag{left:0;right:0;text-align:center}
+  .tag.dn-tag{left:0;right:0;text-align:center}
+
+  /* ── 中央の文字 ── */
+  .body{position:absolute;left:0;right:0;z-index:4;text-align:center;
+    top:var(--tc);transform:translateY(-50%);
+    text-shadow:0 2px 14px rgba(5,3,7,.95),0 0 34px rgba(5,3,7,.85)}
+  .brand{font-family:'Oswald',sans-serif;font-weight:500;letter-spacing:.30em;
+    text-indent:.30em;color:#fff;line-height:1}
+  h1{font-family:'Oswald',sans-serif;font-weight:400;line-height:1.02;
+    letter-spacing:.13em;text-indent:.13em;text-transform:uppercase;color:#fff}
+  .tagline{font-weight:700;letter-spacing:.08em;line-height:1.4;color:#fff}
+  .rule{height:1px;background:var(--rule);margin-left:auto;margin-right:auto}
+  .date{font-family:'Oswald',sans-serif;font-weight:400;letter-spacing:.08em;color:#fff;line-height:1}
+  .venue{font-weight:500;letter-spacing:.06em;line-height:1.65;color:var(--ink)}
+  .time{font-family:'Oswald',sans-serif;font-weight:300;letter-spacing:.14em;color:var(--gold)}
+  .venue b{color:var(--gold);font-weight:700}
+  .cast{font-family:'Oswald',sans-serif;font-weight:500;letter-spacing:.16em;color:#fff;line-height:1.5}
+  .cast span{font-family:"Noto Sans JP",sans-serif;font-weight:400;letter-spacing:.06em;
+    color:var(--sub);margin-left:.35em}
+  .kind{font-weight:500;letter-spacing:.10em;color:var(--sub)}
+  .cf{line-height:1.6;color:var(--sub)}
+  .cf b{display:block;color:var(--gold);font-weight:700}
+  .qrrow{display:flex;align-items:center;justify-content:center}
+  .qrrow .qr{background:#fff;flex:none}
+  .qrrow .qr img{display:block;width:100%;height:100%}
+  .qrrow .qt{text-align:left;color:var(--ink);line-height:1.55}
+
+  /* ---------- 1080x1350 ---------- */
+  .t45 .up{background-image:url('assets/charity/venue/yasuda1.jpg');
+    background-size:1160px auto;background-position:center -20px}
+  .t45 .dn{background-image:url('assets/charity/venue/dj.jpg');
+    background-size:1420px auto;background-position:center 555px}
+  .t45 .brand{font-size:31px}
+  .t45 h1{margin-top:9px;font-size:74px}
+  .t45 .tagline{margin-top:18px;font-size:38px}
+  .t45 .rule{width:170px;margin-top:20px;margin-bottom:20px}
+  .t45 .date{font-size:64px}
+  .t45 .venue{margin-top:16px;font-size:24px}
+  .t45 .time{margin-top:11px;font-size:26px}
+  .t45 .cast{margin-top:18px;font-size:30px}
+  .t45 .cast span{font-size:19px}
+  .t45 .kind{margin-top:12px;font-size:22px}
+  .t45 .cf{margin-top:19px;font-size:22px}
+  .t45 .cf b{margin-top:5px;font-size:25px}
+  .t45 .qrrow{margin-top:22px;gap:18px}
+  .t45 .qrrow .qr{width:104px;height:104px;padding:7px}
+  .t45 .qrrow .qt{font-size:20px}
+  .t45 .up-tag{top:34px}
+  .t45 .dn-tag{bottom:30px}
+  .t45 .tag b{font-size:29px}
+  .t45 .tag b.jp{font-size:27px}
+  .t45 .tag span{margin-top:8px;font-size:19px}
+  .t45 .mark{width:150px;margin:22px auto 16px}
+
+  /* ---------- 1080x1080 ---------- */
+  .t11 .up{background-image:url('assets/charity/venue/yasuda1.jpg');
+    background-size:1090px auto;background-position:center -10px}
+  .t11 .dn{background-image:url('assets/charity/venue/dj.jpg');
+    background-size:1180px auto;background-position:center 428px}
+  .t11 .brand{font-size:27px}
+  .t11 h1{margin-top:8px;font-size:62px}
+  .t11 .tagline{margin-top:15px;font-size:33px}
+  .t11 .rule{width:150px;margin-top:16px;margin-bottom:16px}
+  .t11 .date{font-size:54px}
+  .t11 .venue{margin-top:13px;font-size:21px}
+  .t11 .time{margin-top:9px;font-size:23px}
+  .t11 .cast{margin-top:15px;font-size:26px}
+  .t11 .cast span{font-size:17px}
+  .t11 .kind{margin-top:10px;font-size:19px}
+  .t11 .cf{margin-top:16px;font-size:19px}
+  .t11 .cf b{margin-top:4px;font-size:22px}
+  .t11 .qrrow{margin-top:18px;gap:15px}
+  .t11 .qrrow .qr{width:90px;height:90px;padding:6px}
+  .t11 .qrrow .qt{font-size:18px}
+  .t11 .up-tag{top:28px}
+  .t11 .dn-tag{bottom:24px}
+  .t11 .tag b{font-size:26px}
+  .t11 .tag b.jp{font-size:24px}
+  .t11 .tag span{margin-top:7px;font-size:18px}
+  .t11 .mark{width:126px;margin:17px auto 13px}
+
+  /* ---------- 1080x1920 ---------- */
+  .t916 .up{background-image:url('assets/charity/venue/yasuda1.jpg');
+    background-size:1560px auto;background-position:center -40px}
+  .t916 .dn{background-image:url('assets/charity/venue/dj.jpg');
+    background-size:1960px auto;background-position:center 820px}
+  .t916 .brand{font-size:40px}
+  .t916 h1{margin-top:12px;font-size:96px}
+  .t916 .tagline{margin-top:24px;font-size:48px}
+  .t916 .rule{width:210px;margin-top:28px;margin-bottom:28px}
+  .t916 .date{font-size:84px}
+  .t916 .venue{margin-top:22px;font-size:30px}
+  .t916 .time{margin-top:14px;font-size:32px}
+  .t916 .cast{margin-top:24px;font-size:38px}
+  .t916 .cast span{font-size:23px}
+  .t916 .kind{margin-top:16px;font-size:27px}
+  .t916 .cf{margin-top:26px;font-size:27px}
+  .t916 .cf b{margin-top:6px;font-size:31px}
+  .t916 .qrrow{margin-top:30px;gap:22px}
+  .t916 .qrrow .qr{width:132px;height:132px;padding:9px}
+  .t916 .qrrow .qt{font-size:25px}
+  .t916 .up-tag{top:150px}
+  .t916 .dn-tag{bottom:120px}
+  .t916 .tag b{font-size:34px}
+  .t916 .tag b.jp{font-size:32px}
+  .t916 .tag span{margin-top:10px;font-size:22px}
+  .t916 .mark{width:180px;margin:28px auto 20px}
+</style>
+</head>
+<body>
+
+<section class="board t45">
+  <div class="up"></div>
+  <div class="dn"></div>
+  <div class="slash s1"></div>
+  <div class="scrim"></div>
+  <div class="focus"></div>
+
+
+  <div class="body">
+    <div class="brand">VALHALLA</div>
+    <h1>Charity Live</h1>
+    <p class="tagline">ビジュアル系文化を守り、継ぐ。</p>
+    <div class="rule"></div>
+    <div class="date">2026.10.18 SUN</div>
+    <div class="venue"><b>CÉ LA VI TOKYO</b>（渋谷・17F）</div>
+    <div class="time">OPEN 19:00 ／ START 19:30</div>
+    <div class="cast">MIO<span>社美緒</span>　RAY<span>零</span>　KØU<span>コウ</span></div>
+    <div class="kind">アコースティックライブ ＆ ホストコール体験</div>
+    <div class="cf">クラウドファンディング（CAMPFIRE）後日公開
+      <b>みんなの楽しいが寄付に繋がる</b></div>
+    <div class="qrrow">
+      <div class="qr"><img src="assets/charity/qr_lp.svg" alt="特設ページ"></div>
+      <div class="qt">チケット・詳細は後日、<br>特設ページにて発表します。</div>
+    </div>
+  </div>
+</section>
+
+
+<section class="board t11">
+  <div class="up"></div>
+  <div class="dn"></div>
+  <div class="slash s1"></div>
+  <div class="scrim"></div>
+  <div class="focus"></div>
+
+
+  <div class="body">
+    <div class="brand">VALHALLA</div>
+    <h1>Charity Live</h1>
+    <p class="tagline">ビジュアル系文化を守り、継ぐ。</p>
+    <div class="rule"></div>
+    <div class="date">2026.10.18 SUN</div>
+    <div class="venue"><b>CÉ LA VI TOKYO</b>（渋谷・17F）</div>
+    <div class="time">OPEN 19:00 ／ START 19:30</div>
+    <div class="cast">MIO<span>社美緒</span>　RAY<span>零</span>　KØU<span>コウ</span></div>
+    <div class="kind">アコースティックライブ ＆ ホストコール体験</div>
+    <div class="cf">クラウドファンディング（CAMPFIRE）後日公開
+      <b>みんなの楽しいが寄付に繋がる</b></div>
+    <div class="qrrow">
+      <div class="qr"><img src="assets/charity/qr_lp.svg" alt="特設ページ"></div>
+      <div class="qt">チケット・詳細は後日、<br>特設ページにて発表します。</div>
+    </div>
+  </div>
+</section>
+
+
+<section class="board t916">
+  <div class="up"></div>
+  <div class="dn"></div>
+  <div class="slash s1"></div>
+  <div class="scrim"></div>
+  <div class="focus"></div>
+
+
+  <div class="body">
+    <div class="brand">VALHALLA</div>
+    <h1>Charity Live</h1>
+    <p class="tagline">ビジュアル系文化を守り、継ぐ。</p>
+    <div class="rule"></div>
+    <div class="date">2026.10.18 SUN</div>
+    <div class="venue"><b>CÉ LA VI TOKYO</b>（渋谷・17F）</div>
+    <div class="time">OPEN 19:00 ／ START 19:30</div>
+    <div class="cast">MIO<span>社美緒</span>　RAY<span>零</span>　KØU<span>コウ</span></div>
+    <div class="kind">アコースティックライブ ＆ ホストコール体験</div>
+    <div class="cf">クラウドファンディング（CAMPFIRE）後日公開
+      <b>みんなの楽しいが寄付に繋がる</b></div>
+    <div class="qrrow">
+      <div class="qr"><img src="assets/charity/qr_lp.svg" alt="特設ページ"></div>
+      <div class="qt">チケット・詳細は後日、<br>特設ページにて発表します。</div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
