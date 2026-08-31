@@ -10,7 +10,8 @@
   /* ==========================================================
      告知用ティザー（内容確定前の第一報）
      ■ この版は「バンドメンバーの写真を抜いた」試作です（kazuma 依頼 2026-08-31）
-       上＝東京大学 安田講堂／下＝CÉ LA VI の2枠。斜めスラッシュで上下に分割。
+       会場写真4枠：左上＝東大の並木道／右上＝安田講堂 大講堂／
+       左下＝CÉ LA VI（赤）／右下＝CÉ LA VI（青・賑わい）。斜めスラッシュで田の字に分割。
        ※ 会場写真は2枚とも横位置なので、縦に割ると細長く切れて建物が
          判別できなくなる。そのため上下分割にしている。
      元の構成（kazuma 指示 2026-08-28）:
@@ -41,15 +42,19 @@
   .board.t916{height:1920px;--ma:900px;--tc:965px}
 
   /* ── 上半分：VALHALLA ── */
-  .up{position:absolute;inset:0;z-index:0;background-repeat:no-repeat;
-    clip-path:polygon(0 0,100% 0,100% calc(var(--ma) - var(--drop)),0 calc(var(--ma) + var(--drop)))}
-  /* 下＝CÉ LA VI。斜線を挟んで下端まで */
-  .dn{position:absolute;inset:0;z-index:0;background-repeat:no-repeat;
-    clip-path:polygon(0 calc(var(--ma) + var(--drop)),100% calc(var(--ma) - var(--drop)),100% 100%,0 100%)}
-  /* 写真は「透けて」見える程度に落とす */
-  .up::after,.dn::after{content:"";position:absolute;inset:0}
-  .up::after{background:rgba(5,3,7,.46)}
-  .dn::after{background:rgba(5,3,7,.26)}
+  /* 4枠（斜めスラッシュで田の字に分割）
+     LT=東大 並木 ／ RT=安田講堂 大講堂 ／ LB=CÉ LA VI 赤 ／ RB=CÉ LA VI 青 */
+  .lt,.rt,.lb,.rb{position:absolute;inset:0;z-index:0;background-repeat:no-repeat}
+  .lt{clip-path:polygon(0 0,56% 0,51% var(--ma),0 calc(var(--ma) + var(--drop)))}
+  .rt{clip-path:polygon(56% 0,100% 0,100% calc(var(--ma) - var(--drop)),51% var(--ma))}
+  .lb{clip-path:polygon(0 calc(var(--ma) + var(--drop)),51% var(--ma),46% 100%,0 100%)}
+  .rb{clip-path:polygon(51% var(--ma),100% calc(var(--ma) - var(--drop)),100% 100%,46% 100%)}
+  /* 写真は「透けて」見える程度に落とす。昼のカットは明るいので強めに */
+  .lt::after,.rt::after,.lb::after,.rb::after{content:"";position:absolute;inset:0}
+  .lt::after{background:rgba(5,3,7,.46)}
+  .rt::after{background:rgba(5,3,7,.44)}
+  .lb::after{background:rgba(5,3,7,.26)}
+  .rb::after{background:rgba(5,3,7,.30)}
   /* 文字の周りだけさらに落として可読性を確保 */
   .scrim{position:absolute;inset:0;z-index:1;pointer-events:none;
     background:radial-gradient(ellipse 96% 26% at 50% var(--tc),
@@ -61,7 +66,13 @@
   .slash{position:absolute;left:-14%;width:128%;z-index:2;height:8px;
     background:linear-gradient(90deg,transparent 0,var(--crimson) 9%,var(--crimson) 91%,transparent 100%);
     transform:rotate(-6.55deg)}
-  .slash.s1{top:calc(var(--ma) - 4px)}
+  .slash.s1{top:calc(var(--ma) - 4px);
+    background:linear-gradient(90deg,transparent 0,var(--crimson) 8%,var(--crimson) 26%,
+      transparent 33%,transparent 67%,var(--crimson) 74%,var(--crimson) 92%,transparent 100%)}
+  .vslash{position:absolute;z-index:2;left:51%;top:0;width:6px;height:100%;
+    background:linear-gradient(180deg,var(--crimson) 0%,var(--crimson) 26%,
+      transparent 33%,transparent 70%,var(--crimson) 77%,var(--crimson) 100%);
+    transform:translateX(-50%) skewX(-3.2deg)}
 
   /* 文字帯にクリムゾンの焦点を寄せる */
   .focus{position:absolute;inset:0;z-index:1;pointer-events:none;
@@ -102,10 +113,14 @@
   .qrrow .qt{text-align:left;color:var(--ink);line-height:1.55}
 
   /* ---------- 1080x1350 ---------- */
-  .t45 .up{background-image:url('assets/charity/venue/yasuda1.jpg');
-    background-size:1160px auto;background-position:center -20px}
-  .t45 .dn{background-image:url('assets/charity/venue/celavi_red.jpg');
-    background-size:1180px auto;background-position:center 562px}
+  .t45 .lt{background-image:url('assets/charity/venue/todai_avenue.jpg');
+    background-size:1170px auto;background-position:-380px 0}
+  .t45 .rt{background-image:url('assets/charity/venue/yasuda_hall_interior.jpg');
+    background-size:930px auto;background-position:105px 0}
+  .t45 .lb{background-image:url('assets/charity/venue/celavi_red.jpg');
+    background-size:1090px auto;background-position:-355px 622px}
+  .t45 .rb{background-image:url('assets/charity/venue/celavi_blue.jpg');
+    background-size:1090px auto;background-position:20px 622px}
   .t45 .brand{font-size:31px}
   .t45 h1{margin-top:9px;font-size:74px}
   .t45 .tagline{margin-top:18px;font-size:38px}
@@ -129,10 +144,14 @@
   .t45 .mark{width:150px;margin:22px auto 16px}
 
   /* ---------- 1080x1080 ---------- */
-  .t11 .up{background-image:url('assets/charity/venue/yasuda1.jpg');
-    background-size:1090px auto;background-position:center -10px}
-  .t11 .dn{background-image:url('assets/charity/venue/celavi_red.jpg');
-    background-size:1090px auto;background-position:center 352px}
+  .t11 .lt{background-image:url('assets/charity/venue/todai_avenue.jpg');
+    background-size:930px auto;background-position:-300px 0}
+  .t11 .rt{background-image:url('assets/charity/venue/yasuda_hall_interior.jpg');
+    background-size:740px auto;background-position:85px 0}
+  .t11 .lb{background-image:url('assets/charity/venue/celavi_red.jpg');
+    background-size:870px auto;background-position:-282px 494px}
+  .t11 .rb{background-image:url('assets/charity/venue/celavi_blue.jpg');
+    background-size:870px auto;background-position:16px 494px}
   .t11 .brand{font-size:27px}
   .t11 h1{margin-top:8px;font-size:62px}
   .t11 .tagline{margin-top:15px;font-size:33px}
@@ -156,10 +175,14 @@
   .t11 .mark{width:126px;margin:17px auto 13px}
 
   /* ---------- 1080x1920 ---------- */
-  .t916 .up{background-image:url('assets/charity/venue/yasuda1.jpg');
-    background-size:1560px auto;background-position:center -40px}
-  .t916 .dn{background-image:url('assets/charity/venue/celavi_red.jpg');
-    background-size:1640px auto;background-position:center 830px}
+  .t916 .lt{background-image:url('assets/charity/venue/todai_avenue.jpg');
+    background-size:1660px auto;background-position:-540px 0}
+  .t916 .rt{background-image:url('assets/charity/venue/yasuda_hall_interior.jpg');
+    background-size:1320px auto;background-position:150px 0}
+  .t916 .lb{background-image:url('assets/charity/venue/celavi_red.jpg');
+    background-size:1540px auto;background-position:-500px 890px}
+  .t916 .rb{background-image:url('assets/charity/venue/celavi_blue.jpg');
+    background-size:1540px auto;background-position:30px 890px}
   .t916 .brand{font-size:40px}
   .t916 h1{margin-top:12px;font-size:96px}
   .t916 .tagline{margin-top:24px;font-size:48px}
@@ -186,9 +209,12 @@
 <body>
 
 <section class="board t45">
-  <div class="up"></div>
-  <div class="dn"></div>
+  <div class="lt"></div>
+  <div class="rt"></div>
+  <div class="lb"></div>
+  <div class="rb"></div>
   <div class="slash s1"></div>
+  <div class="vslash"></div>
   <div class="scrim"></div>
   <div class="focus"></div>
 
@@ -214,9 +240,12 @@
 
 
 <section class="board t11">
-  <div class="up"></div>
-  <div class="dn"></div>
+  <div class="lt"></div>
+  <div class="rt"></div>
+  <div class="lb"></div>
+  <div class="rb"></div>
   <div class="slash s1"></div>
+  <div class="vslash"></div>
   <div class="scrim"></div>
   <div class="focus"></div>
 
@@ -242,9 +271,12 @@
 
 
 <section class="board t916">
-  <div class="up"></div>
-  <div class="dn"></div>
+  <div class="lt"></div>
+  <div class="rt"></div>
+  <div class="lb"></div>
+  <div class="rb"></div>
   <div class="slash s1"></div>
+  <div class="vslash"></div>
   <div class="scrim"></div>
   <div class="focus"></div>
 
