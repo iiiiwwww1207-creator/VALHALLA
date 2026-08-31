@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>VALHALLA CHARITY LIVE ｜ 掛け合わせ版（野球場カット）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:wght@300;400;500;600&family=Noto+Serif+JP:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* ==========================================================
+     VALHALLA CHARITY LIVE / A4 フライヤー
+     2枚のフライヤーを掛け合わせた版／上部を最新の野球場カットにした試作
+     （kazuma 依頼 2026-08-31）
+     ※ 野球場の写真は自前の背景を持つため、DOMINION の「白バック」は再現できない。
+     　 上端だけ白をかぶせて黒いセリフのタイトルを成立させ、
+     　 その下は写真をそのまま見せる形にしている。
+
+     A: VALHALLA「DOMINION」ワンマンのフライヤー
+        → 上半分＝白背景＋3人の全身＋巨大セリフのタイトル（反射付き）
+        → 下半分＝黒い石＋金の情報エリア／金の見出し・白の本文
+     B: 昼の本編「WRAPPING THE EARTH TOKYO 2026」のフライヤー
+        → 金の細罫で挟んだ中央見出し（─ TEXT ─）
+        → 会場写真＋枠付きの小写真
+        → 最下部は 日時／チケット／QR の3分割インフォ帯
+
+     配色は2枚に共通する 白 × 黒 × 金。クリムゾンは使わない。
+     書体も2枚に共通するセリフ体（Cinzel / Cormorant / Noto Serif JP）。
+     ========================================================== */
+  :root{
+    --paper:#ffffff; --ink:#0c0a0b;
+    --gold:#C9A961; --gold-l:#E8CB85; --gold-d:#8C7539;
+    --cream:#F3EDE1; --sub:rgba(243,237,225,.72);
+    --line:rgba(201,169,97,.34);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;border-radius:0}
+  @page{ size:A4 portrait; margin:0 }
+  html,body{background:#1a1a1c}
+  body{font-family:"Noto Serif JP",serif;color:var(--cream);
+    -webkit-font-smoothing:antialiased;display:flex;justify-content:center;padding:10mm 0}
+  .page{position:relative;width:210mm;height:297mm;overflow:hidden;background:var(--ink);
+    display:flex;flex-direction:column;isolation:isolate;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  @media print{ body{display:block;padding:0;background:#fff} .page{box-shadow:none} }
+  @media screen{ .page{box-shadow:0 8px 40px rgba(0,0,0,.6)} }
+
+  /* ========== 上半分：白背景＋3人＋巨大タイトル（DOMINION の型） ========== */
+  .top{position:relative;flex:none;height:149mm;background:#fff;overflow:hidden}
+  /* 煙のような白のムラ */
+  .top{background:#0d1420}
+  /* 写真をフルブリードで敷く */
+  .top .band{position:absolute;inset:0;z-index:1;
+    background:url('assets/charity/group_field.jpg') center 30%/cover no-repeat;
+    filter:saturate(.82) sepia(.06) contrast(1.04)}
+  /* 上端だけ白をかぶせて黒いセリフのタイトルを成立させる */
+  .top::before{content:"";position:absolute;inset:0;z-index:2;
+    background:linear-gradient(180deg,
+      #ffffff 0%, #ffffff 13%, rgba(255,255,255,.94) 19%,
+      rgba(255,255,255,.62) 25%, rgba(255,255,255,.22) 30%, transparent 36%)}
+  .top .kicker{position:relative;z-index:3;text-align:center;padding-top:9mm;
+    font-family:'Cinzel',serif;font-weight:500;font-size:3.4mm;
+    letter-spacing:.44em;text-indent:.44em;color:#15120f}
+  .top h1{position:relative;z-index:3;text-align:center;margin-top:2mm;
+    font-family:'Cinzel',serif;font-weight:600;font-size:14.6mm;line-height:1;
+    letter-spacing:.06em;color:#0e0c0b}
+  /* タイトルの反射 */
+  .top h1.refl{margin-top:0;transform:scaleY(-1);opacity:.07;
+    -webkit-mask-image:linear-gradient(180deg,#000,transparent 62%);
+    mask-image:linear-gradient(180deg,#000,transparent 62%)}
+  .top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:16mm;z-index:4;
+    background:linear-gradient(transparent,var(--ink))}
+
+  /* ========== 下半分：黒い石＋金（DOMINION の情報エリアの型） ========== */
+  .stone{position:relative;flex:1;overflow:hidden;
+    background:
+      radial-gradient(ellipse 70% 40% at 12% 8%, rgba(92,80,64,.30), transparent 58%),
+      radial-gradient(ellipse 60% 45% at 88% 62%, rgba(74,64,52,.26), transparent 62%),
+      radial-gradient(ellipse 80% 30% at 50% 100%, rgba(60,52,42,.22), transparent 66%),
+      linear-gradient(162deg,#17130f 0%,#0b0908 38%,#12100e 66%,#090707 100%)}
+  /* 金の亀裂 */
+  .stone .vein{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background:
+      linear-gradient(104deg,transparent 28.6%,rgba(201,169,97,.5) 28.8%,transparent 29.1%),
+      linear-gradient(96deg,transparent 61.4%,rgba(201,169,97,.32) 61.55%,transparent 61.8%),
+      linear-gradient(-78deg,transparent 44.5%,rgba(201,169,97,.22) 44.62%,transparent 44.8%)}
+  .stone .in{position:relative;z-index:2;padding:5mm 14mm 0;display:flex;flex-direction:column;height:100%}
+
+  /* 金の細罫で挟んだ見出し（WRAPPING THE EARTH の型） */
+  .ruled{display:flex;align-items:center;justify-content:center;gap:5mm}
+  .ruled::before,.ruled::after{content:"";height:.25mm;background:var(--line);flex:1;max-width:34mm}
+  .ruled span{font-family:'Cinzel',serif;font-weight:400;font-size:3.1mm;
+    letter-spacing:.34em;text-indent:.34em;color:var(--gold-l);white-space:nowrap}
+  .ruled span.jp{font-family:"Noto Serif JP",serif;font-weight:500;
+    font-size:3.4mm;letter-spacing:.18em;text-indent:.18em}
+
+  .date{text-align:center;margin-top:3.4mm;font-family:'Cinzel',serif;font-weight:500;
+    font-size:9.2mm;line-height:1;letter-spacing:.10em;color:var(--cream)}
+  .tagline{text-align:center;margin-top:3.4mm;font-family:"Noto Serif JP",serif;font-weight:600;
+    font-size:5.6mm;letter-spacing:.12em;line-height:1.5;color:#fff}
+  .kind{text-align:center;margin-top:3.4mm}
+
+  /* 会場写真（B の型：横長の主写真＋左右に枠付きの小写真） */
+  .venues{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin-top:4mm}
+  .venues figure{position:relative;height:31mm;overflow:hidden;border:.3mm solid var(--line)}
+  .venues img{width:100%;height:100%;object-fit:cover;display:block}
+  .venues figcaption{position:absolute;left:0;right:0;bottom:0;
+    background:linear-gradient(transparent,rgba(9,7,7,.86) 55%);
+    padding:6mm 3mm 2.4mm;text-align:center;
+    font-size:2.6mm;letter-spacing:.10em;color:var(--cream)}
+  .venues figcaption b{display:block;font-family:'Cinzel',serif;font-weight:400;
+    font-size:2.5mm;letter-spacing:.24em;color:var(--gold-l);margin-bottom:1mm}
+
+  /* 出演者（B の PROGRAM の型） */
+  .cast{margin-top:4mm;text-align:center}
+  .cast .row{margin-top:3mm;display:flex;justify-content:center;gap:10mm}
+  .cast .row div{font-family:'Cinzel',serif;font-weight:500;font-size:4.4mm;
+    letter-spacing:.16em;color:#fff;line-height:1.2}
+  .cast .row div span{display:block;font-family:"Noto Serif JP",serif;font-weight:400;
+    font-size:2.7mm;letter-spacing:.10em;color:var(--sub);margin-top:1.4mm}
+  .cast .kindtxt{margin-top:2.6mm;font-size:2.85mm;letter-spacing:.14em;color:var(--sub)}
+
+  /* 最下部：日時／支援／QR の3分割インフォ帯（B の型） */
+  .foot{margin-top:auto;margin-left:-14mm;margin-right:-14mm;
+    border-top:.3mm solid var(--line);background:rgba(6,5,5,.55);
+    display:grid;grid-template-columns:auto 1fr auto;gap:8mm;
+    padding:4.4mm 14mm 4mm;align-items:center}
+  .foot .d1{font-family:'Cinzel',serif;font-weight:500;font-size:5.6mm;
+    letter-spacing:.08em;color:#fff;line-height:1}
+  .foot .d2{margin-top:2.4mm;font-family:'Cormorant Garamond',serif;font-weight:500;
+    font-size:3.4mm;letter-spacing:.12em;color:var(--gold-l)}
+  .foot .d3{margin-top:2.4mm;font-size:3mm;font-weight:600;letter-spacing:.06em;color:var(--cream)}
+  .foot .mid{text-align:center;border-left:.25mm solid var(--line);
+    border-right:.25mm solid var(--line);padding:0 7mm}
+  .foot .mid .k{font-family:'Cinzel',serif;font-size:2.6mm;letter-spacing:.24em;color:var(--gold-d)}
+  .foot .mid .m{margin-top:2.4mm;font-size:3.9mm;font-weight:600;letter-spacing:.06em;
+    line-height:1.55;color:#fff}
+  .foot .mid .m b{color:var(--gold-l)}
+  .foot .mid .s{margin-top:2mm;font-size:2.6mm;color:var(--sub)}
+  .foot .qr{text-align:center}
+  .foot .qr .box{width:22mm;height:22mm;background:#fff;padding:1.4mm}
+  .foot .qr img{width:100%;height:100%;display:block}
+  .foot .qr .cap{margin-top:1.8mm;font-family:'Cinzel',serif;font-size:2.2mm;
+    letter-spacing:.18em;color:var(--gold-d)}
+  .credit{position:relative;z-index:2;margin:0 -14mm;background:rgba(6,5,5,.55);
+    padding:0 14mm 4.5mm;font-size:2.05mm;line-height:1.55;color:rgba(243,237,225,.44)}
+  .tbd{border-bottom:.2mm dashed rgba(201,169,97,.6);padding:0 .3mm;font-style:normal}
+</style>
+</head>
+<body>
+<section class="page">
+
+  <!-- 上：白背景＋3人＋巨大タイトル -->
+  <div class="top">
+    <div class="kicker">VALHALLA CHARITY LIVE</div>
+    <h1>CHARITY LIVE</h1>
+    <div class="band"></div>
+  </div>
+
+  <!-- 下：黒い石＋金の情報エリア -->
+  <div class="stone">
+    <div class="vein"></div>
+    <div class="in">
+
+      <div class="ruled"><span>Cé La Vi Tokyo &nbsp;/&nbsp; Shibuya</span></div>
+      <div class="date">2026.10.18 SUN</div>
+      <p class="tagline">ビジュアル系文化を守り、継ぐ。</p>
+      <div class="ruled kind"><span class="jp">アコースティックライブ ＆ ホストコール体験</span></div>
+
+      <div class="venues">
+        <figure>
+          <img src="assets/charity/venue/yasuda_hall_interior.jpg" alt="東京大学 安田講堂 大講堂">
+          <figcaption><b>Daytime</b>東京大学 安田講堂</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/charity/venue/celavi_red.jpg" alt="CÉ LA VI TOKYO">
+          <figcaption><b>Night</b>CÉ LA VI TOKYO（渋谷・17F）</figcaption>
+        </figure>
+      </div>
+
+      <div class="cast">
+        <div class="ruled"><span>Program</span></div>
+        <div class="row">
+          <div>MIO<span>社美緒</span></div>
+          <div>RAY<span>零</span></div>
+          <div>KØU<span>コウ</span></div>
+        </div>
+        <p class="kindtxt">クラウドファンディング（CAMPFIRE）後日公開 ／ みんなの楽しいが寄付に繋がる</p>
+      </div>
+
+      <div class="foot">
+        <div>
+          <div class="d1">2026.10.18 SUN</div>
+          <div class="d2">OPEN 19:00 ／ START 19:30</div>
+          <div class="d3">CÉ LA VI TOKYO（渋谷・17F）</div>
+        </div>
+        <div class="mid">
+          <div class="k">Charity</div>
+          <div class="m">イベント収益は<br><b>東京大学に寄付</b>します</div>
+          <div class="s">チケット・詳細は後日、特設ページにて発表します</div>
+        </div>
+        <div class="qr">
+          <div class="box"><img src="assets/charity/qr_lp.svg" alt="特設ページ"></div>
+          <div class="cap">Official</div>
+        </div>
+      </div>
+      <p class="credit">主催：VALHALLA ／ 昼の本編「WRAPPING THE EARTH TOKYO 2026」主催：公益財団法人クロノス保全財団。お申し込みは CAMPFIRE にて受付予定（<i class="tbd">案内準備中</i>）。特定商取引法に基づく表記は特設ページに掲載します。</p>
+
+    </div>
+  </div>
+</section>
+</body>
+</html>
