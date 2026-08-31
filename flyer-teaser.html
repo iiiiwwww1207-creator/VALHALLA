@@ -32,9 +32,9 @@
     --drop:62px;
     -webkit-print-color-adjust:exact;print-color-adjust:exact}
   /* --ma = 上の境界 / --mb = 下の境界。その間が CÉ LA VI の帯 */
-  .board.t45{height:1350px;--ma:372px;--mb:1020px}
-  .board.t11{height:1080px;--ma:286px;--mb:838px}
-  .board.t916{height:1920px;--ma:566px;--mb:1382px}
+  .board.t45{height:1350px;--ma:625px;--tc:965px}
+  .board.t11{height:1080px;--ma:322px;--tc:690px}
+  .board.t916{height:1920px;--ma:560px;--tc:1180px}
 
   /* ── 上半分：VALHALLA ── */
   .upbg,.up{position:absolute;inset:0;z-index:0;background-repeat:no-repeat;
@@ -44,25 +44,25 @@
     background-size:cover;background-position:center 28%;
     filter:blur(48px) brightness(.26) saturate(.7);transform:scale(1.22)}
   /* 前面の実寸写真（左右をフェードさせてぼかし面に溶かす） */
-  .up{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%);
-    mask-image:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%)}
-  /* 中央帯：文字専用（東大・セラビは下段に実写で入る） */
-  .md{position:absolute;inset:0;z-index:0;background:#050307;
-    clip-path:polygon(0 calc(var(--ma) + var(--drop)),100% calc(var(--ma) - var(--drop)),
-                      100% calc(var(--mb) - var(--drop)),0 calc(var(--mb) + var(--drop)))}
-
-  /* 下段：左＝東京大学 安田講堂／右＝CÉ LA VI。縦の斜線で分割 */
+  .up{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 3%,#000 97%,transparent 100%);
+    mask-image:linear-gradient(90deg,transparent 0,#000 3%,#000 97%,transparent 100%)}
+  /* 下の2枠：左＝東京大学 安田講堂／右＝CÉ LA VI。
+     斜線を突き抜けて紙面の下端まで大きく入れ、その上に文字を重ねる */
   .dl,.dr{position:absolute;inset:0;z-index:0;background-repeat:no-repeat}
-  .dl{clip-path:polygon(0 calc(var(--mb) + var(--drop)),56% calc(var(--mb) - 8px),46% 100%,0 100%)}
-  .dr{clip-path:polygon(56% calc(var(--mb) - 8px),100% calc(var(--mb) - var(--drop)),100% 100%,46% 100%)}
-  .dl{filter:saturate(.82) brightness(.86) contrast(1.06)}
-  .dl::after,.dr::after{content:"";position:absolute;inset:0}
-  .dl::after{background:linear-gradient(0deg,rgba(5,3,7,.10) 0%,rgba(5,3,7,.14) 40%,rgba(5,3,7,.55) 78%,rgba(5,3,7,.9) 100%)}
-  .dr::after{background:linear-gradient(0deg,rgba(5,3,7,.10) 0%,rgba(5,3,7,.14) 40%,rgba(5,3,7,.55) 78%,rgba(5,3,7,.9) 100%)}
-  /* 下段を左右に割る縦の斜線 */
+  .dl{clip-path:polygon(0 calc(var(--ma) + var(--drop)),56% calc(var(--ma) - 8px),46% 100%,0 100%)}
+  .dr{clip-path:polygon(56% calc(var(--ma) - 8px),100% calc(var(--ma) - var(--drop)),100% 100%,46% 100%)}
+  /* 写真は「透けて」見える程度に落とす（文字の下地を兼ねる） */
+  .dl::after,.dr::after{content:"";position:absolute;inset:0;background:rgba(5,3,7,.34)}
+  /* 文字の周りだけさらに落として可読性を確保 */
+  .scrim{position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:radial-gradient(ellipse 96% 30% at 50% var(--tc),
+      rgba(5,3,7,.90) 0%, rgba(5,3,7,.80) 42%, rgba(5,3,7,.42) 74%, transparent 100%)}
+  /* 下の2枠を左右に割る縦の斜線 */
   .vslash{position:absolute;z-index:2;left:51%;width:6px;
-    top:calc(var(--mb) - 10px);height:calc(100% - var(--mb) + 10px);
-    background:var(--crimson);transform:translateX(-50%) skewX(-12deg)}
+    top:calc(var(--ma) - 10px);height:calc(100% - var(--ma) + 10px);
+    background:linear-gradient(180deg,var(--crimson) 0%,var(--crimson) 12%,
+      transparent 18%,transparent 79%,var(--crimson) 85%,var(--crimson) 100%);
+    transform:translateX(-50%) skewX(-12deg)}
 
   /* 中央に向かって暗く落とすスクリム（写真の上に重ねる） */
   .up::after,.dn::after{content:"";position:absolute;inset:0}
@@ -75,12 +75,10 @@
     background:linear-gradient(90deg,transparent 0,var(--crimson) 9%,var(--crimson) 91%,transparent 100%);
     transform:rotate(-6.55deg)}
   .slash.s1{top:calc(var(--ma) - 4px)}
-  .slash.s2{top:calc(var(--mb) - 4px)}
 
   /* 文字帯にクリムゾンの焦点を寄せる */
   .focus{position:absolute;inset:0;z-index:1;pointer-events:none;
-    background:radial-gradient(ellipse 92% 15% at 50% calc((var(--ma) + var(--mb)) / 2),
-      rgba(176,20,28,.42), transparent 72%)}
+    background:radial-gradient(ellipse 92% 13% at 50% var(--tc), rgba(176,20,28,.30), transparent 74%)}
 
   /* ── 中央の文字 ── */
   .tag{position:absolute;z-index:3;color:#fff;letter-spacing:.10em;
@@ -93,7 +91,7 @@
 
   /* ── 中央の文字 ── */
   .body{position:absolute;left:0;right:0;z-index:4;text-align:center;
-    top:calc((var(--ma) + var(--mb)) / 2);transform:translateY(-50%);
+    top:var(--tc);transform:translateY(-50%);
     text-shadow:0 2px 14px rgba(5,3,7,.95),0 0 34px rgba(5,3,7,.85)}
   .brand{font-family:'Oswald',sans-serif;font-weight:500;letter-spacing:.30em;
     text-indent:.30em;color:#fff;line-height:1}
@@ -133,11 +131,12 @@
   .t45 .qrrow .qr{width:104px;height:104px;padding:7px}
   .t45 .qrrow .qt{font-size:20px}
   .t45 .dl{background-image:url('assets/charity/venue/yasuda1.jpg');
-    background-size:900px auto;background-position:-160px 985px}
+    background-size:1560px auto;background-position:-585px 340px}
   .t45 .dr{background-image:url('assets/charity/venue/dj.jpg');
-    background-size:800px auto;background-position:360px 1010px}
+    background-size:1620px auto;background-position:-300px 440px}
+  .t45 .upbg{display:none}
   .t45 .up{background-image:url('assets/charity/group_field.jpg');
-    background-size:66% auto;background-position:center -320px}
+    background-size:100% auto;background-position:center -505px}
   .t45 .up-tag{top:34px}
   .t45 .dn-tag{bottom:30px}
   .t45 .tag b{font-size:29px}
@@ -162,9 +161,9 @@
   .t11 .qrrow .qr{width:90px;height:90px;padding:6px}
   .t11 .qrrow .qt{font-size:18px}
   .t11 .dl{background-image:url('assets/charity/venue/yasuda1.jpg');
-    background-size:860px auto;background-position:-150px 812px}
+    background-size:1350px auto;background-position:-505px 204px}
   .t11 .dr{background-image:url('assets/charity/venue/dj.jpg');
-    background-size:760px auto;background-position:340px 838px}
+    background-size:1420px auto;background-position:-260px 312px}
   .t11 .up{background-image:url('assets/charity/group_field.jpg');
     background-size:48% auto;background-position:center -230px}
   .t11 .up-tag{top:28px}
@@ -191,9 +190,10 @@
   .t916 .qrrow .qr{width:132px;height:132px;padding:9px}
   .t916 .qrrow .qt{font-size:25px}
   .t916 .dl{background-image:url('assets/charity/venue/yasuda1.jpg');
-    background-size:1000px auto;background-position:-190px 1300px}
+    background-size:2400px auto;background-position:-900px 362px}
   .t916 .dr{background-image:url('assets/charity/venue/dj.jpg');
-    background-size:900px auto;background-position:400px 1370px}
+    background-size:2450px auto;background-position:-440px 550px}
+  .t916 .upbg{display:none}
   .t916 .up{background-image:url('assets/charity/group_field.jpg');
     background-size:100% auto;background-position:center -500px}
   .t916 .up-tag{top:150px}
@@ -209,12 +209,11 @@
 <section class="board t45">
   <div class="upbg"></div>
   <div class="up"></div>
-  <div class="md"></div>
   <div class="dl"></div>
   <div class="dr"></div>
   <div class="slash s1"></div>
-  <div class="slash s2"></div>
   <div class="vslash"></div>
+  <div class="scrim"></div>
   <div class="focus"></div>
 
 
@@ -241,12 +240,11 @@
 <section class="board t11">
   <div class="upbg"></div>
   <div class="up"></div>
-  <div class="md"></div>
   <div class="dl"></div>
   <div class="dr"></div>
   <div class="slash s1"></div>
-  <div class="slash s2"></div>
   <div class="vslash"></div>
+  <div class="scrim"></div>
   <div class="focus"></div>
 
 
@@ -273,12 +271,11 @@
 <section class="board t916">
   <div class="upbg"></div>
   <div class="up"></div>
-  <div class="md"></div>
   <div class="dl"></div>
   <div class="dr"></div>
   <div class="slash s1"></div>
-  <div class="slash s2"></div>
   <div class="vslash"></div>
+  <div class="scrim"></div>
   <div class="focus"></div>
 
 
