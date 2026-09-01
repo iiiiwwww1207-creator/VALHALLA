@@ -2,18 +2,23 @@
 """Create the 16:9 CAMPFIRE hero image from the existing vertical flyer."""
 
 from pathlib import Path
-from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageEnhance
+from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageEnhance, ImageChops
 import math
 import os
 
 
 HERE = Path(__file__).resolve().parent
 SOURCE = HERE / "flyer.jpg"
+VENUE = HERE / "venue" / "celavi_red_hero.jpg"
 OUTPUT = HERE / "flyer_wide.jpg"
 
 W, H = 1920, 1080
-GOLD = (201, 169, 97)
-IVORY = (245, 239, 224)
+BLACK = (5, 3, 7)
+CRIMSON = (193, 18, 31)
+DARK_CRIMSON = (142, 16, 25)
+DEEPEST_CRIMSON = (110, 10, 18)
+CREAM = (245, 239, 228)
+SILVER = (198, 198, 205)
 
 
 def first_font(*candidates: str) -> str:
@@ -67,40 +72,83 @@ def tracked_text(draw, xy, text, face, fill, tracking, stroke_width=0, stroke_fi
 
 
 def make_background() -> Image.Image:
-    im = Image.new("RGB", (W, H))
+    # Near-black field with deep crimson rising softly from the lower edge.
+    im = Image.new("RGB", (W, H), BLACK)
     px = im.load()
-    top = (188, 193, 201)
-    mid = (62, 63, 73)
-    bottom = (6, 4, 12)
     for y in range(H):
         t = y / (H - 1)
-        if t < 0.48:
-            q = (t / 0.48) ** 0.9
-            a, b = top, mid
-        else:
-            q = ((t - 0.48) / 0.52) ** 0.72
-            a, b = mid, bottom
-        row = tuple(round(a[i] * (1 - q) + b[i] * q) for i in range(3))
         for x in range(W):
-            # Keep the photographic side subdued so pale wardrobe stays distinct.
-            right = max(0.0, (x / (W - 1) - 0.48) / 0.52)
-            right_shade = 1.0 - 0.19 * right ** 1.25
-            # Gentle edge vignette keeps the white text readable at thumbnail size.
-            edge = max(0.0, abs(x - W / 2) / (W / 2) - 0.52) / 0.48
-            shade = 1.0 - 0.10 * edge * edge
-            px[x, y] = tuple(round(c * shade * right_shade) for c in row)
-    return im
+            nx = x / (W - 1)
+            # A broad, subdued bloom: #6E0A12 at the foot, tending toward
+            # #8E1019 as it diffuses upward before disappearing into #050307.
+            lower = max(0.0, (t - 0.22) / 0.78) ** 1.5
+            upper_tint = max(0.0, 1.0 - abs(t - 0.64) / 0.48) ** 2
+            red = tuple(
+                round(DEEPEST_CRIMSON[i] * (1 - 0.34 * upper_tint)
+                      + DARK_CRIMSON[i] * 0.34 * upper_tint)
+                for i in range(3)
+            )
+            # Slightly favor the right/photo side and preserve a very dark text field.
+            spatial = (0.68 + 0.32 * max(0.0, (nx - 0.10) / 0.90))
+            amount = min(0.82, lower * spatial)
+            edge = max(0.0, abs(nx - 0.5) - 0.38) / 0.12
+            vignette = 1.0 - 0.12 * min(1.0, edge) ** 2
+            px[x, y] = tuple(round((BLACK[i] * (1 - amount) + red[i] * amount) * vignette)
+                             for i in range(3))
+
+    # CÉ LA VI laser texture, screen-like and deliberately faint. The left 55%
+    # is attenuated again so typography remains the highest-contrast element.
+    venue = Image.open(VENUE).convert("RGB")
+    scale = max(W / venue.width, H / venue.height)
+    venue = venue.resize((round(venue.width * scale), round(venue.height * scale)),
+                         Image.Resampling.LANCZOS)
+    left = (venue.width - W) // 2
+    top = (venue.height - H) // 2
+    venue = venue.crop((left, top, left + W, top + H))
+    venue = ImageEnhance.Color(venue).enhance(0.72)
+    venue = ImageEnhance.Contrast(venue).enhance(1.08)
+    screened = ImageChops.screen(im, venue)
+    texture_mask = Image.new("L", (W, H), 0)
+    tm = texture_mask.load()
+    for y in range(H):
+        for x in range(W):
+            nx = x / (W - 1)
+            # 17% on the text side, rising smoothly to 23% on the portrait side.
+            strength = 0.17 + 0.06 * max(0.0, min(1.0, (nx - 0.55) / 0.20))
+            tm[x, y] = round(255 * strength)
+    im = Image.composite(screened, im, texture_mask)
+
+    # A final dark veil over the left 55% keeps venue highlights behind the copy.
+    veil = Image.new("RGB", (W, H), BLACK)
+    veil_mask = Image.new("L", (W, H), 0)
+    vm = veil_mask.load()
+    for x in range(round(W * 0.62)):
+        fade = max(0.0, min(1.0, (0.62 - x / W) / 0.12))
+        for y in range(H):
+            vm[x, y] = round(255 * 0.14 * fade)
+    return Image.composite(veil, im, veil_mask)
 
 
 def add_people(base: Image.Image) -> None:
     src = Image.open(SOURCE).convert("RGB")
     # Only the portrait area is used; all typography in the source is excluded.
-    portrait = src.crop((45, 100, 1055, 715))
-    target_w = 1350
+    portrait = src.crop((35, 100, 1065, 715))
+    target_w = 1320
     target_h = round(portrait.height * target_w / portrait.width)
     portrait = portrait.resize((target_w, target_h), Image.Resampling.LANCZOS)
     portrait = portrait.filter(ImageFilter.GaussianBlur(0.25))
-    portrait = ImageEnhance.Brightness(portrait).enhance(0.82)
+    portrait = ImageEnhance.Brightness(portrait).enhance(0.94)
+
+    # Apply one uniform multiply-style grade to the whole photograph.  Keeping
+    # the operation independent of luminance/chroma preserves the separation
+    # between the silver backdrop and RAY's brighter white suit instead of
+    # misclassifying the costume as background.  A small desaturated component
+    # keeps skin from becoming aggressively red.
+    neutral = ImageEnhance.Color(portrait).enhance(0.34)
+    crimson_multiply = ImageChops.multiply(
+        neutral, Image.new("RGB", portrait.size, (128, 76, 82))
+    )
+    portrait = Image.blend(crimson_multiply, neutral, 0.16)
     portrait = ImageEnhance.Contrast(portrait).enhance(1.08)
 
     # Photograph enters softly from the left and dissolves into black at the bottom.
@@ -108,21 +156,30 @@ def add_people(base: Image.Image) -> None:
     m = mask.load()
     for y in range(portrait.height):
         ty = y / max(1, portrait.height - 1)
-        if ty < 0.035:
-            vertical = 0.5 - 0.5 * math.cos(math.pi * ty / 0.035)
-        elif ty < 0.85:
+        if ty < 0.20:
+            vertical = 0.5 - 0.5 * math.cos(math.pi * ty / 0.20)
+        elif ty < 0.78:
             vertical = 1.0
         else:
-            u = (ty - 0.85) / 0.15
+            u = (ty - 0.78) / 0.22
             vertical = 0.5 * (1.0 + math.cos(math.pi * min(1.0, u)))
         for x in range(portrait.width):
             tx = x / max(1, portrait.width - 1)
-            horizontal = min(1.0, max(0.0, (tx - 0.02) / 0.18))
+            horizontal = min(1.0, max(0.0, (tx - 0.01) / 0.24))
             m[x, y] = round(255 * vertical * horizontal)
-    mask = mask.filter(ImageFilter.GaussianBlur(12))
+    mask = mask.filter(ImageFilter.GaussianBlur(20))
+
+    # Subtle crimson rim behind the portrait separates dark hair and wardrobe.
+    glow_mask = mask.filter(ImageFilter.GaussianBlur(34)).point(lambda v: round(v * 0.22))
+    glow = Image.new("RGB", (W, H), CRIMSON)
+    full_glow_mask = Image.new("L", (W, H), 0)
+    photo_pos = (650, 170)
+    full_glow_mask.paste(glow_mask, photo_pos)
+    base.paste(glow, (0, 0), full_glow_mask)
+
     layer = Image.new("RGB", (W, H), (0, 0, 0))
     alpha = Image.new("L", (W, H), 0)
-    pos = (730, 170)
+    pos = photo_pos
     layer.paste(portrait, pos)
     alpha.paste(mask, pos)
     base.paste(layer, (0, 0), alpha)
@@ -134,7 +191,7 @@ def add_people(base: Image.Image) -> None:
     for y in range(fade_start, H):
         a = int(215 * ((y - fade_start) / (H - fade_start)) ** 1.35)
         for x in range(720, W):
-            vp[x, y] = (10, 7, 16, a)
+            vp[x, y] = (*BLACK, a)
     base.paste(veil, (0, 0), veil)
 
 
@@ -143,34 +200,37 @@ def add_type(base: Image.Image) -> None:
     x = 112
 
     small = font(OPTIMA, 31)
-    tracked_text(draw, (x, 126), "CHARITY LIVE 2026", small, GOLD, 9)
+    tracked_text(draw, (x, 126), "CHARITY LIVE 2026", small, CRIMSON, 9)
 
     valhalla = font(DIDOT, 128)
-    tracked_text(draw, (x - 2, 201), "VALHALLA", valhalla, GOLD, 7)
+    tracked_text(draw, (x - 2, 201), "VALHALLA", valhalla, CREAM, 7)
 
     live = font(DIDOT, 61)
-    tracked_text(draw, (x + 2, 354), "CHARITY LIVE", live, IVORY, 5)
+    tracked_text(draw, (x + 2, 354), "CHARITY LIVE", live, SILVER, 5)
 
-    # Japanese line is the main message; a restrained dark shadow protects contrast.
+    # LP heading rule: solid dark-crimson band with bold white lettering.
     catch = font(HIRAGINO_BOLD, 64)
-    draw.text(
-        (x, 472), "その夜の全てを、寄付へ。", font=catch, fill=IVORY,
-        stroke_width=2, stroke_fill=(40, 36, 42),
-    )
+    catch_text = "その夜の全てを、寄付へ。"
+    bbox = draw.textbbox((0, 0), catch_text, font=catch)
+    padding_x, padding_y = 22, 13
+    band = (x - padding_x, 472 - padding_y,
+            x + (bbox[2] - bbox[0]) + padding_x, 472 + (bbox[3] - bbox[1]) + padding_y)
+    draw.rectangle(band, fill=DARK_CRIMSON)
+    draw.text((x, 472), catch_text, font=catch, fill=(255, 255, 255))
 
-    draw.line((x, 610, 844, 610), fill=GOLD, width=2)
+    draw.line((x, 610, 844, 610), fill=CRIMSON, width=2)
 
     collab = font(OPTIMA, 27)
     tracked_text(
         draw, (x, 654), "CÉ LA VI SHIBUYA × THE UNIVERSITY of TOKYO",
-        collab, GOLD, 1,
+        collab, SILVER, 1,
     )
 
     date = font(DIDOT, 56)
-    tracked_text(draw, (x, 755), "2026 . 10 . 18 SUN", date, GOLD, 4)
+    tracked_text(draw, (x, 755), "2026 . 10 . 18 SUN", date, CREAM, 4)
 
     names = font(OPTIMA, 39)
-    tracked_text(draw, (x + 2, 864), "MIO / KØU / RAY", names, IVORY, 5)
+    tracked_text(draw, (x + 2, 864), "MIO / KØU / RAY", names, SILVER, 5)
 
 
 def main() -> None:
