@@ -45,12 +45,13 @@
   /* 煙のような白のムラ */
   .top::before{content:"";position:absolute;inset:0;z-index:1;
     background:
-      radial-gradient(ellipse 60% 40% at 20% 15%, rgba(210,208,205,.55), transparent 60%),
-      radial-gradient(ellipse 55% 45% at 82% 30%, rgba(205,203,200,.5), transparent 62%),
-      radial-gradient(ellipse 70% 30% at 50% 92%, rgba(196,194,191,.55), transparent 64%),
-      linear-gradient(180deg,#fbfbfa 0%,#f2f1f0 55%,#e9e8e7 100%)}
-  .top .band{position:absolute;left:0;right:0;bottom:0;top:37mm;z-index:2;
-    background:url('assets/charity/group.jpg') center 12%/contain no-repeat}
+      radial-gradient(ellipse 62% 42% at 20% 14%, rgba(214,228,242,.55), transparent 62%),
+      radial-gradient(ellipse 56% 46% at 83% 28%, rgba(220,234,248,.5), transparent 64%),
+      linear-gradient(180deg,#f2f8fe 0%,#eaf3fc 50%,#dfe9f3 100%)}
+  .top .band{position:absolute;left:0;right:0;bottom:0;top:34mm;z-index:2;
+    background:url('assets/charity/group.jpg') center 84%/auto 132% no-repeat;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 13%,#000 100%);
+    mask-image:linear-gradient(180deg,transparent 0,#000 13%,#000 100%)}
   .top .kicker{position:relative;z-index:3;text-align:center;padding-top:9mm;
     font-family:'Cinzel',serif;font-weight:500;font-size:3.4mm;
     letter-spacing:.44em;text-indent:.44em;color:#15120f}
@@ -63,7 +64,7 @@
     mask-image:linear-gradient(180deg,#000,transparent 62%)}
   .top .tick{position:absolute;left:50%;top:33mm;z-index:5;width:26mm;height:.8mm;
     transform:translateX(-50%);background:var(--crimson)}
-  .top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:16mm;z-index:4;
+  .top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:22mm;z-index:4;
     background:linear-gradient(transparent,var(--ink))}
 
   /* ========== 下半分：黒い石＋金（DOMINION の情報エリアの型） ========== */
