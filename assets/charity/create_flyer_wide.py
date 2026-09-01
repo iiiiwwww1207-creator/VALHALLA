@@ -200,38 +200,42 @@ def add_type(base: Image.Image) -> None:
     draw = ImageDraw.Draw(base)
     x = 112
 
-    small = font(OPTIMA, 31)
-    tracked_text(draw, (x, 126), "CHARITY LIVE 2026", small, CRIMSON, 9)
+    eyebrow = font(OPTIMA, 25)
+    tracked_text(draw, (x, 82), "VALHALLA CHARITY LIVE", eyebrow, CRIMSON, 7)
 
-    valhalla = font(DIDOT, 128)
-    tracked_text(draw, (x - 2, 201), "VALHALLA", valhalla, CREAM, 7)
+    valhalla = font(DIDOT, 126)
+    tracked_text(draw, (x - 2, 128), "VALHALLA", valhalla, CREAM, 7)
 
-    live = font(DIDOT, 61)
-    tracked_text(draw, (x + 2, 354), "CHARITY LIVE", live, SILVER, 5)
-
-    # LP heading rule: solid dark-crimson band with bold white lettering.
-    catch = font(HIRAGINO_BOLD, 64)
-    catch_text = "その夜の全てを、寄付へ。"
+    # The official flyer catch copy is the primary reading moment: a solid
+    # dark-crimson band and the heaviest available Hiragino Sans face.
+    catch = font(HIRAGINO_BOLD, 56)
+    catch_text = "ビジュアル系文化を守り、継ぐ。"
     bbox = draw.textbbox((0, 0), catch_text, font=catch)
-    padding_x, padding_y = 22, 13
-    band = (x - padding_x, 472 - padding_y,
-            x + (bbox[2] - bbox[0]) + padding_x, 472 + (bbox[3] - bbox[1]) + padding_y)
+    catch_y = 288
+    padding_x, padding_y = 22, 14
+    band = (x - padding_x, catch_y - padding_y,
+            x + (bbox[2] - bbox[0]) + padding_x,
+            catch_y + (bbox[3] - bbox[1]) + padding_y)
     draw.rectangle(band, fill=DARK_CRIMSON)
-    draw.text((x, 472), catch_text, font=catch, fill=(255, 255, 255))
+    draw.text((x, catch_y), catch_text, font=catch, fill=(255, 255, 255))
 
-    draw.line((x, 610, 844, 610), fill=CRIMSON, width=2)
-
-    collab = font(OPTIMA, 27)
-    tracked_text(
-        draw, (x, 654), "CÉ LA VI SHIBUYA × THE UNIVERSITY of TOKYO",
-        collab, SILVER, 1,
+    detail = font(HIRAGINO_BOLD, 25)
+    draw.text(
+        (x, 405), "アコースティックライブ ＆ ホストコール体験",
+        font=detail, fill=SILVER,
     )
 
-    date = font(DIDOT, 56)
-    tracked_text(draw, (x, 755), "2026 . 10 . 18 SUN", date, CREAM, 4)
+    draw.line((x, 472, 844, 472), fill=CRIMSON, width=2)
 
-    names = font(OPTIMA, 39)
-    tracked_text(draw, (x + 2, 864), "MIO / KØU / RAY", names, SILVER, 5)
+    date = font(DIDOT, 58)
+    tracked_text(draw, (x, 514), "2026 . 10 . 18 SUN", date, CREAM, 3)
+
+    info = font(HIRAGINO_BOLD, 24)
+    draw.text((x, 620), "OPEN 19:00 ／ START 19:30", font=info, fill=SILVER)
+    draw.text((x, 670), "CÉ LA VI TOKYO（渋谷・17F）", font=info, fill=SILVER)
+
+    names = font(OPTIMA, 34)
+    tracked_text(draw, (x + 1, 742), "MIO / RAY / KØU", names, SILVER, 4)
 
 
 def main() -> None:
