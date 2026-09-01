@@ -33,11 +33,12 @@
   .hero{background:radial-gradient(ellipse at 50% 0%, rgba(176,20,28,.20), transparent 68%);
     color:var(--cream);padding:40px 24px 34px;text-align:center;position:relative;isolation:isolate;
     text-shadow:0 1px 12px rgba(0,0,0,.6)}
-  /* セラビ赤レーザー写真をはっきり背景に（薄いスクリムのみで写真を主役に、文字可読性はtext-shadowで確保） */
+  /* 引き（部屋全体）で表示：幅いっぱいに全体を出し拡大しない→粗さ回避。下側は暗くフェード */
   .hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
-    background:linear-gradient(180deg,rgba(5,3,7,.26),rgba(5,3,7,.40)),
-      url('assets/charity/venue/celavi_red_hero.jpg') center/cover no-repeat;
-    opacity:.94}
+    background:
+      linear-gradient(180deg,rgba(7,4,6,.34) 0%,rgba(7,4,6,0) 16%,rgba(7,4,6,0) 56%,rgba(7,4,6,.92) 86%,#070406 100%),
+      url('assets/charity/venue/celavi_red_hero.jpg') top center / 100% auto no-repeat;
+    opacity:.97}
   /* 一番上：VALHALLA ／× 東大 の2分割ビジュアル（バンド3人は全員収まるcontain） */
   .split{position:relative;height:240px;margin:-40px -24px 24px;overflow:hidden;background:#000}
   .split .p{position:absolute;inset:0;background-repeat:no-repeat}
