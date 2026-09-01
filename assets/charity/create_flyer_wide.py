@@ -8,7 +8,7 @@ import os
 
 
 HERE = Path(__file__).resolve().parent
-SOURCE = HERE / "flyer.jpg"
+SOURCE = HERE / "group_field.jpg"
 VENUE = HERE / "venue" / "celavi_red_hero.jpg"
 OUTPUT = HERE / "flyer_wide.jpg"
 
@@ -131,25 +131,26 @@ def make_background() -> Image.Image:
 
 def add_people(base: Image.Image) -> None:
     src = Image.open(SOURCE).convert("RGB")
-    # Only the portrait area is used; all typography in the source is excluded.
-    portrait = src.crop((35, 100, 1065, 715))
-    target_w = 1320
-    target_h = round(portrait.height * target_w / portrait.width)
+    # Keep the full width so the left shoe and the right member both retain
+    # breathing room.  Most of the sky/scoreboard is removed while the crop
+    # still includes all three figures from hair to feet.
+    portrait = src.crop((0, 916, 2443, 3664))
+    target_w, target_h = 1040, 1170
     portrait = portrait.resize((target_w, target_h), Image.Resampling.LANCZOS)
     portrait = portrait.filter(ImageFilter.GaussianBlur(0.25))
-    portrait = ImageEnhance.Brightness(portrait).enhance(0.94)
+    portrait = ImageEnhance.Brightness(portrait).enhance(1.04)
 
-    # Apply one uniform multiply-style grade to the whole photograph.  Keeping
-    # the operation independent of luminance/chroma preserves the separation
-    # between the silver backdrop and RAY's brighter white suit instead of
-    # misclassifying the costume as background.  A small desaturated component
-    # keeps skin from becoming aggressively red.
-    neutral = ImageEnhance.Color(portrait).enhance(0.34)
+    # Apply one uniform multiply-style grade to the whole photograph.  The
+    # source's saturated blue and purple are first pulled toward neutral; a
+    # lighter crimson multiplier then preserves face/hair detail and keeps the
+    # blue background from collapsing into dirty black.
+    neutral = ImageEnhance.Color(portrait).enhance(0.38)
+    neutral = ImageEnhance.Contrast(neutral).enhance(0.94)
     crimson_multiply = ImageChops.multiply(
-        neutral, Image.new("RGB", portrait.size, (128, 76, 82))
+        neutral, Image.new("RGB", portrait.size, (184, 128, 136))
     )
-    portrait = Image.blend(crimson_multiply, neutral, 0.16)
-    portrait = ImageEnhance.Contrast(portrait).enhance(1.08)
+    portrait = Image.blend(crimson_multiply, neutral, 0.22)
+    portrait = ImageEnhance.Contrast(portrait).enhance(1.02)
 
     # Photograph enters softly from the left and dissolves into black at the bottom.
     mask = Image.new("L", portrait.size, 0)
@@ -173,7 +174,7 @@ def add_people(base: Image.Image) -> None:
     glow_mask = mask.filter(ImageFilter.GaussianBlur(34)).point(lambda v: round(v * 0.22))
     glow = Image.new("RGB", (W, H), CRIMSON)
     full_glow_mask = Image.new("L", (W, H), 0)
-    photo_pos = (650, 170)
+    photo_pos = (840, -20)
     full_glow_mask.paste(glow_mask, photo_pos)
     base.paste(glow, (0, 0), full_glow_mask)
 
