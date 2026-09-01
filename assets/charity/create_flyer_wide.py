@@ -138,7 +138,14 @@ def add_people(base: Image.Image) -> None:
     target_w, target_h = 1040, 1170
     portrait = portrait.resize((target_w, target_h), Image.Resampling.LANCZOS)
     portrait = portrait.filter(ImageFilter.GaussianBlur(0.25))
-    portrait = ImageEnhance.Brightness(portrait).enhance(1.04)
+    # Lift the photograph before grading, with a gentle gamma curve focused on
+    # the midtones so faces, hair, and dark clothing read without clipping the
+    # white wardrobe or other highlights.
+    portrait = ImageEnhance.Brightness(portrait).enhance(1.12)
+    gamma = 0.88
+    portrait = portrait.point(
+        [round(255 * ((value / 255) ** gamma)) for value in range(256)] * 3
+    )
 
     # Apply one uniform multiply-style grade to the whole photograph.  The
     # source's saturated blue and purple are first pulled toward neutral; a
@@ -149,8 +156,8 @@ def add_people(base: Image.Image) -> None:
     crimson_multiply = ImageChops.multiply(
         neutral, Image.new("RGB", portrait.size, (184, 128, 136))
     )
-    portrait = Image.blend(crimson_multiply, neutral, 0.22)
-    portrait = ImageEnhance.Contrast(portrait).enhance(1.02)
+    portrait = Image.blend(crimson_multiply, neutral, 0.08)
+    portrait = ImageEnhance.Contrast(portrait).enhance(0.98)
 
     # Photograph enters softly from the left and dissolves into black at the bottom.
     mask = Image.new("L", portrait.size, 0)
