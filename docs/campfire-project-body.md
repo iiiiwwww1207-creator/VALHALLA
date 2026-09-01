@@ -232,6 +232,8 @@ VALHALLA アコースティックライブをご観覧いただけます。
 
 ### 7. 資金の使い道
 
+【画像】`assets/charity/flow_banner.jpg`（支援が寄付になるまでの流れ）
+
 **イベント収益は全て、公益財団法人クロノス保全財団へ寄付します。**
 
 **寄付の流れ**
@@ -336,6 +338,7 @@ A. CAMPFIRE の規定により、支援後のキャンセル・返金はお受�
 | 位置 | ファイル | 備考 |
 |---|---|---|
 | メインビジュアル | `assets/charity/flyer_wide.jpg` | 1920x1080。生成スクリプト `assets/charity/create_flyer_wide.py` |
+| 流れの図解（§3-7に配置） | `assets/charity/flow_banner.jpg` | 1774x887。昼の部の同種図解の夜版。生成スクリプト `assets/charity/create_flow_banner.py` |
 | メンバー3人 | `assets/charity/group_field.jpg` | kazuma 指定 |
 | 会場 | `assets/charity/venue/celavi_red.jpg` | 赤レーザーの引き画 |
 | 各メンバー | `assets/charity/mio.jpg` / `rei.jpg` / `kou.jpg` | |
