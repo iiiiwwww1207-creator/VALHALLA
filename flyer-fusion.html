@@ -41,7 +41,7 @@
   @media screen{ .page{box-shadow:0 8px 40px rgba(0,0,0,.6)} }
 
   /* ========== 上半分：白背景＋3人＋巨大タイトル（DOMINION の型） ========== */
-  .top{position:relative;flex:none;height:120mm;background:#fff;overflow:hidden}
+  .top{position:relative;flex:none;height:102mm;background:#fff;overflow:hidden}
   /* 煙のような白のムラ */
   .top::before{content:"";position:absolute;inset:0;z-index:1;
     background:
@@ -96,7 +96,7 @@
   .kind{text-align:center;margin-top:3.4mm}
 
   /* 会場写真（B の型：横長の主写真＋左右に枠付きの小写真） */
-  .venue1{position:relative;height:84mm;overflow:hidden;margin:5mm -14mm 0;
+  .venue1{position:relative;flex:none;height:55mm;overflow:hidden;margin:5mm -14mm 0;
     border-top:.35mm solid rgba(193,18,31,.6);border-bottom:.35mm solid rgba(193,18,31,.6)}
   .venue1 img{width:100%;height:100%;object-fit:cover;display:block;
     filter:brightness(1.18) saturate(1.06)}
@@ -116,22 +116,22 @@
   .cast .kindtxt{margin-top:2.6mm;font-size:2.85mm;letter-spacing:.14em;color:var(--sub)}
 
   /* 一番の主張：楽しむことが寄付になる／クラウドファンディング告知 */
-  .cfblock{margin-top:4.4mm;text-align:center;
+  .cfblock{margin-top:3.6mm;text-align:center;
     border-top:.35mm solid rgba(193,18,31,.62);border-bottom:.35mm solid rgba(193,18,31,.62);
-    padding:5mm 0 4.6mm;
+    padding:3.4mm 0 3.2mm;
     background:linear-gradient(180deg,rgba(193,18,31,.13),rgba(193,18,31,.05) 55%,transparent)}
   .cfblock .kick{font-family:'Cinzel',serif;font-weight:500;font-size:2.9mm;
     letter-spacing:.42em;text-indent:.42em;text-transform:uppercase;color:var(--crimson-l)}
-  .cfblock .brandbig{margin-top:2.6mm;font-family:'Cinzel',serif;font-weight:600;
-    font-size:12mm;line-height:1;letter-spacing:.12em;text-indent:.12em;color:#fff}
-  .cfblock .note{margin-top:3.4mm;font-family:"Noto Serif JP",serif;font-weight:500;
-    font-size:3.8mm;letter-spacing:.14em;color:var(--cream)}
+  .cfblock .brandbig{margin-top:1.8mm;font-family:'Cinzel',serif;font-weight:600;
+    font-size:9.4mm;line-height:1;letter-spacing:.12em;text-indent:.12em;color:#fff}
+  .cfblock .note{margin-top:2.6mm;font-family:"Noto Serif JP",serif;font-weight:500;
+    font-size:3.4mm;letter-spacing:.14em;color:var(--cream)}
 
   /* 最下部：日時／支援／QR の3分割インフォ帯（B の型） */
   .foot{margin-top:auto;margin-left:-14mm;margin-right:-14mm;
     border-top:.3mm solid var(--line);background:rgba(6,5,5,.55);
     display:grid;grid-template-columns:auto 1fr auto;gap:8mm;
-    padding:4mm 14mm 3.6mm;align-items:center}
+    padding:3.2mm 14mm 2.6mm;align-items:center}
   .foot .d1{font-family:'Cinzel',serif;font-weight:500;font-size:5.6mm;
     letter-spacing:.08em;color:#fff;line-height:1}
   .foot .d2{margin-top:2.4mm;font-family:'Cormorant Garamond',serif;font-weight:500;
@@ -146,12 +146,19 @@
   .foot .mid .m b{color:var(--crimson-l)}
   .foot .mid .s{margin-top:2mm;font-size:2.6mm;color:var(--sub)}
   .foot .qr{text-align:center}
-  .foot .qr .box{width:22mm;height:22mm;background:#fff;padding:1.4mm}
+  .foot .qr .bubble{position:relative;display:inline-block;margin-bottom:2.8mm;
+    background:var(--crimson);color:#fff;font-family:"Noto Serif JP",serif;font-weight:700;
+    font-size:2.6mm;letter-spacing:.08em;padding:1.5mm 3.6mm;white-space:nowrap}
+  .foot .qr .bubble::after{content:"";position:absolute;left:50%;bottom:-1.7mm;
+    transform:translateX(-50%);width:0;height:0;
+    border-left:1.8mm solid transparent;border-right:1.8mm solid transparent;
+    border-top:1.8mm solid var(--crimson)}
+  .foot .qr .box{width:19mm;height:19mm;background:#fff;padding:1.4mm}
   .foot .qr img{width:100%;height:100%;display:block}
   .foot .qr .cap{margin-top:1.8mm;font-family:'Cinzel',serif;font-size:2.2mm;
     letter-spacing:.18em;color:var(--grey-d)}
   .credit{position:relative;z-index:2;margin:0 -14mm;background:rgba(6,5,5,.55);
-    padding:0 14mm 4mm;font-size:2mm;line-height:1.5;color:rgba(243,237,225,.44)}
+    padding:0 14mm 3.4mm;font-size:1.9mm;line-height:1.45;color:rgba(243,237,225,.44)}
   .tbd{border-bottom:.2mm dashed rgba(193,18,31,.7);padding:0 .3mm;font-style:normal}
 </style>
 </head>
@@ -209,11 +216,11 @@
           <div class="s">チケット・詳細は後日、特設ページにて発表します</div>
         </div>
         <div class="qr">
+          <div class="bubble">詳しくはこちら</div>
           <div class="box"><img src="assets/charity/qr_lp.svg" alt="特設ページ"></div>
-          <div class="cap">Official</div>
         </div>
       </div>
-      <p class="credit">主催：VALHALLA ／ 昼の本編「WRAPPING THE EARTH TOKYO 2026」主催：公益財団法人クロノス保全財団。お申し込みは CAMPFIRE にて受付予定（<i class="tbd">案内準備中</i>）。特定商取引法に基づく表記は特設ページに掲載します。</p>
+      <p class="credit">主催：VALHALLA ／ 昼の本編「WRAPPING THE EARTH TOKYO 2026」主催：公益財団法人クロノス保全財団。お申し込みは CAMPFIRE にて受付予定（<i class="tbd">案内準備中</i>）。特商法表記は特設ページに掲載。</p>
 
     </div>
   </div>
