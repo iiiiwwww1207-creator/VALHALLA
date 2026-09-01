@@ -57,6 +57,17 @@
     background:linear-gradient(180deg,
       #ffffff 0%, #ffffff 13%, rgba(255,255,255,.94) 19%,
       rgba(255,255,255,.62) 25%, rgba(255,255,255,.22) 30%, transparent 36%)}
+  /* 上の白い面に差すクリムゾンの筋（下の石の筋と同じ角度で繋げる） */
+  .top .vein{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+  .top .vein i{position:absolute;top:-10%;height:120%;width:.9mm;
+    transform:skewX(-12deg);transform-origin:bottom}
+  .top .vein i.a{left:13.5%;
+    background:linear-gradient(180deg,rgba(193,18,31,0) 0%,rgba(193,18,31,.30) 34%,rgba(193,18,31,.62) 78%,rgba(193,18,31,.72) 100%)}
+  .top .vein i.b{left:86.5%;width:.6mm;
+    background:linear-gradient(180deg,rgba(193,18,31,0) 0%,rgba(193,18,31,.18) 40%,rgba(193,18,31,.42) 82%,rgba(193,18,31,.5) 100%)}
+  .top .vein i.c{left:69%;width:.45mm;
+    background:linear-gradient(180deg,rgba(193,18,31,0) 22%,rgba(193,18,31,.14) 58%,rgba(193,18,31,.34) 92%,rgba(193,18,31,.4) 100%)}
+
   .top .kicker{position:relative;z-index:3;text-align:center;padding-top:9mm;
     font-family:'Cinzel',serif;font-weight:500;font-size:3.4mm;
     letter-spacing:.44em;text-indent:.44em;color:#15120f}
@@ -167,6 +178,7 @@
     <h1>CHARITY LIVE</h1>
     <div class="tick"></div>
     <div class="band"></div>
+    <div class="vein"><i class="a"></i><i class="b"></i><i class="c"></i></div>
   </div>
 
   <!-- 下：黒い石＋金の情報エリア -->
