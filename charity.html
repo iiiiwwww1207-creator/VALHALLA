@@ -29,8 +29,14 @@
   .tbd{color:var(--gold-d);background:transparent;border-bottom:1px dashed rgba(193,18,31,.5);padding:0 1px;font-weight:500}
 
   /* ---- HERO ---- */
-  .hero{background:radial-gradient(ellipse at 50% 0%, rgba(176,20,28,.36), transparent 62%), var(--hero);
-    color:var(--cream);padding:40px 24px 34px;text-align:center}
+  /* ヒーロー背景は不透明塗りをやめ、後ろのセラビ赤レーザー＋MVが透けるようにする（他セクションと同じ作り込み感に） */
+  .hero{background:radial-gradient(ellipse at 50% 0%, rgba(176,20,28,.30), transparent 64%);
+    color:var(--cream);padding:40px 24px 34px;text-align:center;position:relative;isolation:isolate}
+  /* ヒーロー専用：セラビ赤レーザー写真をやや強めに透過で敷く（暗いスクリムで文字可読性を確保） */
+  .hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:linear-gradient(180deg,rgba(5,3,7,.42),rgba(5,3,7,.62)),
+      url('assets/charity/venue/celavi_red.jpg') center/cover no-repeat;
+    opacity:.55}
   /* 一番上：VALHALLA ／× 東大 の2分割ビジュアル（バンド3人は全員収まるcontain） */
   .split{position:relative;height:240px;margin:-40px -24px 24px;overflow:hidden;background:#000}
   .split .p{position:absolute;inset:0;background-repeat:no-repeat}
