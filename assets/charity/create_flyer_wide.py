@@ -2,8 +2,7 @@
 """Create the 16:9 CAMPFIRE hero image from the existing vertical flyer."""
 
 from pathlib import Path
-from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageEnhance, ImageChops
-import math
+from PIL import Image, ImageDraw, ImageFont, ImageEnhance, ImageChops
 import os
 
 
@@ -137,70 +136,24 @@ def add_people(base: Image.Image) -> None:
     portrait = src.crop((0, 916, 2443, 3664))
     target_w, target_h = 1040, 1170
     portrait = portrait.resize((target_w, target_h), Image.Resampling.LANCZOS)
-    portrait = portrait.filter(ImageFilter.GaussianBlur(0.25))
-    # Lift the photograph before grading, with a gentle gamma curve focused on
-    # the midtones so faces, hair, and dark clothing read without clipping the
-    # white wardrobe or other highlights.
-    portrait = ImageEnhance.Brightness(portrait).enhance(1.12)
-    gamma = 0.88
-    portrait = portrait.point(
-        [round(255 * ((value / 255) ** gamma)) for value in range(256)] * 3
-    )
 
-    # Apply one uniform multiply-style grade to the whole photograph.  The
-    # source's saturated blue and purple are first pulled toward neutral; a
-    # lighter crimson multiplier then preserves face/hair detail and keeps the
-    # blue background from collapsing into dirty black.
-    neutral = ImageEnhance.Color(portrait).enhance(0.38)
-    neutral = ImageEnhance.Contrast(neutral).enhance(0.94)
-    crimson_multiply = ImageChops.multiply(
-        neutral, Image.new("RGB", portrait.size, (184, 128, 136))
-    )
-    portrait = Image.blend(crimson_multiply, neutral, 0.08)
-    portrait = ImageEnhance.Contrast(portrait).enhance(0.98)
-
-    # Photograph enters softly from the left and dissolves into black at the bottom.
-    mask = Image.new("L", portrait.size, 0)
+    # Preserve the source photograph exactly as-is apart from resizing. Only
+    # its left edge dissolves into the text-side background.
+    mask = Image.new("L", portrait.size, 255)
     m = mask.load()
-    for y in range(portrait.height):
-        ty = y / max(1, portrait.height - 1)
-        if ty < 0.20:
-            vertical = 0.5 - 0.5 * math.cos(math.pi * ty / 0.20)
-        elif ty < 0.78:
-            vertical = 1.0
-        else:
-            u = (ty - 0.78) / 0.22
-            vertical = 0.5 * (1.0 + math.cos(math.pi * min(1.0, u)))
-        for x in range(portrait.width):
-            tx = x / max(1, portrait.width - 1)
-            horizontal = min(1.0, max(0.0, (tx - 0.01) / 0.24))
-            m[x, y] = round(255 * vertical * horizontal)
-    mask = mask.filter(ImageFilter.GaussianBlur(20))
+    fade_width = round(portrait.width * 0.12)
+    for x in range(fade_width):
+        alpha = round(255 * x / max(1, fade_width - 1))
+        for y in range(portrait.height):
+            m[x, y] = alpha
 
-    # Subtle crimson rim behind the portrait separates dark hair and wardrobe.
-    glow_mask = mask.filter(ImageFilter.GaussianBlur(34)).point(lambda v: round(v * 0.22))
-    glow = Image.new("RGB", (W, H), CRIMSON)
-    full_glow_mask = Image.new("L", (W, H), 0)
     photo_pos = (840, -20)
-    full_glow_mask.paste(glow_mask, photo_pos)
-    base.paste(glow, (0, 0), full_glow_mask)
-
     layer = Image.new("RGB", (W, H), (0, 0, 0))
     alpha = Image.new("L", (W, H), 0)
     pos = photo_pos
     layer.paste(portrait, pos)
     alpha.paste(mask, pos)
     base.paste(layer, (0, 0), alpha)
-
-    # Reinforce only the final 15% of the lower dissolve.
-    veil = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    vp = veil.load()
-    fade_start = round(H * 0.85)
-    for y in range(fade_start, H):
-        a = int(215 * ((y - fade_start) / (H - fade_start)) ** 1.35)
-        for x in range(720, W):
-            vp[x, y] = (*BLACK, a)
-    base.paste(veil, (0, 0), veil)
 
 
 def add_type(base: Image.Image) -> None:
