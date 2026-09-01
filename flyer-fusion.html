@@ -41,17 +41,12 @@
   @media screen{ .page{box-shadow:0 8px 40px rgba(0,0,0,.6)} }
 
   /* ========== 上半分：白背景＋3人＋巨大タイトル（DOMINION の型） ========== */
-  .top{position:relative;flex:none;height:102mm;background:#fff;overflow:hidden}
+  .top{position:relative;flex:none;height:102mm;background:#EDF6FD;overflow:hidden}
   /* 煙のような白のムラ */
   .top::before{content:"";position:absolute;inset:0;z-index:1;
-    background:
-      radial-gradient(ellipse 62% 42% at 20% 14%, rgba(214,228,242,.55), transparent 62%),
-      radial-gradient(ellipse 56% 46% at 83% 28%, rgba(220,234,248,.5), transparent 64%),
-      linear-gradient(180deg,#f2f8fe 0%,#eaf3fc 50%,#dfe9f3 100%)}
+    background:#EDF6FD}
   .top .band{position:absolute;left:0;right:0;bottom:0;top:34mm;z-index:2;
-    background:url('assets/charity/group.jpg') center 84%/auto 132% no-repeat;
-    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 13%,#000 100%);
-    mask-image:linear-gradient(180deg,transparent 0,#000 13%,#000 100%)}
+    background:url('assets/charity/group_flat.jpg') center 84%/auto 132% no-repeat}
   .top .kicker{position:relative;z-index:3;text-align:center;padding-top:9mm;
     font-family:'Cinzel',serif;font-weight:500;font-size:3.4mm;
     letter-spacing:.44em;text-indent:.44em;color:#15120f}
