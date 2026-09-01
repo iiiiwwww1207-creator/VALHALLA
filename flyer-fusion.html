@@ -41,7 +41,7 @@
   @media screen{ .page{box-shadow:0 8px 40px rgba(0,0,0,.6)} }
 
   /* ========== 上半分：白背景＋3人＋巨大タイトル（DOMINION の型） ========== */
-  .top{position:relative;flex:none;height:130mm;background:#fff;overflow:hidden}
+  .top{position:relative;flex:none;height:120mm;background:#fff;overflow:hidden}
   /* 煙のような白のムラ */
   .top::before{content:"";position:absolute;inset:0;z-index:1;
     background:
@@ -96,18 +96,18 @@
   .kind{text-align:center;margin-top:3.4mm}
 
   /* 会場写真（B の型：横長の主写真＋左右に枠付きの小写真） */
-  .venue1{position:relative;height:57mm;overflow:hidden;border:.3mm solid rgba(193,18,31,.5);margin-top:5mm}
+  .venue1{position:relative;height:84mm;overflow:hidden;margin:5mm -14mm 0;
+    border-top:.35mm solid rgba(193,18,31,.6);border-bottom:.35mm solid rgba(193,18,31,.6)}
   .venue1 img{width:100%;height:100%;object-fit:cover;display:block;
     filter:brightness(1.18) saturate(1.06)}
-  .venue1 figcaption{position:absolute;left:0;right:0;bottom:0;
-    background:linear-gradient(transparent,rgba(9,7,7,.72) 60%,rgba(9,7,7,.92));
-    padding:6mm 3mm 2.4mm;text-align:center;
+  .venue1 figcaption{position:absolute;right:0;bottom:0;
+    background:rgba(6,4,5,.72);padding:2.4mm 5mm 2.2mm;text-align:right;
     font-size:2.6mm;letter-spacing:.10em;color:var(--cream)}
   .venue1 figcaption b{display:block;font-family:'Cinzel',serif;font-weight:400;
-    font-size:2.5mm;letter-spacing:.24em;color:var(--crimson-l);margin-bottom:1mm}
+    font-size:2.3mm;letter-spacing:.24em;color:var(--crimson-l);margin-bottom:.8mm}
 
   /* 出演者（B の PROGRAM の型） */
-  .cast{margin-top:4.4mm;text-align:center}
+  .cast{margin-top:4mm;text-align:center}
   .cast .row{margin-top:3mm;display:flex;justify-content:center;gap:10mm}
   .cast .row div{font-family:'Cinzel',serif;font-weight:500;font-size:4.8mm;
     letter-spacing:.16em;color:#fff;line-height:1.2}
@@ -116,7 +116,7 @@
   .cast .kindtxt{margin-top:2.6mm;font-size:2.85mm;letter-spacing:.14em;color:var(--sub)}
 
   /* 一番の主張：楽しむことが寄付になる／クラウドファンディング告知 */
-  .cfblock{margin-top:5mm;text-align:center;
+  .cfblock{margin-top:4.4mm;text-align:center;
     border-top:.35mm solid rgba(193,18,31,.62);border-bottom:.35mm solid rgba(193,18,31,.62);
     padding:5mm 0 4.6mm;
     background:linear-gradient(180deg,rgba(193,18,31,.13),rgba(193,18,31,.05) 55%,transparent)}
@@ -172,7 +172,6 @@
     <div class="vein"></div>
     <div class="in">
 
-      <div class="ruled"><span>Cé La Vi Tokyo &nbsp;/&nbsp; Shibuya</span></div>
       <div class="date">2026.10.18 SUN</div>
       <p class="tagline">ビジュアル系文化を守り、継ぐ。</p>
       <div class="ruled kind"><span class="jp">アコースティックライブ ＆ ホストコール体験</span></div>
