@@ -199,6 +199,8 @@ YouTube「Mio Yashiro TV」登録者〔27万〕人。
 
 ### 6. リターンのご紹介
 
+【画像】`assets/charity/returns_banner.jpg`（支援コース一覧）
+
 会場に来られる方も、来られない方も、それぞれの形でご参加いただけます。
 
 ──────────────
@@ -381,6 +383,7 @@ A. CAMPFIRE の規定により、支援後のキャンセル・返金はお受�
 | メインビジュアル | `assets/charity/flyer_wide.jpg` | 1920x1080。生成スクリプト `assets/charity/create_flyer_wide.py` |
 | 流れの図解（§3-8に配置） | `assets/charity/flow_banner.jpg` | 1774x887。昼の部の同種図解の夜版。生成スクリプト `assets/charity/create_flow_banner.py` |
 | 活動の軸の図解（§3-3に配置） | `assets/charity/axis_banner.jpg` | 1774x887。前回=根津神社／今回=東京大学＋3つの軸。生成スクリプト `assets/charity/create_axis_banner.py` |
+| 支援コース一覧（§3-6に配置） | `assets/charity/returns_banner.jpg` | 1774x887。CAMPFIREは表が使えないため画像化。生成スクリプト `assets/charity/create_returns_banner.py` |
 | 前回フライヤー（§3-3に配置） | `assets/charity/nezu/oneworld_flyer.jpg` | ONE WORLD SPECIAL EVENT 2026。904x1280・掲載可 |
 | （**掲載不可**・資料用） | `assets/charity/nezu/nezu_slide.jpg` | Zoom画面の撮影写真。Zoom UI・右クリックメニュー・境内配置図が写り込んでいる。**事実確認の資料としてのみ保持し、ページには載せない** |
 | メンバー3人 | `assets/charity/group_field.jpg` | kazuma 指定 |
