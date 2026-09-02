@@ -2,7 +2,7 @@
 """Create the 16:9 CAMPFIRE hero image from the existing vertical flyer."""
 
 from pathlib import Path
-from PIL import Image, ImageDraw, ImageFont, ImageEnhance, ImageChops
+from PIL import Image, ImageDraw, ImageFont
 import os
 
 
@@ -85,50 +85,49 @@ def make_background() -> Image.Image:
     right_fill = portrait.crop((portrait_w - 1, 0, portrait_w, H)).resize((42, H))
     im.paste(right_fill, (W - 42, 0))
 
-    # CÉ LA VI texture is deliberately faint and confined to the dark left.
+    # Place the ungraded CÉ LA VI photograph over the full-height group image.
+    # Its strongest laser field is kept at the left, then dissolved into the
+    # group photograph over a wide, smoothstep-eased 650 px transition.
     venue = Image.open(VENUE).convert("RGB")
-    scale = max(W / venue.width, H / venue.height)
+    scale = H / venue.height
     venue = venue.resize((round(venue.width * scale), round(venue.height * scale)),
                          Image.Resampling.LANCZOS)
-    left = (venue.width - W) // 2
-    top = (venue.height - H) // 2
-    venue = venue.crop((left, top, left + W, top + H))
-    venue = ImageEnhance.Color(venue).enhance(0.72)
-    venue = ImageEnhance.Contrast(venue).enhance(1.08)
-    screened = ImageChops.screen(im, venue)
-    texture_mask = Image.new("L", (W, H), 0)
-    tm = texture_mask.load()
+    venue_layer = Image.new("RGB", (W, H), BLACK)
+    venue_layer.paste(venue, (0, 0))
+    venue_mask = Image.new("L", (W, H), 0)
+    venue_mask_px = venue_mask.load()
+    fade_start, fade_end = 500, 1150
     for y in range(H):
         for x in range(W):
-            nx = x / (W - 1)
-            fade = max(0.0, min(1.0, (0.56 - nx) / 0.18))
-            fade = fade * fade * (3.0 - 2.0 * fade)
-            strength = 0.14 * fade
-            tm[x, y] = round(255 * strength)
-    im = Image.composite(screened, im, texture_mask)
+            t = max(0.0, min(1.0, (x - fade_start) / (fade_end - fade_start)))
+            smooth = t * t * (3.0 - 2.0 * t)
+            venue_mask_px[x, y] = round(255 * 0.98 * (1.0 - smooth))
+    im = Image.composite(venue_layer, im, venue_mask)
 
-    # One continuous crimson scrim: nearly opaque at the left edge, easing
-    # over well over half the canvas and becoming fully transparent before
-    # the faces. A subtle lower-edge darkening anchors the information block.
-    overlay = Image.new("RGB", (W, H), BLACK)
-    overlay_px = overlay.load()
-    mask = Image.new("L", (W, H), 0)
-    mask_px = mask.load()
+    # A near-black scrim protects the type while leaving the venue's laser
+    # shapes and red light visible.  The broad horizontal falloff darkens the
+    # left 55% of the frame; a second, softly feathered vertical component
+    # concentrates that protection behind the complete type block.
+    scrim = Image.new("RGB", (W, H), BLACK)
+    scrim_mask = Image.new("L", (W, H), 0)
+    scrim_px = scrim_mask.load()
     for y in range(H):
-        ny = y / (H - 1)
         for x in range(W):
-            nx = x / (W - 1)
-            progress = max(0.0, min(1.0, nx / 0.70))
-            eased = progress * progress * (3.0 - 2.0 * progress)
-            alpha = 0.97 * (1.0 - eased)
-            lower = max(0.0, (ny - 0.72) / 0.28) ** 2
-            alpha = min(0.98, alpha + 0.10 * lower * (1.0 - progress))
-            crimson_mix = 0.28 + 0.28 * ny
-            overlay_px[x, y] = tuple(round(BLACK[i] * (1 - crimson_mix)
-                                                   + DEEPEST_CRIMSON[i] * crimson_mix)
-                                      for i in range(3))
-            mask_px[x, y] = round(255 * alpha)
-    return Image.composite(overlay, im, mask)
+            # Stay fully effective beneath the copy, then dissolve smoothly
+            # beyond it so no vertical seam is introduced near the photos.
+            left_t = max(0.0, min(1.0, (x - 720.0) / 430.0))
+            left_fade = 1.0 - left_t * left_t * (3.0 - 2.0 * left_t)
+
+            # Soft entry at the very top and a long exit below the artist names.
+            top_t = max(0.0, min(1.0, y / 105.0))
+            top_rise = top_t * top_t * (3.0 - 2.0 * top_t)
+            bottom_t = max(0.0, min(1.0, (y - 760.0) / 210.0))
+            bottom_fall = 1.0 - bottom_t * bottom_t * (3.0 - 2.0 * bottom_t)
+            type_band = top_rise * bottom_fall
+
+            alpha = min(0.60, left_fade * (0.29 + 0.30 * type_band))
+            scrim_px[x, y] = round(255 * alpha)
+    return Image.composite(scrim, im, scrim_mask)
 
 
 def add_type(base: Image.Image) -> None:
@@ -136,7 +135,7 @@ def add_type(base: Image.Image) -> None:
     x = 112
 
     eyebrow = font(OPTIMA, 25)
-    tracked_text(draw, (x, 82), "VALHALLA CHARITY LIVE", eyebrow, CRIMSON, 7)
+    tracked_text(draw, (x, 82), "VALHALLA CHARITY LIVE", eyebrow, SILVER, 7)
 
     valhalla = font(DIDOT, 126)
     tracked_text(draw, (x - 2, 128), "VALHALLA", valhalla, CREAM, 7)
