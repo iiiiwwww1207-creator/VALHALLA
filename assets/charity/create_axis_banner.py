@@ -11,7 +11,8 @@ from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageOps
 
 
 HERE = Path(__file__).resolve().parent
-YASUDA = HERE / "venue" / "yasuda_dusk.jpg"
+NEZU = HERE / "nezu" / "nezu_flyer.jpg"
+CELAVI = HERE / "venue" / "celavi_red.jpg"
 OUTPUT = HERE / "axis_banner.jpg"
 
 W, H = 1774, 887
@@ -114,10 +115,17 @@ def cover_square(path: Path, size: int, focal_x: float, focal_y: float,
     )
 
 
-def circle_photo(base: Image.Image, center: tuple[int, int], diameter: int) -> None:
+def circle_photo(base: Image.Image, center: tuple[int, int], diameter: int,
+                 path: Path, crop_box: tuple[int, int, int, int] | None = None,
+                 focal_x: float = 0.5, focal_y: float = 0.5,
+                 zoom: float = 1.0) -> None:
     size = diameter * SCALE
-    # Zoom keeps the clock-tower block dominant and excludes excess paving/branches.
-    photo = cover_square(YASUDA, size, focal_x=0.50, focal_y=0.46, zoom=1.28)
+    if crop_box is None:
+        photo = cover_square(path, size, focal_x=focal_x, focal_y=focal_y, zoom=zoom)
+    else:
+        photo = Image.open(path).convert("RGB").crop(crop_box).resize(
+            (size, size), Image.Resampling.LANCZOS
+        )
     photo = ImageOps.autocontrast(photo, cutoff=(1, 1))
     photo = ImageEnhance.Brightness(photo).enhance(1.07)
     photo = Image.blend(photo, Image.new("RGB", photo.size, DEEPEST_CRIMSON), 0.08)
@@ -137,34 +145,15 @@ def draw_ring(draw: ImageDraw.ImageDraw, center: tuple[int, int], diameter: int,
                  outline=(*CRIMSON, 235), width=width * SCALE)
 
 
-def draw_torii(draw: ImageDraw.ImageDraw, center: tuple[int, int]) -> None:
-    cx, cy = center
-    color = (*CRIMSON, 245)
-    thin = 5 * SCALE
-    # KASAGI: a restrained shallow upward curve, then the shorter shimaki.
-    points = [(cx - 79, cy - 49), (cx - 42, cy - 55), (cx, cy - 57),
-              (cx + 42, cy - 55), (cx + 79, cy - 49)]
-    draw.line([spos(p) for p in points], fill=color, width=thin, joint="curve")
-    draw.line(spos((cx - 66, cy - 40, cx + 66, cy - 40)), fill=color, width=4 * SCALE)
-    # Slightly splayed pillars and the penetrating nuki crossbeam.
-    draw.line(spos((cx - 43, cy - 39, cx - 51, cy + 66)), fill=color, width=6 * SCALE)
-    draw.line(spos((cx + 43, cy - 39, cx + 51, cy + 66)), fill=color, width=6 * SCALE)
-    draw.line(spos((cx - 65, cy - 3, cx + 65, cy - 3)), fill=color, width=5 * SCALE)
-    draw.line(spos((cx - 56, cy + 5, cx + 56, cy + 5)), fill=(*DARK_CRIMSON, 240), width=2 * SCALE)
-
-
 def add_timeline(base: Image.Image) -> None:
     left, right = (500, 290), (1274, 290)
     diameter = 226
     add_light_ribbon(base, y=290, start=90, end=1684)
 
-    art = Image.new("RGBA", base.size, (0, 0, 0, 0))
-    ad = ImageDraw.Draw(art)
-    draw_ring(ad, left, diameter)
-    draw_torii(ad, left)
-    base.alpha_composite(art)
-    circle_photo(base, right, diameter)
+    circle_photo(base, left, diameter, NEZU, crop_box=(40, 55, 430, 445))
+    circle_photo(base, right, diameter, CELAVI, focal_x=0.5, focal_y=0.5, zoom=1.0)
     outline = Image.new("RGBA", base.size, (0, 0, 0, 0))
+    draw_ring(ImageDraw.Draw(outline), left, diameter)
     draw_ring(ImageDraw.Draw(outline), right, diameter)
     base.alpha_composite(outline)
 
@@ -173,8 +162,8 @@ def add_timeline(base: Image.Image) -> None:
     detail = face(SANS, 16)
     d.text(spos((left[0], 421)), "前回 ／ 根津神社", font=label, fill=CREAM, anchor="ma")
     d.text(spos((left[0], 465)), "2026.5.23-24　国指定重要文化財", font=detail, fill=SILVER, anchor="ma")
-    d.text(spos((right[0], 421)), "今回 ／ 東京大学", font=label, fill=CREAM, anchor="ma")
-    d.text(spos((right[0], 465)), "2026.10.18　安田講堂 ＋ CÉ LA VI 渋谷",
+    d.text(spos((right[0], 421)), "今回 ／ CÉ LA VI 渋谷", font=label, fill=CREAM, anchor="ma")
+    d.text(spos((right[0], 465)), "2026.10.18　渋谷・17F",
            font=detail, fill=SILVER, anchor="ma")
 
 
@@ -200,7 +189,8 @@ def add_cards(base: Image.Image) -> None:
         ("01 ── 守る（外）", ("日本の文化・伝統を守る",), "前回＝根津神社"),
         ("02 ── 守る（内）", ("ヴィジュアル系バンド文化を、", "次代へ継ぐ"),
          "すべての活動に通底する軸"),
-        ("03 ── 投資する（未来）", ("AIリテラシーの育成を支援する",), "今回＝東京大学"),
+        ("03 ── 投資する（未来）", ("AIリテラシーの育成を支援する",),
+         "公益財団法人クロノス保全財団を通じて"),
     )
     d = ImageDraw.Draw(base)
     kicker = face(SANS, 17)
@@ -228,8 +218,9 @@ def add_header(base: Image.Image) -> None:
 
 
 def main() -> None:
-    if not YASUDA.exists():
-        raise FileNotFoundError(f"Required venue photograph is missing: {YASUDA}")
+    for required in (NEZU, CELAVI):
+        if not required.exists():
+            raise FileNotFoundError(f"Required photograph is missing: {required}")
     canvas = make_background()
     add_header(canvas)
     add_timeline(canvas)

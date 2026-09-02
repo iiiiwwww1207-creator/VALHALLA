@@ -15,7 +15,6 @@ from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageOps
 
 HERE = Path(__file__).resolve().parent
 CELAVI = HERE / "venue" / "celavi_red.jpg"
-YASUDA = HERE / "venue" / "yasuda_dusk.jpg"
 OUTPUT = HERE / "flow_banner.jpg"
 
 W, H = 1774, 887
@@ -223,18 +222,13 @@ def add_nodes(base: Image.Image) -> None:
     d.text(spos((centers_x[1], cy)), "CAMPFIRE", font=camp, fill=CREAM,
            anchor="mm", stroke_width=0)
 
-    # 3 and 5: circular, antialiased photo windows.
+    # 3: circular, antialiased photo window.
     base.alpha_composite(layer)
     circle_photo(base, CELAVI, (centers_x[2], cy), diameter, 0.50, 0.46)
-    # The dusk image is pushed in toward the clock tower so the architecture,
-    # rather than the foreground paving and branches, owns the circular crop.
-    circle_photo(base, YASUDA, (centers_x[4], cy), diameter,
-                 focal_x=0.50, focal_y=0.47, zoom=1.25, brightness=1.06)
 
     outlines = Image.new("RGBA", base.size, (0, 0, 0, 0))
     od = ImageDraw.Draw(outlines)
     ring(od, (centers_x[2], cy), diameter, 3)
-    ring(od, (centers_x[4], cy), diameter, 3)
 
     # 4: donation symbol — an upward arrow travelling through three rings.
     ring(od, (centers_x[3], cy), diameter)
@@ -248,6 +242,18 @@ def add_nodes(base: Image.Image) -> None:
             fill=(*CREAM, 235), width=5 * SCALE)
     od.line((ax * SCALE, (cy - 42) * SCALE, (ax + 21) * SCALE, (cy - 18) * SCALE),
             fill=(*CREAM, 235), width=5 * SCALE)
+
+    # 5: culture passing onward — fine arcs expanding toward the next generation.
+    cx = centers_x[4]
+    ring(od, (cx, cy), diameter)
+    for radius, start, end, alpha in (
+        (34, 205, 335, 225),
+        (61, 205, 335, 175),
+        (88, 205, 335, 120),
+    ):
+        od.arc(sbox((cx - radius, cy - radius, cx + radius, cy + radius)),
+               start=start, end=end, fill=(*CREAM, alpha), width=3 * SCALE)
+    od.ellipse(sbox((cx - 7, cy - 7, cx + 7, cy + 7)), fill=(*CREAM, 230))
     base.alpha_composite(outlines)
 
     # Labels share a baseline and remain comfortably readable when reduced.
@@ -270,7 +276,7 @@ def add_nodes(base: Image.Image) -> None:
             font=small_font, fill=SILVER, anchor="ma")
     td.text(spos((centers_x[3], 549)), "公益財団法人クロノス保全財団",
             font=small_font, fill=SILVER, anchor="ma")
-    td.text(spos((centers_x[4], 549)), "東京大学 安田講堂",
+    td.text(spos((centers_x[4], 549)), "教育・文化を支える活動へ",
             font=small_font, fill=SILVER, anchor="ma")
 
 
@@ -290,7 +296,7 @@ def add_typography(base: Image.Image) -> None:
 
 
 def main() -> None:
-    if not CELAVI.exists() or not YASUDA.exists():
+    if not CELAVI.exists():
         raise FileNotFoundError("Required venue photographs are missing")
 
     canvas = make_background()
