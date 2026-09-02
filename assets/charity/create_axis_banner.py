@@ -172,7 +172,7 @@ def add_timeline(base: Image.Image) -> None:
     label = face(MINCHO, 30)
     detail = face(SANS, 16)
     d.text(spos((left[0], 421)), "前回 ／ 根津神社", font=label, fill=CREAM, anchor="ma")
-    d.text(spos((left[0], 465)), "国指定重要文化財", font=detail, fill=SILVER, anchor="ma")
+    d.text(spos((left[0], 465)), "2026.5.23-24　国指定重要文化財", font=detail, fill=SILVER, anchor="ma")
     d.text(spos((right[0], 421)), "今回 ／ 東京大学", font=label, fill=CREAM, anchor="ma")
     d.text(spos((right[0], 465)), "2026.10.18　安田講堂 ＋ CÉ LA VI 渋谷",
            font=detail, fill=SILVER, anchor="ma")
