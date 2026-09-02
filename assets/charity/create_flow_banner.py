@@ -280,7 +280,7 @@ def add_nodes(base: Image.Image) -> None:
 
     td.text(spos((centers_x[2], 549)), "CÉ LA VI TOKYO（渋谷・17F）",
             font=small_font, fill=SILVER, anchor="ma")
-    td.text(spos((centers_x[3], 549)), "公益財団法人クロノス保全財団",
+    td.text(spos((centers_x[3], 549)), "公益財団法人教育文化セキュリティ財団",
             font=small_font, fill=SILVER, anchor="ma")
     td.text(spos((centers_x[4], 549)), "教育・文化を支える活動へ",
             font=small_font, fill=SILVER, anchor="ma")
