@@ -15,6 +15,7 @@ from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageOps
 
 HERE = Path(__file__).resolve().parent
 CELAVI = HERE / "venue" / "celavi_red.jpg"
+HUG_LOGO = HERE / "logo_hug.png"
 OUTPUT = HERE / "flow_banner.jpg"
 
 W, H = 1774, 887
@@ -230,18 +231,23 @@ def add_nodes(base: Image.Image) -> None:
     od = ImageDraw.Draw(outlines)
     ring(od, (centers_x[2], cy), diameter, 3)
 
-    # 4: donation symbol — an upward arrow travelling through three rings.
-    ring(od, (centers_x[3], cy), diameter)
-    for rr, alpha in ((63, 55), (42, 85)):
-        od.ellipse(sbox((centers_x[3] - rr, cy - rr, centers_x[3] + rr, cy + rr)),
-                   outline=(*CRIMSON, alpha), width=2 * SCALE)
-    ax = centers_x[3]
-    od.line((ax * SCALE, (cy + 48) * SCALE, ax * SCALE, (cy - 42) * SCALE),
-            fill=(*CREAM, 235), width=5 * SCALE)
-    od.line((ax * SCALE, (cy - 42) * SCALE, (ax - 21) * SCALE, (cy - 18) * SCALE),
-            fill=(*CREAM, 235), width=5 * SCALE)
-    od.line((ax * SCALE, (cy - 42) * SCALE, (ax + 21) * SCALE, (cy - 18) * SCALE),
-            fill=(*CREAM, 235), width=5 * SCALE)
+    # 4: the foundation's official logo, unaltered except for proportional scaling.
+    logo_center = (centers_x[3], cy)
+    circle_size = diameter * SCALE
+    circle_x = round((logo_center[0] - diameter / 2) * SCALE)
+    circle_y = round((logo_center[1] - diameter / 2) * SCALE)
+    white_circle = Image.new("RGBA", (circle_size, circle_size), (255, 255, 255, 255))
+    circle_mask = Image.new("L", (circle_size, circle_size), 0)
+    ImageDraw.Draw(circle_mask).ellipse((2, 2, circle_size - 3, circle_size - 3), fill=255)
+    base.paste(white_circle, (circle_x, circle_y), circle_mask)
+
+    logo_box = round(diameter * 0.74 * SCALE)
+    logo = Image.open(HUG_LOGO).convert("RGB")
+    logo.thumbnail((logo_box, logo_box), Image.Resampling.LANCZOS)
+    logo_x = round(logo_center[0] * SCALE - logo.width / 2)
+    logo_y = round(logo_center[1] * SCALE - logo.height / 2)
+    base.paste(logo, (logo_x, logo_y))
+    ring(od, logo_center, diameter)
 
     # 5: culture passing onward — fine arcs expanding toward the next generation.
     cx = centers_x[4]
@@ -296,8 +302,8 @@ def add_typography(base: Image.Image) -> None:
 
 
 def main() -> None:
-    if not CELAVI.exists():
-        raise FileNotFoundError("Required venue photographs are missing")
+    if not CELAVI.exists() or not HUG_LOGO.exists():
+        raise FileNotFoundError("Required image assets are missing")
 
     canvas = make_background()
     add_light_ribbon(canvas, y=340, start=54, end=1720)
