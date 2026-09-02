@@ -306,7 +306,10 @@ def main() -> None:
         raise FileNotFoundError("Required image assets are missing")
 
     canvas = make_background()
-    add_light_ribbon(canvas, y=340, start=54, end=1720)
+    centers_x = (172, 530, 887, 1244, 1602)
+    radius = 246 / 2
+    for left, right in zip(centers_x, centers_x[1:]):
+        add_light_ribbon(canvas, y=340, start=left + radius, end=right - radius)
     add_nodes(canvas)
     add_typography(canvas)
     canvas = canvas.convert("RGB").resize((W, H), Image.Resampling.LANCZOS)
