@@ -123,7 +123,10 @@ def circle_photo(base: Image.Image, center: tuple[int, int], diameter: int,
     if crop_box is None:
         photo = cover_square(path, size, focal_x=focal_x, focal_y=focal_y, zoom=zoom)
     else:
-        photo = Image.open(path).convert("RGB").crop(crop_box).resize(
+        img = Image.open(path).convert("RGB")
+        if path == NEZU:
+            img = img.rotate(2.5, resample=Image.BICUBIC, center=(258, 232))
+        photo = img.crop(crop_box).resize(
             (size, size), Image.Resampling.LANCZOS
         )
     photo = ImageOps.autocontrast(photo, cutoff=(1, 1))
