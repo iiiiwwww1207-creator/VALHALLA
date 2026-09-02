@@ -150,7 +150,7 @@ def add_timeline(base: Image.Image) -> None:
     diameter = 226
     add_light_ribbon(base, y=290, start=90, end=1684)
 
-    circle_photo(base, left, diameter, NEZU, crop_box=(40, 55, 430, 445))
+    circle_photo(base, left, diameter, NEZU, crop_box=(78, 52, 438, 412))
     circle_photo(base, right, diameter, CELAVI, focal_x=0.5, focal_y=0.5, zoom=1.0)
     outline = Image.new("RGBA", base.size, (0, 0, 0, 0))
     draw_ring(ImageDraw.Draw(outline), left, diameter)
