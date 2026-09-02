@@ -382,7 +382,9 @@ A. CAMPFIRE の規定により、支援後のキャンセル・返金はお受�
 | 活動の軸の図解（§3-3に配置） | `assets/charity/axis_banner.jpg` | 1774x887。前回=根津神社／今回=CÉ LA VI＋3つの軸。生成スクリプト `assets/charity/create_axis_banner.py` |
 | 根津神社フライヤー | `assets/charity/nezu/nezu_flyer_fixed.jpg` | nezu_slide.jpg から切り出し、遠近＋回転補正をかけた版（560x750・傾き0.00度）。axis_banner のノード1に使用。補正前は `nezu_flyer.jpg` |
 | 財団シンボルマーク | `assets/charity/logo_hug.png` | 公益財団法人クロノス保全財団のマーク（通称ハグちゃん）。**無加工で使用すること**（色変更・トリミング・反転は禁止）。白背景のため、暗い面に置くときは白い円チップに載せる。flow_banner のノード4で使用 |
-| 結合マーク（財団×VALHALLA） | `assets/charity/logo_hug_valhalla.png` | 財団マークの中央に VALHALLA のロゴを配置したロックアップ。**⚠️ 財団マークに他ブランドを組み合わせた新規の結合マークなので、単なる掲載より強い許諾が必要。財団の承認前に公開しないこと。** VALHALLA ロゴは**樹（ユグドラシル）を含む完全な形**で使用し、白地で読ませるため黒単色に変換している（`logo_gold.webp` は暗背景用で白地では判読不能）。サイズは地球幅の1.25倍で、**円からはみ出す部分はあえて切らない**。下地の財団マークは**ロゴの形に沿ってぼかし＋白寄せ（ハロー）**をかけて VALHALLA を前に出している。出力は 1912x2444 |
+| 結合マーク（財団×VALHALLA） | `assets/charity/logo_hug_valhalla.png` | 財団マークの中央に VALHALLA のロゴを配置したロックアップ。**⚠️ 財団マークに他ブランドを組み合わせた新規の結合マークなので、単なる掲載より強い許諾が必要。財団の承認前に公開しないこと。** VALHALLA ロゴは `logo_gold.webp` を**無改変**で使用（色・箔のテクスチャ・形・縦横比すべて原画のまま。拡大のみ）。
+白地ではゴールドが飛ぶため、**ロゴの形に沿って下地を暗く落とすハロー**（`#0a0710` へ88%）をかけて読ませている。**下地だけを加工し、ロゴ自体には一切手を加えていない。**
+サイズは地球幅の1.25倍、円からはみ出す部分は切らない。出力は 1912x2444。生成手順は本ファイルの履歴（git log）を参照 |
 | 支援コース一覧（§3-6に配置） | `assets/charity/returns_banner.jpg` | 1774x887。CAMPFIREは表が使えないため画像化。生成スクリプト `assets/charity/create_returns_banner.py` |
 | 当日の流れ（§3-4に配置） | `assets/charity/timetable_banner.jpg` | 1774x887。生成スクリプト `assets/charity/create_timetable_banner.py` |
 | 前回フライヤー（§3-3に配置） | `assets/charity/nezu/oneworld_flyer.jpg` | ONE WORLD SPECIAL EVENT 2026。904x1280・掲載可 |
