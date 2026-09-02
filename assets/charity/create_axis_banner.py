@@ -149,7 +149,8 @@ def draw_ring(draw: ImageDraw.ImageDraw, center: tuple[int, int], diameter: int,
 def add_timeline(base: Image.Image) -> None:
     left, right = (500, 290), (1274, 290)
     diameter = 226
-    add_light_ribbon(base, y=290, start=90, end=1684)
+    radius = diameter / 2
+    add_light_ribbon(base, y=290, start=left[0] + radius, end=right[0] - radius)
 
     circle_photo(base, left, diameter, NEZU, crop_box=(79, 55, 459, 435))
     circle_photo(base, right, diameter, CELAVI, focal_x=0.5, focal_y=0.5, zoom=1.0)

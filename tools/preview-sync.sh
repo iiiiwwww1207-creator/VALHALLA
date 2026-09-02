@@ -17,7 +17,7 @@ PREV=/tmp/valhalla_preview
 mkdir -p "$PREV/assets" "$PREV/images"
 cp "$ROOT/tools/serve.py" "$PREV/serve.py"
 
-for f in charity.html lp.html index.html teaser.html proposal.html lp.css style.css navi.css; do
+for f in charity.html campfire-preview.html lp.html index.html teaser.html proposal.html lp.css style.css navi.css; do
   [ -f "$ROOT/$f" ] && cp "$ROOT/$f" "$PREV/$f"
 done
 
