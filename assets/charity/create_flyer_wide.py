@@ -71,32 +71,21 @@ def tracked_text(draw, xy, text, face, fill, tracking, stroke_width=0, stroke_fi
 
 
 def make_background() -> Image.Image:
-    # Near-black field with deep crimson rising softly from the lower edge.
-    im = Image.new("RGB", (W, H), BLACK)
-    px = im.load()
-    for y in range(H):
-        t = y / (H - 1)
-        for x in range(W):
-            nx = x / (W - 1)
-            # A broad, subdued bloom: #6E0A12 at the foot, tending toward
-            # #8E1019 as it diffuses upward before disappearing into #050307.
-            lower = max(0.0, (t - 0.22) / 0.78) ** 1.5
-            upper_tint = max(0.0, 1.0 - abs(t - 0.64) / 0.48) ** 2
-            red = tuple(
-                round(DEEPEST_CRIMSON[i] * (1 - 0.34 * upper_tint)
-                      + DARK_CRIMSON[i] * 0.34 * upper_tint)
-                for i in range(3)
-            )
-            # Slightly favor the right/photo side and preserve a very dark text field.
-            spatial = (0.68 + 0.32 * max(0.0, (nx - 0.10) / 0.90))
-            amount = min(0.82, lower * spatial)
-            edge = max(0.0, abs(nx - 0.5) - 0.38) / 0.12
-            vignette = 1.0 - 0.12 * min(1.0, edge) ** 2
-            px[x, y] = tuple(round((BLACK[i] * (1 - amount) + red[i] * amount) * vignette)
-                             for i in range(3))
+    src = Image.open(SOURCE).convert("RGB")
+    # Include all three figures, from hair to shoes, at their natural aspect
+    # ratio. The faithful portrait occupies the right side. Its untouched edge
+    # colours are extended beneath the opaque scrim to cover the canvas without
+    # introducing another image boundary or changing the photograph's colour.
+    crop = src.crop((0, 780, src.width, src.height))
+    portrait_w = round(crop.width * H / crop.height)
+    portrait = crop.resize((portrait_w, H), Image.Resampling.LANCZOS)
+    photo_x = W - portrait_w - 42
+    im = portrait.crop((0, 0, 1, H)).resize((W, H))
+    im.paste(portrait, (photo_x, 0))
+    right_fill = portrait.crop((portrait_w - 1, 0, portrait_w, H)).resize((42, H))
+    im.paste(right_fill, (W - 42, 0))
 
-    # CÉ LA VI laser texture, screen-like and deliberately faint. The left 55%
-    # is attenuated again so typography remains the highest-contrast element.
+    # CÉ LA VI texture is deliberately faint and confined to the dark left.
     venue = Image.open(VENUE).convert("RGB")
     scale = max(W / venue.width, H / venue.height)
     venue = venue.resize((round(venue.width * scale), round(venue.height * scale)),
@@ -112,48 +101,34 @@ def make_background() -> Image.Image:
     for y in range(H):
         for x in range(W):
             nx = x / (W - 1)
-            # 17% on the text side, rising smoothly to 23% on the portrait side.
-            strength = 0.17 + 0.06 * max(0.0, min(1.0, (nx - 0.55) / 0.20))
+            fade = max(0.0, min(1.0, (0.56 - nx) / 0.18))
+            fade = fade * fade * (3.0 - 2.0 * fade)
+            strength = 0.14 * fade
             tm[x, y] = round(255 * strength)
     im = Image.composite(screened, im, texture_mask)
 
-    # A final dark veil over the left 55% keeps venue highlights behind the copy.
-    veil = Image.new("RGB", (W, H), BLACK)
-    veil_mask = Image.new("L", (W, H), 0)
-    vm = veil_mask.load()
-    for x in range(round(W * 0.62)):
-        fade = max(0.0, min(1.0, (0.62 - x / W) / 0.12))
-        for y in range(H):
-            vm[x, y] = round(255 * 0.14 * fade)
-    return Image.composite(veil, im, veil_mask)
-
-
-def add_people(base: Image.Image) -> None:
-    src = Image.open(SOURCE).convert("RGB")
-    # Keep the full width so the left shoe and the right member both retain
-    # breathing room.  Most of the sky/scoreboard is removed while the crop
-    # still includes all three figures from hair to feet.
-    portrait = src.crop((0, 916, 2443, 3664))
-    target_w, target_h = 1040, 1170
-    portrait = portrait.resize((target_w, target_h), Image.Resampling.LANCZOS)
-
-    # Preserve the source photograph exactly as-is apart from resizing. Only
-    # its left edge dissolves into the text-side background.
-    mask = Image.new("L", portrait.size, 255)
-    m = mask.load()
-    fade_width = round(portrait.width * 0.12)
-    for x in range(fade_width):
-        alpha = round(255 * x / max(1, fade_width - 1))
-        for y in range(portrait.height):
-            m[x, y] = alpha
-
-    photo_pos = (840, -20)
-    layer = Image.new("RGB", (W, H), (0, 0, 0))
-    alpha = Image.new("L", (W, H), 0)
-    pos = photo_pos
-    layer.paste(portrait, pos)
-    alpha.paste(mask, pos)
-    base.paste(layer, (0, 0), alpha)
+    # One continuous crimson scrim: nearly opaque at the left edge, easing
+    # over well over half the canvas and becoming fully transparent before
+    # the faces. A subtle lower-edge darkening anchors the information block.
+    overlay = Image.new("RGB", (W, H), BLACK)
+    overlay_px = overlay.load()
+    mask = Image.new("L", (W, H), 0)
+    mask_px = mask.load()
+    for y in range(H):
+        ny = y / (H - 1)
+        for x in range(W):
+            nx = x / (W - 1)
+            progress = max(0.0, min(1.0, nx / 0.70))
+            eased = progress * progress * (3.0 - 2.0 * progress)
+            alpha = 0.97 * (1.0 - eased)
+            lower = max(0.0, (ny - 0.72) / 0.28) ** 2
+            alpha = min(0.98, alpha + 0.10 * lower * (1.0 - progress))
+            crimson_mix = 0.28 + 0.28 * ny
+            overlay_px[x, y] = tuple(round(BLACK[i] * (1 - crimson_mix)
+                                                   + DEEPEST_CRIMSON[i] * crimson_mix)
+                                      for i in range(3))
+            mask_px[x, y] = round(255 * alpha)
+    return Image.composite(overlay, im, mask)
 
 
 def add_type(base: Image.Image) -> None:
@@ -200,7 +175,6 @@ def add_type(base: Image.Image) -> None:
 
 def main() -> None:
     canvas = make_background()
-    add_people(canvas)
     add_type(canvas)
     canvas.save(
         OUTPUT,
