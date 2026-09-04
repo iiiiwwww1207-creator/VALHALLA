@@ -193,17 +193,19 @@ def fit_card_title_font(draw: ImageDraw.ImageDraw, titles: tuple[tuple[str, ...]
 
 
 def add_cards(base: Image.Image) -> None:
-    margin, gap = 68, 28
-    width = (W - margin * 2 - gap * 2) // 3
+    margin, gap = 50, 18
+    width = (W - margin * 2 - gap * 3) // 4
     height, top = 570, 184
     cards = (
-        ("LIVE", "ライブ席", "¥15,000", "100名",
+        ("LIVE", "ライブ席", "¥10,000", "100名",
          ("アコースティックライブ観覧",)),
-        ("MIO SEAT", "MIO席", "¥110,000", "20席 ／ 20:00〜20:20",
-         ("チェキ撮影／動画OK", "やしろ語録動画", "限定名刺", "ライブ観覧")),
+        ("BOT", "社bot", "¥50,000", "",
+         ("社bot を期間限定で利用可",)),
+        ("MIO SEAT", "MIO席", "¥150,000", "20席 ／ 20:10〜",
+         ("チェキ（1分）／動画OK", "やしろ語録動画", "限定名刺", "ライブ観覧")),
         ("VVIP", "VVIP席", "¥330,000", "10卓 ／ 20:30〜",
          ("ホストコール体験", "チェキ／写真／動画OK", "限定名刺", "ライブ観覧",
-          "後日 Zoom講座30分")),
+          "別日 ファンミーティング30分")),
     )
     d = ImageDraw.Draw(base)
     kicker = face(SANS, 16)
@@ -213,7 +215,7 @@ def add_cards(base: Image.Image) -> None:
     bullet_font = face(SANS, 17)
     for index, (small, title, amount, note, bullets) in enumerate(cards):
         x = margin + index * (width + gap)
-        emphasized = index == 2
+        emphasized = index == 3
         d.rounded_rectangle(
             sbox((x, top, x + width, top + height)), radius=15 * SCALE,
             fill=(*DEEPEST_CRIMSON, 255) if emphasized else None,
@@ -224,6 +226,10 @@ def add_cards(base: Image.Image) -> None:
         d.text(spos((x + 28, top + 62)), title, font=title_font, fill=CREAM, anchor="la")
         d.text(spos((x + 28, top + 116)), amount, font=amount_font, fill=CREAM, anchor="la")
         d.text(spos((x + 28, top + 190)), note, font=meta_font, fill=SILVER, anchor="la")
+        d.line(
+            spos((x + 28, top + 226, x + width - 28, top + 226)),
+            fill=(*DARK_CRIMSON, 220), width=SCALE,
+        )
         for line_no, line in enumerate(bullets):
             cy = top + 254 + line_no * 48
             d.ellipse(sbox((x + 29, cy + 8, x + 35, cy + 14)), fill=CRIMSON)
@@ -242,7 +248,7 @@ def add_footer(base: Image.Image) -> None:
     d = ImageDraw.Draw(base)
     d.text(
         spos((W / 2, 840)),
-        "2026.10.18 SUN　CÉ LA VI TOKYO（渋谷・17F）　OPEN 19:00 ／ START 19:30",
+        "2026.10.18 SUN　CÉ LA VI TOKYO（渋谷・17F）　OPEN 19:00 ／ START 19:30 ／ 終演 21:30",
         font=face(SANS, 16), fill=SILVER, anchor="ma",
     )
 
