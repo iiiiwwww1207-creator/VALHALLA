@@ -204,8 +204,8 @@ def add_cards(base: Image.Image) -> None:
         ("MIO SEAT", "MIO席", "¥150,000", "20席 ／ 20:10〜",
          ("チェキ（1分）／動画OK", "やしろ語録動画", "限定名刺", "ライブ観覧")),
         ("VVIP", "VVIP席", "¥330,000", "10卓 ／ 20:30〜",
-         ("ホストコール体験", "チェキ／写真／動画OK", "限定名刺", "ライブ観覧",
-          "別日 ファンミーティング30分")),
+         ("ホストコール体験", "シャンパンサービス", "チェキ／写真／動画OK", "限定名刺",
+          "ライブ観覧", "別日 ファンミーティング30分")),
     )
     d = ImageDraw.Draw(base)
     kicker = face(SANS, 16)
@@ -246,10 +246,17 @@ def add_header(base: Image.Image) -> None:
 
 def add_footer(base: Image.Image) -> None:
     d = ImageDraw.Draw(base)
+    text = (
+        "2026.10.18 SUN　CÉ LA VI TOKYO（渋谷・17F）　OPEN 19:00 ／ START 19:30 ／ "
+        "終演 21:30　※収益は必要経費を除いた全額を寄付します"
+    )
+    footer_font = face(SANS, 16)
+    if d.textlength(text, font=footer_font) > (W - 100) * SCALE:
+        footer_font = face(SANS, 14)
     d.text(
         spos((W / 2, 840)),
-        "2026.10.18 SUN　CÉ LA VI TOKYO（渋谷・17F）　OPEN 19:00 ／ START 19:30 ／ 終演 21:30",
-        font=face(SANS, 16), fill=SILVER, anchor="ma",
+        text,
+        font=footer_font, fill=SILVER, anchor="ma",
     )
 
 
