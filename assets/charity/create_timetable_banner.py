@@ -156,8 +156,15 @@ def ring(draw: ImageDraw.ImageDraw, center: tuple[int, int], diameter: int,
 
 
 def add_nodes(base: Image.Image) -> None:
-    centers_x = (150, 445, 740, 1034, 1329, 1624)
-    cy, diameter = 520, 140
+    # Five equal-size nodes on an exact 345 px rhythm, centered on the canvas.
+    centers_x = (197, 542, 887, 1232, 1577)
+    cy, diameter = 520, 190
+
+    # Keep the crimson ribbon strictly between adjacent circles.
+    radius = diameter // 2
+    for left, right in zip(centers_x, centers_x[1:]):
+        add_light_ribbon(base, y=cy, start=left + radius, end=right - radius)
+
     for x in centers_x:
         add_node_glow(base, (x, cy), diameter)
 
@@ -168,21 +175,20 @@ def add_nodes(base: Image.Image) -> None:
     base.alpha_composite(layer)
 
     td = ImageDraw.Draw(base)
-    time_font = face(LATIN, 44)
-    label_font = face(MINCHO, 25)
-    times = ("19:00", "19:30", "20:00", "20:20", "20:30", "22:00")
-    labels = (
-        "開場",
-        "開演\nアコースティックライブ",
-        "ライブ終了",
-        "MIO席\n体験タイム",
-        "VVIP席\nホストコール体験",
-        "終演",
-    )
-    for x, time, label in zip(centers_x, times, labels):
-        td.text(spos((x, 397)), time, font=time_font, fill=CREAM, anchor="ms")
-        td.multiline_text(spos((x, 612)), label, font=label_font, fill=CREAM,
-                          anchor="ma", align="center", spacing=8 * SCALE)
+    cue_font = face(LATIN, 18)
+    time_font = face(LATIN, 60)
+    label_font = face(MINCHO, 29)
+    cues = ("OPEN", "START", "", "", "END")
+    times = ("19:00", "19:30", "20:00", "20:10", "21:30")
+    labels = ("開場", "開演", "バンド終了", "MIO タイム", "終演")
+    for x, cue, time, label in zip(centers_x, cues, times, labels):
+        if cue:
+            cue_width = sum(td.textlength(char, font=cue_font) for char in cue)
+            cue_width += 5 * SCALE * (len(cue) - 1)
+            draw_tracked(td, (round(x - cue_width / (2 * SCALE)), 394), cue,
+                         cue_font, CRIMSON, 5)
+        td.text(spos((x, cy + 2)), time, font=time_font, fill=CREAM, anchor="mm")
+        td.text(spos((x, 660)), label, font=label_font, fill=CREAM, anchor="mm")
 
 
 def add_typography(base: Image.Image) -> None:
@@ -203,7 +209,6 @@ def add_typography(base: Image.Image) -> None:
 
 def main() -> None:
     canvas = make_background()
-    add_light_ribbon(canvas, y=520, start=74, end=1700)
     add_nodes(canvas)
     add_typography(canvas)
     canvas = canvas.convert("RGB").resize((W, H), Image.Resampling.LANCZOS)
