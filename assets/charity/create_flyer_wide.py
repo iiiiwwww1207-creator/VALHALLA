@@ -155,7 +155,7 @@ def add_type(base: Image.Image) -> None:
 
     detail = font(HIRAGINO_BOLD, 25)
     draw.text(
-        (x, 405), "アコースティックライブ ＆ ホストコール体験",
+        (x, 405), "アコースティックライブ ＆ スペシャルタイム",
         font=detail, fill=SILVER,
     )
 
