@@ -178,6 +178,20 @@
       許諾が取れ次第、その語に差し替える（[東京大学の見せ方] の項を参照）
   - ⏳ LP（`charity.html`）は公開中だが CAMPFIRE 決済リンクが未設定
 
+## LINE公式アカウント（2026-09-06・kazuma 指示）
+- **CAMPFIRE のクラファン専用に LINE公式アカウントを開設する**予定。
+  そこで **開始までのカウントダウン**などを配信し、フライヤーからそこへ誘導する。
+- フライヤー下部の右列を **「LINE OFFICIAL ／ QR ／ 最新情報・カウントダウン配信」** の枠に変更済み
+  （旧「COMING SOON ／ 近日公開予定」）。
+- 🔴 **QRはまだプレースホルダ（点線枠に「QR 準備中」）。**
+  アカウントを作ると発行される **友だち追加URL（`https://lin.ee/xxxxxxx`）または @ID** を
+  もらえば、下記の手順でQRを生成して差し込む。
+  ```
+  python3 -c "import qrcode,qrcode.image.svg; q=qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_M,box_size=10,border=1); q.add_data('<友だち追加URL>'); q.make(fit=True); q.make_image(image_factory=qrcode.image.svg.SvgPathImage).save('assets/charity/qr_line.svg')"
+  ```
+  そのうえで `.qrslot` の中身を `<img src="assets/charity/qr_line.svg">` に差し替える。
+- 併せて **@ID を文字でも併記する**かは要判断（QRが読めない環境向け）。
+
 ## 会場情報（2026-09-01 追記）
 - **CÉ LA VI TOKYO ／ 東京都渋谷区道玄坂1-2-3 東急プラザ渋谷 17F**
   - 出典: 東急プラザ渋谷 公式ショップページ（CÉ LA VI CLUB LOUNGE）

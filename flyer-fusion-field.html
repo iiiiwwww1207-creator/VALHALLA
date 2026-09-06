@@ -109,7 +109,7 @@
   .kind{text-align:center;margin-top:3.4mm}
 
   /* 会場写真（B の型：横長の主写真＋左右に枠付きの小写真） */
-  .venue1{position:relative;flex:none;height:48mm;overflow:hidden;margin:5mm -14mm 0;
+  .venue1{position:relative;flex:none;height:40mm;overflow:hidden;margin:5mm -14mm 0;
     border-top:.35mm solid rgba(193,18,31,.6);border-bottom:.35mm solid rgba(193,18,31,.6)}
   .venue1 img{width:100%;height:100%;object-fit:cover;display:block;
     filter:brightness(1.18) saturate(1.06)}
@@ -159,11 +159,19 @@
   .foot .mid .m b{color:var(--crimson-l)}
   .foot .mid .s{margin-top:2mm;font-size:2.6mm;color:var(--sub)}
   .foot .soon{text-align:center;border:.35mm solid rgba(193,18,31,.7);
-    padding:3.6mm 5mm 3.8mm;background:rgba(193,18,31,.10)}
+    padding:3.2mm 4.4mm 3.4mm;background:rgba(193,18,31,.10)}
   .foot .soon .k{font-family:'Cinzel',serif;font-weight:500;font-size:2.4mm;
     letter-spacing:.34em;text-indent:.34em;text-transform:uppercase;color:var(--crimson-l)}
-  .foot .soon .m{margin-top:2.6mm;font-family:"Noto Serif JP",serif;font-weight:700;
-    font-size:4.6mm;letter-spacing:.10em;color:#fff;white-space:nowrap}
+  .foot .soon .m{margin-top:2mm;font-family:"Noto Serif JP",serif;font-weight:700;
+    font-size:3.6mm;letter-spacing:.08em;color:#fff;white-space:nowrap}
+  /* LINE公式アカウントのQR枠（IDが決まったら画像に差し替える） */
+  .foot .soon .qrslot{width:16mm;height:16mm;margin:2.2mm auto 0;
+    border:.3mm dashed rgba(193,18,31,.75);display:flex;align-items:center;justify-content:center}
+  .foot .soon .qrslot span{font-size:2.2mm;line-height:1.4;letter-spacing:.06em;
+    color:var(--crimson-l);text-align:center}
+  .foot .soon .qrslot img{width:100%;height:100%;display:block}
+  .foot .soon .sub{margin-top:2mm;font-size:2.2mm;letter-spacing:.04em;
+    color:var(--sub);white-space:nowrap}
   .credit{position:relative;z-index:2;margin:0 -14mm;background:rgba(6,5,5,.55);
     padding:0 14mm 3.4mm;font-size:1.9mm;line-height:1.45;color:rgba(243,237,225,.44)}
   .tbd{border-bottom:.2mm dashed rgba(193,18,31,.7);padding:0 .3mm;font-style:normal}
@@ -223,8 +231,9 @@
           <div class="s">チケット・詳細は後日発表します</div>
         </div>
         <div class="soon">
-          <div class="k">Coming Soon</div>
-          <div class="m">近日公開予定</div>
+          <div class="k">Line Official</div>
+          <div class="qrslot"><span>QR<br>準備中</span></div>
+          <div class="sub">最新情報・カウントダウン配信</div>
         </div>
       </div>
       <p class="credit">主催：VALHALLA ／ 昼の本編「WRAPPING THE EARTH TOKYO 2026」主催：公益財団法人クロノス保全財団。お申し込みは CAMPFIRE にて受付予定（<i class="tbd">案内準備中</i>）。特商法表記は特設ページに掲載。</p>
