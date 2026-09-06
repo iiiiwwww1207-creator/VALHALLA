@@ -218,6 +218,20 @@
   そのうえで `.qrslot` の中身を `<img src="assets/charity/qr_line.svg">` に差し替える。
 - 併せて **@ID を文字でも併記する**かは要判断（QRが読めない環境向け）。
 
+## LINE公式アカウント用の画像（2026-09-06）
+`line-assets.html` で生成。書き出しは `assets/charity/line/`。
+
+| 用途 | サイズ | ファイル | 注意 |
+|---|---|---|---|
+| 背景（ホームのカバー） | **1200×600（2:1）** | `line_cover_1200x600.jpg` | ホーム画面では**下部にアカウント名が重なる**ので、下 1/4 に重要な要素を置かない |
+| プロフィール画像 | **640×640** | `line_icon_640x640.jpg` | 表示時に**円形へトリミング**される。四隅は必ず切れるので要素は中心に集める |
+
+- デザインはフライヤーと共通（黒 × クリムゾン × Cinzel / Noto Serif JP）
+- 背景画像: 3人が縦に散った写真なので**引いて右寄せ**し、左をテキスト面にしている
+  （VALHALLA / CHARITY LIVE / 2026.10.18 SUN / CÉ LA VI TOKYO）
+- 書き出し: `sh tools/render.sh line-assets.html line_cover cover 1200 600`
+　　　　　　`sh tools/render.sh line-assets.html line_icon icon 640 640`
+
 ## 会場情報（2026-09-01 追記）
 - **CÉ LA VI TOKYO ／ 東京都渋谷区道玄坂1-2-3 東急プラザ渋谷 17F**
   - 出典: 東急プラザ渋谷 公式ショップページ（CÉ LA VI CLUB LOUNGE）
