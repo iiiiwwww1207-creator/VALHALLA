@@ -15,7 +15,6 @@ from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageOps
 
 HERE = Path(__file__).resolve().parent
 CELAVI = HERE / "venue" / "celavi_red.jpg"
-HUG_LOGO = HERE / "logo_hug.png"
 OUTPUT = HERE / "flow_banner.jpg"
 
 W, H = 1774, 887
@@ -231,23 +230,25 @@ def add_nodes(base: Image.Image) -> None:
     od = ImageDraw.Draw(outlines)
     ring(od, (centers_x[2], cy), diameter, 3)
 
-    # 4: the foundation's official logo, unaltered except for proportional scaling.
-    logo_center = (centers_x[3], cy)
-    circle_size = diameter * SCALE
-    circle_x = round((logo_center[0] - diameter / 2) * SCALE)
-    circle_y = round((logo_center[1] - diameter / 2) * SCALE)
-    white_circle = Image.new("RGBA", (circle_size, circle_size), (255, 255, 255, 255))
-    circle_mask = Image.new("L", (circle_size, circle_size), 0)
-    ImageDraw.Draw(circle_mask).ellipse((2, 2, circle_size - 3, circle_size - 3), fill=255)
-    base.paste(white_circle, (circle_x, circle_y), circle_mask)
-
-    logo_box = round(diameter * 0.74 * SCALE)
-    logo = Image.open(HUG_LOGO).convert("RGB")
-    logo.thumbnail((logo_box, logo_box), Image.Resampling.LANCZOS)
-    logo_x = round(logo_center[0] * SCALE - logo.width / 2)
-    logo_y = round(logo_center[1] * SCALE - logo.height / 2)
-    base.paste(logo, (logo_x, logo_y))
-    ring(od, logo_center, diameter)
+    # 4: donations converging toward a shared purpose. Four short arrows keep
+    # the mark distinct from node 1's particles and node 5's expanding arcs.
+    cx = centers_x[3]
+    ring(od, (cx, cy), diameter)
+    arrow_color = (*CREAM, 215)
+    arrow_width = 3 * SCALE
+    for angle in (0, math.pi / 2, math.pi, 3 * math.pi / 2):
+        ux, uy = math.cos(angle), math.sin(angle)
+        start = (cx + ux * 72, cy + uy * 72)
+        end = (cx + ux * 25, cy + uy * 25)
+        od.line(spos((*start, *end)), fill=arrow_color, width=arrow_width)
+        for side in (-1, 1):
+            head_angle = angle + side * math.radians(28)
+            head = (
+                end[0] + math.cos(head_angle) * 17,
+                end[1] + math.sin(head_angle) * 17,
+            )
+            od.line(spos((*end, *head)), fill=arrow_color, width=arrow_width)
+    od.ellipse(sbox((cx - 6, cy - 6, cx + 6, cy + 6)), fill=(*CRIMSON, 235))
 
     # 5: culture passing onward — fine arcs expanding toward the next generation.
     cx = centers_x[4]
@@ -280,7 +281,7 @@ def add_nodes(base: Image.Image) -> None:
 
     td.text(spos((centers_x[2], 549)), "CÉ LA VI TOKYO（渋谷・17F）",
             font=small_font, fill=SILVER, anchor="ma")
-    td.text(spos((centers_x[3], 549)), "公益財団法人教育文化セキュリティ財団",
+    td.text(spos((centers_x[3], 549)), "然るべき団体へ",
             font=small_font, fill=SILVER, anchor="ma")
     td.text(spos((centers_x[4], 549)), "教育・文化を支える活動へ",
             font=small_font, fill=SILVER, anchor="ma")
@@ -302,7 +303,7 @@ def add_typography(base: Image.Image) -> None:
 
 
 def main() -> None:
-    if not CELAVI.exists() or not HUG_LOGO.exists():
+    if not CELAVI.exists():
         raise FileNotFoundError("Required image assets are missing")
 
     canvas = make_background()
