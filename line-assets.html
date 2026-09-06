@@ -5,7 +5,7 @@
 <title>VALHALLA CHARITY LIVE ｜ LINE公式アカウント用画像</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:wght@400;500;600&family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600&family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:wght@400;500;600&family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   /* ==========================================================
      LINE公式アカウント用の画像（@328vnfzj / VALHALLA CHARITYLIVE）
@@ -31,26 +31,33 @@
   .board.icon {width:640px;height:640px}
 
   /* 共通：クリムゾンの筋 */
-  .vein{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+  .vein{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
   .vein i{position:absolute;top:-10%;height:120%;transform:skewX(-12deg)}
 
   /* ---------- 背景画像 1200x600 ---------- */
-  .cover .ph{position:absolute;inset:0;z-index:0;
-    background:url('assets/charity/group_field.jpg') right -430px/980px auto no-repeat;
-    filter:saturate(.86) contrast(1.05) brightness(.95)}
-  .cover .scrim{position:absolute;inset:0;z-index:1;
+  /* 下層：CÉ LA VI の赤いレーザーを全面に透かす */
+  .cover .laser{position:absolute;inset:0;z-index:0;
+    background:url('assets/charity/venue/celavi_red.jpg') center 46%/cover no-repeat;
+    filter:brightness(.86) saturate(1.14) contrast(1.06)}
+  /* 上層：3人。左のテキスト面に掛からないよう右へ寄せ、左端はマスクで溶かす */
+  .cover .ph{position:absolute;inset:0;z-index:1;
+    background:url('assets/charity/group_field.jpg') right -352px/800px auto no-repeat;
+    filter:saturate(.9) contrast(1.04) brightness(.97);
+    -webkit-mask-image:linear-gradient(90deg,transparent 31%,#000 52%,#000 100%);
+    mask-image:linear-gradient(90deg,transparent 31%,#000 52%,#000 100%)}
+  .cover .scrim{position:absolute;inset:0;z-index:2;
     background:
-      linear-gradient(90deg,rgba(9,7,8,1) 0%,rgba(9,7,8,.98) 34%,rgba(9,7,8,.62) 46%,rgba(9,7,8,.12) 60%,rgba(9,7,8,.10) 88%,rgba(9,7,8,.42) 100%),
-      linear-gradient(180deg,rgba(9,7,8,.30) 0%,transparent 22%,transparent 62%,rgba(9,7,8,.72) 100%)}
+      linear-gradient(90deg,rgba(9,7,8,.80) 0%,rgba(9,7,8,.70) 32%,rgba(9,7,8,.42) 44%,rgba(9,7,8,.12) 58%,rgba(9,7,8,.10) 88%,rgba(9,7,8,.38) 100%),
+      linear-gradient(180deg,rgba(9,7,8,.26) 0%,transparent 22%,transparent 60%,rgba(9,7,8,.74) 100%)}
   .cover .vein i.a{left:6%;width:4px;background:linear-gradient(180deg,transparent,rgba(193,18,31,.75) 45%,rgba(193,18,31,.5))}
   .cover .vein i.b{left:47%;width:2px;background:linear-gradient(180deg,transparent,rgba(193,18,31,.4) 55%,transparent)}
-  .cover .tx{position:absolute;z-index:3;left:62px;top:50%;transform:translateY(-52%);width:600px}
-  .cover .kick{font-family:'Cinzel',serif;font-weight:500;font-size:19px;
+  .cover .tx{position:absolute;z-index:4;left:58px;top:50%;transform:translateY(-52%);width:500px}
+  .cover .kick{font-family:'Bodoni Moda',serif;font-weight:500;font-size:19px;
     letter-spacing:.40em;text-indent:.40em;color:var(--crimson-l)}
-  .cover h1{margin-top:16px;font-family:'Cinzel',serif;font-weight:600;
-    font-size:62px;line-height:1.06;letter-spacing:.06em;color:#fff}
+  .cover h1{margin-top:16px;font-family:'Bodoni Moda',serif;font-weight:600;
+    font-size:56px;line-height:1.06;letter-spacing:.06em;color:#fff}
   .cover .rule{width:120px;height:3px;background:var(--crimson);margin:22px 0 20px}
-  .cover .date{font-family:'Cinzel',serif;font-weight:500;font-size:40px;
+  .cover .date{font-family:'Cinzel',serif;font-weight:500;font-size:36px;
     letter-spacing:.08em;color:#fff;line-height:1}
   .cover .jp{margin-top:14px;font-weight:600;font-size:20px;letter-spacing:.10em;color:var(--sub)}
 
@@ -64,7 +71,7 @@
   .icon .in{position:absolute;z-index:3;inset:0;display:flex;flex-direction:column;
     align-items:center;justify-content:center;padding:0 92px;text-align:center}
   .icon .mark{width:250px;display:block;filter:drop-shadow(0 6px 20px rgba(0,0,0,.85))}
-  .icon .t1{margin-top:22px;font-family:'Cinzel',serif;font-weight:600;font-size:36px;
+  .icon .t1{margin-top:22px;font-family:'Bodoni Moda',serif;font-weight:600;font-size:38px;
     letter-spacing:.10em;line-height:1.1;color:#fff}
   .icon .t2{margin-top:12px;font-family:'Cinzel',serif;font-weight:500;font-size:23px;
     letter-spacing:.14em;color:var(--crimson-l)}
@@ -77,6 +84,7 @@
 
 <!-- 背景画像（ホーム画面のカバー）1200x600 -->
 <section class="board cover">
+  <div class="laser"></div>
   <div class="ph"></div>
   <div class="scrim"></div>
   <div class="vein"><i class="a"></i><i class="b"></i></div>
