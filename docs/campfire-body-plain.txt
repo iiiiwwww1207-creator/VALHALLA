@@ -191,12 +191,12 @@
 
 **まず、音を聴いてください。**
 
-【動画】〔YouTube URL を入れる〕　… VALHALLA ミュージックビデオ
-〔※ CAMPFIRE の本文は**動画ファイルを直接アップロードできない**。YouTube か Vimeo の URL を貼ると
-　 プレイヤーが埋め込まれる。手元の `assets/charity/video/synchro_digest.mp4`（21MB）を
-　 **YouTube へ限定公開でアップロードし、その URL を使う**のが最短〕
+【動画】https://www.youtube.com/watch?v=nnLM_4LU9UI　… BORN IN DESPAIR -MV-【VALHALLA】
 
-〔※ 2本目以降を載せる場合は、ここに続けて並べる。ただし本文が長くなるので**2本までを推奨**〕
+VALHALLA は **12ヶ月連続シングル＆MVリリース**を進めています。
+「BORN IN DESPAIR」はその5作目で、**青森ユースサッカーフェスティバルのアンセム**にも選ばれました。
+
+〔※ 2本目を載せる場合はここに追加。本文が長くなるので**2本までを推奨**〕
 
 【画像】`assets/charity/mio.jpg`
 

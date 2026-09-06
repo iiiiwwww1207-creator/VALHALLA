@@ -66,10 +66,22 @@ def convert(body: str) -> str:
 
         if s.startswith("【動画】"):
             close_ul()
-            out.append(
-                '<figure class="video"><div class="ph">'
-                + inline(s[4:]) + "</div></figure>"
-            )
+            body = s[4:]
+            m2 = re.search(r"(?:youtube\.com/watch\?v=|youtu\.be/)([\w-]{11})", body)
+            if m2:
+                cap = re.sub(r"https?://\S+", "", body).strip(" …　")
+                out.append(
+                    '<figure class="video"><div class="yt">'
+                    f'<iframe src="https://www.youtube.com/embed/{m2.group(1)}" '
+                    'allowfullscreen loading="lazy"></iframe></div>'
+                    + (f"<figcaption>{inline(cap)}</figcaption>" if cap else "")
+                    + "</figure>"
+                )
+            else:
+                out.append(
+                    '<figure class="video"><div class="ph">'
+                    + inline(body) + "</div></figure>"
+                )
             continue
 
         m = re.match(r"^【画像】(.*?)`([^`]+)`(.*)$", s)
@@ -163,6 +175,8 @@ blockquote{margin:22px 0;padding:18px 22px;border-left:4px solid var(--ink);back
 blockquote p{margin:0 0 12px;font-size:15.5px}
 blockquote p:last-child{margin-bottom:0}
 figure.video{margin:26px 0}
+.yt{position:relative;padding-top:56.25%;background:#000;border-radius:3px;overflow:hidden}
+.yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 figure.video .ph{border-color:#1f9e8e;color:#1a7a6e;background:#f2fbfa}
 .tbd{background:#ffe9a8;color:#8a6b00;padding:1px 5px;border-radius:3px;font-weight:700}
 code{background:#f0f0f0;padding:1px 5px;border-radius:3px;font-size:13px}

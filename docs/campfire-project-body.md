@@ -262,12 +262,12 @@
 
 **まず、音を聴いてください。**
 
-【動画】〔YouTube URL を入れる〕　… VALHALLA ミュージックビデオ
-〔※ CAMPFIRE の本文は**動画ファイルを直接アップロードできない**。YouTube か Vimeo の URL を貼ると
-　 プレイヤーが埋め込まれる。手元の `assets/charity/video/synchro_digest.mp4`（21MB）を
-　 **YouTube へ限定公開でアップロードし、その URL を使う**のが最短〕
+【動画】https://www.youtube.com/watch?v=nnLM_4LU9UI　… BORN IN DESPAIR -MV-【VALHALLA】
 
-〔※ 2本目以降を載せる場合は、ここに続けて並べる。ただし本文が長くなるので**2本までを推奨**〕
+VALHALLA は **12ヶ月連続シングル＆MVリリース**を進めています。
+「BORN IN DESPAIR」はその5作目で、**青森ユースサッカーフェスティバルのアンセム**にも選ばれました。
+
+〔※ 2本目を載せる場合はここに追加。本文が長くなるので**2本までを推奨**〕
 
 【画像】`assets/charity/mio.jpg`
 
@@ -780,8 +780,8 @@ CÉ LA VI への支払いが10月中に発生するなら、その間の**立て
 - [x] メインビジュアル `assets/charity/flyer_wide.jpg`
 
 **内容**
-- [ ] **バンドPVの YouTube URL**（CAMPFIRE は動画の直接アップロード不可。YouTube/Vimeo のみ）
-      → 手元に `assets/charity/video/synchro_digest.mp4`（21MB）あり。限定公開でアップすれば使える
+- [x] バンドPVの YouTube URL → **BORN IN DESPAIR** `https://www.youtube.com/watch?v=nnLM_4LU9UI`
+- [ ] 2本目の動画を載せるか（ライブ映像があれば「その時にしかつくられない一体感」の裏付けになる）
 - [ ] メンバー3名の担当パートと本人メッセージ
 - [ ] 「推し応援プラン」を採用するか／金額・数量
 - [ ] 法人協賛枠（ゴールド／冠）の金額・数量・LED掲出の可否
