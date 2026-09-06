@@ -66,6 +66,24 @@
 - ※7割方は辛口系が選ばれる想定
 - 一次ソース: X「社美緒 名言bot @meigen_mio」／YouTube「Mio Yashiro TV」
 
+## 制作物の現状（2026-09-06 整理）
+
+**本番として進めるのは 1つだけ。他は保留（消していないので、必要になれば再開できる）。**
+
+| 状態 | ファイル | 内容 |
+|---|---|---|
+| ✅ **本番** | **`flyer-fusion.html`** | **A4 片面 1枚。** DOMINION × WRAPPING THE EARTH の掛け合わせ版（白バックの宣材を使う案A）。<br>書き出し: `assets/charity/flyer/flyer_fusion.jpg` ／ `flyer_fusion.pdf` |
+| 🅱 予備 | `flyer-fusion-field.html` | 同じ構成で上部を野球場カットにした案B |
+| ⏸ 保留 | `flyer-teaser.html` | 告知ティザー（3枠・バンド入り） |
+| ⏸ 保留 | `flyer-teaser-venue.html` | 告知ティザー（会場写真4枠） |
+| ⏸ 保留 | `flyer.html` | A4 詳細版（席と金額まで載せる単票） |
+| ⏸ 保留 | `flyer-sns.html` | SNS詳細版（2枚組・5サイズ） |
+
+- 書き出しは **`sh tools/render.sh <html> <出力名> [クラス 幅 高さ]`** で再生成できる
+  - A4:  `sh tools/render.sh flyer-fusion.html flyer_fusion`
+  - ボード: `sh tools/render.sh flyer-sns.html afterparty_ig_feed_1080x1350 feed45 1080 1350`
+- 保留中のものも表記変更（東大の削除／公益財団／MIOタイム等）は追従済み。
+
 ## 準備タスク
 - **社美緒シャンパンコールの歌詞作成（〜10/31）**
   - 既存コールの替え歌ではなく、**歌詞から1から作る完全オリジナル版**を制作する（2026-08-27 kazuma 指示）
