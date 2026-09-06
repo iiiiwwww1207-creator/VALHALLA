@@ -215,7 +215,8 @@ def add_header(base: Image.Image) -> None:
     d = ImageDraw.Draw(base)
     draw_tracked(d, (68, 34), "VALHALLA CHARITY LIVE ／ ACTIVITY",
                  face(SANS, 16), CRIMSON, 3)
-    d.text(spos((W / 2, 82)), "守る、そして、継ぐ。", font=face(MINCHO, 47),
+    # 一語なので、文字数が減ったぶんサイズを上げて見出しとしての強さを保つ
+    d.text(spos((W / 2, 66)), "再興。", font=face(MINCHO, 76),
            fill=CREAM, anchor="ma")
 
 
