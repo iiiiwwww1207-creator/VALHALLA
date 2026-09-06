@@ -195,7 +195,8 @@ def fit_card_title_font(draw: ImageDraw.ImageDraw, titles: tuple[tuple[str, ...]
 def add_cards(base: Image.Image) -> None:
     margin, gap = 50, 18
     width = (W - margin * 2 - gap * 3) // 4
-    height, top = 570, 184
+    upper_top, upper_height = 168, 326
+    lower_top, lower_height = 548, 256
     cards = (
         ("LIVE", "ライブ席", "¥10,000", "100名",
          ("アコースティックライブ観覧",)),
@@ -207,15 +208,25 @@ def add_cards(base: Image.Image) -> None:
         ("VVIP", "VVIP席", "¥330,000", "10卓 ／ 20:30〜",
          ("MIOが各卓を巡回", "シャンパンサービス", "チェキ／写真／動画OK", "限定名刺",
           "ライブ観覧", "別日 ファンミーティング30分")),
+        ("ARCHIVE", "アーカイブ視聴", "¥5,000", "来場不要",
+         ("当日のライブ映像を後日視聴", "お礼のメール")),
+        ("FLOWER", "フラワースタンド", "¥7,000", "来場不要",
+         ("スタンドにお名前掲出", "設置写真をお送りします", "ライブ映像を後日視聴")),
     )
     d = ImageDraw.Draw(base)
-    kicker = face(SANS, 16)
-    title_font = face(MINCHO, 29)
-    amount_font = face(SANS, 48)
-    meta_font = face(SANS, 17)
-    bullet_font = face(SANS, 17)
+    # Every course shares the same type scale; only position changes by row.
+    kicker = face(SANS, 14)
+    title_font = fit_card_title_font(
+        d, tuple((card[1],) for card in cards), width - 56
+    )
+    amount_font = face(SANS, 42)
+    meta_font = face(SANS, 15)
+    bullet_font = face(SANS, 15)
     for index, (small, title, amount, note, bullets) in enumerate(cards):
-        x = margin + index * (width + gap)
+        row_index = index if index < 4 else index - 4
+        x = margin + row_index * (width + gap)
+        top = upper_top if index < 4 else lower_top
+        height = upper_height if index < 4 else lower_height
         emphasized = index == 3
         d.rounded_rectangle(
             sbox((x, top, x + width, top + height)), radius=15 * SCALE,
@@ -223,18 +234,27 @@ def add_cards(base: Image.Image) -> None:
             outline=(*CRIMSON, 255) if emphasized else (*DARK_CRIMSON, 235),
             width=(5 if emphasized else 2) * SCALE,
         )
-        d.text(spos((x + 28, top + 25)), small, font=kicker, fill=CRIMSON, anchor="la")
-        d.text(spos((x + 28, top + 62)), title, font=title_font, fill=CREAM, anchor="la")
-        d.text(spos((x + 28, top + 116)), amount, font=amount_font, fill=CREAM, anchor="la")
-        d.text(spos((x + 28, top + 190)), note, font=meta_font, fill=SILVER, anchor="la")
+        d.text(spos((x + 25, top + 17)), small, font=kicker, fill=CRIMSON, anchor="la")
+        d.text(spos((x + 25, top + 45)), title, font=title_font, fill=CREAM, anchor="la")
+        d.text(spos((x + 25, top + 86)), amount, font=amount_font, fill=CREAM, anchor="la")
+        d.text(spos((x + 25, top + 143)), note, font=meta_font, fill=SILVER, anchor="la")
         d.line(
-            spos((x + 28, top + 226, x + width - 28, top + 226)),
+            spos((x + 25, top + 169, x + width - 25, top + 169)),
             fill=(*DARK_CRIMSON, 220), width=SCALE,
         )
         for line_no, line in enumerate(bullets):
-            cy = top + 254 + line_no * 48
-            d.ellipse(sbox((x + 29, cy + 8, x + 35, cy + 14)), fill=CRIMSON)
-            d.text(spos((x + 48, cy)), line, font=bullet_font, fill=SILVER, anchor="la")
+            cy = top + 187 + line_no * 22
+            d.ellipse(sbox((x + 26, cy + 7, x + 31, cy + 12)), fill=CRIMSON)
+            d.text(spos((x + 40, cy)), line, font=bullet_font, fill=SILVER, anchor="la")
+
+    draw_tracked(
+        d,
+        (margin, 516),
+        "CAN'T COME? ／ 会場に来られない方へ",
+        face(SANS, 14),
+        CRIMSON,
+        2,
+    )
 
 
 def add_header(base: Image.Image) -> None:
