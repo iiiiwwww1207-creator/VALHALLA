@@ -9,6 +9,7 @@ tools/build-campfire-preview.py の変換処理を再利用し、
 使い方: python3 tools/build-artifact.py
 出力  : /tmp/valhalla_artifact/campfire-draft.html
 """
+import argparse
 import base64
 import importlib.util
 import io
@@ -106,9 +107,8 @@ figcaption{font-size:12px;color:var(--sub);margin-top:9px;text-align:center;lett
 .mv .t{font-weight:700;font-size:15px;line-height:1.5}
 .mv .u{font-size:12px;color:var(--sub);margin-top:3px;word-break:break-all}
 
-.tbd{background:var(--flag-bg);color:var(--flag-ink);
-  border:1px solid var(--flag-line);border-radius:2px;
-  padding:1px 6px;font-size:13px;font-weight:500}
+.tbd,.wip{color:var(--sub);border-bottom:1px dashed var(--flag-line);
+  padding-bottom:1px;font-size:14.5px}
 
 .tail{max-width:var(--measure);margin:0 auto;padding:0 24px 64px;
   font-size:12.5px;color:var(--sub);line-height:1.9}
@@ -128,9 +128,43 @@ def data_uri(path: str, maxw: int = 900, q: int = 74) -> str:
     return "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode()
 
 
+INTERNAL = ("※", "要確定", "確認を取る", "差し替え", "§4")
+
+
+def for_sharing(body: str) -> str:
+    """社外に見せる版：制作側あての注記を落とし、未確定は「調整中」として示す"""
+    # 内部メモは複数行にまたがることがあるので、行単位ではなく全文で消す
+    body = re.sub(
+        r"〔[^〕]*〕",
+        lambda m: "" if any(k in m.group(0) for k in INTERNAL) else m.group(0),
+        body,
+        flags=re.S,
+    )
+    # 注記だけの行が空になるので、その行ごと落とす
+    body = "\n".join(l.rstrip() for l in body.split("\n"))
+    body = re.sub(r"\n[ 　]*\n[ 　]*\n+", "\n\n", body)
+    return body
+
+
+def wip(m) -> str:
+    """残った〔…〕を調整中の印にする。具体値はそのまま見せ、空欄は『調整中』に"""
+    v = m.group(1)
+    if "◯" in v or v in ("本人メッセージ", "担当パート"):
+        return '<span class="wip">調整中</span>'
+    return f'<span class="wip">{v}</span>'
+
+
 def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--internal", action="store_true", help="制作側あての注記も残す")
+    args = ap.parse_args()
+
     md = open(ROOT / prev.SRC, encoding="utf-8").read()
-    html = prev.convert(prev.extract_body(md))
+    body = prev.extract_body(md)
+    if not args.internal:
+        body = for_sharing(body)
+    html = prev.convert(body)
+    html = re.sub(r'<span class="tbd">〔(.+?)〕</span>', wip, html)
 
     # 画像を埋め込む（外部ホストへは通信できないため）
     def embed(m):
@@ -148,7 +182,7 @@ def main() -> None:
 
     n_sec = html.count("<h2")
     n_img = html.count("<figure")
-    n_tbd = html.count('class="tbd"')
+    n_tbd = html.count('class="wip"') + html.count('class="tbd"')
 
     doc = f"""<title>VALHALLA CHARITY LIVE 本文</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -163,12 +197,12 @@ def main() -> None:
 <div class="stats">
   <div class="stat"><b>{n_sec}</b><span>章</span></div>
   <div class="stat"><b>{n_img}</b><span>図版</span></div>
-  <div class="stat open"><b>{n_tbd}</b><span>未確定</span></div>
+  <div class="stat open"><b>{n_tbd}</b><span>調整中</span></div>
 </div>
 <main>{html}</main>
 <div class="tail"><hr>
-  黄色の箇所は未確定です。CAMPFIRE の本文へは、この文章をそのまま貼り付けます。<br>
-  引用（左に赤い線がある箇所）は、貼り付け時にエディタの引用ブロックにしてください。
+  制作中のドラフトです。点線の箇所は現在調整中で、確定しだい差し替えます。<br>
+  CAMPFIRE のページには、この文章と図版をそのまま掲載する想定です。
 </div>"""
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(doc, encoding="utf-8")
