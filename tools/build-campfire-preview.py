@@ -34,6 +34,12 @@ def inline(t: str) -> str:
 
 def convert(body: str) -> str:
     out, ul, para = [], False, []
+    bq, quote = False, []
+
+    def flush_quote():
+        if quote:
+            out.append("<p>" + inline("".join(quote)) + "</p>")
+            quote.clear()
 
     def flush_para():
         if para:
@@ -92,6 +98,22 @@ def convert(body: str) -> str:
             out.append("<hr>")
             continue
 
+        if s.startswith("> ") or s == ">":
+            if not bq:
+                close_ul()
+                out.append("<blockquote>")
+                bq = True
+            t = s[2:].strip()
+            if t:
+                quote.append(t)
+            else:
+                flush_quote()
+            continue
+        if bq:
+            flush_quote()
+            out.append("</blockquote>")
+            bq = False
+
         if s.startswith("- ") or s.startswith("・"):
             if not ul:
                 out.append("<ul>")
@@ -108,6 +130,9 @@ def convert(body: str) -> str:
 
     flush_para()
     close_ul()
+    if bq:
+        flush_quote()
+        out.append("</blockquote>")
     return "\n".join(out)
 
 
@@ -132,6 +157,9 @@ figure.img{margin:26px 0}
 figure.img img{width:100%;display:block;border-radius:3px}
 figcaption{font-size:12.5px;color:var(--sub);margin-top:8px;text-align:center}
 .ph{padding:36px;border:2px dashed #d33;color:#d33;text-align:center;font-size:13px;border-radius:4px}
+blockquote{margin:22px 0;padding:18px 22px;border-left:4px solid var(--ink);background:#fafafa}
+blockquote p{margin:0 0 12px;font-size:15.5px}
+blockquote p:last-child{margin-bottom:0}
 figure.video{margin:26px 0}
 figure.video .ph{border-color:#1f9e8e;color:#1a7a6e;background:#f2fbfa}
 .tbd{background:#ffe9a8;color:#8a6b00;padding:1px 5px;border-radius:3px;font-weight:700}
