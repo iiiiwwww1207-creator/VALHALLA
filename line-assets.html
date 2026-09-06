@@ -65,6 +65,14 @@
   .icon{background:
       radial-gradient(ellipse 70% 55% at 50% 34%, rgba(150,26,34,.42), transparent 68%),
       linear-gradient(165deg,#150d0f 0%,#0a0709 46%,#120c0e 74%,#080608 100%)}
+  /* CÉ LA VI の赤いレーザーを透かす（円形トリミング前提で中心に放射が来る位置） */
+  .icon .laser{position:absolute;inset:0;z-index:0;
+    background:url('assets/charity/venue/celavi_red.jpg') center 44%/cover no-repeat;
+    filter:brightness(.78) saturate(1.12) contrast(1.05)}
+  /* ロゴと文字が読めるよう中心を落とす */
+  .icon .veil{position:absolute;inset:0;z-index:1;
+    background:radial-gradient(ellipse 74% 66% at 50% 46%,
+      rgba(6,4,5,.92) 0%, rgba(6,4,5,.84) 44%, rgba(6,4,5,.55) 74%, rgba(6,4,5,.68) 100%)}
   .icon .vein i.a{left:16%;width:4px;background:linear-gradient(180deg,transparent,rgba(193,18,31,.55) 50%,transparent)}
   .icon .vein i.b{left:83%;width:3px;background:linear-gradient(180deg,transparent,rgba(193,18,31,.4) 50%,transparent)}
   /* 円の内側（直径の約70%）に収める */
@@ -74,7 +82,7 @@
   .icon .t1{margin-top:22px;font-family:'Bodoni Moda',serif;font-weight:600;font-size:38px;
     letter-spacing:.10em;line-height:1.1;color:#fff}
   .icon .t2{margin-top:12px;font-family:'Cinzel',serif;font-weight:500;font-size:23px;
-    letter-spacing:.14em;color:var(--crimson-l)}
+    letter-spacing:.14em;color:var(--cream)}
   /* 円形トリミングの目安（書き出しには写らない） */
   .guide{position:absolute;inset:0;z-index:9;border-radius:50%;
     box-shadow:0 0 0 9999px rgba(0,0,0,.55);pointer-events:none;display:none}
@@ -99,6 +107,8 @@
 
 <!-- プロフィール画像 640x640（円形にトリミングされる） -->
 <section class="board icon">
+  <div class="laser"></div>
+  <div class="veil"></div>
   <div class="vein"><i class="a"></i><i class="b"></i></div>
   <div class="in">
     <img class="mark" src="assets/charity/logo_gold.webp" alt="VALHALLA">
