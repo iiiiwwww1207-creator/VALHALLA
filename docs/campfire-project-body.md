@@ -248,6 +248,15 @@
 
 ### 7. 出演者
 
+**まず、音を聴いてください。**
+
+【動画】〔YouTube URL を入れる〕　… VALHALLA ミュージックビデオ
+〔※ CAMPFIRE の本文は**動画ファイルを直接アップロードできない**。YouTube か Vimeo の URL を貼ると
+　 プレイヤーが埋め込まれる。手元の `assets/charity/video/synchro_digest.mp4`（21MB）を
+　 **YouTube へ限定公開でアップロードし、その URL を使う**のが最短〕
+
+〔※ 2本目以降を載せる場合は、ここに続けて並べる。ただし本文が長くなるので**2本までを推奨**〕
+
 【画像】`assets/charity/mio.jpg`
 
 **MIO ／ 社美緒**（Guitar・主宰）
@@ -734,6 +743,8 @@ CÉ LA VI への支払いが10月中に発生するなら、その間の**立て
 - [x] メインビジュアル `assets/charity/flyer_wide.jpg`
 
 **内容**
+- [ ] **バンドPVの YouTube URL**（CAMPFIRE は動画の直接アップロード不可。YouTube/Vimeo のみ）
+      → 手元に `assets/charity/video/synchro_digest.mp4`（21MB）あり。限定公開でアップすれば使える
 - [ ] メンバー3名の担当パートと本人メッセージ
 - [ ] 「推し応援プラン」を採用するか／金額・数量
 - [ ] 法人協賛枠（ゴールド／冠）の金額・数量・LED掲出の可否

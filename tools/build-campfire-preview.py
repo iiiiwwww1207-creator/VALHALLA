@@ -57,6 +57,14 @@ def convert(body: str) -> str:
             close_ul()
             continue
 
+        if s.startswith("【動画】"):
+            close_ul()
+            out.append(
+                '<figure class="video"><div class="ph">'
+                + inline(s[4:]) + "</div></figure>"
+            )
+            continue
+
         m = re.match(r"^【画像】(.*?)`([^`]+)`(.*)$", s)
         if m:
             close_ul()
@@ -124,6 +132,8 @@ figure.img{margin:26px 0}
 figure.img img{width:100%;display:block;border-radius:3px}
 figcaption{font-size:12.5px;color:var(--sub);margin-top:8px;text-align:center}
 .ph{padding:36px;border:2px dashed #d33;color:#d33;text-align:center;font-size:13px;border-radius:4px}
+figure.video{margin:26px 0}
+figure.video .ph{border-color:#1f9e8e;color:#1a7a6e;background:#f2fbfa}
 .tbd{background:#ffe9a8;color:#8a6b00;padding:1px 5px;border-radius:3px;font-weight:700}
 code{background:#f0f0f0;padding:1px 5px;border-radius:3px;font-size:13px}
 """
