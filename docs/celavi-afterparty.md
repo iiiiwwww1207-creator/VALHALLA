@@ -201,9 +201,17 @@
   そこで **開始までのカウントダウン**などを配信し、フライヤーからそこへ誘導する。
 - フライヤー下部の右列を **「LINE OFFICIAL ／ QR ／ 最新情報・カウントダウン配信」** の枠に変更済み
   （旧「COMING SOON ／ 近日公開予定」）。
-- 🔴 **QRはまだプレースホルダ（点線枠に「QR 準備中」）。**
-  アカウントを作ると発行される **友だち追加URL（`https://lin.ee/xxxxxxx`）または @ID** を
-  もらえば、下記の手順でQRを生成して差し込む。
+- ✅ **アカウント開設済み（2026-09-06）**
+  - 名称: **VALHALLA CHARITYLIVE** ／ ベーシックID: **@328vnfzj**
+  - 友だち追加URL: `https://line.me/R/ti/p/@328vnfzj`（ベーシックIDから生成した標準形式）
+  - QR: `assets/charity/qr_line.svg`（上記URLをエンコード）。フライヤー右下に掲載済み
+  - QRが読めない環境向けに **@328vnfzj を文字でも併記**している
+  - 🔴 **刷る前に実機でスキャンして、友だち追加画面が開くことを必ず確認すること**
+  - 別案: LINE Official Account Manager の「友だち追加ガイド」から
+    公式の短縮URL（`https://lin.ee/xxxxxxx`）と公式QR画像がダウンロードできる。
+    そちらを正としたい場合は差し替える
+- （旧）QRはプレースホルダだった
+  QRの再生成が必要な場合の手順:
   ```
   python3 -c "import qrcode,qrcode.image.svg; q=qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_M,box_size=10,border=1); q.add_data('<友だち追加URL>'); q.make(fit=True); q.make_image(image_factory=qrcode.image.svg.SvgPathImage).save('assets/charity/qr_line.svg')"
   ```
