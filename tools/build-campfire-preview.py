@@ -35,6 +35,7 @@ def inline(t: str) -> str:
 def convert(body: str) -> str:
     out, ul, para = [], False, []
     bq, quote = False, []
+    hn = [0]
 
     def flush_quote():
         if quote:
@@ -90,7 +91,8 @@ def convert(body: str) -> str:
 
         if s.startswith("### "):
             close_ul()
-            out.append(f"<h2>{inline(s[4:])}</h2>")
+            hn[0] += 1
+            out.append(f'<h2 id="s{hn[0]}">{inline(s[4:])}</h2>')
             continue
 
         if set(s) <= {"─"} and len(s) > 3:
