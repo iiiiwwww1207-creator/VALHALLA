@@ -83,6 +83,14 @@
     letter-spacing:.08em;line-height:1.08;color:#fff}
   .icon .t2{margin-top:13px;font-family:'Cinzel',serif;font-weight:500;font-size:27px;
     letter-spacing:.12em;color:var(--cream)}
+  /* --- アイコン B案: ロゴ主体（小サイズでの識別性を優先） --- */
+  .iconb .in{padding:0 54px}
+  .iconb .mark{width:428px}
+  .iconb .t1{display:none}
+  .iconb .t2{margin-top:26px;font-size:31px;letter-spacing:.16em}
+  .iconb .veil{background:radial-gradient(ellipse 80% 72% at 50% 45%,
+      rgba(6,4,5,.90) 0%, rgba(6,4,5,.80) 46%, rgba(6,4,5,.52) 76%, rgba(6,4,5,.66) 100%)}
+
   /* 円形トリミングの目安（書き出しには写らない） */
   .guide{position:absolute;inset:0;z-index:9;border-radius:50%;
     box-shadow:0 0 0 9999px rgba(0,0,0,.55);pointer-events:none;display:none}
@@ -107,6 +115,18 @@
 
 <!-- プロフィール画像 640x640（円形にトリミングされる） -->
 <section class="board icon">
+  <div class="laser"></div>
+  <div class="veil"></div>
+  <div class="vein"><i class="a"></i><i class="b"></i></div>
+  <div class="in">
+    <img class="mark" src="assets/charity/logo_gold.webp" alt="VALHALLA">
+    <div class="t1">CHARITY<br>LIVE</div>
+    <div class="t2">2026.10.18</div>
+  </div>
+  <div class="guide"></div>
+</section>
+
+<section class="board icon iconb">
   <div class="laser"></div>
   <div class="veil"></div>
   <div class="vein"><i class="a"></i><i class="b"></i></div>
