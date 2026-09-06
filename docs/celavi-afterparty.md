@@ -334,6 +334,12 @@ kazuma 指示「いつものVALHALLAのライブフライヤーと、今回の�
 | **VALHALLA「DOMINION」ワンマン** | 上半分＝**白背景（煙）＋3人の全身＋巨大セリフのタイトル**（下に反射）／下半分＝**黒い石＋金**の情報エリア（金の見出し・白の本文・金の亀裂） |
 | **WRAPPING THE EARTH TOKYO 2026** | **金の細罫で挟んだ中央見出し**（─ TEXT ─）／会場写真を枠付きで並べる／最下部は**日時／チャリティ／QR の3分割インフォ帯**／細字のクレジット行 |
 
+- **大見出し（CHARITY LIVE）の書体は Bodoni Moda**（kazuma 指示 2026-09-06「エレガントでかっこいい書体に」）。
+  縦が太く横が極細のハイコントラストで、黒地にも白地にも映える。
+  候補として Cinzel / Bodoni Moda / Playfair Display / Cormorant Garamond / Marcellus / Italiana を
+  同条件で比較した（`dist/font_comparison.png`）。
+  **小さい要素（日付・PROGRAM・CAMPFIRE 等）は Cinzel のまま**。
+  Bodoni は極細の横線を持つため、小さくすると印刷で飛ぶ危険がある
 - 配色は2枚に共通する **白 × 黒 × 金**。**クリムゾンは使わない**（従来のティザーとはここが決定的に違う）
 - 書体も2枚に共通するセリフ体（Cinzel / Cormorant Garamond / Noto Serif JP）
 - **クリムゾンの筋を上の白い面にも通す**（kazuma 指示 2026-09-01「差し色で入れられるか」）。
