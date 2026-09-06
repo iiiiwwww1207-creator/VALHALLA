@@ -267,12 +267,13 @@ kazuma が LINE Official Account Manager のプレビューを共有してくれ
 
 **アカウント名「VALHALLA CHARITYLIVE」がアイコンのすぐ隣に大きく出る。**
 したがってアイコン内に「CHARITY LIVE」の文字を持たせる必要は薄い。
-比較用に B 案（ロゴ主体・文字は日付のみ）を用意した:
-- A案 `line_icon_640x640.png` … ロゴ＋CHARITY LIVE＋日付（現行）
-- B案 `line_icon_640x640_b.png` … ロゴを 428px まで拡大、日付のみ
-- 比較画像の生成: `python3 tools/generate_icon_ab.py` → `dist/line_icon_ab.png`
+A案（ロゴ＋CHARITY LIVE＋日付）と B案（ロゴ主体・日付のみ）を比較したところ、
+72px・44px・トーク一覧 56px での判別性は **B案が明確に上**（A案は 72px で文字が潰れる）。
+**kazuma の判断で B案を採用**し、`line_icon_640x640.png` を B の内容に置き換えた。
 
-72px・44px・トーク一覧 56px での判別性は **B案が明確に上**。A案は 72px で文字が潰れる。
+現行アイコンの仕様: ロゴ 428px（`.icon .mark`）／`CHARITY LIVE` の行は `display:none`／
+日付のみ 31px。アカウント名が隣に大きく出るので、内側に店名を重ねて持たせない。
+※ 比較検証用に一時的に置いた iconb ボードと `tools/generate_icon_ab.py` は役目を終えたので削除済み
 
 ### プロフィールページで未設定のもの（伸びしろ）
 - **ステータスメッセージが空**。検索結果や名前の下に出る一等地。クラファンの残り日数に使える
