@@ -29,17 +29,33 @@
   .tbd{color:var(--gold-d);background:transparent;border-bottom:1px dashed rgba(193,18,31,.5);padding:0 1px;font-weight:500}
 
   /* ---- HERO ---- */
-  .hero{background:radial-gradient(ellipse at 50% 0%, rgba(176,20,28,.36), transparent 62%), var(--hero);
-    color:var(--cream);padding:40px 24px 34px;text-align:center}
-  /* 一番上：バンド ／ 夜の光 の2分割ビジュアル */
+  /* ヒーロー背景＝渋谷の夜景を主役に。不透明塗りをやめ写真をそのまま透けて敷く */
+  .hero{background:radial-gradient(ellipse at 50% 0%, rgba(176,20,28,.20), transparent 68%);
+    color:var(--cream);padding:40px 24px 34px;text-align:center;position:relative;isolation:isolate;
+    text-shadow:0 1px 12px rgba(0,0,0,.6)}
+  /* 引き（部屋全体）で表示：幅いっぱいに全体を出し拡大しない→粗さ回避。下側は暗くフェード */
+  .hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:
+      linear-gradient(180deg,rgba(7,4,6,.34) 0%,rgba(7,4,6,0) 16%,rgba(7,4,6,0) 56%,rgba(7,4,6,.92) 86%,#070406 100%),
+      url('assets/charity/venue/shibuya_free_b.jpg') top center / 100% auto no-repeat;
+    opacity:.97}
+  /* 一番上：バンド ／ 夜の街 の2分割ビジュアル（バンド3人は全員収まるcontain） */
   .split{position:relative;height:240px;margin:-40px -24px 24px;overflow:hidden;background:#000}
   .split .p{position:absolute;inset:0;background-repeat:no-repeat}
   .split .a{left:0;top:0;width:56%;height:100%;
-    background-image:linear-gradient(180deg,rgba(11,7,16,.05),rgba(11,7,16,.7)),url('assets/charity/group_field.jpg');
+    background-image:linear-gradient(180deg,rgba(11,7,16,.05),rgba(11,7,16,.7)),url('assets/charity/group_field_panel.jpg');
     background-size:cover,cover;background-position:center,center 24%}
-  .split .b{clip-path:polygon(54% 0,100% 0,100% 100%,44% 100%);
-    background-image:linear-gradient(180deg,rgba(11,7,16,.12),rgba(11,7,16,.7)),url('assets/charity/venue/laser_gen_3.jpg');
-    background-size:cover,auto 170%;background-position:center,center 50%}
+  /* 右側：渋谷の夜景をクロスフェードで流すスライドショー */
+  .split .b{clip-path:polygon(54% 0,100% 0,100% 100%,44% 100%)}
+  .split .b .bslide{position:absolute;inset:0;background-size:cover;background-position:center;
+    opacity:0;animation:bfade 28s infinite;will-change:opacity}
+  .split .b .bslide:nth-child(1){animation-delay:0s;  background-image:url('assets/charity/venue/shibuya_free_b.jpg')}
+  .split .b .bslide:nth-child(2){animation-delay:7s;  background-image:url('assets/charity/venue/shibuya_free_b.jpg')}
+  .split .b .bslide:nth-child(3){animation-delay:14s; background-image:url('assets/charity/venue/shibuya_free_b.jpg')}
+  .split .b .bslide:nth-child(4){animation-delay:21s; background-image:url('assets/charity/venue/akamon.jpg')}
+  .split .b::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(180deg,rgba(11,7,16,.12),rgba(11,7,16,.7))}
+  @keyframes bfade{0%{opacity:0}3%{opacity:1}22%{opacity:1}25%{opacity:0}100%{opacity:0}}
   .split .line{position:absolute;top:-8%;left:50%;width:3px;height:116%;z-index:3;
     background:linear-gradient(180deg,transparent,#E8CB85,#C9A961,#E8CB85,transparent);
     transform:translateX(-50%) skewX(-9deg);box-shadow:0 0 14px rgba(201,169,97,.7)}
@@ -292,11 +308,11 @@
   /* 背景ゴースト英字＝グレーで濃く */
   .ghost{color:rgba(214,214,220,.16) !important}
 
-  /* ===== 背景に赤いレーザーの光をうっすら浮かべる ===== */
+  /* ===== 背景に渋谷の夜景をうっすら浮かべる ===== */
   html{background:#050307}
   body{background:transparent !important}
   body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
-    background:url('assets/charity/venue/laser_gen_3.jpg') center/cover no-repeat;
+    background:url('assets/charity/venue/shibuya_free_b.jpg') center/cover no-repeat;
     opacity:.5}
   body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
     background:linear-gradient(180deg, rgba(5,3,7,.42), rgba(5,3,7,.66))}
@@ -348,8 +364,9 @@
   @keyframes kb-a{ from{transform:scale(1.02)} to{transform:scale(1.15) translate(-2.5%,-2%)} }
   @keyframes kb-b{ from{transform:scale(1.05) translate(1.5%,0)} to{transform:scale(1.17) translate(-1%,-2.5%)} }
   @keyframes kb-bg{ from{transform:scale(1.06)} to{transform:scale(1.18) translate(1.5%,1.2%)} }
-  .split .a{animation:kb-a 24s ease-in-out infinite alternate; will-change:transform}
-  .split .b{animation:kb-b 29s ease-in-out infinite alternate; will-change:transform}
+  /* 左（メンバー写真）はズームさせない：拡大でボケ＆顔が中央からズレるのを防ぐ */
+  .split .a{transform:none; image-rendering:auto}
+  /* 右側はスライドショーのクロスフェードで動くのでズームは掛けない */
   body::before{animation:kb-bg 48s ease-in-out infinite alternate; will-change:transform}
 
   /* ===== シネマティック演出②：映画的ヴィネット＋レターボックス風の締め ===== */
@@ -360,29 +377,22 @@
     pointer-events:none;background:#050307}
 
   @media (prefers-reduced-motion: reduce){
-    .split .a,.split .b,body::before{animation:none !important}
+    .split .a,.split .b,body::before,.split .b .bslide{animation:none !important}
+    .split .b .bslide:nth-child(1){opacity:1 !important}
   }
 </style>
 </head>
 <body>
 
 <!-- ===== 背景ループ動画（全画面・うっすら）===== -->
-<video class="bgvid" autoplay muted loop playsinline poster="assets/charity/venue/laser_gen_3.jpg" aria-hidden="true">
+<video class="bgvid" autoplay muted loop playsinline poster="assets/charity/venue/shibuya_free_b.jpg" aria-hidden="true">
   <source src="assets/charity/video/bg_loop.mp4" type="video/mp4">
 </video>
 
 <!-- ===== HERO ===== -->
 <header class="hero">
-  <div class="split">
-    <div class="p a"></div>
-    <div class="p b"></div>
-    <div class="line"></div>
-    <div class="x">×</div>
-    <div class="lab la"><b>VALHALLA</b>夜・ライブ</div>
-    <div class="lab lc"><b class="jp">昼</b>本編</div>
-  </div>
   <img class="hero-logo" src="assets/charity/logo_gold.webp" alt="VALHALLA">
-  <div class="badge">CHARITY LIVE 2026</div>
+  <div class="badge">CHARITY AFTERPARTY 2026</div>
   <h1>AFTERPARTY</h1>
   <div class="jptitle"><span class="tbd">【イベント名・調整中】</span></div>
   <div class="meta"><b>2026年10月18日（日）</b><br>夜：東京・渋谷<br><span style="font-size:12.5px;opacity:.82">＋ 昼：Wrapping The Earth（本編）</span></div>
@@ -406,8 +416,8 @@
   <h2>開催への想い</h2>
   <div class="sub-h">Our Story</div>
   <p class="lead-strong">支えてくれた人たちへ、恩返しがしたい。</p>
-  <p class="body muted">華やかなステージの裏側で、僕たちはたくさんのお客様やスタッフに支えられてきました。今度はその恩を社会に還していきたくて、このチャリティーライブを企画しました。</p>
-  <p class="body muted">昼に開かれる文化チャリティ「Wrapping The Earth」。その特別な一日の夜を、VALHALLA が受け継ぎます。イベント収益は全て<b style="color:var(--ink)">然るべき団体</b>に寄付します。</p>
+  <p class="body muted">華やかなステージの裏側で、僕たちはたくさんのお客様やスタッフに支えられてきました。今度はその恩を社会に還していきたくて、このアフターパーティーを企画しました。</p>
+  <p class="body muted">昼に開かれる文化チャリティ「Wrapping The Earth」。その特別な一日の夜を、VALHALLA が受け継ぎます。イベント収益は全て<b style="color:var(--ink)">然るべき団体</b>へ寄付します。</p>
 </section>
 
 <!-- ===== ② POINTS ===== -->
@@ -446,7 +456,6 @@
       <div class="m-body">
         <div class="m-name">MIO <span style="font-size:13px;color:var(--sub)">／ 社美緒</span></div>
         <div class="m-role">Guitar・主宰</div>
-        <div class="m-msg"><span class="tbd">【本人メッセージ・調整中】</span></div>
       </div>
     </div>
     <div class="m-card">
@@ -454,7 +463,6 @@
       <div class="m-body">
         <div class="m-name">KØU</div>
         <div class="m-role">Member</div>
-        <div class="m-msg"><span class="tbd">【本人メッセージ・調整中】</span></div>
       </div>
     </div>
     <div class="m-card">
@@ -462,7 +470,6 @@
       <div class="m-body">
         <div class="m-name">RAY <span style="font-size:13px;color:var(--sub)">／ 零</span></div>
         <div class="m-role">Member</div>
-        <div class="m-msg"><span class="tbd">【本人メッセージ・調整中】</span></div>
       </div>
     </div>
   </div>
@@ -490,19 +497,19 @@
     <div class="row"><div class="tm">19:00</div><div class="ds">開場</div></div>
     <div class="row"><div class="tm">19:25</div><div class="ds">スタート／アコースティックライブ（5〜6曲）</div></div>
     <div class="row"><div class="tm">20:00〜20:20</div><div class="ds">MIO席 体験タイム</div></div>
-    <div class="row"><div class="tm">20:30〜</div><div class="ds">VVIP MIOタイム</div></div>
-    <div class="row"><div class="tm">21:30</div><div class="ds">完全終演</div></div>
+    <div class="row"><div class="tm">20:30〜</div><div class="ds">VVIP：専用レストラン席へ移動・MIOタイム</div></div>
+    <div class="row"><div class="tm">22:00</div><div class="ds">完全終演</div></div>
   </div>
 
   <div class="ev">
     <div class="c">
-      <img class="ev-img" src="assets/charity/venue/laser_gen_3.jpg" alt="" style="height:230px">
+      <img class="ev-img" src="assets/charity/venue/shibuya_free_b.jpg" alt="" style="height:230px">
       <div class="cbody">
         <span class="t">メイン会場</span>
         <h3>東京・渋谷</h3>
-        <div class="where">渋谷の夜景を見渡すラウンジ</div>
+        <div class="where">渋谷の夜景を見渡すルーフトップ・ラウンジ</div>
         <div class="time">開場 19:00 ／ スタート 19:25</div>
-        <p class="body muted" style="font-size:13.5px;margin:8px 0 0">この夜のすべてを、ひとつのフロアで完結します。</p>
+        <p class="body muted" style="font-size:13.5px;margin:8px 0 0">この夜のすべてを、ひとつの会場で完結します。</p>
       </div>
     </div>
   </div>
@@ -525,8 +532,8 @@
 
     <div class="r">
       <div class="rn">ライブ席</div>
-      <div class="rp">¥15,000</div>
-      <div class="lim">100名</div>
+      <div class="rp">¥10,000</div>
+      <div class="lim">ライブ観戦</div>
       <ul>
         <li>アコースティックライブ観覧</li>
       </ul>
@@ -534,13 +541,23 @@
     </div>
 
     <div class="r">
+      <div class="rn">MIO bot コース</div>
+      <div class="rp">¥50,000</div>
+      <div class="lim">オンライン特典 ／ 期間限定</div>
+      <ul>
+        <li>MIO の AI チャット「社bot」を期間限定で使用可能</li>
+      </ul>
+      <a class="pay-btn" data-pay="bot">このコースで支援する</a>
+    </div>
+
+    <div class="r">
       <div class="rn">MIO席</div>
-      <div class="rp">¥110,000</div>
-      <div class="lim">20席 ／ 20:00〜20:20</div>
+      <div class="rp">¥150,000</div>
+      <div class="lim">20:00〜20:20</div>
       <ul>
         <li>MIO とチェキ（1分）／動画撮影OK</li>
         <li>やしろ語録動画（MIO の言葉を1つ選び、本人に語ってもらい撮影）</li>
-        <li>限定名刺（QRから <b style="color:var(--ink)">完全オリジナルのシャンパンコール</b> が見れる）</li>
+        <li>限定名刺（QRから“限定シャンパンコール”が見れる）</li>
         <li>アコースティックライブ観覧</li>
       </ul>
       <a class="pay-btn" data-pay="mio">このコースで支援する</a>
@@ -550,18 +567,20 @@
       <div class="badge">最上級</div>
       <div class="rn">VVIP席</div>
       <div class="rp">¥330,000</div>
-      <div class="lim">10卓 ／ 20:30〜</div>
+      <div class="lim">専用レストラン席 ／ 10卓・各3名まで</div>
       <ul>
-        <li>各卓を5分前後ずつ巡回する <b>MIOタイム</b>（直接会話）</li>
+        <li>ライブ終了後、専用のレストラン席へご案内（1卓3名まで）</li>
+        <li>MIO が各卓を5分前後ずつ巡回（MIOタイム＝直接会話）</li>
         <li>チェキ／写真／動画OK</li>
-        <li>限定名刺（QRから <b style="color:var(--ink)">完全オリジナルのシャンパンコール</b> が見れる）</li>
+        <li>限定名刺（QRから“限定シャンパンコール”が見れる）</li>
         <li>アコースティックライブ観覧</li>
-        <li>【別日】<b style="color:var(--ink)">社塾</b> 参加権（Zoom開催／社美緒の経営論を学ぶオンライン塾）</li>
+        <li>⭐️【プレミアム特典】別日に対面での30分グループセッション（女性に喜ばれる男性の心構え講座）※ファンミーティング形式・11月開催予定</li>
       </ul>
       <a class="pay-btn" data-pay="vvip">このコースで支援する</a>
     </div>
 
   </div>
+  <p class="body muted" style="font-size:12px;text-align:center;margin-top:14px;opacity:.7">※ CAMPFIRE の返礼品つきコースは 5万円 から。ライブ席（1万円）はライブ観戦（応援）のみとなります。</p>
 </section>
 
 <!-- ===== ⑦ DONATE ===== -->
@@ -569,7 +588,7 @@
   <h2>寄付の使い道</h2>
   <div class="sub-h">Use of Funds</div>
   <div class="use">
-    <p class="body" style="margin-bottom:8px">イベント収益は全て<b style="color:var(--ink)">然るべき団体</b>に寄付します。</p>
+    <p class="body" style="margin-bottom:8px">イベント収益は全て<b style="color:var(--ink)">然るべき団体</b>へ寄付します。</p>
     <p class="body muted" style="font-size:13px;margin-top:0;margin-bottom:0">※イベントのあと、実際の収支と寄付が完了したことがわかる証憑を公開します。使途・配分の最新は CAMPFIRE で明示します。</p>
   </div>
 </section>
@@ -580,13 +599,9 @@
   <div class="sub-h">FAQ</div>
   <div class="faq">
     <details><summary>支援したお金はどう使われますか？</summary>
-      <p>イベント収益は全て然るべき団体に寄付します。収支と寄付完了の証憑はイベント後に公開します。</p></details>
+      <p>イベント収益は全て然るべき団体へ寄付します。収支と寄付完了の証憑はイベント後に公開します。</p></details>
     <details><summary>「やしろ語録動画」とは？</summary>
       <p>MIO（社美緒）の名言の中から好きな一言をリクエストすると、その言葉を本人が目の前で語り、動画に収められる MIO席の特典です。</p></details>
-    <details><summary>「限定シャンパンコール」とは？</summary>
-      <p>この日のために、歌詞から新しく書き下ろす VALHALLA 完全オリジナルのシャンパンコールです。既存コールの替え歌ではなく、1から制作します。MIO席・VVIP席にお付けする限定名刺のQRコードからのみご覧いただけます。</p></details>
-    <details><summary>「社塾」とは？</summary>
-      <p>MIO（社美緒）が自身の経営論を語るオンライン塾です。Zoom で後日開催し、VVIP席でご支援いただいた方に参加権をお付けします（開催日程は<span class="tbd">調整中</span>）。</p></details>
     <details><summary>チケットはどう受け取りますか？</summary>
       <p>お申し込み後、ご登録の連絡先へ当日のご案内をお送りします。</p></details>
     <details><summary>支払い方法は？</summary>
@@ -605,7 +620,7 @@
 <div class="foot">
   <div class="legal">【特定商取引法・寄付に関する表記（公開前に必ず記載）】 主催者名／所在地／連絡先／販売価格／支払時期・方法／キャンセル規定／寄付先・寄付割合 等。</div>
   <div class="credits">
-    昼の本編「Wrapping The Earth」主催：公益財団法人クロノス保全財団。
+    会場イメージ：Unsplash。／ 昼の本編「Wrapping The Earth」主催：公益財団法人クロノス保全財団。
   </div>
   © 2026 VALHALLA / Group Yggdrasill
 </div>
@@ -674,9 +689,10 @@
 
   // ---- CAMPFIRE / 決済リンク：各コースのURLをここに貼るだけ
   const PAYLINK = {
-    live: "",   // ライブ席
-    mio:  "",   // MIO席
-    vvip: ""    // VVIP席
+    live: "",   // ライブ席 ¥10,000
+    bot:  "",   // MIO botコース ¥50,000
+    mio:  "",   // MIO席 ¥150,000
+    vvip: ""    // VVIP席 ¥330,000
   };
   document.querySelectorAll('.pay-btn').forEach(b=>{
     const url = PAYLINK[b.dataset.pay];
