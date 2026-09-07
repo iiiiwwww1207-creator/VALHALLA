@@ -12,7 +12,7 @@ from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageOps
 
 HERE = Path(__file__).resolve().parent
 NEZU = HERE / "nezu" / "nezu_flyer_fixed.jpg"
-CELAVI = HERE / "venue" / "celavi_red.jpg"
+SHIBUYA = HERE / "venue" / "shibuya_night.jpg"
 OUTPUT = HERE / "axis_banner.jpg"
 
 W, H = 1774, 887
@@ -153,7 +153,7 @@ def add_timeline(base: Image.Image) -> None:
     add_light_ribbon(base, y=290, start=left[0] + radius, end=right[0] - radius)
 
     circle_photo(base, left, diameter, NEZU, crop_box=(79, 55, 459, 435))
-    circle_photo(base, right, diameter, CELAVI, focal_x=0.5, focal_y=0.5, zoom=1.0)
+    circle_photo(base, right, diameter, SHIBUYA, focal_x=0.5, focal_y=0.5, zoom=1.0)
     outline = Image.new("RGBA", base.size, (0, 0, 0, 0))
     draw_ring(ImageDraw.Draw(outline), left, diameter)
     draw_ring(ImageDraw.Draw(outline), right, diameter)
@@ -221,7 +221,7 @@ def add_header(base: Image.Image) -> None:
 
 
 def main() -> None:
-    for required in (NEZU, CELAVI):
+    for required in (NEZU, SHIBUYA):
         if not required.exists():
             raise FileNotFoundError(f"Required photograph is missing: {required}")
     canvas = make_background()

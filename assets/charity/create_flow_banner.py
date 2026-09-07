@@ -14,7 +14,7 @@ from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageOps
 
 
 HERE = Path(__file__).resolve().parent
-CELAVI = HERE / "venue" / "celavi_red.jpg"
+SHIBUYA = HERE / "venue" / "shibuya_night.jpg"
 OUTPUT = HERE / "flow_banner.jpg"
 
 W, H = 1774, 887
@@ -224,7 +224,7 @@ def add_nodes(base: Image.Image) -> None:
 
     # 3: circular, antialiased photo window.
     base.alpha_composite(layer)
-    circle_photo(base, CELAVI, (centers_x[2], cy), diameter, 0.50, 0.46)
+    circle_photo(base, SHIBUYA, (centers_x[2], cy), diameter, 0.50, 0.46)
 
     outlines = Image.new("RGBA", base.size, (0, 0, 0, 0))
     od = ImageDraw.Draw(outlines)
@@ -271,7 +271,7 @@ def add_nodes(base: Image.Image) -> None:
         "支援者の想い",
         "クラウドファンディング",
         "一夜限りのライブ",
-        "収益は全て寄付",
+        "経費を除いた全額",
         "文化を、次の世代へ",
     )
     for x, text in zip(centers_x, labels):
@@ -281,7 +281,7 @@ def add_nodes(base: Image.Image) -> None:
 
     td.text(spos((centers_x[2], 549)), "渋谷",
             font=small_font, fill=SILVER, anchor="ma")
-    td.text(spos((centers_x[3], 549)), "然るべき団体へ",
+    td.text(spos((centers_x[3], 549)), "然るべき団体へ寄付",
             font=small_font, fill=SILVER, anchor="ma")
     td.text(spos((centers_x[4], 549)), "教育・文化を支える活動へ",
             font=small_font, fill=SILVER, anchor="ma")
@@ -303,7 +303,7 @@ def add_typography(base: Image.Image) -> None:
 
 
 def main() -> None:
-    if not CELAVI.exists():
+    if not SHIBUYA.exists():
         raise FileNotFoundError("Required image assets are missing")
 
     canvas = make_background()

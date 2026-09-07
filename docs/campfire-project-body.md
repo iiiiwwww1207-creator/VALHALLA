@@ -239,7 +239,7 @@
 - **クラウドファンディング**：CAMPFIRE
 - **寄付先**：然るべき団体〔団体名は開催後に本ページで報告します〕
 
-【画像】`assets/charity/venue/celavi_red.jpg`
+【画像】`assets/charity/venue/shibuya_night.jpg`
 
 渋谷の夜景を見渡す**室内フロア**です。
 中央にステージを備えた円形のフロアと、窓際のバーラウンジ。
@@ -654,7 +654,7 @@ A. CAMPFIRE の規定により、支援後のキャンセル・返金はお受�
 | 前回フライヤー（§3-5に配置） | `assets/charity/nezu/oneworld_flyer.jpg` | ONE WORLD SPECIAL EVENT 2026。904x1280・掲載可 |
 | （**掲載不可**・資料用） | `assets/charity/nezu/nezu_slide.jpg` | Zoom画面の撮影写真。Zoom UI・右クリックメニュー・境内配置図が写り込んでいる。**事実確認の資料としてのみ保持し、ページには載せない** |
 | メンバー3人 | `assets/charity/group_field.jpg` | kazuma 指定 |
-| 会場 | `assets/charity/venue/celavi_red.jpg` | 赤レーザーの引き画 |
+| 会場 | `assets/charity/venue/shibuya_night.jpg` | 渋谷の夜景（公式フライヤーと同じ写真） |
 | 各メンバー | `assets/charity/mio.jpg` / `rei.jpg` / `kou.jpg` | |
 | 締め | `assets/charity/group.jpg` | |
 | 公式フライヤー | `~/Downloads/flyer_fusion.pdf` | **文言の一次情報。リポジトリへ取り込むこと** |
@@ -906,4 +906,4 @@ CÉ LA VI への支払いが10月中に発生するなら、その間の**立て
 
 **フライヤー側で検討**
 - [x] 寄付の書き方＝A案（経費控除後の全額を寄付）に統一 → §7④
-- [ ] **フライヤーの寄付表記もA案に合わせるか**（現在は「イベント収益は全て公益財団に寄付します」）
+- [x] **フライヤーの寄付表記もA案に統一**（2026-09-07 差し替え済み。「収益から必要経費を差し引いた全額を然るべき団体へ寄付します」＋経費の内訳を明記）

@@ -8,7 +8,7 @@ import os
 
 HERE = Path(__file__).resolve().parent
 SOURCE = HERE / "group_field.jpg"
-VENUE = HERE / "venue" / "celavi_red_hero.jpg"
+VENUE = HERE / "venue" / "shibuya_night.jpg"
 OUTPUT = HERE / "flyer_wide.jpg"
 
 W, H = 1920, 1080
@@ -85,10 +85,12 @@ def make_background() -> Image.Image:
     right_fill = portrait.crop((portrait_w - 1, 0, portrait_w, H)).resize((42, H))
     im.paste(right_fill, (W - 42, 0))
 
-    # Place the ungraded venue photograph over the full-height group image.
-    # Its strongest laser field is kept at the left, then dissolved into the
-    # group photograph over a wide, smoothstep-eased 650 px transition.
+    # Lay the Shibuya night photograph — the same one the official flyer uses —
+    # under the left of the group image, dimmed so it reads as a background
+    # rather than a subject, then dissolved into the group photograph over a
+    # wide, smoothstep-eased 650 px transition.
     venue = Image.open(VENUE).convert("RGB")
+    venue = Image.blend(venue, Image.new("RGB", venue.size, BLACK), 0.64)
     scale = H / venue.height
     venue = venue.resize((round(venue.width * scale), round(venue.height * scale)),
                          Image.Resampling.LANCZOS)
@@ -96,12 +98,12 @@ def make_background() -> Image.Image:
     venue_layer.paste(venue, (0, 0))
     venue_mask = Image.new("L", (W, H), 0)
     venue_mask_px = venue_mask.load()
-    fade_start, fade_end = 500, 1150
+    fade_start, fade_end = 430, 1060
     for y in range(H):
         for x in range(W):
             t = max(0.0, min(1.0, (x - fade_start) / (fade_end - fade_start)))
             smooth = t * t * (3.0 - 2.0 * t)
-            venue_mask_px[x, y] = round(255 * 0.98 * (1.0 - smooth))
+            venue_mask_px[x, y] = round(255 * 0.92 * (1.0 - smooth))
     im = Image.composite(venue_layer, im, venue_mask)
 
     # A near-black scrim protects the type while leaving the venue's laser

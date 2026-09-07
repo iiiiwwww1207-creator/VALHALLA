@@ -36,8 +36,8 @@
   /* 引き（部屋全体）で表示：幅いっぱいに全体を出し拡大しない→粗さ回避。下側は暗くフェード */
   .hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
     background:
-      linear-gradient(180deg,rgba(7,4,6,.34) 0%,rgba(7,4,6,0) 16%,rgba(7,4,6,0) 56%,rgba(7,4,6,.92) 86%,#070406 100%),
-      url('assets/charity/venue/celavi_red_hero.jpg') top center / 100% auto no-repeat;
+      linear-gradient(180deg,rgba(7,4,6,.62) 0%,rgba(7,4,6,.44) 20%,rgba(7,4,6,.46) 56%,rgba(7,4,6,.94) 86%,#070406 100%),
+      url('assets/charity/venue/shibuya_night.jpg') top center / 100% auto no-repeat;
     opacity:.97}
   /* 一番上：VALHALLA ／× 東大 の2分割ビジュアル（バンド3人は全員収まるcontain） */
   .split{position:relative;height:240px;margin:-40px -24px 24px;overflow:hidden;background:#000}
@@ -312,7 +312,7 @@
   html{background:#050307}
   body{background:transparent !important}
   body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
-    background:url('assets/charity/venue/celavi_red.jpg') center/cover no-repeat;
+    background:url('assets/charity/venue/shibuya_night.jpg') center/cover no-repeat;
     opacity:.5}
   body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
     background:linear-gradient(180deg, rgba(5,3,7,.42), rgba(5,3,7,.66))}
@@ -385,7 +385,7 @@
 <body>
 
 <!-- ===== 背景ループ動画（全画面・うっすら）===== -->
-<video class="bgvid" autoplay muted loop playsinline poster="assets/charity/venue/celavi_red.jpg" aria-hidden="true">
+<video class="bgvid" autoplay muted loop playsinline poster="assets/charity/venue/shibuya_night.jpg" aria-hidden="true">
   <source src="assets/charity/video/bg_loop.mp4" type="video/mp4">
 </video>
 
@@ -506,7 +506,7 @@
 
   <div class="ev">
     <div class="c">
-      <img class="ev-img" src="assets/charity/venue/celavi_red.jpg" alt="会場イメージ" style="height:230px">
+      <img class="ev-img" src="assets/charity/venue/shibuya_night.jpg" alt="会場イメージ" style="height:230px">
       <div class="cbody">
         <span class="t">メイン会場</span>
         <h3>渋谷（会場は後日発表）</h3>
