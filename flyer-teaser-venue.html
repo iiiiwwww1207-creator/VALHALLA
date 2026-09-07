@@ -10,14 +10,14 @@
   /* ==========================================================
      告知用ティザー（内容確定前の第一報）
      ■ この版は「バンドメンバーの写真を抜いた」試作です（kazuma 依頼 2026-08-31）
-       会場写真4枠：左上＝東大の並木道／右上＝安田講堂 大講堂／
+       会場写真4枠：
        左下＝渋谷会場（赤）／右下＝渋谷会場（青・賑わい）。斜めスラッシュで田の字に分割。
        ※ 会場写真は2枚とも横位置なので、縦に割ると細長く切れて建物が
          判別できなくなる。そのため上下分割にしている。
      元の構成（kazuma 指示 2026-08-28）:
        ・画面を「横の斜めスラッシュ」で上下に分割
        ・上半分 = VALHALLA（上端に向かうほどくっきり）
-       ・下半分 = 東京大学 安田講堂（下端に向かうほどくっきり）
+       ・下半分 = 夜の街（下端に向かうほどくっきり）
        ・中央は暗く落とし、そこに文字を置く
      ⚠️ 大学名は本文に出さない方針（2026-09-01 kazuma 指示）。寄付先は「然るべき団体」と表記する。
      ========================================================== */
@@ -43,7 +43,7 @@
 
   /* ── 上半分：VALHALLA ── */
   /* 4枠（斜めスラッシュで田の字に分割）
-     LT=東大 並木 ／ RT=安田講堂 大講堂 ／ LB=渋谷会場 赤 ／ RB=渋谷会場 青 */
+     4枠とも夜の街 */
   .lt,.rt,.lb,.rb{position:absolute;inset:0;z-index:0;background-repeat:no-repeat}
   .lt{clip-path:polygon(0 0,56% 0,51% var(--ma),0 calc(var(--ma) + var(--drop)))}
   .rt{clip-path:polygon(56% 0,100% 0,100% calc(var(--ma) - var(--drop)),51% var(--ma))}
@@ -113,9 +113,9 @@
   .qrrow .qt{text-align:left;color:var(--ink);line-height:1.55}
 
   /* ---------- 1080x1350 ---------- */
-  .t45 .lt{background-image:url('assets/charity/venue/todai_avenue.jpg');
+  .t45 .lt{background-image:url('assets/charity/venue/shibuya_free_b.jpg');
     background-size:1170px auto;background-position:-380px 0}
-  .t45 .rt{background-image:url('assets/charity/venue/yasuda_hall_interior.jpg');
+  .t45 .rt{background-image:url('assets/charity/venue/shibuya_free_b.jpg');
     background-size:930px auto;background-position:105px 0}
   .t45 .lb{background-image:url('assets/charity/venue/laser_gen_3.jpg');
     background-size:1090px auto;background-position:-355px 622px}
@@ -144,9 +144,9 @@
   .t45 .mark{width:150px;margin:22px auto 16px}
 
   /* ---------- 1080x1080 ---------- */
-  .t11 .lt{background-image:url('assets/charity/venue/todai_avenue.jpg');
+  .t11 .lt{background-image:url('assets/charity/venue/shibuya_free_b.jpg');
     background-size:930px auto;background-position:-300px 0}
-  .t11 .rt{background-image:url('assets/charity/venue/yasuda_hall_interior.jpg');
+  .t11 .rt{background-image:url('assets/charity/venue/shibuya_free_b.jpg');
     background-size:740px auto;background-position:85px 0}
   .t11 .lb{background-image:url('assets/charity/venue/laser_gen_3.jpg');
     background-size:870px auto;background-position:-282px 494px}
@@ -175,9 +175,9 @@
   .t11 .mark{width:126px;margin:17px auto 13px}
 
   /* ---------- 1080x1920 ---------- */
-  .t916 .lt{background-image:url('assets/charity/venue/todai_avenue.jpg');
+  .t916 .lt{background-image:url('assets/charity/venue/shibuya_free_b.jpg');
     background-size:1660px auto;background-position:-540px 0}
-  .t916 .rt{background-image:url('assets/charity/venue/yasuda_hall_interior.jpg');
+  .t916 .rt{background-image:url('assets/charity/venue/shibuya_free_b.jpg');
     background-size:1320px auto;background-position:150px 0}
   .t916 .lb{background-image:url('assets/charity/venue/laser_gen_3.jpg');
     background-size:1540px auto;background-position:-500px 890px}
