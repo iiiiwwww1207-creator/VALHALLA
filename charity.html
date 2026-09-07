@@ -6,8 +6,8 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>VALHALLA CHARITY LIVE ｜ CÉ LA VI アフターパーティー</title>
-<meta name="description" content="2026.10.18 夜、渋谷 CÉ LA VI。VALHALLA（MIO・KØU・RAY）によるチャリティーライブ。イベント収益は全て然るべき団体に寄付します。">
+<title>VALHALLA CHARITY LIVE ｜ 2026.10.18 東京・渋谷</title>
+<meta name="description" content="2026.10.18 夜、東京・渋谷。VALHALLA（MIO・KØU・RAY）によるチャリティーライブ。イベント収益は全て然るべき団体に寄付します。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Oswald:wght@200;300;400;500&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -31,15 +31,15 @@
   /* ---- HERO ---- */
   .hero{background:radial-gradient(ellipse at 50% 0%, rgba(176,20,28,.36), transparent 62%), var(--hero);
     color:var(--cream);padding:40px 24px 34px;text-align:center}
-  /* 一番上：VALHALLA ／× 東大 の2分割ビジュアル（バンド3人は全員収まるcontain） */
+  /* 一番上：バンド ／ 夜の光 の2分割ビジュアル */
   .split{position:relative;height:240px;margin:-40px -24px 24px;overflow:hidden;background:#000}
   .split .p{position:absolute;inset:0;background-repeat:no-repeat}
   .split .a{left:0;top:0;width:56%;height:100%;
     background-image:linear-gradient(180deg,rgba(11,7,16,.05),rgba(11,7,16,.7)),url('assets/charity/group_field.jpg');
     background-size:cover,cover;background-position:center,center 24%}
   .split .b{clip-path:polygon(54% 0,100% 0,100% 100%,44% 100%);
-    background-image:linear-gradient(180deg,rgba(11,7,16,.12),rgba(11,7,16,.7)),url('assets/charity/venue/yasuda1.jpg');
-    background-size:cover,150% auto;background-position:center,15% 35%}
+    background-image:linear-gradient(180deg,rgba(11,7,16,.12),rgba(11,7,16,.7)),url('assets/charity/venue/laser_band_a.jpg');
+    background-size:cover,auto 170%;background-position:center,center 50%}
   .split .line{position:absolute;top:-8%;left:50%;width:3px;height:116%;z-index:3;
     background:linear-gradient(180deg,transparent,#E8CB85,#C9A961,#E8CB85,transparent);
     transform:translateX(-50%) skewX(-9deg);box-shadow:0 0 14px rgba(201,169,97,.7)}
@@ -292,11 +292,11 @@
   /* 背景ゴースト英字＝グレーで濃く */
   .ghost{color:rgba(214,214,220,.16) !important}
 
-  /* ===== 背景にセラビ（CÉ LA VI 夜景）をうっすら浮かべる ===== */
+  /* ===== 背景に赤いレーザーの光をうっすら浮かべる ===== */
   html{background:#050307}
   body{background:transparent !important}
   body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
-    background:url('assets/charity/venue/roofnight.jpg') center/cover no-repeat;
+    background:url('assets/charity/venue/laser_band_a.jpg') center/cover no-repeat;
     opacity:.5}
   body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
     background:linear-gradient(180deg, rgba(5,3,7,.42), rgba(5,3,7,.66))}
@@ -304,7 +304,7 @@
   /* ===== 背景ループ動画：全画面・うっすら流し続ける ===== */
   .bgvid{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;
     z-index:-3;opacity:.34;pointer-events:none}
-  /* 動画がメイン背景なので、セラビ静止画(body::before)は薄い下地に */
+  /* 動画がメイン背景なので、静止画(body::before)は薄い下地に */
   body::before{opacity:.16 !important}
   @media (prefers-reduced-motion: reduce){
     .bgvid{display:none}
@@ -367,7 +367,7 @@
 <body>
 
 <!-- ===== 背景ループ動画（全画面・うっすら）===== -->
-<video class="bgvid" autoplay muted loop playsinline poster="assets/charity/venue/roofnight.jpg" aria-hidden="true">
+<video class="bgvid" autoplay muted loop playsinline poster="assets/charity/venue/laser_band_a.jpg" aria-hidden="true">
   <source src="assets/charity/video/bg_loop.mp4" type="video/mp4">
 </video>
 
@@ -385,7 +385,7 @@
   <div class="badge">CHARITY LIVE 2026</div>
   <h1>AFTERPARTY</h1>
   <div class="jptitle"><span class="tbd">【イベント名・調整中】</span></div>
-  <div class="meta"><b>2026年10月18日（日）</b><br>夜：CÉ LA VI 渋谷 17F<br><span style="font-size:12.5px;opacity:.82">＋ 昼：Wrapping The Earth（本編）</span></div>
+  <div class="meta"><b>2026年10月18日（日）</b><br>夜：東京・渋谷<br><span style="font-size:12.5px;opacity:.82">＋ 昼：Wrapping The Earth（本編）</span></div>
 
   <div class="cd">
     <div><div class="n" id="cd-d">--</div><div class="u">日</div></div>
@@ -419,7 +419,7 @@
     <div class="promise">
       <div class="pn">01</div>
       <h3>一夜限りのライブを楽しめる</h3>
-      <p>渋谷の夜景を見渡すルーフトップ CÉ LA VI 17F で、VALHALLA のアコースティックライブ。昼は本編もあります。</p>
+      <p>渋谷の夜、VALHALLA のアコースティックライブ。昼は本編もあります。</p>
     </div>
     <div class="promise">
       <div class="pn">02</div>
@@ -496,26 +496,19 @@
 
   <div class="ev">
     <div class="c">
-      <img class="ev-img" src="assets/charity/venue/club.jpg" alt="CÉ LA VI 17F" style="height:230px">
+      <img class="ev-img" src="assets/charity/venue/laser_band_a.jpg" alt="" style="height:230px">
       <div class="cbody">
         <span class="t">メイン会場</span>
-        <h3>CÉ LA VI TOKYO（渋谷・17F）</h3>
-        <div class="where">渋谷の夜景を見渡すルーフトップ・ラウンジ</div>
+        <h3>東京・渋谷</h3>
+        <div class="where">渋谷の夜景を見渡すラウンジ</div>
         <div class="time">開場 19:00 ／ スタート 19:30</div>
-        <p class="body muted" style="font-size:13.5px;margin:8px 0 0">この夜のすべてを、17F フロアで完結します。</p>
+        <p class="body muted" style="font-size:13.5px;margin:8px 0 0">この夜のすべてを、ひとつのフロアで完結します。</p>
       </div>
     </div>
   </div>
 
-  <div class="vgal">
-    <figure><img src="assets/charity/venue/dj.jpg" alt="メインステージ・DJブース"><figcaption>メインステージ／DJブース</figcaption></figure>
-    <figure><img src="assets/charity/venue/stage.jpg" alt="円形ステージ"><figcaption>円形ステージ</figcaption></figure>
-    <figure><img src="assets/charity/venue/roof.jpg" alt="屋上テラス"><figcaption>屋上テラス</figcaption></figure>
-    <figure><img src="assets/charity/venue/roofnight.jpg" alt="屋上から渋谷の夜景"><figcaption>屋上から渋谷の夜景</figcaption></figure>
-  </div>
 
   <div class="daynote">
-    <img src="assets/charity/venue/yasuda1.jpg" alt="昼の本編会場">
     <div>
       <div class="dtag">＋ 昼の本編（同日開催）</div>
       <div class="dttl">Wrapping The Earth（昼の本編）</div>
@@ -605,15 +598,14 @@
 <section id="apply" style="text-align:center;border-bottom:none">
   <h2 style="justify-content:center">お申し込み</h2>
   <div class="sub-h" style="text-align:center;padding-left:0 !important">Join</div>
-  <p class="body muted">ご希望のコースを選んで、CAMPFIRE からお申し込みいただけます。当日、CÉ LA VI でお会いできるのを楽しみにしています。</p>
+  <p class="body muted">ご希望のコースを選んで、CAMPFIRE からお申し込みいただけます。当日、会場でお会いできるのを楽しみにしています。</p>
   <a href="#support" class="btn" style="max-width:380px;margin:18px auto 0">支援コースを選ぶ</a>
 </section>
 
 <div class="foot">
   <div class="legal">【特定商取引法・寄付に関する表記（公開前に必ず記載）】 主催者名／所在地／連絡先／販売価格／支払時期・方法／キャンセル規定／寄付先・寄付割合 等。</div>
   <div class="credits">
-    画像クレジット：安田講堂 © Kakidai (CC BY-SA 4.0) — via Wikimedia Commons.<br>
-    セラビ会場写真：主催者撮影。／ 昼の本編「Wrapping The Earth」主催：公益財団法人クロノス保全財団。
+    昼の本編「Wrapping The Earth」主催：公益財団法人クロノス保全財団。
   </div>
   © 2026 VALHALLA / Group Yggdrasill
 </div>
