@@ -40,7 +40,7 @@ CHARITY LIVE
 
 2026.10.18 SUN
 CÉ LA VI TOKYO（渋谷・17F）
-OPEN 19:00 ／ START 19:30
+OPEN 19:00 ／ START 19:25
 
 MIO 社美緒 ／ RAY 零 ／ KØU コウ
 アコースティックライブ
