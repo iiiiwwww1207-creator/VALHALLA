@@ -153,31 +153,6 @@ def draw_torii(draw: ImageDraw.ImageDraw, center: tuple[int, int]) -> None:
     draw.line(spos((cx - 56, cy + 5, cx + 56, cy + 5)), fill=(*DARK_CRIMSON, 240), width=2 * SCALE)
 
 
-def add_timeline(base: Image.Image) -> None:
-    left, right = (500, 290), (1274, 290)
-    diameter = 226
-    add_light_ribbon(base, y=290, start=90, end=1684)
-
-    art = Image.new("RGBA", base.size, (0, 0, 0, 0))
-    ad = ImageDraw.Draw(art)
-    draw_ring(ad, left, diameter)
-    draw_torii(ad, left)
-    base.alpha_composite(art)
-    circle_photo(base, right, diameter)
-    outline = Image.new("RGBA", base.size, (0, 0, 0, 0))
-    draw_ring(ImageDraw.Draw(outline), right, diameter)
-    base.alpha_composite(outline)
-
-    d = ImageDraw.Draw(base)
-    label = face(MINCHO, 30)
-    detail = face(SANS, 16)
-    d.text(spos((left[0], 421)), "前回 ／ 根津神社", font=label, fill=CREAM, anchor="ma")
-    d.text(spos((left[0], 465)), "2026.5.23-24　国指定重要文化財", font=detail, fill=SILVER, anchor="ma")
-    d.text(spos((right[0], 421)), "今回 ／ 東京大学", font=label, fill=CREAM, anchor="ma")
-    d.text(spos((right[0], 465)), "2026.10.18　安田講堂 ＋ CÉ LA VI 渋谷",
-           font=detail, fill=SILVER, anchor="ma")
-
-
 def fit_card_title_font(draw: ImageDraw.ImageDraw, titles: tuple[tuple[str, ...], ...],
                         max_width: int) -> ImageFont.FreeTypeFont:
     """Choose one font size that fits every explicitly specified title line."""
@@ -268,7 +243,7 @@ def add_header(base: Image.Image) -> None:
 def add_footer(base: Image.Image) -> None:
     d = ImageDraw.Draw(base)
     text = (
-        "2026.10.18 SUN　CÉ LA VI TOKYO（渋谷・17F）　OPEN 19:00 ／ START 19:30 ／ "
+        "2026.10.18 SUN　渋谷　OPEN 19:00 ／ START 19:30 ／ "
         "終演 21:30　※収益は必要経費を除いた全額を寄付します"
     )
     footer_font = face(SANS, 16)

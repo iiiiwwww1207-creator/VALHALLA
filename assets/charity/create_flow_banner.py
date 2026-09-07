@@ -279,7 +279,7 @@ def add_nodes(base: Image.Image) -> None:
         f = face(MINCHO, 32) if len(text) >= 10 else label_font
         td.text(spos((x, 493)), text, font=f, fill=CREAM, anchor="ma")
 
-    td.text(spos((centers_x[2], 549)), "CÉ LA VI TOKYO（渋谷・17F）",
+    td.text(spos((centers_x[2], 549)), "渋谷",
             font=small_font, fill=SILVER, anchor="ma")
     td.text(spos((centers_x[3], 549)), "然るべき団体へ",
             font=small_font, fill=SILVER, anchor="ma")

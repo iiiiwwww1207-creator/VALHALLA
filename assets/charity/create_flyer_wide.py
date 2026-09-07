@@ -85,7 +85,7 @@ def make_background() -> Image.Image:
     right_fill = portrait.crop((portrait_w - 1, 0, portrait_w, H)).resize((42, H))
     im.paste(right_fill, (W - 42, 0))
 
-    # Place the ungraded CÉ LA VI photograph over the full-height group image.
+    # Place the ungraded venue photograph over the full-height group image.
     # Its strongest laser field is kept at the left, then dissolved into the
     # group photograph over a wide, smoothstep-eased 650 px transition.
     venue = Image.open(VENUE).convert("RGB")
@@ -166,7 +166,7 @@ def add_type(base: Image.Image) -> None:
 
     info = font(HIRAGINO_BOLD, 24)
     draw.text((x, 620), "OPEN 19:00 ／ START 19:30", font=info, fill=SILVER)
-    draw.text((x, 670), "CÉ LA VI TOKYO（渋谷・17F）", font=info, fill=SILVER)
+    draw.text((x, 670), "渋谷（会場は後日発表）", font=info, fill=SILVER)
 
     names = font(OPTIMA, 34)
     tracked_text(draw, (x + 1, 742), "MIO / RAY / KØU", names, SILVER, 4)

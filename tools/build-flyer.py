@@ -44,6 +44,9 @@ def main() -> None:
     wipe(3028, 3092, 1090, 1600, 2992, 3032)    # チャリティー欄 1行目
     wipe(3096, 3160, 1080, 1600, 2992, 3032)    # チャリティー欄 2行目
     wipe(3180, 3230, 980, 1710, 2992, 3032)     # チャリティー欄 注記
+    wipe(2488, 2526, 400, 915, 2464, 2488)      # VENUE 欄の会場名
+    wipe(2488, 2526, 1540, 1890, 2464, 2488)    # NIGHT 欄
+    wipe(3158, 3200, 150, 760, 3125, 3158)      # 下部ブロックの会場名
     wipe(3228, H, 0, W, 3233, 3294)             # フッター全体
 
     img = Image.fromarray(a)
@@ -67,6 +70,31 @@ def main() -> None:
     ]:
         ff = ImageFont.truetype(MINCHO, size)
         d.text((CX - ff.getlength(txt) / 2, top - ink_offset(ff, "寄")), txt, font=ff, fill=color)
+
+    # --- 会場名を伏せる（渋谷とだけ出す）---
+    def fit_height(text, target, color, start=40):
+        """元の文字の高さに合わせてサイズを決める"""
+        for size in range(start, 18, -1):
+            f = ImageFont.truetype(MINCHO, size)
+            probe = Image.new("L", (1400, 140), 0)
+            ImageDraw.Draw(probe).text((10, 10), text, font=f, fill=255)
+            bb = probe.getbbox()
+            if bb and bb[3] - bb[1] <= target:
+                return f
+        return ImageFont.truetype(MINCHO, 20)
+
+    venue = "渋谷（会場は後日発表）"
+    f1 = fit_height(venue, 27, None, 34)
+    d.text((655 - f1.getlength(venue) / 2, 2492 - ink_offset(f1, "渋")), venue,
+           font=f1, fill=(201, 191, 181))
+
+    night = "渋谷の夜景を望むフロア"
+    f2 = fit_height(night, 27, None, 34)
+    d.text((1713 - f2.getlength(night) / 2, 2492 - ink_offset(f2, "渋")), night,
+           font=f2, fill=(201, 191, 181))
+
+    f3 = fit_height(venue, 32, None, 40)
+    d.text((161, 3164 - ink_offset(f3, "渋")), venue, font=f3, fill=(215, 209, 199))
 
     # --- フッター ---
     ff = ImageFont.truetype(MINCHO, 20)

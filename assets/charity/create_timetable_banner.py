@@ -203,7 +203,7 @@ def add_typography(base: Image.Image) -> None:
     d.text(spos((W // 2, 275)), "当日の流れ", font=title, fill=CREAM, anchor="mm")
 
     footer = face(SANS, 17)
-    d.text(spos((W // 2, 827)), "2026.10.18 SUN　CÉ LA VI TOKYO（渋谷・17F）",
+    d.text(spos((W // 2, 827)), "2026.10.18 SUN　渋谷",
            font=footer, fill=SILVER, anchor="mm")
 
 
