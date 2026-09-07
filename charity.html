@@ -497,7 +497,7 @@
 
   <div class="tt">
     <div class="row"><div class="tm">19:00</div><div class="ds">開場</div></div>
-    <div class="row"><div class="tm">19:30</div><div class="ds">開演（アコースティックライブ）</div></div>
+    <div class="row"><div class="tm">19:25</div><div class="ds">開演（アコースティックライブ）</div></div>
     <div class="row"><div class="tm">20:00</div><div class="ds">バンド終了</div></div>
     <div class="row"><div class="tm">20:10</div><div class="ds">MIOタイム</div></div>
     <div class="row"><div class="tm">21:30</div><div class="ds">終演</div></div>
@@ -511,7 +511,7 @@
         <span class="t">メイン会場</span>
         <h3>CÉ LA VI TOKYO（渋谷・17F）</h3>
         <div class="where">渋谷の夜景を見渡す17Fの室内フロア</div>
-        <div class="time">開場 19:00 ／ スタート 19:30</div>
+        <div class="time">開場 19:00 ／ スタート 19:25</div>
         <p class="body muted" style="font-size:13.5px;margin:8px 0 0">ライブから体験タイムまで、この夜のすべてを17Fの室内フロアで行います。フロアの移動はありません。屋外は使用しないため、天候に左右されずに開催できます。</p>
       </div>
     </div>
@@ -542,29 +542,6 @@
         <li>限定名刺をお送りします</li>
       </ul>
       <a class="pay-btn" data-pay="simple">このコースで支援する</a>
-    </div>
-
-    <div class="r">
-      <div class="rn">アーカイブ視聴</div>
-      <div class="rp">¥5,000</div>
-      <div class="lim">来場不要 ／ 人数制限なし</div>
-      <ul>
-        <li>当日のライブ映像を後日オンラインで視聴<span class="tbd">【配信期間・調整中】</span></li>
-        <li>お礼のメール</li>
-      </ul>
-      <a class="pay-btn" data-pay="archive">このコースで支援する</a>
-    </div>
-
-    <div class="r">
-      <div class="rn">フラワースタンド</div>
-      <div class="rp">¥7,000</div>
-      <div class="lim">来場不要 ／ 人数制限なし</div>
-      <ul>
-        <li>会場に飾るフラワースタンドにお名前を掲出</li>
-        <li>設置した写真をお送りします</li>
-        <li>当日のライブ映像を後日視聴</li>
-      </ul>
-      <a class="pay-btn" data-pay="flower">このコースで支援する</a>
     </div>
 
     <div class="r">
@@ -673,7 +650,7 @@
 </div>
 
 <script>
-  const EV = new Date("2026-10-18T19:30:00+09:00");
+  const EV = new Date("2026-10-18T19:25:00+09:00");
   const pad=n=>String(n).padStart(2,'0');
   function tick(){
     const diff=EV-new Date(); const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
@@ -730,8 +707,6 @@
 
   // ---- CAMPFIRE / 決済リンク：各コースのURLをここに貼るだけ
   const PAYLINK = {
-    archive: "", // アーカイブ視聴
-    flower:  "", // フラワースタンド
     live: "",   // ライブ席
     simple: "", // シンプル応援
     seat: "",   // 最前列席

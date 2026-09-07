@@ -186,10 +186,6 @@ def add_cards(base: Image.Image) -> None:
           "ライブ観覧", "別日 ファンミーティング30分")),
         ("SUPPORT", "シンプル応援", "¥5,000", "来場不要",
          ("限定名刺をお送りします",)),
-        ("ARCHIVE", "アーカイブ視聴", "¥5,000", "来場不要",
-         ("当日のライブ映像を後日視聴", "お礼のメール")),
-        ("FLOWER", "フラワースタンド", "¥7,000", "来場不要",
-         ("スタンドにお名前掲出", "設置写真をお送りします", "ライブ映像を後日視聴")),
     )
     d = ImageDraw.Draw(base)
     # Every course shares the same type scale; only position changes by row.
@@ -205,9 +201,14 @@ def add_cards(base: Image.Image) -> None:
         x = margin + row_index * (width + gap)
         top = upper_top if index < 4 else lower_top
         height = upper_height if index < 4 else lower_height
+        # 下段は来場不要コースだけ。枚数が少ないと空きが目立つので、
+        # 残りの列数ぶんまで横に伸ばして下段を埋める。
+        # 全幅まで伸ばすと1項目のカードが間延びするので2列ぶんで止める。
+        span = 1 if index < 4 else min(2, max(1, 4 - (len(cards) - 5) - row_index))
+        card_width = width * span + gap * (span - 1)
         emphasized = index == 3
         d.rounded_rectangle(
-            sbox((x, top, x + width, top + height)), radius=15 * SCALE,
+            sbox((x, top, x + card_width, top + height)), radius=15 * SCALE,
             fill=(*DEEPEST_CRIMSON, 255) if emphasized else None,
             outline=(*CRIMSON, 255) if emphasized else (*DARK_CRIMSON, 235),
             width=(5 if emphasized else 2) * SCALE,
@@ -217,7 +218,7 @@ def add_cards(base: Image.Image) -> None:
         d.text(spos((x + 25, top + 86)), amount, font=amount_font, fill=CREAM, anchor="la")
         d.text(spos((x + 25, top + 143)), note, font=meta_font, fill=SILVER, anchor="la")
         d.line(
-            spos((x + 25, top + 169, x + width - 25, top + 169)),
+            spos((x + 25, top + 169, x + card_width - 25, top + 169)),
             fill=(*DARK_CRIMSON, 220), width=SCALE,
         )
         for line_no, line in enumerate(bullets):
