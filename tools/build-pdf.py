@@ -182,12 +182,9 @@ def cover(c, doc):
     c.setFillColor(colors.HexColor("#EBC4C1"))
     c.setFont(GO, 9)
     c.drawString(MARGIN, PH - 46 * mm, "VALHALLA CHARITY LIVE ／ 2026年10月18日（日）")
-    x = MARGIN
-    for part, fnt in (("C", GO), ("É", "Helvetica"),
-                      (" LA VI TOKYO（渋谷・17F）　OPEN 19:00 ／ START 19:30 ／ 終演 21:30", GO)):
-        c.setFont(fnt, 9)
-        c.drawString(x, PH - 52 * mm, part)
-        x += c.stringWidth(part, fnt, 9)
+    c.setFont(GO, 9)
+    c.drawString(MARGIN, PH - 52 * mm,
+                 "渋谷　OPEN 19:00 ／ START 19:25 ／ 終演 21:10")
     c.restoreState()
     footer(c, doc)
 

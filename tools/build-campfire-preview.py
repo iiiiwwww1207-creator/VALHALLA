@@ -130,6 +130,9 @@ def convert(body: str) -> str:
 
         if s.startswith("- ") or s.startswith("・"):
             if not ul:
+                # 直前の段落（小見出しなど）を先に出す。ここで吐かないと
+                # 段落がリストの後ろに回り込んで順序が入れ替わる。
+                flush_para()
                 out.append("<ul>")
                 ul = True
             out.append(f"<li>{inline(s[2:] if s.startswith('- ') else s[1:])}</li>")
