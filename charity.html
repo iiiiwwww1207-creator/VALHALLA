@@ -403,10 +403,9 @@
     <div><div class="n" id="cd-m">--</div><div class="u">分</div></div>
   </div>
 
-  <div class="raise" data-goal="7000000" data-current="0">
-    <div class="now">¥<span id="r-now">0</span> <small>/ 目標 ¥<span id="r-goal">7,000,000</span></small></div>
-    <div class="bar"><div class="fill" id="r-fill"></div></div>
-    <div class="info"><span>達成率 <b id="r-pct">0%</b></span><span>支援 <b id="r-cnt">0</b>人</span></div>
+  <div class="raise" data-current="0">
+    <div class="now">¥<span id="r-now">0</span></div>
+    <div class="info"><span>支援 <b id="r-cnt">0</b>人</span></div>
   </div>
   <a href="#support" class="btn">この想いを支援する</a>
 </header>
@@ -462,8 +461,8 @@
     <div class="m-card">
       <img src="assets/charity/kou.jpg" alt="KØU">
       <div class="m-body">
-        <div class="m-name">KØU</div>
-        <div class="m-role">Member</div>
+        <div class="m-name">KØU <span style="font-size:13px;color:var(--sub)">／ コウ</span></div>
+        <div class="m-role">Vocal</div>
         <div class="m-msg"><span class="tbd">【本人メッセージ・調整中】</span></div>
       </div>
     </div>
@@ -471,7 +470,7 @@
       <img src="assets/charity/rei.jpg" alt="RAY">
       <div class="m-body">
         <div class="m-name">RAY <span style="font-size:13px;color:var(--sub)">／ 零</span></div>
-        <div class="m-role">Member</div>
+        <div class="m-role">Guitar</div>
         <div class="m-msg"><span class="tbd">【本人メッセージ・調整中】</span></div>
       </div>
     </div>
@@ -561,7 +560,7 @@
       <ul>
         <li>最前列のお席をご用意します</li>
         <li>アコースティックライブ観覧</li>
-        <li>【別日】ファンミーティング（対面・30分のグループセッション）<span class="tbd">【2026年11月・日程調整中】</span></li>
+        <li>ファンミーティング<span class="tbd">【2026年11月・日程調整中】</span></li>
       </ul>
       <a class="pay-btn" data-pay="seat">このコースで支援する</a>
     </div>
@@ -571,10 +570,10 @@
       <div class="rp">¥150,000</div>
       <div class="lim">26席 ／ 18:00〜</div>
       <ul>
-        <li>MIO とチェキ（1分）／動画撮影OK</li>
+        <li>MIO とチェキ（1分）</li>
         <li>やしろ語録動画（MIO の言葉を1つ選び、本人に語ってもらい撮影）</li>
         <li>限定名刺（QRから“限定シャンパンコール”が見れる）</li>
-        <li>【別日】ファンミーティング（対面・30分のグループセッション）<span class="tbd">【2026年11月・日程調整中】</span></li>
+        <li>ファンミーティング（動画撮影はこちらで行います）<span class="tbd">【2026年11月・日程調整中】</span></li>
         <li>アコースティックライブ観覧</li>
       </ul>
       <a class="pay-btn" data-pay="mio">このコースで支援する</a>
@@ -592,7 +591,6 @@
         <li>限定名刺（QRから“限定シャンパンコール”が見れる）</li>
         <li>アコースティックライブ観覧</li>
         <li><b style="color:var(--ink)">⭐️ 当日 MIO と直接お話しいただけるのは VVIP席のみです</b></li>
-        <li>【別日】ファンミーティング（対面・30分のグループセッション）<span class="tbd">【2026年11月・日程調整中】</span></li>
       </ul>
       <a class="pay-btn" data-pay="vvip">このコースで支援する</a>
     </div>
@@ -663,13 +661,9 @@
   tick(); setInterval(tick,1000);
   (function(){
     const b=document.querySelector('.raise');
-    const goal=+b.dataset.goal, cur=+b.dataset.current;
-    const pct=Math.min(100,goal?Math.round(cur/goal*100):0);
+    const cur=+b.dataset.current;
     const yen=n=>n.toLocaleString('ja-JP');
     document.getElementById('r-now').textContent=yen(cur);
-    document.getElementById('r-goal').textContent=yen(goal);
-    document.getElementById('r-pct').textContent=pct+'%';
-    setTimeout(()=>document.getElementById('r-fill').style.width=pct+'%',300);
   })();
   // ---- scroll reveal: slide in from the side, alternating per section
   (function(){
