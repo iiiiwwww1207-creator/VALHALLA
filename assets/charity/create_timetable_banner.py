@@ -157,7 +157,7 @@ def ring(draw: ImageDraw.ImageDraw, center: tuple[int, int], diameter: int,
 
 def add_nodes(base: Image.Image) -> None:
     # Five equal-size nodes on an exact 345 px rhythm, centered on the canvas.
-    centers_x = (197, 542, 887, 1232, 1577)
+    centers_x = (197, 473, 749, 1025, 1301, 1577)
     cy, diameter = 520, 190
 
     # Keep the crimson ribbon strictly between adjacent circles.
@@ -178,9 +178,9 @@ def add_nodes(base: Image.Image) -> None:
     cue_font = face(LATIN, 18)
     time_font = face(LATIN, 60)
     label_font = face(MINCHO, 29)
-    cues = ("OPEN", "START", "", "", "END")
-    times = ("19:00", "19:30", "20:00", "20:10", "21:30")
-    labels = ("開場", "開演", "バンド終了", "MIOタイム", "終演")
+    cues = ("", "OPEN", "START", "", "", "END")
+    times = ("17:45", "19:00", "19:25", "20:05", "20:10", "21:10")
+    labels = ("先行入場", "一般入場", "開演", "終演", "VVIP席", "見送り")
     for x, cue, time, label in zip(centers_x, cues, times, labels):
         if cue:
             cue_width = sum(td.textlength(char, font=cue_font) for char in cue)
