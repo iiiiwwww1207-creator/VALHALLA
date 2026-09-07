@@ -90,7 +90,7 @@ def make_background() -> Image.Image:
     # rather than a subject, then dissolved into the group photograph over a
     # wide, smoothstep-eased 650 px transition.
     venue = Image.open(VENUE).convert("RGB")
-    venue = Image.blend(venue, Image.new("RGB", venue.size, BLACK), 0.50)
+    venue = Image.blend(venue, Image.new("RGB", venue.size, BLACK), 0.34)
     scale = H / venue.height
     venue = venue.resize((round(venue.width * scale), round(venue.height * scale)),
                          Image.Resampling.LANCZOS)
@@ -103,7 +103,7 @@ def make_background() -> Image.Image:
         for x in range(W):
             t = max(0.0, min(1.0, (x - fade_start) / (fade_end - fade_start)))
             smooth = t * t * (3.0 - 2.0 * t)
-            venue_mask_px[x, y] = round(255 * 0.96 * (1.0 - smooth))
+            venue_mask_px[x, y] = round(255 * 1.0 * (1.0 - smooth))
     im = Image.composite(venue_layer, im, venue_mask)
 
     # A near-black scrim protects the type while leaving the venue's laser
