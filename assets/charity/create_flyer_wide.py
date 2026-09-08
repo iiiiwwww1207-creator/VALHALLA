@@ -129,49 +129,69 @@ def make_background() -> Image.Image:
 
             alpha = min(0.60, left_fade * (0.29 + 0.30 * type_band))
             scrim_px[x, y] = round(255 * alpha)
-    return Image.composite(scrim, im, scrim_mask)
+    im = Image.composite(scrim, im, scrim_mask)
+
+    # 左右で色が割れていたのが一覧での弱点だったので、
+    # 最後に全体へクリムゾンを薄く被せて、写真2枚のトーンを1つにまとめる。
+    im = Image.blend(im, Image.new("RGB", im.size, DARK_CRIMSON), 0.22)
+
+    # 最下段は寄付の一行を置く帯なので、落としておく。
+    foot = Image.new("RGB", im.size, BLACK)
+    fmask = Image.new("L", im.size)
+    fpx = fmask.load()
+    for y in range(H):
+        t = max(0.0, (y - H * 0.86) / (H * 0.14))
+        v = round(255 * min(1.0, t) * 0.9)
+        for x in range(W):
+            fpx[x, y] = v
+    return Image.composite(foot, im, fmask)
 
 
 def add_type(base: Image.Image) -> None:
+    """一覧で縮んだときに読めるものだけを、左半分に大きく置く。
+
+    OPEN/START・会場注記・メンバー名は横 300px では潰れて読めないので載せない。
+    それらはページ本文にある。ここに残すのは
+    「誰が」「何を掲げて」「いつ・どこで」と、寄付の一行だけ。
+    """
     draw = ImageDraw.Draw(base)
-    x = 112
+    x = 104
 
-    eyebrow = font(OPTIMA, 25)
-    tracked_text(draw, (x, 82), "VALHALLA CHARITY LIVE", eyebrow, SILVER, 7)
+    eyebrow = font(OPTIMA, 27)
+    tracked_text(draw, (x, 96), "VALHALLA CHARITY LIVE", eyebrow, SILVER, 8)
 
-    valhalla = font(DIDOT, 126)
-    tracked_text(draw, (x - 2, 128), "VALHALLA", valhalla, CREAM, 7)
+    valhalla = font(DIDOT, 104)
+    tracked_text(draw, (x - 2, 138), "VALHALLA", valhalla, CREAM, 6)
 
-    # The official flyer catch copy is the primary reading moment: a solid
-    # dark-crimson band and the heaviest available Hiragino Sans face.
-    catch = font(HIRAGINO_BOLD, 56)
+    # 主役：キャッチコピー。画面でいちばん大きい要素にする。
     catch_text = "文化 × エンタメ × AI"
+    catch = font(HIRAGINO_BOLD, 74)
     bbox = draw.textbbox((0, 0), catch_text, font=catch)
-    catch_y = 288
-    padding_x, padding_y = 22, 14
-    band = (x - padding_x, catch_y - padding_y,
-            x + (bbox[2] - bbox[0]) + padding_x,
-            catch_y + (bbox[3] - bbox[1]) + padding_y)
-    draw.rectangle(band, fill=DARK_CRIMSON)
-    draw.text((x, catch_y), catch_text, font=catch, fill=(255, 255, 255))
+    cw, ch = bbox[2] - bbox[0], bbox[3] - bbox[1]
+    cy = 296
+    pad_x, pad_y = 26, 18
+    draw.rectangle((x - pad_x, cy - pad_y, x + cw + pad_x, cy + ch + pad_y),
+                   fill=DARK_CRIMSON)
+    draw.text((x - bbox[0], cy - bbox[1]), catch_text, font=catch, fill=(255, 255, 255))
 
-    detail = font(HIRAGINO_BOLD, 25)
-    draw.text(
-        (x, 405), "アコースティックライブ ＆ スペシャルタイム",
-        font=detail, fill=SILVER,
-    )
+    # 目的の一行。3語だけでは何をするのか伝わらないので必ず添える。
+    lead = font(HIRAGINO_BOLD, 38)
+    draw.text((x, 452), "その一夜の収益を、次の世代へ。", font=lead, fill=CREAM)
 
-    draw.line((x, 472, 844, 472), fill=CRIMSON, width=2)
+    draw.line((x, 546, x + 640, 546), fill=CRIMSON, width=3)
 
-    date = font(DIDOT, 58)
-    tracked_text(draw, (x, 514), "2026 . 10 . 18 SUN", date, CREAM, 3)
+    date = font(DIDOT, 76)
+    tracked_text(draw, (x, 590), "2026 . 10 . 18 SUN", date, CREAM, 4)
 
-    info = font(HIRAGINO_BOLD, 24)
-    draw.text((x, 620), "OPEN 19:00 ／ START 19:30", font=info, fill=SILVER)
-    draw.text((x, 670), "渋谷（会場は後日発表）", font=info, fill=SILVER)
+    place = font(HIRAGINO_BOLD, 34)
+    draw.text((x, 712), "渋谷", font=place, fill=SILVER)
 
-    names = font(OPTIMA, 34)
-    tracked_text(draw, (x + 1, 742), "MIO / RAY / KØU", names, SILVER, 4)
+    # 最下段：寄付の一行を帯にして必ず読ませる。
+    note = font(HIRAGINO_BOLD, 30)
+    note_text = "収益から必要経費を差し引いた全額を、然るべき団体へ寄付します"
+    nw = draw.textlength(note_text, font=note)
+    draw.rectangle((0, H - 92, W, H), fill=DEEPEST_CRIMSON)
+    draw.text(((W - nw) / 2, H - 74), note_text, font=note, fill=CREAM)
 
 
 def main() -> None:
