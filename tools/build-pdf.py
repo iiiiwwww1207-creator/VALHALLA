@@ -184,7 +184,7 @@ def cover(c, doc):
     c.drawString(MARGIN, PH - 46 * mm, "VALHALLA CHARITY LIVE ／ 2026年10月18日（日）")
     c.setFont(GO, 9)
     c.drawString(MARGIN, PH - 52 * mm,
-                 "渋谷　OPEN 19:00 ／ START 19:25 ／ 終演 21:10")
+                 "渋谷　OPEN 19:00 ／ START 19:30 ／ 終演 21:10")
     c.restoreState()
     footer(c, doc)
 

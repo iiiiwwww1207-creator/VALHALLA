@@ -77,7 +77,7 @@ def main() -> None:
     text, tbd = plain(body)
     header = (
         "VALHALLA CHARITY LIVE ／ CAMPFIRE 本文（通し版）\n"
-        "2026年10月18日（日）渋谷　OPEN 19:00 ／ START 19:25 ／ 終演 21:10\n"
+        "2026年10月18日（日）渋谷　OPEN 19:00 ／ START 19:30 ／ 終演 21:10\n"
         f"※ 〔　〕は未確定：残り {tbd} 箇所\n\n"
     )
     OUT.write_text(header + text, encoding="utf-8")

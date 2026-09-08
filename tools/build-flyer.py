@@ -30,7 +30,7 @@ PW, PH = 594.96, 841.92
 S = 6  # 描画倍率
 
 # 消す行：Tm の y（content 座標）と、その行の文字サイズ
-DROP_LINES = {763.0, 998.0, 1021.0, 1045.0, 1107.0, 0.0}
+DROP_LINES = {763.0, 998.0, 1001.0, 1021.0, 1045.0, 1107.0, 0.0}
 DROP_SIZES = {12.85, 14.74, 9.82, 7.18}
 # 「（案内準備中）」に引かれていた赤い破線。文字を消すと下線だけ残るので一緒に消す。
 UNDERLINE = re.compile(r"563 1109 m\n(?:[-\d.]+ [-\d.]+ [ml]\n)+f\n")
@@ -39,10 +39,14 @@ CENTER = 301.5   # 下段まんなかの「Charity」欄の中心
 CREAM = (243, 237, 225)
 WHITE = (255, 255, 255)
 NOTE = (177, 173, 165)
+TIME = (198, 198, 205)
 FOOT = (108, 104, 100)
 
 # (中央x または None, ベースラインy, 文字, サイズ, 色, 字間比)
 DRAW = [
+    # 開演は 19:30。19:25 は受付締切。元は「OPEN19:00／START19:25」だった。
+    # この行だけ左そろえなので、中央ではなく開始 x を指定する。
+    (None, 91.2, "OPEN 19:00 ／ START 19:30", 9.64, TIME, 0.0),
     # CAMPFIRE 帯：「クラウドファンディングにて 後日公開」を2行に差し替える。
     # 帯の下端は device y=256.5、CAMPFIRE のベースラインは 293.7。
     # その間の約31pt に収まるよう、少し詰めて2行を置く。
@@ -97,7 +101,10 @@ def overlay() -> bytes:
     d = ImageDraw.Draw(img)
     for cx, dy, text, size, color, tracking in DRAW:
         font = ImageFont.truetype(MINCHO, round(size * S), index=MINCHO_INDEX)
-        draw_tracked(d, font, text, cx, (PH - dy) * S, color, tracking)
+        if cx is None:  # 左そろえの行
+            d.text((39.7 * S, (PH - dy) * S), text, font=font, fill=color, anchor="ls")
+        else:
+            draw_tracked(d, font, text, cx, (PH - dy) * S, color, tracking)
 
     # フッターは左そろえ。1行に収まらなければサイズを詰める。
     size = FOOTER_SIZE

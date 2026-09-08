@@ -167,7 +167,7 @@ def add_type(base: Image.Image) -> None:
     tracked_text(draw, (x, 514), "2026 . 10 . 18 SUN", date, CREAM, 3)
 
     info = font(HIRAGINO_BOLD, 24)
-    draw.text((x, 620), "OPEN 19:00 ／ START 19:25", font=info, fill=SILVER)
+    draw.text((x, 620), "OPEN 19:00 ／ START 19:30", font=info, fill=SILVER)
     draw.text((x, 670), "渋谷（会場は後日発表）", font=info, fill=SILVER)
 
     names = font(OPTIMA, 34)

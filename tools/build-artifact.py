@@ -192,7 +192,7 @@ def main() -> None:
   <p class="eyebrow">CAMPFIRE ページ本文 ドラフト</p>
   <h1>ビジュアル系文化を守り、継ぐ。</h1>
   <p class="meta">VALHALLA CHARITY LIVE ／ 2026年10月18日（日）<br>
-  渋谷　OPEN 19:00 ／ START 19:25 ／ 終演 21:10</p>
+  渋谷　OPEN 19:00 ／ START 19:30 ／ 終演 21:10</p>
 </div></header>
 <div class="stats">
   <div class="stat"><b>{n_sec}</b><span>章</span></div>

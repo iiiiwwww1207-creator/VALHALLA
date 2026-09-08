@@ -169,44 +169,44 @@ def fit_card_title_font(draw: ImageDraw.ImageDraw, titles: tuple[tuple[str, ...]
 
 def add_cards(base: Image.Image) -> None:
     margin, gap = 50, 18
-    width = (W - margin * 2 - gap * 3) // 4
     upper_top, upper_height = 168, 326
     lower_top, lower_height = 548, 256
-    cards = (
-        ("LIVE", "ライブ席", "¥10,000", "100名",
+    # 来場コース（上段）と、来場不要コース（下段）。段ごとに等分するので
+    # コースの本数が変わってもレイアウトは崩れない。
+    upper = (
+        ("LIVE", "ライブ席", "¥10,000", "100名 ／ スタンディング",
          ("アコースティックライブ観覧",)),
-        ("FRONT ROW", "最前列席", "¥50,000", "30席",
-         ("最前列のお席をご用意します", "アコースティックライブ観覧",
-          "ファンミーティング")),
-        ("MIO TIME", "MIOタイム", "¥150,000", "26名 ／ 18:00〜",
-         ("チェキ（1分）", "やしろ語録動画", "限定名刺",
-          "ファンミーティング（動画撮影）", "ライブ観覧")),
-        ("VVIP", "VVIP席", "¥330,000", "10口 ／ 20:10〜 ／ 同伴1名まで可",
+        ("S SEAT", "S席・MIOタイム", "¥150,000", "15口 ／ 同伴1名まで可 ／ 17:45 先行入場",
+         ("お席をご用意します", "チェキ（1分）", "やしろ語録動画", "限定名刺",
+          "ノベルティ", "ファンミーティング")),
+        ("VVIP", "VVIP席", "¥300,000", "10口 ／ 同伴1名まで可 ／ 席を選べます",
          ("MIOと対面で6分", "シャンパンサービス", "チェキ／写真／動画OK",
-          "限定名刺", "ライブ観覧")),
+          "限定名刺", "ノベルティ", "ライブ観覧")),
+    )
+    lower = (
         ("SUPPORT", "シンプル応援", "¥5,000", "来場不要",
          ("限定名刺をお送りします",)),
     )
+    cards = upper + lower
+    col = (W - margin * 2 - gap * (len(upper) - 1)) // len(upper)
+
     d = ImageDraw.Draw(base)
     # Every course shares the same type scale; only position changes by row.
     kicker = face(SANS, 14)
     title_font = fit_card_title_font(
-        d, tuple((card[1],) for card in cards), width - 56
+        d, tuple((card[1],) for card in cards), col - 56
     )
     amount_font = face(SANS, 42)
     meta_font = face(SANS, 15)
     bullet_font = face(SANS, 15)
     for index, (small, title, amount, note, bullets) in enumerate(cards):
-        row_index = index if index < 4 else index - 4
-        x = margin + row_index * (width + gap)
-        top = upper_top if index < 4 else lower_top
-        height = upper_height if index < 4 else lower_height
-        # 下段は来場不要コースだけ。枚数が少ないと空きが目立つので、
-        # 残りの列数ぶんまで横に伸ばして下段を埋める。
-        # 全幅まで伸ばすと1項目のカードが間延びするので2列ぶんで止める。
-        span = 1 if index < 4 else min(2, max(1, 4 - (len(cards) - 5) - row_index))
-        card_width = width * span + gap * (span - 1)
-        emphasized = index == 3
+        top_row = index < len(upper)
+        row_index = index if top_row else index - len(upper)
+        x = margin + row_index * (col + gap)
+        top = upper_top if top_row else lower_top
+        height = upper_height if top_row else lower_height
+        card_width = col
+        emphasized = small == "VVIP"
         d.rounded_rectangle(
             sbox((x, top, x + card_width, top + height)), radius=15 * SCALE,
             fill=(*DEEPEST_CRIMSON, 255) if emphasized else None,
@@ -247,7 +247,7 @@ def add_header(base: Image.Image) -> None:
 def add_footer(base: Image.Image) -> None:
     d = ImageDraw.Draw(base)
     text = (
-        "2026.10.18 SUN　渋谷　OPEN 19:00 ／ START 19:25 ／ "
+        "2026.10.18 SUN　渋谷　OPEN 19:00 ／ START 19:30 ／ "
         "終演 21:10　※収益は必要経費を除いた全額を寄付します"
     )
     footer_font = face(SANS, 16)

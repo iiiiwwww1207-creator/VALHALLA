@@ -496,7 +496,8 @@
 
   <div class="tt">
     <div class="row"><div class="tm">19:00</div><div class="ds">開場</div></div>
-    <div class="row"><div class="tm">19:25</div><div class="ds">開演（アコースティックライブ）</div></div>
+    <div class="row"><div class="tm">19:25</div><div class="ds">受付締切</div></div>
+    <div class="row"><div class="tm">19:30</div><div class="ds">開演（アコースティックライブ）</div></div>
     <div class="row"><div class="tm">20:00</div><div class="ds">バンド終了</div></div>
     <div class="row"><div class="tm">20:10</div><div class="ds">MIOタイム</div></div>
     <div class="row"><div class="tm">21:10</div><div class="ds">終演</div></div>
@@ -510,7 +511,7 @@
         <span class="t">メイン会場</span>
         <h3>渋谷（会場は後日発表）</h3>
         <div class="where">渋谷の夜景を見渡す室内フロア</div>
-        <div class="time">開場 19:00 ／ スタート 19:25</div>
+        <div class="time">開場 19:00 ／ スタート 19:30</div>
         <p class="body muted" style="font-size:13.5px;margin:8px 0 0">ライブから体験タイムまで、この夜のすべてを同じ室内フロアで行います。フロアの移動はありません。屋外は使用しないため、天候に左右されずに開催できます。</p>
       </div>
     </div>
@@ -546,7 +547,7 @@
     <div class="r">
       <div class="rn">ライブ席</div>
       <div class="rp">¥10,000</div>
-      <div class="lim">100名</div>
+      <div class="lim">100名 ／ スタンディング</div>
       <ul>
         <li>アコースティックライブ観覧</li>
       </ul>
@@ -554,27 +555,18 @@
     </div>
 
     <div class="r">
-      <div class="rn">最前列席</div>
-      <div class="rp">¥50,000</div>
-      <div class="lim">30席</div>
-      <ul>
-        <li>最前列のお席をご用意します</li>
-        <li>アコースティックライブ観覧</li>
-        <li>ファンミーティング（2026年11月・ユグドラシル本店／営業時間外の日中に会場として使用）<span class="tbd">【日程調整中】</span></li>
-      </ul>
-      <a class="pay-btn" data-pay="seat">このコースで支援する</a>
-    </div>
-
-    <div class="r">
-      <div class="rn">MIOタイム</div>
+      <div class="rn">S席・MIOタイム</div>
       <div class="rp">¥150,000</div>
-      <div class="lim">26席 ／ 18:00〜</div>
+      <div class="lim">15口 ／ 同伴1名まで可 ／ 17:45 先行入場</div>
       <ul>
-        <li>MIO とチェキ（1分）</li>
+        <li>お席をご用意します</li>
+        <li>MIO とチェキ（1分）<span class="tbd">【先行入場のお時間にすべて撮影します】</span></li>
         <li>やしろ語録動画（MIO の言葉を1つ選び、本人に語ってもらい撮影）</li>
         <li>限定名刺（QRから“限定シャンパンコール”が見れる）</li>
         <li>ファンミーティング（2026年11月・ユグドラシル本店／営業時間外の日中。やしろ語録動画の撮影はこちら）<span class="tbd">【日程調整中】</span></li>
+        <li>ノベルティ（ノート・ペン）<span class="tbd">【デザイン調整中】</span></li>
         <li>アコースティックライブ観覧</li>
+        <li>同伴の方を1名までお連れいただけます</li>
       </ul>
       <a class="pay-btn" data-pay="mio">このコースで支援する</a>
     </div>
@@ -582,14 +574,17 @@
     <div class="r feat">
       <div class="badge">最上級</div>
       <div class="rn">VVIP席</div>
-      <div class="rp">¥330,000</div>
-      <div class="lim">10口 ／ 20:10〜 ／ 同伴1名まで可</div>
+      <div class="rp">¥300,000</div>
+      <div class="lim">10口 ／ 同伴1名まで可 ／ お席を選べます</div>
       <ul>
         <li>MIO と対面で、6分前後お話しいただけます</li>
+        <li>お好きなお席をお選びいただけます（先着順）</li>
         <li>シャンパンサービス<span class="tbd">【銘柄・本数・調整中】</span></li>
         <li>チェキ／写真／動画OK</li>
         <li>限定名刺（QRから“限定シャンパンコール”が見れる）</li>
+        <li>ノベルティ（ノート・ペン・トートバッグ・キーホルダーほか）<span class="tbd">【内容・デザイン調整中】</span></li>
         <li>アコースティックライブ観覧</li>
+        <li>同伴の方を1名までお連れいただけます</li>
         <li><b style="color:var(--ink)">⭐️ 当日 MIO と直接お話しいただけるのは VVIP席のみです</b></li>
       </ul>
       <a class="pay-btn" data-pay="vvip">このコースで支援する</a>
@@ -648,7 +643,7 @@
 </div>
 
 <script>
-  const EV = new Date("2026-10-18T19:25:00+09:00");
+  const EV = new Date("2026-10-18T19:30:00+09:00");
   const pad=n=>String(n).padStart(2,'0');
   function tick(){
     const diff=EV-new Date(); const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
@@ -703,7 +698,6 @@
   const PAYLINK = {
     live: "",   // ライブ席
     simple: "", // シンプル応援
-    seat: "",   // 最前列席
     mio:  "",   // MIOタイム
     vvip: ""    // VVIP席
   };
