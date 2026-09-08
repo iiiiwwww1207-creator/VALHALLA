@@ -71,17 +71,23 @@ def add_lasers(base: Image.Image) -> Image.Image:
     glow = Image.new("RGB", (W, H), (0, 0, 0))
     dc, dg = ImageDraw.Draw(core), ImageDraw.Draw(glow)
 
-    for i in range(7):
+    beams = []
+    for _ in range(7):
         # 左上から右下へ抜ける斜めの線。角度と位置をばらす。
         x0 = rnd.randint(-500, 900)
         x1 = x0 + rnd.randint(1500, 2600)
         y0 = rnd.randint(-160, 520)
         y1 = y0 + rnd.randint(240, 760)
-        bright = rnd.uniform(0.45, 1.0)
+        beams.append((x0, y0, x1, y1, rnd.uniform(0.45, 1.0),
+                      rnd.choice((1, 2, 2, 3)), rnd.choice((10, 16, 22))))
+    # 同じ本数を、左右対称の角度で右側からも入れる。
+    # 片側だけだと画面が傾いて見え、ロゴのある左側に光が乗らない。
+    beams += [(W - x0, y0, W - x1, y1, b, cw, gw)
+              for x0, y0, x1, y1, b, cw, gw in beams]
+    for x0, y0, x1, y1, bright, cw, gw in beams:
         red = (round(255 * bright), round(32 * bright), round(54 * bright))
-        dc.line((x0, y0, x1, y1), fill=red, width=rnd.choice((1, 2, 2, 3)))
-        dg.line((x0, y0, x1, y1), fill=(round(150 * bright), 12, 22),
-                width=rnd.choice((10, 16, 22)))
+        dc.line((x0, y0, x1, y1), fill=red, width=cw)
+        dg.line((x0, y0, x1, y1), fill=(round(150 * bright), 12, 22), width=gw)
 
     glow = glow.filter(ImageFilter.GaussianBlur(26))
     core = core.filter(ImageFilter.GaussianBlur(1.2))
@@ -117,14 +123,15 @@ def members_panel() -> Image.Image:
     # 染める色はクリムゾンではなく暗いニュートラル。赤で染めると
     # 白衣装まで赤くなり、写真全体に赤いモヤがかかったように見えるため。
     tint = Image.new("RGB", rgb.size, (26, 20, 24))
-    rgb = Image.composite(Image.blend(rgb, tint, 0.52), rgb, weight)
+    rgb = Image.composite(Image.blend(rgb, tint, 0.38), rgb, weight)
     # 人物の色は残したいので、彩度をわずかに上げて沈みを戻す
     rgb = ImageEnhance.Color(rgb).enhance(1.14)
     panel = rgb.convert("RGBA")
     # 縁のフェードに加えて、**明るい画素ほど透明にする**。
     # 白ホリゾントの白が半透明になって渋谷が透け、人物のまわりに
     # 白い霞が残らない。暗い衣装や髪はそのまま不透明で残る。
-    see_through = weight.point(lambda v: 255 - round(v * 0.80))
+    # 透過が強すぎると白衣装の人まで消えるので、控えめにする
+    see_through = weight.point(lambda v: 255 - round(v * 0.34))
     alpha = ImageChops.multiply(mask.filter(ImageFilter.GaussianBlur(12)), see_through)
     panel.putalpha(alpha)
     return panel
@@ -145,6 +152,11 @@ def arc_text(base: Image.Image, text: str, font: ImageFont.FreeTypeFont,
     for ch, w in zip(text, widths):
         angle += (w / radius) / 2
         glyph = Image.new("RGBA", (round(w) + 60, font.size + 70), (0, 0, 0, 0))
+        # 背景のネオンが明るいと文字が沈むので、先に淡い影を敷いてから本体を描く
+        shade = Image.new("RGBA", glyph.size, (0, 0, 0, 0))
+        ImageDraw.Draw(shade).text((30, 20), ch, font=font, fill=(8, 4, 8, 215))
+        glyph.alpha_composite(shade.filter(ImageFilter.GaussianBlur(10)))
+        glyph.alpha_composite(shade.filter(ImageFilter.GaussianBlur(4)))
         ImageDraw.Draw(glyph).text((30, 20), ch, font=font, fill=fill)
         deg = math.degrees(angle)
         rot = glyph.rotate(-deg, resample=Image.Resampling.BICUBIC, expand=True)
