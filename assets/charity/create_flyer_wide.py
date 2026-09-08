@@ -7,7 +7,7 @@ import os
 
 
 HERE = Path(__file__).resolve().parent
-SOURCE = HERE / "group_field.jpg"
+SOURCE = HERE / "members_white.jpg"   # フライヤーと同じ3人写真（横位置）
 VENUE = HERE / "venue" / "shibuya_night.jpg"
 OUTPUT = HERE / "flyer_wide.jpg"
 
@@ -18,6 +18,8 @@ DARK_CRIMSON = (142, 16, 25)
 DEEPEST_CRIMSON = (110, 10, 18)
 CREAM = (245, 239, 228)
 SILVER = (198, 198, 205)
+INK = (23, 18, 24)
+PAPER = (247, 245, 246)
 
 
 def first_font(*candidates: str) -> str:
@@ -71,127 +73,66 @@ def tracked_text(draw, xy, text, face, fill, tracking, stroke_width=0, stroke_fi
 
 
 def make_background() -> Image.Image:
+    """フライヤーと同じ3人写真（横位置・白背景）を全面に敷く。
+
+    3人が横に並んで立っていて、頭の上に白い余白があるので、
+    中央にコピーを置いても顔と重ならない。白基調のまま使うことで、
+    暗い画像が並ぶ CAMPFIRE の一覧の中でむしろ目立つ。
+    """
     src = Image.open(SOURCE).convert("RGB")
-    # Include all three figures, from hair to shoes, at their natural aspect
-    # ratio. The faithful portrait occupies the right side. Its untouched edge
-    # colours are extended beneath the opaque scrim to cover the canvas without
-    # introducing another image boundary or changing the photograph's colour.
-    crop = src.crop((0, 780, src.width, src.height))
-    portrait_w = round(crop.width * H / crop.height)
-    portrait = crop.resize((portrait_w, H), Image.Resampling.LANCZOS)
-    photo_x = W - portrait_w - 42
-    im = portrait.crop((0, 0, 1, H)).resize((W, H))
-    im.paste(portrait, (photo_x, 0))
-    right_fill = portrait.crop((portrait_w - 1, 0, portrait_w, H)).resize((42, H))
-    im.paste(right_fill, (W - 42, 0))
+    band = round(src.width * H / W)            # 16:9 に必要な高さ
+    photo = src.crop((0, 0, src.width, min(src.height, band)))
+    im = photo.resize((W, H), Image.Resampling.LANCZOS)
 
-    # Lay the Shibuya night photograph — the same one the official flyer uses —
-    # under the left of the group image, dimmed so it reads as a background
-    # rather than a subject, then dissolved into the group photograph over a
-    # wide, smoothstep-eased 650 px transition.
-    venue = Image.open(VENUE).convert("RGB")
-    venue = Image.blend(venue, Image.new("RGB", venue.size, BLACK), 0.34)
-    scale = H / venue.height
-    venue = venue.resize((round(venue.width * scale), round(venue.height * scale)),
-                         Image.Resampling.LANCZOS)
-    venue_layer = Image.new("RGB", (W, H), BLACK)
-    venue_layer.paste(venue, (0, 0))
-    venue_mask = Image.new("L", (W, H), 0)
-    venue_mask_px = venue_mask.load()
-    fade_start, fade_end = 430, 1060
-    for y in range(H):
-        for x in range(W):
-            t = max(0.0, min(1.0, (x - fade_start) / (fade_end - fade_start)))
-            smooth = t * t * (3.0 - 2.0 * t)
-            venue_mask_px[x, y] = round(255 * 1.0 * (1.0 - smooth))
-    im = Image.composite(venue_layer, im, venue_mask)
+    # 白を少しだけ締めて、紙色に寄せる
+    im = Image.blend(im, Image.new("RGB", im.size, PAPER), 0.10)
+    return im
 
-    # A near-black scrim protects the type while leaving the venue's laser
-    # shapes and red light visible.  The broad horizontal falloff darkens the
-    # left 55% of the frame; a second, softly feathered vertical component
-    # concentrates that protection behind the complete type block.
-    scrim = Image.new("RGB", (W, H), BLACK)
-    scrim_mask = Image.new("L", (W, H), 0)
-    scrim_px = scrim_mask.load()
-    for y in range(H):
-        for x in range(W):
-            # Stay fully effective beneath the copy, then dissolve smoothly
-            # beyond it so no vertical seam is introduced near the photos.
-            left_t = max(0.0, min(1.0, (x - 720.0) / 430.0))
-            left_fade = 1.0 - left_t * left_t * (3.0 - 2.0 * left_t)
 
-            # Soft entry at the very top and a long exit below the artist names.
-            top_t = max(0.0, min(1.0, y / 105.0))
-            top_rise = top_t * top_t * (3.0 - 2.0 * top_t)
-            bottom_t = max(0.0, min(1.0, (y - 760.0) / 210.0))
-            bottom_fall = 1.0 - bottom_t * bottom_t * (3.0 - 2.0 * bottom_t)
-            type_band = top_rise * bottom_fall
-
-            alpha = min(0.60, left_fade * (0.29 + 0.30 * type_band))
-            scrim_px[x, y] = round(255 * alpha)
-    im = Image.composite(scrim, im, scrim_mask)
-
-    # 左右で色が割れていたのが一覧での弱点だったので、
-    # 最後に全体へクリムゾンを薄く被せて、写真2枚のトーンを1つにまとめる。
-    im = Image.blend(im, Image.new("RGB", im.size, DARK_CRIMSON), 0.22)
-
-    # 最下段は寄付の一行を置く帯なので、落としておく。
-    foot = Image.new("RGB", im.size, BLACK)
-    fmask = Image.new("L", im.size)
-    fpx = fmask.load()
-    for y in range(H):
-        t = max(0.0, (y - H * 0.86) / (H * 0.14))
-        v = round(255 * min(1.0, t) * 0.9)
-        for x in range(W):
-            fpx[x, y] = v
-    return Image.composite(foot, im, fmask)
+def center(draw, text, face, y, fill, tracking=0):
+    if tracking:
+        w = tracked_width(draw, text, face, tracking)
+        tracked_text(draw, ((W - w) // 2, y), text, face, fill, tracking)
+    else:
+        w = draw.textlength(text, font=face)
+        draw.text(((W - w) / 2, y), text, font=face, fill=fill)
 
 
 def add_type(base: Image.Image) -> None:
-    """一覧で縮んだときに読めるものだけを、左半分に大きく置く。
+    """白い余白に、一覧で縮んでも読めるものだけを中央に置く。
 
-    OPEN/START・会場注記・メンバー名は横 300px では潰れて読めないので載せない。
-    それらはページ本文にある。ここに残すのは
-    「誰が」「何を掲げて」「いつ・どこで」と、寄付の一行だけ。
+    OPEN/START・会場注記・メンバー名は横 300px では潰れるので載せない。
+    残すのは「何を掲げて」「いつ・どこで」と、寄付の一行だけ。
     """
     draw = ImageDraw.Draw(base)
-    x = 104
+    cx = W // 2
 
-    eyebrow = font(OPTIMA, 27)
-    tracked_text(draw, (x, 96), "VALHALLA CHARITY LIVE", eyebrow, SILVER, 8)
+    center(draw, "VALHALLA CHARITY LIVE", font(OPTIMA, 30), 88, CRIMSON, tracking=14)
 
-    valhalla = font(DIDOT, 104)
-    tracked_text(draw, (x - 2, 138), "VALHALLA", valhalla, CREAM, 6)
-
-    # 主役：キャッチコピー。画面でいちばん大きい要素にする。
+    # 主役：キャッチコピー。頭の上の白い余白に、画面で最大の要素として置く。
     catch_text = "文化 × エンタメ × AI"
-    catch = font(HIRAGINO_BOLD, 74)
+    catch = font(HIRAGINO_BOLD, 132)
     bbox = draw.textbbox((0, 0), catch_text, font=catch)
-    cw, ch = bbox[2] - bbox[0], bbox[3] - bbox[1]
-    cy = 296
-    pad_x, pad_y = 26, 18
-    draw.rectangle((x - pad_x, cy - pad_y, x + cw + pad_x, cy + ch + pad_y),
-                   fill=DARK_CRIMSON)
-    draw.text((x - bbox[0], cy - bbox[1]), catch_text, font=catch, fill=(255, 255, 255))
+    cw = bbox[2] - bbox[0]
+    draw.text((cx - cw // 2 - bbox[0], 148 - bbox[1]), catch_text, font=catch, fill=INK)
 
     # 目的の一行。3語だけでは何をするのか伝わらないので必ず添える。
-    lead = font(HIRAGINO_BOLD, 38)
-    draw.text((x, 452), "その一夜の収益を、次の世代へ。", font=lead, fill=CREAM)
+    center(draw, "その一夜の収益を、次の世代へ。", font(HIRAGINO_BOLD, 44), 300, INK)
 
-    draw.line((x, 546, x + 640, 546), fill=CRIMSON, width=3)
-
-    date = font(DIDOT, 76)
-    tracked_text(draw, (x, 590), "2026 . 10 . 18 SUN", date, CREAM, 4)
-
-    place = font(HIRAGINO_BOLD, 34)
-    draw.text((x, 712), "渋谷", font=place, fill=SILVER)
-
-    # 最下段：寄付の一行を帯にして必ず読ませる。
-    note = font(HIRAGINO_BOLD, 30)
-    note_text = "収益から必要経費を差し引いた全額を、然るべき団体へ寄付します"
-    nw = draw.textlength(note_text, font=note)
-    draw.rectangle((0, H - 92, W, H), fill=DEEPEST_CRIMSON)
-    draw.text(((W - nw) / 2, H - 74), note_text, font=note, fill=CREAM)
+    # 下：クリムゾンの帯に日付と寄付の一行をまとめて、必ず読ませる。
+    band_top = H - 150
+    draw.rectangle((0, band_top, W, H), fill=DARK_CRIMSON)
+    # Didot に日本語が無いので、日付と「渋谷」は別の書体で並べて中央に置く
+    date_face, place_face = font(DIDOT, 54), font(HIRAGINO_BOLD, 34)
+    date_text, place_text = "2026 . 10 . 18 SUN", "渋谷"
+    gap = 34
+    dw = tracked_width(draw, date_text, date_face, 4)
+    pw = draw.textlength(place_text, font=place_face)
+    x = (W - (dw + gap + pw)) / 2
+    tracked_text(draw, (x, band_top + 22), date_text, date_face, CREAM, 4)
+    draw.text((x + dw + gap, band_top + 36), place_text, font=place_face, fill=CREAM)
+    center(draw, "収益から必要経費を差し引いた全額を、然るべき団体へ寄付します",
+           font(HIRAGINO_BOLD, 28), band_top + 100, CREAM)
 
 
 def main() -> None:
