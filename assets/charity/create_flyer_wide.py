@@ -31,7 +31,7 @@ DEEPEST_CRIMSON = (110, 10, 18)
 CREAM = (245, 239, 228)
 
 # 3人が元写真（幅1600）で占める範囲。ここは透過をかけずに守る。
-PEOPLE_X = ((120, 545), (560, 1020), (1060, 1550))
+PEOPLE_X = ((150, 520), (585, 1000), (1105, 1520))
 
 MINCHO = "/System/Library/Fonts/ヒラギノ明朝 ProN.ttc"
 MINCHO_W6 = 2
@@ -116,35 +116,44 @@ def members_panel() -> Image.Image:
             ay = min(1.0, y / fy, (ph - 1 - y) / (fy * 1.6))
             ay = ay * ay * (3 - 2 * ay)
             px[x, y] = round(255 * min(ax, ay))
-    # 白ホリゾントの白だけを暗いクリムゾンへ寄せる。
-    # 写真全体を染めると人物の色（青髪・紫・白衣装）まで濁るので、
-    # **明るい画素ほど強く染まる**重みをかけて、白地だけを落とす。
     rgb = panel.convert("RGB")
     lum = rgb.convert("L")
+
+    # 白ホリゾントの明るい画素を拾う重み
     weight = lum.point(lambda v: 0 if v < 224 else min(255, round((v - 224) * 255 / 30)))
     weight = weight.filter(ImageFilter.GaussianBlur(3))
-    # 染める色はクリムゾンではなく暗いニュートラル。赤で染めると
-    # 白衣装まで赤くなり、写真全体に赤いモヤがかかったように見えるため。
-    tint = Image.new("RGB", rgb.size, (26, 20, 24))
-    rgb = Image.composite(Image.blend(rgb, tint, 0.38), rgb, weight)
-    # 人物の色は残したいので、彩度をわずかに上げて沈みを戻す
-    rgb = ImageEnhance.Color(rgb).enhance(1.14)
-    panel = rgb.convert("RGBA")
-    # 縁のフェードに加えて、**明るい画素ほど透明にする**。
-    # 白ホリゾントの白が半透明になって渋谷が透け、人物のまわりに
-    # 白い霞が残らない。暗い衣装や髪はそのまま不透明で残る。
-    # 明るさだけで透過をかけると、白衣装の人が背景と一緒に消える。
-    # そこで**人物が立っている列は透過をかけない**保護マスクを作り、
-    # 3人の外側（何も写っていない白ホリゾント）だけを透けさせる。
+
+    # 3人が立っている列は守る。明るさだけで処理すると、
+    # レイの白スーツ（背景より明るい）が背景と一緒に消えてしまうため。
     protect = Image.new("L", rgb.size, 0)
     pd = ImageDraw.Draw(protect)
     sx = rgb.size[0] / 1600
     for x0, x1 in PEOPLE_X:
         pd.rectangle((x0 * sx, 0, x1 * sx, rgb.size[1]), fill=255)
-    protect = protect.filter(ImageFilter.GaussianBlur(46))   # 境目をなじませる
+    protect = protect.filter(ImageFilter.GaussianBlur(38))
     fade = ImageChops.multiply(weight, ImageChops.invert(protect))
-    see_through = fade.point(lambda v: 255 - round(v * 0.88))
-    alpha = ImageChops.multiply(mask.filter(ImageFilter.GaussianBlur(12)), see_through)
+
+    # 列の外の白ホリゾントだけを、暗いニュートラルへ強く沈める。
+    # 赤で染めると人物まで赤くなるので色味は持たせない。
+    tint = Image.new("RGB", rgb.size, (26, 20, 24))
+    # まず白ホリゾント全体を少し落とす。列の中の白地が明るいままだと、
+    # そこだけ白い柱のように見えてしまうため。
+    rgb = Image.composite(Image.blend(rgb, tint, 0.34), rgb, weight)
+    # そのうえで、列の外はさらに深く沈めて渋谷へ渡す。
+    rgb = Image.composite(Image.blend(rgb, tint, 0.62), rgb, fade)
+
+    # 白スーツは陰影が浅い。コントラストを上げて襟や折り目を出さないと、
+    # まわりの明るい面と一体化して形が読めない。
+    rgb = ImageEnhance.Contrast(rgb).enhance(1.30)
+    rgb = ImageEnhance.Color(rgb).enhance(1.14)
+
+    panel = rgb.convert("RGBA")
+    # 列の外はほぼ完全に透かして渋谷を出し、列の中は透かさない。
+    see_through = fade.point(lambda v: 255 - round(v * 0.97))
+    # 縁のフェードは人物には効かせない。パネルの右端フェード帯に
+    # レイの体がまるごと入っていて、それが透けの主因だった。
+    edge = ImageChops.lighter(mask.filter(ImageFilter.GaussianBlur(12)), protect)
+    alpha = ImageChops.multiply(edge, see_through)
     panel.putalpha(alpha)
     return panel
 
