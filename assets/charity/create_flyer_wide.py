@@ -14,6 +14,9 @@
 """
 import math
 import random
+
+import cv2
+import numpy as np
 from pathlib import Path
 
 from PIL import Image, ImageChops, ImageDraw, ImageEnhance, ImageFilter, ImageFont
@@ -96,70 +99,63 @@ def add_lasers(base: Image.Image) -> Image.Image:
     return ImageChops.add(base.convert("RGB"), laser_layer((W, H)))
 
 
-def members_panel() -> Image.Image:
-    """メンバー写真を、縁に向かって透明にした板として返す。"""
-    src = Image.open(MEMBERS).convert("RGB")
-    ph = 830
-    pw = round(src.width * ph / src.height)
-    panel = src.resize((pw, ph), Image.Resampling.LANCZOS).convert("RGBA")
+CUTOUT = HERE / "members_cutout.png"   # rembg で人物だけを抜いたもの
 
-    # 縁のフェード幅。左右は広く取り、渋谷へ溶け込ませる。
-    fx, fy = 300, 190
-    mask = Image.new("L", (pw, ph), 255)
-    px = mask.load()
-    for x in range(pw):
-        ax = min(1.0, x / fx, (pw - 1 - x) / fx)
-        ax = ax * ax * (3 - 2 * ax)                    # なめらかに
-        for y in range(ph):
-            ay = min(1.0, y / fy, (ph - 1 - y) / (fy * 1.6))
-            ay = ay * ay * (3 - 2 * ay)
-            px[x, y] = round(255 * min(ax, ay))
-    rgb = panel.convert("RGB")
-    lum = rgb.convert("L")
 
-    # 白ホリゾントの明るい画素を拾う重み
-    weight = lum.point(lambda v: 0 if v < 224 else min(255, round((v - 224) * 255 / 30)))
-    weight = weight.filter(ImageFilter.GaussianBlur(3))
+def cutouts() -> list[Image.Image]:
+    """3人を1人ずつ、人物の形どおりに切り出して返す（左から順）。
 
-    # 3人が立っている列は守る。明るさだけで処理すると、
-    # レイの白スーツ（背景より明るい）が背景と一緒に消えてしまうため。
-    protect = Image.new("L", rgb.size, 0)
-    pd = ImageDraw.Draw(protect)
-    sx, sy = rgb.size[0] / 1600, rgb.size[1] / 1066
-    # 守るのは人物が実際にいる範囲だけ。頭より上まで守ると、
-    # そこに白ホリゾントの白が帯として残ってしまう。
-    # 楕円で描いてから大きくぼかす。四角のまま使うと、
-    # 守った範囲が「白い箱」として見えてしまう。
-    for x0, x1 in PEOPLE_X:
-        cx = (x0 + x1) / 2 * sx
-        half = (x1 - x0) / 2 * sx * 0.92
-        pd.ellipse((cx - half, 210 * sy, cx + half, rgb.size[1] + 260 * sy), fill=255)
-    protect = protect.filter(ImageFilter.GaussianBlur(62))
-    fade = ImageChops.multiply(weight, ImageChops.invert(protect))
+    白ホリゾント撮影のため、明度や輪郭で抜こうとすると
+    白スーツ（明度251）が白背景（242）より明るく、必ず一緒に消える。
+    そこで rembg（U2Net）で意味的に人物を抜く。モデルは手元にあるので
+    オフラインで動く。結果は PNG に残して、次回からは読むだけにする。
+    """
+    if not CUTOUT.exists():
+        from rembg import remove, new_session
+        remove(Image.open(MEMBERS).convert("RGB"),
+               session=new_session("u2net")).save(CUTOUT)
 
-    # 白ホリゾントを「透かす」と、レイの白スーツ（背景より明るい）まで
-    # 必ず一緒に消える。そこで透かすのをやめ、**赤いレーザーの面に塗り替える**。
-    # 列の中は塗り替えないので、レイのスーツは白のまま残る。
-    tint = Image.new("RGB", rgb.size, (26, 20, 24))
-    rgb = Image.composite(Image.blend(rgb, tint, 0.30), rgb, weight)   # 白地を少し落とす
-    field = ImageChops.add(Image.new("RGB", rgb.size, (18, 10, 14)),
-                           laser_layer(rgb.size, seed=778))
-    rgb = Image.composite(field, rgb, fade)                            # 列の外を赤い面に
+    rgba = Image.open(CUTOUT).convert("RGBA")
+    alpha = np.asarray(rgba)[:, :, 3]
+    # 連結成分で3人に分ける。面積の大きい順に3つ取り、左からの順に並べ替える。
+    n, labels, stats, _ = cv2.connectedComponentsWithStats(
+        (alpha > 128).astype(np.uint8), connectivity=8)
+    order = sorted(range(1, n), key=lambda i: -stats[i, cv2.CC_STAT_AREA])[:3]
+    order.sort(key=lambda i: stats[i, cv2.CC_STAT_LEFT])
 
-    # 白スーツは陰影が浅い。コントラストを上げて襟や折り目を出さないと、
-    # まわりの明るい面と一体化して形が読めない。
-    rgb = ImageEnhance.Contrast(rgb).enhance(1.30)
-    rgb = ImageEnhance.Color(rgb).enhance(1.14)
+    people = []
+    for i in order:
+        x, y = stats[i, cv2.CC_STAT_LEFT], stats[i, cv2.CC_STAT_TOP]
+        w, h = stats[i, cv2.CC_STAT_WIDTH], stats[i, cv2.CC_STAT_HEIGHT]
+        one = rgba.crop((x, y, x + w, y + h)).copy()
+        # 他人のはみ出しを消すため、その成分だけのアルファに差し替える
+        mine = Image.fromarray(
+            ((labels[y:y + h, x:x + w] == i) * 255).astype(np.uint8))
+        one.putalpha(ImageChops.multiply(one.getchannel("A"), mine))
+        people.append(one)
+    return people
 
-    panel = rgb.convert("RGBA")
-    # 明るさによる透過はもう使わない（レイのスーツが消えるため）。
-    see_through = Image.new("L", rgb.size, 255)
-    # 縁のフェードは人物には効かせない。パネルの右端フェード帯に
-    # レイの体がまるごと入っていて、それが透けの主因だった。
-    edge = ImageChops.lighter(mask.filter(ImageFilter.GaussianBlur(12)), protect)
-    alpha = ImageChops.multiply(edge, see_through)
-    panel.putalpha(alpha)
-    return panel
+
+def add_people(base: Image.Image) -> None:
+    """中央を大きく、左右を小さく下げて、中央へ視線が集まる形にする。"""
+    people = cutouts()
+    base_y = 968                                   # 足元をそろえる高さ
+    plan = ((0, 0.52, -470, 26), (1, 0.62, 0, 0), (2, 0.52, 470, 26))
+    for idx, ratio, dx, dy in sorted(plan, key=lambda p: p[1]):
+        person = people[idx]
+        ph = round(H * ratio)
+        pw = round(person.width * ph / person.height)
+        person = person.resize((pw, ph), Image.Resampling.LANCZOS)
+        x = W // 2 + dx - pw // 2
+        y = base_y + dy - ph
+
+        # 足元に淡い影。これが無いと人物が宙に浮いて見える。
+        shadow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        ImageDraw.Draw(shadow).ellipse(
+            (x + pw * 0.10, base_y + dy - 26, x + pw * 0.90, base_y + dy + 26),
+            fill=(0, 0, 0, 150))
+        base.alpha_composite(shadow.filter(ImageFilter.GaussianBlur(26)))
+        base.alpha_composite(person, (x, y))
 
 
 def arc_text(base: Image.Image, text: str, font: ImageFont.FreeTypeFont,
@@ -222,8 +218,7 @@ def add_type(base: Image.Image) -> None:
 
 def main() -> None:
     canvas = add_lasers(background()).convert("RGBA")
-    panel = members_panel()
-    canvas.alpha_composite(panel, ((W - panel.width) // 2, 232))
+    add_people(canvas)
 
     # 写真の白ホリゾントは、どう処理しても薄い霞として残る。
     # そこを隠すのではなく、**レーザーを重ねて背景そのものに変えてしまう**。
