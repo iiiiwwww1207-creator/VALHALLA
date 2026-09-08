@@ -292,24 +292,65 @@ def add_type(base: Image.Image) -> None:
 
 
 def add_band(base: Image.Image) -> None:
-    """最下部の帯。人物より前に描いて、日付と寄付の一行を必ず読ませる。"""
+    """最下部の帯。人物より前に描いて、日付と寄付の一行を必ず読ませる。
+
+    組み方は、支援を集めているクラウドファンディングのヘッダーを参考にした。
+    ・細い罫線で情報の塊を囲い、帯を「デザインされた面」に見せる
+    ・欧文は字間を大きく開けた小さめの大文字で、締まった印象をつくる
+    ・日付は大きく置く。数字は一瞬で読めるので、いちばん効く情報
+    """
     d = ImageDraw.Draw(base)
-    # 最下部：日付と寄付の一行を帯にして必ず読ませる。
-    band = H - 148
+    band = H - 196
     d.rectangle((0, band, W, H), fill=DEEPEST_CRIMSON + (255,))
-    date_f, place_f = face(DIDOT, 54), face(MINCHO, 34)
-    date_t, place_t = "2026 . 10 . 18 SUN", "渋谷"
-    dw = sum(d.textlength(c, font=date_f) for c in date_t) + 4 * (len(date_t) - 1)
+
+    line = (232, 206, 206, 90)
+    d.line((0, band, W, band), fill=(236, 210, 210, 200), width=2)
+
+    # ① 字間を開けた欧文の小見出し
+    eyebrow_f = face(DIDOT, 25)
+    eyebrow = "VALHALLA CHARITY LIVE"
+    ew = sum(d.textlength(c, font=eyebrow_f) for c in eyebrow) + 13 * (len(eyebrow) - 1)
+    x = (W - ew) / 2
+    for c in eyebrow:
+        d.text((x, band + 26), c, font=eyebrow_f, fill=(238, 214, 214, 235))
+        x += d.textlength(c, font=eyebrow_f) + 13
+    # 小見出しの左右に細い罫線を伸ばす
+    d.line((W / 2 - ew / 2 - 130, band + 40, W / 2 - ew / 2 - 34, band + 40),
+           fill=line, width=1)
+    d.line((W / 2 + ew / 2 + 34, band + 40, W / 2 + ew / 2 + 130, band + 40),
+           fill=line, width=1)
+
+    # ② 日付。数字を大きく、字間を開けて置く
+    date_f = face(DIDOT, 78)
+    date_t = "2026.10.18"
+    dw = sum(d.textlength(c, font=date_f) for c in date_t) + 5 * (len(date_t) - 1)
+    sun_f = face(DIDOT, 40)
+    sun_t = "SUN"
+    sw = sum(d.textlength(c, font=sun_f) for c in sun_t) + 8 * (len(sun_t) - 1)
+    place_f = face(MINCHO, 38)
+    place_t = "渋谷"
     pw = d.textlength(place_t, font=place_f)
-    x = (W - (dw + 40 + pw)) / 2
+
+    gap, rule_gap = 30, 34
+    total = dw + gap + sw + rule_gap * 2 + 1 + pw
+    x = (W - total) / 2
     for c in date_t:
-        d.text((x, band + 20), c, font=date_f, fill=CREAM + (255,))
-        x += d.textlength(c, font=date_f) + 4
-    d.text((x + 36, band + 32), place_t, font=place_f, fill=CREAM + (255,))
+        d.text((x, band + 66), c, font=date_f, fill=CREAM + (255,))
+        x += d.textlength(c, font=date_f) + 5
+    x += gap - 5
+    for c in sun_t:
+        d.text((x, band + 100), c, font=sun_f, fill=(238, 214, 214, 255))
+        x += d.textlength(c, font=sun_f) + 8
+    x += rule_gap - 8
+    d.line((x, band + 74, x, band + 132), fill=line, width=1)   # 縦の区切り罫
+    x += rule_gap
+    d.text((x, band + 92), place_t, font=place_f, fill=CREAM + (255,))
+
+    # ③ 寄付の一行。ここだけ和文で、静かに置く
     note = "収益から必要経費を差し引いた全額を、然るべき団体へ寄付します"
-    nf = face(MINCHO, 29)
-    d.text(((W - d.textlength(note, font=nf)) / 2, band + 96), note, font=nf,
-           fill=CREAM + (255,))
+    nf = face(MINCHO, 27)
+    d.text(((W - d.textlength(note, font=nf)) / 2, band + 152), note, font=nf,
+           fill=(236, 214, 214, 235))
 
 
 def main() -> None:
