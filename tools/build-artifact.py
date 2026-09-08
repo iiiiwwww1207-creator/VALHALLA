@@ -190,7 +190,7 @@ def main() -> None:
 <style>{CSS}</style>
 <header class="masthead"><div class="in">
   <p class="eyebrow">CAMPFIRE ページ本文 ドラフト</p>
-  <h1>ビジュアル系文化を守り、継ぐ。</h1>
+  <h1>文化 × エンタメ × AI</h1>
   <p class="meta">VALHALLA CHARITY LIVE ／ 2026年10月18日（日）<br>
   渋谷　OPEN 19:00 ／ START 19:30 ／ 終演 21:10</p>
 </div></header>

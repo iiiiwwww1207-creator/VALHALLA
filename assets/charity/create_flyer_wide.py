@@ -145,7 +145,7 @@ def add_type(base: Image.Image) -> None:
     # The official flyer catch copy is the primary reading moment: a solid
     # dark-crimson band and the heaviest available Hiragino Sans face.
     catch = font(HIRAGINO_BOLD, 56)
-    catch_text = "ビジュアル系文化を守り、継ぐ。"
+    catch_text = "文化 × エンタメ × AI"
     bbox = draw.textbbox((0, 0), catch_text, font=catch)
     catch_y = 288
     padding_x, padding_y = 22, 14

@@ -188,11 +188,11 @@ def add_cards(base: Image.Image) -> None:
     width = (W - margin * 2 - gap * 2) // 3
     height, top = 246, 575
     cards = (
-        ("01 ── 守る（外）", ("日本の文化・伝統を守る",), "前回＝根津神社"),
-        ("02 ── 再興する（内）", ("ビジュアル系文化の、", "再興"),
-         "人が集まれば、シーンはまた大きくなる"),
-        ("03 ── 投資する（未来）", ("AIリテラシーの育成を支援する",),
-         "寄付を通じて"),
+        ("01 ── 文化", ("受け継がれてきたものの", "上に立つ"), "前回＝根津神社"),
+        ("02 ── エンタメ", ("エンタメ業界を、", "もう一度盛り上げる"),
+         "選んだのがビジュアル系バンドでした"),
+        ("03 ── AI", ("好きなことをやる時間を", "AI でつくる"),
+         "だから AIリテラシーに寄付する"),
     )
     d = ImageDraw.Draw(base)
     kicker = face(SANS, 17)
@@ -216,7 +216,7 @@ def add_header(base: Image.Image) -> None:
     draw_tracked(d, (68, 34), "VALHALLA CHARITY LIVE ／ ACTIVITY",
                  face(SANS, 16), CRIMSON, 3)
     # 一語なので、文字数が減ったぶんサイズを上げて見出しとしての強さを保つ
-    d.text(spos((W / 2, 66)), "再興。", font=face(MINCHO, 76),
+    d.text(spos((W / 2, 66)), "文化 × エンタメ × AI", font=face(MINCHO, 62),
            fill=CREAM, anchor="ma")
 
 
