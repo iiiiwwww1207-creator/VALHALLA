@@ -127,7 +127,10 @@ def cutouts() -> list[Image.Image]:
     3倍以上になり、輪郭がシルエットどおりに出る。
     """
     from rembg import remove, new_session
-    session = new_session("u2net")
+    # 人物専用に学習された u2net_human_seg を使う。汎用 u2net と
+    # isnet-general-use とレイ（白スーツ）で比較したところ、
+    # 縁のノイズが最も少なく、ジャケットの線どおりに抜けた。
+    session = new_session("u2net_human_seg")
 
     def cut(img: Image.Image) -> Image.Image:
         # alpha matting は元画像の色を手がかりに境界を引き直す処理。
