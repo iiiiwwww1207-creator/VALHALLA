@@ -68,6 +68,8 @@
   .items td.what b{font-weight:700}
   .items td.what span.note{display:block;color:var(--sub);font-size:12.5px;line-height:1.6}
 
+  tr.grp td{background:var(--band);font-size:12px;font-weight:700;letter-spacing:.06em;
+    color:var(--deep);padding:7px 12px;border-bottom:1px solid var(--rule)}
   .tag{display:inline-block;font-size:11px;font-weight:700;padding:1px 7px;border-radius:999px;
     vertical-align:1px;margin-left:6px;white-space:nowrap}
   .tag.fix{background:var(--okbg);color:var(--ok)}
@@ -91,7 +93,7 @@
 
 <div class="wrap">
 
-<p class="lead">「ライブ観覧」もリターンの一部として数えています。<br>
+<p class="lead">「ライブ観覧」もリターンの一部として数えています。<br><b>当日お渡し・ご体験いただくもの</b>と、<b>後日（ファンミーティング／郵送）</b>を分けて並べています。<br>
 <span style="color:var(--ok);font-weight:700">確定</span> は内容が決まっているもの、
 <span style="color:var(--warn);font-weight:700">要確定</span> は明日の打ち合わせで詰めたいものです。</p>
 
@@ -126,8 +128,8 @@
   <div class="chead"><span class="name">シンプル応援</span><span class="price">¥5,000</span>
     <span class="qty">無制限 ／ 来場不要</span></div>
   <table class="items">
-    <thead><tr><th>お渡しするもの</th><th>提供のしかた</th></tr></thead>
     <tbody>
+      <tr class="grp"><td colspan="2">後日・郵送</td></tr>
       <tr><td class="what"><b>限定名刺</b><span class="tag fix">確定</span>
         <span class="note">QRコードは付けない想定（上位コースとの差をここでつける）</span></td>
         <td class="when">郵送<br>2026年11月</td></tr>
@@ -140,17 +142,18 @@
   <div class="chead"><span class="name">ライブ席</span><span class="price">¥10,000</span>
     <span class="qty">100名 ／ スタンディング後方</span></div>
   <table class="items">
-    <thead><tr><th>お渡しするもの</th><th>提供のしかた</th></tr></thead>
     <tbody>
+      <tr class="grp"><td colspan="2">当日・会場で</td></tr>
       <tr><td class="what"><b>アコースティックライブ観覧</b><span class="tag fix">確定</span>
         <span class="note">VALHALLA（MIO / RAY / KØU）／ 19:30 開演・20:05 終演</span></td>
         <td class="when">当日会場</td></tr>
       <tr><td class="what"><b>フリードリンク（飲み放題）</b><span class="tag tbd">要確定</span>
         <span class="note">付く予定。提供時間・内容・杯数が未定。<b>付けるか外すかを明日決めたい</b></span></td>
         <td class="when">当日会場</td></tr>
+      <tr class="grp"><td colspan="2">事前・メール</td></tr>
       <tr><td class="what">電子チケット<span class="tag fix">確定</span>
         <span class="note">当日受付でご提示いただく</span></td>
-        <td class="when">メール<br>2026年10月上旬</td></tr>
+        <td class="when">2026年10月上旬</td></tr>
     </tbody>
   </table>
 </div>
@@ -160,20 +163,21 @@
   <div class="chead"><span class="name">最前列席</span><span class="price">¥50,000</span>
     <span class="qty">30名 ／ スタンディング最前列</span></div>
   <table class="items">
-    <thead><tr><th>お渡しするもの</th><th>提供のしかた</th></tr></thead>
     <tbody>
+      <tr class="grp"><td colspan="2">当日・会場で</td></tr>
       <tr><td class="what"><b>最前列でのライブ観覧</b><span class="tag fix">確定</span>
         <span class="note">スタンディングの最前列エリア（30名）</span></td>
         <td class="when">当日会場</td></tr>
-      <tr><td class="what"><b>ファンミーティング</b><span class="tag tbd">要確定</span>
-        <span class="note">2026年11月中・ユグドラシル本店（営業時間外の日中に会場として使用）。
-        <b>日程・形式・定員が未定</b></span></td>
-        <td class="when">別日<br>2026年11月</td></tr>
       <tr><td class="what">フリードリンク<span class="tag tbd">要確定</span>
         <span class="note">ライブ席に付くなら最前列席にも付くはず。<b>対象範囲を確定させる</b></span></td>
         <td class="when">当日会場</td></tr>
+      <tr class="grp"><td colspan="2">後日・ファンミーティング（2026年11月・ユグドラシル本店）</td></tr>
+      <tr><td class="what"><b>ファンミーティングへのご参加</b><span class="tag tbd">要確定</span>
+        <span class="note"><b>内容が未定。</b>VVIP より軽い設計にする必要がある（日程・形式・定員も）</span></td>
+        <td class="when">2026年11月</td></tr>
+      <tr class="grp"><td colspan="2">事前・メール</td></tr>
       <tr><td class="what">電子チケット<span class="tag fix">確定</span></td>
-        <td class="when">メール<br>2026年10月上旬</td></tr>
+        <td class="when">2026年10月上旬</td></tr>
     </tbody>
   </table>
 </div>
@@ -183,27 +187,20 @@
   <div class="chead"><span class="name">S席・MIOタイム</span><span class="price">¥150,000</span>
     <span class="qty">15口 ／ 同伴1名まで可（計30名） ／ 17:45 先行入場</span></div>
   <table class="items">
-    <thead><tr><th>お渡しするもの</th><th>提供のしかた</th></tr></thead>
     <tbody>
+      <tr class="grp"><td colspan="2">当日・会場で</td></tr>
       <tr><td class="what"><b>お席</b><span class="tag fix">確定</span>
         <span class="note">S席区画（V6・V5・V2・V3・S1〜S4）。席は主催者にて指定</span></td>
         <td class="when">当日会場</td></tr>
       <tr><td class="what"><b>MIO とのチェキ撮影</b><span class="tag fix">確定</span>
         <span class="note">お一人1分。<b>先行入場のお時間（18:00〜）にすべて撮影</b></span></td>
         <td class="when">当日会場<br>18:00〜</td></tr>
-      <tr><td class="what"><b>やしろ語録動画</b><span class="tag tbd">要確定</span>
-        <span class="note">MIO の言葉を1つ選び、本人に語ってもらい撮影。
-        <b>撮影は当日ではなく後日のファンミーティングで行う</b></span></td>
-        <td class="when">別日<br>2026年11月</td></tr>
       <tr><td class="what"><b>限定名刺</b><span class="tag fix">確定</span>
         <span class="note">QRコードから限定シャンパンコール動画を視聴できる</span></td>
         <td class="when">当日会場</td></tr>
       <tr><td class="what"><b>ノベルティ：ノート・ペン</b><span class="tag tbd">要確定</span>
         <span class="note">ロゴ入り。デザイン・仕様・原価・納期が未定</span></td>
         <td class="when">当日会場<br>または郵送</td></tr>
-      <tr><td class="what"><b>ファンミーティング</b><span class="tag tbd">要確定</span>
-        <span class="note">2026年11月中・ユグドラシル本店。<b>同伴者も参加できるのかが未確定</b></span></td>
-        <td class="when">別日<br>2026年11月</td></tr>
       <tr><td class="what"><b>アコースティックライブ観覧</b><span class="tag fix">確定</span></td>
         <td class="when">当日会場</td></tr>
       <tr><td class="what"><b>同伴1名まで</b><span class="tag fix">確定</span>
@@ -215,8 +212,18 @@
       <tr><td class="what">歓談のお時間<span class="tag fix">確定</span>
         <span class="note">チェキ終了後、開演まで飲み物とともに</span></td>
         <td class="when">当日会場<br>18:30〜</td></tr>
+      <tr class="grp"><td colspan="2">後日・ファンミーティング（2026年11月・ユグドラシル本店）</td></tr>
+      <tr><td class="what"><b>ファンミーティングへのご参加</b><span class="tag tbd">要確定</span>
+        <span class="note"><b>内容が未定。</b>VVIP より軽い設計にする必要がある。
+        <b>同伴者も参加できるのかも未確定</b></span></td>
+        <td class="when">2026年11月</td></tr>
+      <tr><td class="what"><b>やしろ語録動画</b><span class="tag tbd">要確定</span>
+        <span class="note">MIO の言葉を1つ選び、本人に語ってもらい撮影。
+        <b>撮影は当日ではなくファンミーティングの場で行う</b></span></td>
+        <td class="when">2026年11月</td></tr>
+      <tr class="grp"><td colspan="2">事前・メール</td></tr>
       <tr><td class="what">電子チケット<span class="tag fix">確定</span></td>
-        <td class="when">メール<br>2026年10月上旬</td></tr>
+        <td class="when">2026年10月上旬</td></tr>
     </tbody>
   </table>
 </div>
@@ -226,16 +233,13 @@
   <div class="chead"><span class="name">VVIP席</span><span class="price">¥330,000</span>
     <span class="qty">10口 ／ 同伴1名まで可（計20名）</span></div>
   <table class="items">
-    <thead><tr><th>お渡しするもの</th><th>提供のしかた</th></tr></thead>
     <tbody>
+      <tr class="grp"><td colspan="2">当日・会場で</td></tr>
       <tr><td class="what"><b>MIO と対面でお話しいただけます</b><span class="tag fix">確定</span>
         <span class="note">1口あたり6分前後。<b>当日 MIO と直接話せるのは VVIP席のみ</b></span></td>
         <td class="when">当日会場<br>20:10〜21:10</td></tr>
       <tr><td class="what"><b>お好きなお席をお選びいただけます</b><span class="tag fix">確定</span>
         <span class="note">DJ席・V4・V1 より<b>先着順</b></span></td>
-        <td class="when">当日会場</td></tr>
-      <tr><td class="what"><b>シャンパンサービス</b><span class="tag tbd">要確定</span>
-        <span class="note">銘柄・本数が未定。<b>1口あたり何本かを決める</b></span></td>
         <td class="when">当日会場</td></tr>
       <tr><td class="what"><b>チェキ／写真／動画 撮影OK</b><span class="tag fix">確定</span></td>
         <td class="when">当日会場</td></tr>
@@ -254,11 +258,14 @@
       <tr><td class="what"><b>同伴1名まで</b><span class="tag fix">確定</span>
         <span class="note">同伴者は無料</span></td>
         <td class="when">当日会場</td></tr>
-      <tr><td class="what">ファンミーティング<span class="tag fix">付かない</span>
-        <span class="note">VVIP席にファンミーティングは付かない（当日で完結する設計）</span></td>
-        <td class="when">—</td></tr>
+      <tr class="grp"><td colspan="2">後日・ファンミーティング（2026年11月・ユグドラシル本店）</td></tr>
+      <tr><td class="what"><b>30分間のグループセッション</b>、または <b>MIO への Q&amp;A</b><span class="tag tbd">要確定</span>
+        <span class="note"><b>どちらにするかが未定。</b>5万円以上の全コースにファンミーティングは付くが、
+        VVIP はこの内容で他コースと差をつける</span></td>
+        <td class="when">2026年11月</td></tr>
+      <tr class="grp"><td colspan="2">事前・メール</td></tr>
       <tr><td class="what">電子チケット<span class="tag fix">確定</span></td>
-        <td class="when">メール<br>2026年10月上旬</td></tr>
+        <td class="when">2026年10月上旬</td></tr>
     </tbody>
   </table>
 </div>
@@ -293,6 +300,10 @@
   <li><b>「同伴1名まで無料」の扱い</b>
     <span>1口の購入で2名が入場する。CAMPFIRE 上の表記と、当日の受付・人数管理をどう設計するか。
     <b>同伴者にどこまで提供するか</b>（席・軽食・ドリンク・チェキ）も併せて。</span></li>
+  <li><b>ファンミーティングの内容をコースごとにどう変えるか</b>
+    <span>5万円以上の全コースにファンミーティングが付く。VVIP は「30分間のグループセッション」
+    または「MIO への Q&amp;A」。<b>最前列席・S席の内容が未定。</b>
+    内容が違うなら回を分ける必要があり、MIO の拘束時間に直結する。</span></li>
   <li><b>ノベルティの原価上限</b>
     <span>リターンの調達費は寄付にかかる事前合意書 第1条(2) の実費相当額として控除できる＝
     <b>かけた分だけ寄付額が減る</b>。1口あたりいくらまでかけてよいか。</span></li>
