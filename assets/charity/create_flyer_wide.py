@@ -192,11 +192,11 @@ def cutouts() -> list[Image.Image]:
     return people
 
 
-def add_people(base: Image.Image) -> Image.Image:
+def add_people(base: Image.Image) -> tuple[Image.Image, Image.Image]:
     """中央を大きく、左右を小さく下げて、中央へ視線が集まる形にする。
 
-    3人の背後に白いもやを敷き、そのマスクを返す。
-    呼び出し側はこのマスクでレーザーを弱め、人物の背後だけ光を止める。
+    3人の背後に白いもやを敷き、(もやのマスク, 3人のシルエット) を返す。
+    呼び出し側はこれでレーザーを止める。
     """
     people = cutouts()
     base_y = 968                                   # 足元をそろえる高さ
@@ -223,14 +223,17 @@ def add_people(base: Image.Image) -> Image.Image:
             fill=(0, 0, 0, 68))
     base.alpha_composite(shadow.filter(ImageFilter.GaussianBlur(18)))
 
-    # 3人の背後に白いもや。人物のアルファを大きくぼかして作るので、
-    # 四角い箱にならず、体の形に沿った光になる。
-    haze = Image.new("L", (W, H), 0)
+    # 3人のシルエットを1枚にまとめる。もやの元にも、
+    # レーザーを止める範囲にも使う。
+    solid = Image.new("L", (W, H), 0)
     for person, x, y in placed:
         layer = Image.new("L", (W, H), 0)
         layer.paste(person.getchannel("A"), (x, y))
-        haze = ImageChops.lighter(haze, layer)
-    haze = haze.filter(ImageFilter.MaxFilter(9)).filter(ImageFilter.GaussianBlur(70))
+        solid = ImageChops.lighter(solid, layer)
+
+    # 背後のもやは、そのシルエットを大きくぼかして作る。
+    # 四角い箱にならず、体の形に沿った光になる。
+    haze = solid.filter(ImageFilter.MaxFilter(9)).filter(ImageFilter.GaussianBlur(70))
     haze = haze.point(lambda v: min(255, round(v * 1.5)))
 
     white = Image.new("RGBA", (W, H), (246, 242, 244, 255))
@@ -240,7 +243,7 @@ def add_people(base: Image.Image) -> Image.Image:
     # 左右を先に、中央を最後に置いて、中央人物を視覚的な主役にする。
     for person, x, y in (placed[0], placed[2], placed[1]):
         base.alpha_composite(person, (x, y))
-    return haze
+    return haze, solid
 
 
 def arc_text(base: Image.Image, text: str, font: ImageFont.FreeTypeFont,
@@ -303,13 +306,17 @@ def add_type(base: Image.Image) -> None:
 
 def main() -> None:
     canvas = add_lasers(background()).convert("RGBA")
-    haze = add_people(canvas)
+    haze, solid = add_people(canvas)
 
-    # 人物の前にもレーザーを走らせる。ただし3人の背後のもやの上では
-    # レーザーを止める。光の中に立っているように見せたいので、
-    # そこだけ線が走らないほうが人物が浮き上がる。
+    # 人物の前にもレーザーを走らせる。ただし
+    #   ・3人の体の上には一切かけない（シルエットで完全に止める）
+    #   ・その背後のもやの上でも弱める
+    # 顔や衣装に線が乗ると、切り抜いた人物が背景に沈んで見えるため。
     over = laser_layer((W, H), seed=4471, beams_per_side=11, gain=0.9)
-    keep = ImageChops.invert(haze.point(lambda v: min(255, round(v * 1.25))))
+    block = ImageChops.lighter(
+        solid.filter(ImageFilter.MaxFilter(7)).filter(ImageFilter.GaussianBlur(3)),
+        haze.point(lambda v: min(255, round(v * 1.25))))
+    keep = ImageChops.invert(block)
     over = Image.merge("RGB", [ImageChops.multiply(ch, keep) for ch in over.split()])
     canvas = ImageChops.add(canvas.convert("RGB"), over).convert("RGBA")
     add_type(canvas)
