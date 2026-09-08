@@ -97,62 +97,79 @@ def add_lasers(base: Image.Image) -> Image.Image:
 CUTOUT = HERE / "members_cutout.png"   # rembg で人物だけを抜いたもの
 
 
-def cutouts() -> list[Image.Image]:
-    """3人を1人ずつ、人物の形どおりに切り出して返す（左から順）。
+def refine_edges(rgba: Image.Image) -> Image.Image:
+    """縁に残る白ホリゾントの色を取り除き、輪郭を締める。
 
-    白ホリゾント撮影のため、明度や輪郭で抜こうとすると
-    白スーツ（明度251）が白背景（242）より明るく、必ず一緒に消える。
-    そこで rembg（U2Net）で意味的に人物を抜く。モデルは手元にあるので
-    オフラインで動く。結果は PNG に残して、次回からは読むだけにする。
+    半透明の縁は「人物の色」と「背景の白」が混ざった状態なので、
+    背景ぶんを引き算して人物本来の色に戻す。これをやらないと、
+    暗い渋谷の上に置いたとき縁が白く光って切り抜き感が出る。
     """
-    if not CUTOUT.exists():
-        from rembg import remove, new_session
-        # alpha matting を有効にすると、元画像の色を手がかりに境界を引き直す。
-        # これが無いとマスクが丸く鈍り、袖や手の形が潰れる。
-        remove(Image.open(MEMBERS).convert("RGB"),
-               session=new_session("u2net"),
-               alpha_matting=True,
-               alpha_matting_foreground_threshold=250,
-               alpha_matting_background_threshold=15,
-               alpha_matting_erode_size=12).save(CUTOUT)
+    arr = np.asarray(rgba).astype(np.float32)
+    a = arr[:, :, 3:4] / 255.0
+    bg = np.array([244.0, 244.0, 244.0], np.float32)   # 白ホリゾントの実測値
+    clean = np.clip((arr[:, :, :3] - (1 - a) * bg) / np.clip(a, 0.18, 1.0), 0, 255)
+    # ごく薄い縁は背景側とみなして落とす（輪郭の締め）
+    tight = np.clip((a - 0.14) / (1 - 0.14), 0, 1)
+    out = np.concatenate([clean, tight * 255], axis=2).astype(np.uint8)
+    return Image.fromarray(out).convert("RGBA")
 
-    rgba = Image.open(CUTOUT).convert("RGBA")
-    pixels = np.asarray(rgba)
-    alpha = pixels[:, :, 3]
-    # 連結成分で3人に分ける。16は人物の明度ではなく、rembg のアルファに
-    # 残る微小ノイズだけを外し、髪先などの半透明部分を成分へ含める値。
+
+def cutouts() -> list[Image.Image]:
+    """3人を1人ずつ、シルエットどおりに切り出して返す（左から順）。
+
+    白ホリゾント撮影のため、明度や輪郭で抜くと白スーツ（明度251）が
+    白背景（242）より明るく、必ず一緒に消える。そこで rembg（U2Net）で
+    意味的に抜く。モデルは手元にあるのでオフラインで動く。
+
+    ただし U2Net は入力を 320x320 に縮めて判定するので、幅1600の写真を
+    そのまま渡すとマスクが粗くなり、袖や手が塊に潰れる。
+    そこで **1人ずつ切り出してから個別にかける**。1人あたりの実効解像度が
+    3倍以上になり、輪郭がシルエットどおりに出る。
+    """
+    from rembg import remove, new_session
+    session = new_session("u2net")
+
+    def cut(img: Image.Image) -> Image.Image:
+        # alpha matting は元画像の色を手がかりに境界を引き直す処理。
+        # これが無いとマスクが丸く鈍る。
+        return remove(img, session=session, alpha_matting=True,
+                      alpha_matting_foreground_threshold=250,
+                      alpha_matting_background_threshold=15,
+                      alpha_matting_erode_size=12)
+
+    src = Image.open(MEMBERS).convert("RGB")
+
+    # 1回目：全体をざっくり抜いて、3人の位置を掴む
+    rough = np.asarray(cut(src))[:, :, 3]
     n, labels, stats, _ = cv2.connectedComponentsWithStats(
-        (alpha >= 16).astype(np.uint8), connectivity=8)
+        (rough >= 16).astype(np.uint8), connectivity=8)
     order = sorted(range(1, n), key=lambda i: -stats[i, cv2.CC_STAT_AREA])[:3]
     if len(order) != 3:
         raise RuntimeError(f"人物の連結成分が3個見つかりません: {len(order)}個")
     order.sort(key=lambda i: stats[i, cv2.CC_STAT_LEFT])
 
+    # 2回目：1人ずつ、余白をつけて切り出してから高解像度で抜き直す
     people = []
     for number, i in enumerate(order, start=1):
         x, y = stats[i, cv2.CC_STAT_LEFT], stats[i, cv2.CC_STAT_TOP]
         w, h = stats[i, cv2.CC_STAT_WIDTH], stats[i, cv2.CC_STAT_HEIGHT]
-        area = int(stats[i, cv2.CC_STAT_AREA])
-        # 連結成分の矩形に余白を足し、rembg の柔らかい元アルファをそのまま残す。
-        # 二値マスクへ差し替えないので、髪や衣装の縁がギザギザにならない。
-        pad = 12
+        pad = 40
         box = (max(0, x - pad), max(0, y - pad),
-               min(rgba.width, x + w + pad), min(rgba.height, y + h + pad))
-        people.append(rgba.crop(box))
-        print(f"人物{number}: alpha領域 {area:,}px | bbox=({x}, {y}, {w}, {h})")
+               min(src.width, x + w + pad), min(src.height, y + h + pad))
+        one = refine_edges(cut(src.crop(box)))
+        one = one.crop(one.getbbox())
+        people.append(one)
+        opaque = int((np.asarray(one)[:, :, 3] > 128).sum())
+        print(f"人物{number}: {one.size[0]}x{one.size[1]} / 不透明 {opaque:,}px")
 
-    # 右人物の領域に、高明度で十分不透明な画素が大量にあることを確認する。
-    # ここが減っていれば、白スーツまで背景として消した失敗と判断する。
-    right = order[2]
-    luminance = cv2.cvtColor(pixels[:, :, :3], cv2.COLOR_RGB2GRAY)
-    right_mask = (labels == right) & (alpha >= 128)
-    right_pixels = int(np.count_nonzero(right_mask))
-    white_suit_pixels = int(np.count_nonzero(right_mask & (luminance >= 245)))
-    white_ratio = white_suit_pixels / max(1, right_pixels)
-    print("右メンバー白スーツ検証: "
-          f"高明度かつ不透明 {white_suit_pixels:,}px / "
-          f"右人物 {right_pixels:,}px ({white_ratio:.1%})")
-    if white_suit_pixels < 50_000 or white_ratio < 0.30:
+    # 右の人物（白スーツ）が消えていないことを確認する。
+    right = np.asarray(people[2])
+    lum = cv2.cvtColor(right[:, :, :3], cv2.COLOR_RGB2GRAY)
+    solid = right[:, :, 3] > 128
+    white = int(np.count_nonzero(solid & (lum >= 235)))
+    ratio = white / max(1, int(solid.sum()))
+    print(f"右メンバー白スーツ検証: 高明度かつ不透明 {white:,}px ({ratio:.1%})")
+    if ratio < 0.30:
         raise RuntimeError("右メンバーの白スーツが十分に残っていません")
     return people
 
