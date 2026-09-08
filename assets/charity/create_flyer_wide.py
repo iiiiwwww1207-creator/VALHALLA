@@ -30,6 +30,9 @@ DARK_CRIMSON = (142, 16, 25)
 DEEPEST_CRIMSON = (110, 10, 18)
 CREAM = (245, 239, 228)
 
+# 3人が元写真（幅1600）で占める範囲。ここは透過をかけずに守る。
+PEOPLE_X = ((120, 545), (560, 1020), (1060, 1550))
+
 MINCHO = "/System/Library/Fonts/ヒラギノ明朝 ProN.ttc"
 MINCHO_W6 = 2
 DIDOT = "/System/Library/Fonts/Supplemental/Didot.ttc"
@@ -130,8 +133,17 @@ def members_panel() -> Image.Image:
     # 縁のフェードに加えて、**明るい画素ほど透明にする**。
     # 白ホリゾントの白が半透明になって渋谷が透け、人物のまわりに
     # 白い霞が残らない。暗い衣装や髪はそのまま不透明で残る。
-    # 透過が強すぎると白衣装の人まで消えるので、控えめにする
-    see_through = weight.point(lambda v: 255 - round(v * 0.34))
+    # 明るさだけで透過をかけると、白衣装の人が背景と一緒に消える。
+    # そこで**人物が立っている列は透過をかけない**保護マスクを作り、
+    # 3人の外側（何も写っていない白ホリゾント）だけを透けさせる。
+    protect = Image.new("L", rgb.size, 0)
+    pd = ImageDraw.Draw(protect)
+    sx = rgb.size[0] / 1600
+    for x0, x1 in PEOPLE_X:
+        pd.rectangle((x0 * sx, 0, x1 * sx, rgb.size[1]), fill=255)
+    protect = protect.filter(ImageFilter.GaussianBlur(46))   # 境目をなじませる
+    fade = ImageChops.multiply(weight, ImageChops.invert(protect))
+    see_through = fade.point(lambda v: 255 - round(v * 0.88))
     alpha = ImageChops.multiply(mask.filter(ImageFilter.GaussianBlur(12)), see_through)
     panel.putalpha(alpha)
     return panel
