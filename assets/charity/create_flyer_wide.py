@@ -15,7 +15,7 @@
 import math
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from PIL import Image, ImageChops, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 
 HERE = Path(__file__).resolve().parent
 MEMBERS = HERE / "members_white.jpg"
@@ -70,12 +70,20 @@ def members_panel() -> Image.Image:
             ay = min(1.0, y / fy, (ph - 1 - y) / (fy * 1.6))
             ay = ay * ay * (3 - 2 * ay)
             px[x, y] = round(255 * min(ax, ay))
-    # 白ホリゾントの白がそのままだと画面に白い塊ができるので、
-    # 背景と同じ暗いクリムゾン側へ寄せて、光が当たっているくらいに落とす。
-    tinted = Image.blend(panel.convert("RGB"),
-                         Image.new("RGB", panel.size, DARK_CRIMSON), 0.30)
-    tinted = Image.blend(tinted, Image.new("RGB", panel.size, BLACK), 0.16)
-    panel = tinted.convert("RGBA")
+    # 白ホリゾントの白だけを暗いクリムゾンへ寄せる。
+    # 写真全体を染めると人物の色（青髪・紫・白衣装）まで濁るので、
+    # **明るい画素ほど強く染まる**重みをかけて、白地だけを落とす。
+    rgb = panel.convert("RGB")
+    lum = rgb.convert("L")
+    weight = lum.point(lambda v: 0 if v < 224 else min(255, round((v - 224) * 255 / 30)))
+    weight = weight.filter(ImageFilter.GaussianBlur(3))
+    # 染める色はクリムゾンではなく暗いニュートラル。赤で染めると
+    # 白衣装まで赤くなり、写真全体に赤いモヤがかかったように見えるため。
+    tint = Image.new("RGB", rgb.size, (26, 20, 24))
+    rgb = Image.composite(Image.blend(rgb, tint, 0.52), rgb, weight)
+    # 人物の色は残したいので、彩度をわずかに上げて沈みを戻す
+    rgb = ImageEnhance.Color(rgb).enhance(1.14)
+    panel = rgb.convert("RGBA")
     panel.putalpha(mask.filter(ImageFilter.GaussianBlur(12)))
     return panel
 
