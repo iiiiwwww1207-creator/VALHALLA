@@ -61,6 +61,35 @@ def background() -> Image.Image:
     return im
 
 
+def laser_layer(size: tuple[int, int], seed: int = 20261018) -> Image.Image:
+    """黒地に赤いレーザーだけを描いた層を返す。
+
+    背景に加算するのにも、白ホリゾントを塗り替えるのにも使う。
+    """
+    rnd = random.Random(seed)
+    core = Image.new("RGB", size, (0, 0, 0))
+    glow = Image.new("RGB", size, (0, 0, 0))
+    dc, dg = ImageDraw.Draw(core), ImageDraw.Draw(glow)
+    w, h = size
+    beams = []
+    for _ in range(7):
+        x0 = rnd.randint(round(-w * 0.26), round(w * 0.47))
+        x1 = x0 + rnd.randint(round(w * 0.78), round(w * 1.35))
+        y0 = rnd.randint(round(-h * 0.15), round(h * 0.48))
+        y1 = y0 + rnd.randint(round(h * 0.22), round(h * 0.70))
+        beams.append((x0, y0, x1, y1, rnd.uniform(0.45, 1.0),
+                      rnd.choice((1, 2, 2, 3)), rnd.choice((10, 16, 22))))
+    beams += [(w - x0, y0, w - x1, y1, b, cw, gw)
+              for x0, y0, x1, y1, b, cw, gw in beams]
+    for x0, y0, x1, y1, bright, cw, gw in beams:
+        dc.line((x0, y0, x1, y1),
+                fill=(round(255 * bright), round(32 * bright), round(54 * bright)),
+                width=cw)
+        dg.line((x0, y0, x1, y1), fill=(round(150 * bright), 12, 22), width=gw)
+    return ImageChops.add(glow.filter(ImageFilter.GaussianBlur(26)),
+                          core.filter(ImageFilter.GaussianBlur(1.2)))
+
+
 def add_lasers(base: Image.Image) -> Image.Image:
     """赤いレーザーを斜めに走らせる。
 
@@ -127,20 +156,26 @@ def members_panel() -> Image.Image:
     # レイの白スーツ（背景より明るい）が背景と一緒に消えてしまうため。
     protect = Image.new("L", rgb.size, 0)
     pd = ImageDraw.Draw(protect)
-    sx = rgb.size[0] / 1600
+    sx, sy = rgb.size[0] / 1600, rgb.size[1] / 1066
+    # 守るのは人物が実際にいる範囲だけ。頭より上まで守ると、
+    # そこに白ホリゾントの白が帯として残ってしまう。
+    # 楕円で描いてから大きくぼかす。四角のまま使うと、
+    # 守った範囲が「白い箱」として見えてしまう。
     for x0, x1 in PEOPLE_X:
-        pd.rectangle((x0 * sx, 0, x1 * sx, rgb.size[1]), fill=255)
-    protect = protect.filter(ImageFilter.GaussianBlur(38))
+        cx = (x0 + x1) / 2 * sx
+        half = (x1 - x0) / 2 * sx * 0.92
+        pd.ellipse((cx - half, 210 * sy, cx + half, rgb.size[1] + 260 * sy), fill=255)
+    protect = protect.filter(ImageFilter.GaussianBlur(62))
     fade = ImageChops.multiply(weight, ImageChops.invert(protect))
 
-    # 列の外の白ホリゾントだけを、暗いニュートラルへ強く沈める。
-    # 赤で染めると人物まで赤くなるので色味は持たせない。
+    # 白ホリゾントを「透かす」と、レイの白スーツ（背景より明るい）まで
+    # 必ず一緒に消える。そこで透かすのをやめ、**赤いレーザーの面に塗り替える**。
+    # 列の中は塗り替えないので、レイのスーツは白のまま残る。
     tint = Image.new("RGB", rgb.size, (26, 20, 24))
-    # まず白ホリゾント全体を少し落とす。列の中の白地が明るいままだと、
-    # そこだけ白い柱のように見えてしまうため。
-    rgb = Image.composite(Image.blend(rgb, tint, 0.34), rgb, weight)
-    # そのうえで、列の外はさらに深く沈めて渋谷へ渡す。
-    rgb = Image.composite(Image.blend(rgb, tint, 0.62), rgb, fade)
+    rgb = Image.composite(Image.blend(rgb, tint, 0.30), rgb, weight)   # 白地を少し落とす
+    field = ImageChops.add(Image.new("RGB", rgb.size, (18, 10, 14)),
+                           laser_layer(rgb.size, seed=778))
+    rgb = Image.composite(field, rgb, fade)                            # 列の外を赤い面に
 
     # 白スーツは陰影が浅い。コントラストを上げて襟や折り目を出さないと、
     # まわりの明るい面と一体化して形が読めない。
@@ -148,8 +183,8 @@ def members_panel() -> Image.Image:
     rgb = ImageEnhance.Color(rgb).enhance(1.14)
 
     panel = rgb.convert("RGBA")
-    # 列の外はほぼ完全に透かして渋谷を出し、列の中は透かさない。
-    see_through = fade.point(lambda v: 255 - round(v * 0.97))
+    # 明るさによる透過はもう使わない（レイのスーツが消えるため）。
+    see_through = Image.new("L", rgb.size, 255)
     # 縁のフェードは人物には効かせない。パネルの右端フェード帯に
     # レイの体がまるごと入っていて、それが透けの主因だった。
     edge = ImageChops.lighter(mask.filter(ImageFilter.GaussianBlur(12)), protect)
