@@ -192,8 +192,12 @@ def cutouts() -> list[Image.Image]:
     return people
 
 
-def add_people(base: Image.Image) -> None:
-    """中央を大きく、左右を小さく下げて、中央へ視線が集まる形にする。"""
+def add_people(base: Image.Image) -> Image.Image:
+    """中央を大きく、左右を小さく下げて、中央へ視線が集まる形にする。
+
+    3人の背後に白いもやを敷き、そのマスクを返す。
+    呼び出し側はこのマスクでレーザーを弱め、人物の背後だけ光を止める。
+    """
     people = cutouts()
     base_y = 968                                   # 足元をそろえる高さ
     plan = ((0, 0.52, -420), (1, 0.62, 0), (2, 0.52, 420))
@@ -219,9 +223,24 @@ def add_people(base: Image.Image) -> None:
             fill=(0, 0, 0, 68))
     base.alpha_composite(shadow.filter(ImageFilter.GaussianBlur(18)))
 
+    # 3人の背後に白いもや。人物のアルファを大きくぼかして作るので、
+    # 四角い箱にならず、体の形に沿った光になる。
+    haze = Image.new("L", (W, H), 0)
+    for person, x, y in placed:
+        layer = Image.new("L", (W, H), 0)
+        layer.paste(person.getchannel("A"), (x, y))
+        haze = ImageChops.lighter(haze, layer)
+    haze = haze.filter(ImageFilter.MaxFilter(9)).filter(ImageFilter.GaussianBlur(70))
+    haze = haze.point(lambda v: min(255, round(v * 1.5)))
+
+    white = Image.new("RGBA", (W, H), (246, 242, 244, 255))
+    white.putalpha(haze.point(lambda v: round(v * 0.62)))
+    base.alpha_composite(white)
+
     # 左右を先に、中央を最後に置いて、中央人物を視覚的な主役にする。
     for person, x, y in (placed[0], placed[2], placed[1]):
         base.alpha_composite(person, (x, y))
+    return haze
 
 
 def arc_text(base: Image.Image, text: str, font: ImageFont.FreeTypeFont,
@@ -284,10 +303,14 @@ def add_type(base: Image.Image) -> None:
 
 def main() -> None:
     canvas = add_lasers(background()).convert("RGBA")
-    add_people(canvas)
+    haze = add_people(canvas)
 
-    # 人物の前にもレーザーを走らせ、背景と同じ空間にいるように見せる。
+    # 人物の前にもレーザーを走らせる。ただし3人の背後のもやの上では
+    # レーザーを止める。光の中に立っているように見せたいので、
+    # そこだけ線が走らないほうが人物が浮き上がる。
     over = laser_layer((W, H), seed=4471, beams_per_side=11, gain=0.9)
+    keep = ImageChops.invert(haze.point(lambda v: min(255, round(v * 1.25))))
+    over = Image.merge("RGB", [ImageChops.multiply(ch, keep) for ch in over.split()])
     canvas = ImageChops.add(canvas.convert("RGB"), over).convert("RGBA")
     add_type(canvas)
     out = canvas.convert("RGB")
