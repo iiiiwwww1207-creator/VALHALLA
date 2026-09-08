@@ -192,11 +192,12 @@ def cutouts() -> list[Image.Image]:
     return people
 
 
-def add_people(base: Image.Image) -> tuple[Image.Image, Image.Image]:
+def add_people(base: Image.Image):
     """中央を大きく、左右を小さく下げて、中央へ視線が集まる形にする。
 
-    3人の背後に白いもやを敷き、(もやのマスク, 3人のシルエット) を返す。
-    呼び出し側はこれでレーザーを止める。
+    ここでは背後のもやまでを描き、(配置, もやのマスク, シルエット) を返す。
+    人物そのものは paste_people で最後に貼る。文字より後に貼ることで、
+    文字が人物にかからない（人物が手前に立つ）。
     """
     people = cutouts()
     base_y = 968                                   # 足元をそろえる高さ
@@ -240,10 +241,13 @@ def add_people(base: Image.Image) -> tuple[Image.Image, Image.Image]:
     white.putalpha(haze.point(lambda v: round(v * 0.62)))
     base.alpha_composite(white)
 
-    # 左右を先に、中央を最後に置いて、中央人物を視覚的な主役にする。
+    return placed, haze, solid
+
+
+def paste_people(base: Image.Image, placed) -> None:
+    """左右を先に、中央を最後に置いて、中央人物を視覚的な主役にする。"""
     for person, x, y in (placed[0], placed[2], placed[1]):
         base.alpha_composite(person, (x, y))
-    return haze, solid
 
 
 def arc_text(base: Image.Image, text: str, font: ImageFont.FreeTypeFont,
@@ -280,12 +284,16 @@ def add_type(base: Image.Image) -> None:
 
     # 主役：イベント名。頭の上に大きなアーチで置く。
     arc_text(base, "VALHALLA CHARITY LIVE", face(DIDOT, 104), CREAM + (255,),
-             W // 2, 3050, 2830, tracking=10)
+             W // 2, 2880, 2790, tracking=10)
 
     # 補足：3語のスローガン。主役より一回り小さく、内側のアーチに。
     arc_text(base, "文化 × エンタメ × AI", face(MINCHO, 52), CREAM + (255,),
-             W // 2, 3050, 2690, tracking=14)
+             W // 2, 2880, 2668, tracking=14)
 
+
+def add_band(base: Image.Image) -> None:
+    """最下部の帯。人物より前に描いて、日付と寄付の一行を必ず読ませる。"""
+    d = ImageDraw.Draw(base)
     # 最下部：日付と寄付の一行を帯にして必ず読ませる。
     band = H - 148
     d.rectangle((0, band, W, H), fill=DEEPEST_CRIMSON + (255,))
@@ -306,7 +314,13 @@ def add_type(base: Image.Image) -> None:
 
 def main() -> None:
     canvas = add_lasers(background()).convert("RGBA")
-    haze, solid = add_people(canvas)
+    placed, haze, solid = add_people(canvas)
+
+    # 文字を先に描き、そのあとに人物を貼る。こうすると文字が
+    # 人物の上に乗らず、3人が文字の手前に立っているように見える。
+    add_type(canvas)
+    paste_people(canvas, placed)
+    add_band(canvas)
 
     # 人物の前にもレーザーを走らせる。ただし
     #   ・3人の体の上には一切かけない（シルエットで完全に止める）
@@ -319,7 +333,6 @@ def main() -> None:
     keep = ImageChops.invert(block)
     over = Image.merge("RGB", [ImageChops.multiply(ch, keep) for ch in over.split()])
     canvas = ImageChops.add(canvas.convert("RGB"), over).convert("RGBA")
-    add_type(canvas)
     out = canvas.convert("RGB")
     out.save(OUTPUT, quality=92, subsampling=0, optimize=True)
     if out.size != (W, H):
