@@ -13,6 +13,7 @@
 スポットライトのように見えるので不自然にならない。
 """
 import math
+import random
 from pathlib import Path
 
 from PIL import Image, ImageChops, ImageDraw, ImageEnhance, ImageFilter, ImageFont
@@ -40,16 +41,52 @@ def face(path: str, size: int) -> ImageFont.FreeTypeFont:
 
 
 def background() -> Image.Image:
-    """渋谷の夜景。彩度と明度を落とし、クリムゾンで画面を支配させる。"""
+    """渋谷の夜景を、色を殺さずに敷く。
+
+    以前は全体にクリムゾンを重ねて画面を赤くしていたが、それだと
+    ネオンの青・緑・黄が死んで、写真がただの赤い面になってしまう。
+    ここでは彩度を上げたうえで、文字が読むぶんだけ暗く落とす。
+    """
     venue = Image.open(VENUE).convert("RGB")
     scale = max(W / venue.width, H / venue.height)
     venue = venue.resize((round(venue.width * scale), round(venue.height * scale)),
                          Image.Resampling.LANCZOS)
     im = venue.crop((0, 0, W, H))
-    im = Image.blend(im, im.convert("L").convert("RGB"), 0.45)
-    im = Image.blend(im, Image.new("RGB", im.size, BLACK), 0.50)
-    im = Image.blend(im, Image.new("RGB", im.size, DARK_CRIMSON), 0.34)
+    im = ImageEnhance.Color(im).enhance(1.35)      # ネオンの色を立たせる
+    im = ImageEnhance.Contrast(im).enhance(1.08)
+    im = Image.blend(im, Image.new("RGB", im.size, BLACK), 0.34)  # 可読性のぶんだけ
     return im
+
+
+def add_lasers(base: Image.Image) -> Image.Image:
+    """赤いレーザーを斜めに走らせる。
+
+    細い芯と、それを大きくぼかしたグローを別々に描き、加算で重ねる。
+    加算にすると下の夜景の明るさに足し算されるので、光が「乗っている」
+    のではなく「発している」ように見える。
+    本数・太さ・明るさをばらけさせて、等間隔の機械的な線にしない。
+    """
+    rnd = random.Random(20261018)                  # 毎回同じ絵になるよう種を固定
+    core = Image.new("RGB", (W, H), (0, 0, 0))
+    glow = Image.new("RGB", (W, H), (0, 0, 0))
+    dc, dg = ImageDraw.Draw(core), ImageDraw.Draw(glow)
+
+    for i in range(7):
+        # 左上から右下へ抜ける斜めの線。角度と位置をばらす。
+        x0 = rnd.randint(-500, 900)
+        x1 = x0 + rnd.randint(1500, 2600)
+        y0 = rnd.randint(-160, 520)
+        y1 = y0 + rnd.randint(240, 760)
+        bright = rnd.uniform(0.45, 1.0)
+        red = (round(255 * bright), round(32 * bright), round(54 * bright))
+        dc.line((x0, y0, x1, y1), fill=red, width=rnd.choice((1, 2, 2, 3)))
+        dg.line((x0, y0, x1, y1), fill=(round(150 * bright), 12, 22),
+                width=rnd.choice((10, 16, 22)))
+
+    glow = glow.filter(ImageFilter.GaussianBlur(26))
+    core = core.filter(ImageFilter.GaussianBlur(1.2))
+    lit = ImageChops.add(base.convert("RGB"), glow)
+    return ImageChops.add(lit, core)
 
 
 def members_panel() -> Image.Image:
@@ -84,7 +121,12 @@ def members_panel() -> Image.Image:
     # 人物の色は残したいので、彩度をわずかに上げて沈みを戻す
     rgb = ImageEnhance.Color(rgb).enhance(1.14)
     panel = rgb.convert("RGBA")
-    panel.putalpha(mask.filter(ImageFilter.GaussianBlur(12)))
+    # 縁のフェードに加えて、**明るい画素ほど透明にする**。
+    # 白ホリゾントの白が半透明になって渋谷が透け、人物のまわりに
+    # 白い霞が残らない。暗い衣装や髪はそのまま不透明で残る。
+    see_through = weight.point(lambda v: 255 - round(v * 0.80))
+    alpha = ImageChops.multiply(mask.filter(ImageFilter.GaussianBlur(12)), see_through)
+    panel.putalpha(alpha)
     return panel
 
 
@@ -142,7 +184,7 @@ def add_type(base: Image.Image) -> None:
 
 
 def main() -> None:
-    canvas = background().convert("RGBA")
+    canvas = add_lasers(background()).convert("RGBA")
     panel = members_panel()
     canvas.alpha_composite(panel, ((W - panel.width) // 2, 232))
     add_type(canvas)
