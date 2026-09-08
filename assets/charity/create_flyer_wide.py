@@ -104,7 +104,22 @@ def refine_edges(rgba: Image.Image) -> Image.Image:
     背景ぶんを引き算して人物本来の色に戻す。これをやらないと、
     暗い渋谷の上に置いたとき縁が白く光って切り抜き感が出る。
     """
-    arr = np.asarray(rgba).astype(np.float32)
+    raw = np.asarray(rgba).copy()
+
+    # 輪郭のギザつきを均す。
+    # 左の2人は黒衣装なので背景との明度差が64あり、境界がはっきり出る。
+    # レイは白衣装で差が7しかなく、判定が揺れて縁がギザつく。
+    # 真の輪郭は滑らかな服の線なので、点状のノイズを中央値で消し、
+    # 開閉で トゲと欠けを均し、ぼかしてから閾値で戻して曲線にする。
+    alpha = cv2.medianBlur(raw[:, :, 3], 9)
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (11, 11))
+    alpha = cv2.morphologyEx(alpha, cv2.MORPH_CLOSE, kernel)
+    alpha = cv2.morphologyEx(alpha, cv2.MORPH_OPEN, kernel)
+    alpha = cv2.GaussianBlur(alpha, (0, 0), 2.8)
+    alpha = np.clip((alpha.astype(np.float32) - 118) * 5.0 + 128, 0, 255)
+    raw[:, :, 3] = alpha.astype(np.uint8)
+
+    arr = raw.astype(np.float32)
     a = arr[:, :, 3:4] / 255.0
     bg = np.array([244.0, 244.0, 244.0], np.float32)   # 白ホリゾントの実測値
     clean = np.clip((arr[:, :, :3] - (1 - a) * bg) / np.clip(a, 0.18, 1.0), 0, 255)
