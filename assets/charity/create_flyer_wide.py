@@ -4,13 +4,8 @@
 主役は「VALHALLA CHARITY LIVE」の文字。その下に補足として
 「文化 × エンタメ × AI」を置き、どちらも3人の頭の上にアーチ状に並べる。
 
-■ 白背景を抜かずに渋谷を透けさせている理由
-メンバー写真は白ホリゾント撮影で、白衣装の人の明度（中央値251）が
-背景（242）より高い。つまり背景を消すしきい値は必ず衣装も消すので、
-自動での切り抜きは原理的にできない。
-そこで写真は矩形のまま使い、**縁に向かってアルファを落として**
-渋谷の夜景に溶かしている。人物のまわりだけ白が残るが、
-スポットライトのように見えるので不自然にならない。
+人物は明度で判定せず、rembg のセマンティックなマットで白ホリゾントから
+切り抜く。白い衣装を背景と取り違えないことが、この方法を使う理由。
 """
 import math
 import random
@@ -112,27 +107,53 @@ def cutouts() -> list[Image.Image]:
     """
     if not CUTOUT.exists():
         from rembg import remove, new_session
+        # alpha matting を有効にすると、元画像の色を手がかりに境界を引き直す。
+        # これが無いとマスクが丸く鈍り、袖や手の形が潰れる。
         remove(Image.open(MEMBERS).convert("RGB"),
-               session=new_session("u2net")).save(CUTOUT)
+               session=new_session("u2net"),
+               alpha_matting=True,
+               alpha_matting_foreground_threshold=250,
+               alpha_matting_background_threshold=15,
+               alpha_matting_erode_size=12).save(CUTOUT)
 
     rgba = Image.open(CUTOUT).convert("RGBA")
-    alpha = np.asarray(rgba)[:, :, 3]
-    # 連結成分で3人に分ける。面積の大きい順に3つ取り、左からの順に並べ替える。
+    pixels = np.asarray(rgba)
+    alpha = pixels[:, :, 3]
+    # 連結成分で3人に分ける。16は人物の明度ではなく、rembg のアルファに
+    # 残る微小ノイズだけを外し、髪先などの半透明部分を成分へ含める値。
     n, labels, stats, _ = cv2.connectedComponentsWithStats(
-        (alpha > 128).astype(np.uint8), connectivity=8)
+        (alpha >= 16).astype(np.uint8), connectivity=8)
     order = sorted(range(1, n), key=lambda i: -stats[i, cv2.CC_STAT_AREA])[:3]
+    if len(order) != 3:
+        raise RuntimeError(f"人物の連結成分が3個見つかりません: {len(order)}個")
     order.sort(key=lambda i: stats[i, cv2.CC_STAT_LEFT])
 
     people = []
-    for i in order:
+    for number, i in enumerate(order, start=1):
         x, y = stats[i, cv2.CC_STAT_LEFT], stats[i, cv2.CC_STAT_TOP]
         w, h = stats[i, cv2.CC_STAT_WIDTH], stats[i, cv2.CC_STAT_HEIGHT]
-        one = rgba.crop((x, y, x + w, y + h)).copy()
-        # 他人のはみ出しを消すため、その成分だけのアルファに差し替える
-        mine = Image.fromarray(
-            ((labels[y:y + h, x:x + w] == i) * 255).astype(np.uint8))
-        one.putalpha(ImageChops.multiply(one.getchannel("A"), mine))
-        people.append(one)
+        area = int(stats[i, cv2.CC_STAT_AREA])
+        # 連結成分の矩形に余白を足し、rembg の柔らかい元アルファをそのまま残す。
+        # 二値マスクへ差し替えないので、髪や衣装の縁がギザギザにならない。
+        pad = 12
+        box = (max(0, x - pad), max(0, y - pad),
+               min(rgba.width, x + w + pad), min(rgba.height, y + h + pad))
+        people.append(rgba.crop(box))
+        print(f"人物{number}: alpha領域 {area:,}px | bbox=({x}, {y}, {w}, {h})")
+
+    # 右人物の領域に、高明度で十分不透明な画素が大量にあることを確認する。
+    # ここが減っていれば、白スーツまで背景として消した失敗と判断する。
+    right = order[2]
+    luminance = cv2.cvtColor(pixels[:, :, :3], cv2.COLOR_RGB2GRAY)
+    right_mask = (labels == right) & (alpha >= 128)
+    right_pixels = int(np.count_nonzero(right_mask))
+    white_suit_pixels = int(np.count_nonzero(right_mask & (luminance >= 245)))
+    white_ratio = white_suit_pixels / max(1, right_pixels)
+    print("右メンバー白スーツ検証: "
+          f"高明度かつ不透明 {white_suit_pixels:,}px / "
+          f"右人物 {right_pixels:,}px ({white_ratio:.1%})")
+    if white_suit_pixels < 50_000 or white_ratio < 0.30:
+        raise RuntimeError("右メンバーの白スーツが十分に残っていません")
     return people
 
 
@@ -140,21 +161,31 @@ def add_people(base: Image.Image) -> None:
     """中央を大きく、左右を小さく下げて、中央へ視線が集まる形にする。"""
     people = cutouts()
     base_y = 968                                   # 足元をそろえる高さ
-    plan = ((0, 0.52, -470, 26), (1, 0.62, 0, 0), (2, 0.52, 470, 26))
-    for idx, ratio, dx, dy in sorted(plan, key=lambda p: p[1]):
+    plan = ((0, 0.52, -420), (1, 0.62, 0), (2, 0.52, 420))
+    placed = []
+    for idx, ratio, dx in plan:
         person = people[idx]
         ph = round(H * ratio)
         pw = round(person.width * ph / person.height)
         person = person.resize((pw, ph), Image.Resampling.LANCZOS)
         x = W // 2 + dx - pw // 2
-        y = base_y + dy - ph
+        y = base_y - ph
+        placed.append((person, x, y))
 
-        # 足元に淡い影。これが無いと人物が宙に浮いて見える。
-        shadow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-        ImageDraw.Draw(shadow).ellipse(
-            (x + pw * 0.10, base_y + dy - 26, x + pw * 0.90, base_y + dy + 26),
-            fill=(0, 0, 0, 150))
-        base.alpha_composite(shadow.filter(ImageFilter.GaussianBlur(26)))
+    # 足元にごく淡い影。人物より先に一枚の層で敷き、互いを暗くしない。
+    shadow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    shadow_draw = ImageDraw.Draw(shadow)
+    for person, x, _ in placed:
+        half_width = round(person.width * 0.36)
+        center_x = x + person.width // 2
+        shadow_draw.ellipse(
+            (center_x - half_width, base_y - 48,
+             center_x + half_width, base_y - 16),
+            fill=(0, 0, 0, 68))
+    base.alpha_composite(shadow.filter(ImageFilter.GaussianBlur(18)))
+
+    # 左右を先に、中央を最後に置いて、中央人物を視覚的な主役にする。
+    for person, x, y in (placed[0], placed[2], placed[1]):
         base.alpha_composite(person, (x, y))
 
 
@@ -220,15 +251,16 @@ def main() -> None:
     canvas = add_lasers(background()).convert("RGBA")
     add_people(canvas)
 
-    # 写真の白ホリゾントは、どう処理しても薄い霞として残る。
-    # そこを隠すのではなく、**レーザーを重ねて背景そのものに変えてしまう**。
-    # 合成のあとに本数を増やした層を全面へ加算すると、
-    # 残った白がレーザーの光に見え、画面が1枚の絵としてつながる。
+    # 人物の前にもレーザーを走らせ、背景と同じ空間にいるように見せる。
     over = laser_layer((W, H), seed=4471, beams_per_side=11, gain=0.9)
     canvas = ImageChops.add(canvas.convert("RGB"), over).convert("RGBA")
     add_type(canvas)
     out = canvas.convert("RGB")
     out.save(OUTPUT, quality=92, subsampling=0, optimize=True)
+    if out.size != (W, H):
+        raise RuntimeError(f"出力サイズが不正です: {out.size}")
+    if OUTPUT.stat().st_size > 2 * 1024 * 1024:
+        raise RuntimeError(f"出力が2MBを超えています: {OUTPUT.stat().st_size} bytes")
     print(f"{OUTPUT} | {out.width}x{out.height} | {OUTPUT.stat().st_size} bytes")
 
 
