@@ -272,7 +272,7 @@
 - **クラウドファンディング**：CAMPFIRE
 - **寄付先**：然るべき団体〔団体名は開催後に本ページで報告します〕
 
-【画像】`assets/charity/venue/shibuya_night.jpg`
+【画像】`assets/charity/venue_banner.jpg`（会場は近日公開予定）
 
 渋谷の夜景を見渡す**室内フロア**です。
 中央にステージを備えた円形のフロアと、窓際のバーラウンジ。
@@ -834,6 +834,7 @@ CAMPFIRE で住所が取れるのは「配送あり」に設定したリター�
 
 | 位置 | ファイル | 備考 |
 |---|---|---|
+| 会場（イベント概要） | `assets/charity/venue_banner.jpg` | 1774x887。渋谷の夜景に「近日公開予定」。生成スクリプト `assets/charity/create_venue_banner.py`。**会場名を出さない方針（§6.5）に沿った見せ方** |
 | メインビジュアル | `assets/charity/flyer_wide.jpg` | 1920x1080。生成スクリプト `assets/charity/create_flyer_wide.py`。**2026-09-09 kazuma 承認済み** |
 
 ### ✅ メインビジュアルの構成（2026-09-09 確定・崩さないこと）
