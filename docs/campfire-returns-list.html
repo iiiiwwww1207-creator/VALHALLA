@@ -1,0 +1,319 @@
+<title>リターン品一覧</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+  :root{
+    --paper:#FBF8F5; --ink:#191419; --sub:#6B6169; --rule:#E7DED6;
+    --crimson:#C1121F; --deep:#8E1019; --band:#F3E9E6;
+    --ok:#2E6E4E; --okbg:#E9F2EC; --warn:#9A5B00; --warnbg:#FBF0DF;
+    --card:#FFFFFF;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#100C11; --ink:#F2ECEA; --sub:#A79EA6; --rule:#2C2429;
+      --crimson:#E2434E; --deep:#E2434E; --band:#23161A;
+      --ok:#7FCFA3; --okbg:#16261D; --warn:#E7B764; --warnbg:#2A2114;
+      --card:#171218;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#100C11; --ink:#F2ECEA; --sub:#A79EA6; --rule:#2C2429;
+    --crimson:#E2434E; --deep:#E2434E; --band:#23161A;
+    --ok:#7FCFA3; --okbg:#16261D; --warn:#E7B764; --warnbg:#2A2114;
+    --card:#171218;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Zen Kaku Gothic New",-apple-system,"Hiragino Sans",sans-serif;
+    font-size:15px;line-height:1.85;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:940px;margin:0 auto;padding:0 20px 80px}
+
+  header.top{background:var(--deep);color:#FBF6F2;padding:34px 20px 30px;margin-bottom:34px}
+  header.top .in{max-width:940px;margin:0 auto}
+  .eyebrow{font-size:11px;letter-spacing:.22em;opacity:.72;margin:0 0 10px}
+  header.top h1{font-family:"Shippori Mincho",serif;font-weight:700;
+    font-size:clamp(22px,4.4vw,30px);margin:0 0 10px;text-wrap:balance}
+  header.top p{margin:0;font-size:13px;opacity:.85;line-height:1.7}
+
+  .lead{border-left:3px solid var(--crimson);padding:2px 0 2px 14px;margin:0 0 30px;
+    color:var(--sub);font-size:14px}
+
+  h2{font-family:"Shippori Mincho",serif;font-size:18px;margin:42px 0 14px;
+    padding-bottom:8px;border-bottom:2px solid var(--ink)}
+
+  .sum{width:100%;border-collapse:collapse;font-size:14px;
+    font-variant-numeric:tabular-nums;margin:0 0 8px}
+  .sum th,.sum td{border-bottom:1px solid var(--rule);padding:9px 8px;text-align:left;vertical-align:top}
+  .sum th{font-size:12px;letter-spacing:.04em;color:var(--sub);font-weight:500;white-space:nowrap}
+  .sum td.n{text-align:right;white-space:nowrap}
+  .sum tr.total td{border-top:2px solid var(--ink);border-bottom:none;font-weight:700}
+  .scroll{overflow-x:auto}
+
+  .course{background:var(--card);border:1px solid var(--rule);border-radius:12px;
+    margin:0 0 20px;overflow:hidden}
+  .course.feat{border-color:var(--crimson);border-width:2px}
+  .chead{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px;
+    padding:14px 18px;background:var(--band);border-bottom:1px solid var(--rule)}
+  .chead .name{font-family:"Shippori Mincho",serif;font-weight:700;font-size:17px}
+  .chead .price{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--deep)}
+  .chead .qty{font-size:12.5px;color:var(--sub);margin-left:auto}
+  .items{width:100%;border-collapse:collapse;font-size:14px}
+  .items th,.items td{padding:9px 12px;border-bottom:1px solid var(--rule);
+    text-align:left;vertical-align:top}
+  .items th{font-size:11.5px;letter-spacing:.05em;color:var(--sub);font-weight:500;
+    background:transparent;white-space:nowrap}
+  .items tr:last-child td{border-bottom:none}
+  .items td.when{white-space:nowrap;color:var(--sub);font-size:13px}
+  .items td.what b{font-weight:700}
+  .items td.what span.note{display:block;color:var(--sub);font-size:12.5px;line-height:1.6}
+
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:1px 7px;border-radius:999px;
+    vertical-align:1px;margin-left:6px;white-space:nowrap}
+  .tag.fix{background:var(--okbg);color:var(--ok)}
+  .tag.tbd{background:var(--warnbg);color:var(--warn)}
+
+  ol.ask{padding-left:1.3em;margin:0}
+  ol.ask li{margin:0 0 14px}
+  ol.ask b{display:block}
+  ol.ask span{color:var(--sub);font-size:13.5px}
+
+  .foot{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);
+    color:var(--sub);font-size:12.5px}
+</style>
+
+<header class="top"><div class="in">
+  <p class="eyebrow">VALHALLA CHARITY LIVE ／ CAMPFIRE</p>
+  <h1>リターン品一覧</h1>
+  <p>2026年10月18日（日）渋谷　OPEN 19:00 ／ 受付締切 19:25 ／ START 19:30 ／ 終演 21:10<br>
+  ご支援に対してお渡しするもの・体験のすべて（2026年9月8日時点）</p>
+</div></header>
+
+<div class="wrap">
+
+<p class="lead">「ライブ観覧」もリターンの一部として数えています。<br>
+<span style="color:var(--ok);font-weight:700">確定</span> は内容が決まっているもの、
+<span style="color:var(--warn);font-weight:700">要確定</span> は明日の打ち合わせで詰めたいものです。</p>
+
+<h2>全体サマリー</h2>
+<div class="scroll">
+<table class="sum">
+  <thead><tr>
+    <th>コース</th><th class="n">金額</th><th class="n">数量</th><th class="n">実人数</th>
+    <th>場所</th><th class="n">満席時</th>
+  </tr></thead>
+  <tbody>
+    <tr><td>シンプル応援</td><td class="n">5,000円</td><td class="n">無制限</td><td class="n">—</td>
+      <td>来場不要</td><td class="n">—</td></tr>
+    <tr><td>ライブ席</td><td class="n">10,000円</td><td class="n">100</td><td class="n">100名</td>
+      <td>スタンディング後方</td><td class="n">100万円</td></tr>
+    <tr><td>最前列席</td><td class="n">50,000円</td><td class="n">30</td><td class="n">30名</td>
+      <td>スタンディング最前列</td><td class="n">150万円</td></tr>
+    <tr><td>S席・MIOタイム</td><td class="n">150,000円</td><td class="n">15口</td><td class="n">30名</td>
+      <td>着席（V6・V5・V2・V3・S席）</td><td class="n">225万円</td></tr>
+    <tr><td>VVIP席</td><td class="n">330,000円</td><td class="n">10口</td><td class="n">20名</td>
+      <td>着席（DJ席・V4・V1）</td><td class="n">330万円</td></tr>
+    <tr class="total"><td>計</td><td class="n"></td><td class="n">25口＋130</td>
+      <td class="n">180名</td><td>着席50／立見130</td><td class="n">805万円</td></tr>
+  </tbody>
+</table>
+</div>
+<p style="color:var(--sub);font-size:13px;margin:4px 0 0">
+※ S席・VVIP席は「口」売り。1口につき同伴1名まで入場できます（同伴は無料）。</p>
+
+<h2>1. シンプル応援　5,000円</h2>
+<div class="course">
+  <div class="chead"><span class="name">シンプル応援</span><span class="price">¥5,000</span>
+    <span class="qty">無制限 ／ 来場不要</span></div>
+  <table class="items">
+    <thead><tr><th>お渡しするもの</th><th>提供のしかた</th></tr></thead>
+    <tbody>
+      <tr><td class="what"><b>限定名刺</b><span class="tag fix">確定</span>
+        <span class="note">QRコードは付けない想定（上位コースとの差をここでつける）</span></td>
+        <td class="when">郵送<br>2026年11月</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2>2. ライブ席　10,000円</h2>
+<div class="course">
+  <div class="chead"><span class="name">ライブ席</span><span class="price">¥10,000</span>
+    <span class="qty">100名 ／ スタンディング後方</span></div>
+  <table class="items">
+    <thead><tr><th>お渡しするもの</th><th>提供のしかた</th></tr></thead>
+    <tbody>
+      <tr><td class="what"><b>アコースティックライブ観覧</b><span class="tag fix">確定</span>
+        <span class="note">VALHALLA（MIO / RAY / KØU）／ 19:30 開演・20:05 終演</span></td>
+        <td class="when">当日会場</td></tr>
+      <tr><td class="what"><b>フリードリンク（飲み放題）</b><span class="tag tbd">要確定</span>
+        <span class="note">付く予定。提供時間・内容・杯数が未定。<b>付けるか外すかを明日決めたい</b></span></td>
+        <td class="when">当日会場</td></tr>
+      <tr><td class="what">電子チケット<span class="tag fix">確定</span>
+        <span class="note">当日受付でご提示いただく</span></td>
+        <td class="when">メール<br>2026年10月上旬</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2>3. 最前列席　50,000円</h2>
+<div class="course">
+  <div class="chead"><span class="name">最前列席</span><span class="price">¥50,000</span>
+    <span class="qty">30名 ／ スタンディング最前列</span></div>
+  <table class="items">
+    <thead><tr><th>お渡しするもの</th><th>提供のしかた</th></tr></thead>
+    <tbody>
+      <tr><td class="what"><b>最前列でのライブ観覧</b><span class="tag fix">確定</span>
+        <span class="note">スタンディングの最前列エリア（30名）</span></td>
+        <td class="when">当日会場</td></tr>
+      <tr><td class="what"><b>ファンミーティング</b><span class="tag tbd">要確定</span>
+        <span class="note">2026年11月中・ユグドラシル本店（営業時間外の日中に会場として使用）。
+        <b>日程・形式・定員が未定</b></span></td>
+        <td class="when">別日<br>2026年11月</td></tr>
+      <tr><td class="what">フリードリンク<span class="tag tbd">要確定</span>
+        <span class="note">ライブ席に付くなら最前列席にも付くはず。<b>対象範囲を確定させる</b></span></td>
+        <td class="when">当日会場</td></tr>
+      <tr><td class="what">電子チケット<span class="tag fix">確定</span></td>
+        <td class="when">メール<br>2026年10月上旬</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2>4. S席・MIOタイム　150,000円</h2>
+<div class="course">
+  <div class="chead"><span class="name">S席・MIOタイム</span><span class="price">¥150,000</span>
+    <span class="qty">15口 ／ 同伴1名まで可（計30名） ／ 17:45 先行入場</span></div>
+  <table class="items">
+    <thead><tr><th>お渡しするもの</th><th>提供のしかた</th></tr></thead>
+    <tbody>
+      <tr><td class="what"><b>お席</b><span class="tag fix">確定</span>
+        <span class="note">S席区画（V6・V5・V2・V3・S1〜S4）。席は主催者にて指定</span></td>
+        <td class="when">当日会場</td></tr>
+      <tr><td class="what"><b>MIO とのチェキ撮影</b><span class="tag fix">確定</span>
+        <span class="note">お一人1分。<b>先行入場のお時間（18:00〜）にすべて撮影</b></span></td>
+        <td class="when">当日会場<br>18:00〜</td></tr>
+      <tr><td class="what"><b>やしろ語録動画</b><span class="tag tbd">要確定</span>
+        <span class="note">MIO の言葉を1つ選び、本人に語ってもらい撮影。
+        <b>撮影は当日ではなく後日のファンミーティングで行う</b></span></td>
+        <td class="when">別日<br>2026年11月</td></tr>
+      <tr><td class="what"><b>限定名刺</b><span class="tag fix">確定</span>
+        <span class="note">QRコードから限定シャンパンコール動画を視聴できる</span></td>
+        <td class="when">当日会場</td></tr>
+      <tr><td class="what"><b>ノベルティ：ノート・ペン</b><span class="tag tbd">要確定</span>
+        <span class="note">ロゴ入り。デザイン・仕様・原価・納期が未定</span></td>
+        <td class="when">当日会場<br>または郵送</td></tr>
+      <tr><td class="what"><b>ファンミーティング</b><span class="tag tbd">要確定</span>
+        <span class="note">2026年11月中・ユグドラシル本店。<b>同伴者も参加できるのかが未確定</b></span></td>
+        <td class="when">別日<br>2026年11月</td></tr>
+      <tr><td class="what"><b>アコースティックライブ観覧</b><span class="tag fix">確定</span></td>
+        <td class="when">当日会場</td></tr>
+      <tr><td class="what"><b>同伴1名まで</b><span class="tag fix">確定</span>
+        <span class="note">同伴者は無料。<b>同伴者に何が付くのかは要整理</b>（席・軽食・ドリンク・チェキ）</span></td>
+        <td class="when">当日会場</td></tr>
+      <tr><td class="what">軽食<span class="tag tbd">要確定</span>
+        <span class="note">17:55〜提供の予定。内容・有無が未定</span></td>
+        <td class="when">当日会場<br>17:55〜</td></tr>
+      <tr><td class="what">歓談のお時間<span class="tag fix">確定</span>
+        <span class="note">チェキ終了後、開演まで飲み物とともに</span></td>
+        <td class="when">当日会場<br>18:30〜</td></tr>
+      <tr><td class="what">電子チケット<span class="tag fix">確定</span></td>
+        <td class="when">メール<br>2026年10月上旬</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2>5. VVIP席　330,000円</h2>
+<div class="course feat">
+  <div class="chead"><span class="name">VVIP席</span><span class="price">¥330,000</span>
+    <span class="qty">10口 ／ 同伴1名まで可（計20名）</span></div>
+  <table class="items">
+    <thead><tr><th>お渡しするもの</th><th>提供のしかた</th></tr></thead>
+    <tbody>
+      <tr><td class="what"><b>MIO と対面でお話しいただけます</b><span class="tag fix">確定</span>
+        <span class="note">1口あたり6分前後。<b>当日 MIO と直接話せるのは VVIP席のみ</b></span></td>
+        <td class="when">当日会場<br>20:10〜21:10</td></tr>
+      <tr><td class="what"><b>お好きなお席をお選びいただけます</b><span class="tag fix">確定</span>
+        <span class="note">DJ席・V4・V1 より<b>先着順</b></span></td>
+        <td class="when">当日会場</td></tr>
+      <tr><td class="what"><b>シャンパンサービス</b><span class="tag tbd">要確定</span>
+        <span class="note">銘柄・本数が未定。<b>1口あたり何本かを決める</b></span></td>
+        <td class="when">当日会場</td></tr>
+      <tr><td class="what"><b>チェキ／写真／動画 撮影OK</b><span class="tag fix">確定</span></td>
+        <td class="when">当日会場</td></tr>
+      <tr><td class="what"><b>限定名刺</b><span class="tag fix">確定</span>
+        <span class="note">QRコードから限定シャンパンコール動画を視聴できる</span></td>
+        <td class="when">当日会場</td></tr>
+      <tr><td class="what"><b>ノベルティ</b><span class="tag tbd">要確定</span>
+        <span class="note">ノート・ペン・トートバッグ・キーホルダー・「なりきりしゃーみーグッズ」。
+        <b>なりきりグッズの中身が未定</b>。デザイン・原価・納期も</span></td>
+        <td class="when">当日会場<br>または郵送</td></tr>
+      <tr><td class="what"><b>アコースティックライブ観覧</b><span class="tag fix">確定</span></td>
+        <td class="when">当日会場</td></tr>
+      <tr><td class="what"><b>先行入場（任意）</b><span class="tag fix">確定</span>
+        <span class="note">17:45〜利用可。<b>必須ではなく、開演までの好きな時間に来場できる</b></span></td>
+        <td class="when">当日会場</td></tr>
+      <tr><td class="what"><b>同伴1名まで</b><span class="tag fix">確定</span>
+        <span class="note">同伴者は無料</span></td>
+        <td class="when">当日会場</td></tr>
+      <tr><td class="what">ファンミーティング<span class="tag fix">付かない</span>
+        <span class="note">VVIP席にファンミーティングは付かない（当日で完結する設計）</span></td>
+        <td class="when">—</td></tr>
+      <tr><td class="what">電子チケット<span class="tag fix">確定</span></td>
+        <td class="when">メール<br>2026年10月上旬</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2>全コース共通</h2>
+<div class="course">
+  <table class="items">
+    <tbody>
+      <tr><td class="what"><b>電子チケット</b>
+        <span class="note">2026年10月上旬にメールでお送りし、当日受付でご提示いただく</span></td>
+        <td class="when">メール</td></tr>
+      <tr><td class="what"><b>物販の実施はありません</b>
+        <span class="note">当日の追加販売は行わない</span></td><td class="when">—</td></tr>
+      <tr><td class="what"><b>受付</b>
+        <span class="note">3名体制／通常2レーン＋VVIP・VIP 1レーン。
+        席種ごとに色分けしたリストバンドを着けていただく</span></td>
+        <td class="when">当日会場</td></tr>
+      <tr><td class="what"><b>年齢・性別</b>
+        <span class="note">20歳以上の方。性別の制限なし</span></td><td class="when">—</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2>明日 CAMPFIRE と詰めたいこと</h2>
+<ol class="ask">
+  <li><b>各リターンの「お届け予定」の書き方</b>
+    <span>当日会場で渡すもの・後日郵送するもの・別日の体験（ファンミーティング）が混在している。
+    CAMPFIRE の管理画面では 1リターン＝1つのお届け予定しか設定できないため、どう書くのが正しいか。</span></li>
+  <li><b>クラウドファンディング終了日がイベント当日（10/18）</b>
+    <span>電子チケットは10月上旬にメール送付の予定。
+    <b>直前に支援した方へどう届けるか</b>（当日受付での名簿照合で足りるか）。</span></li>
+  <li><b>「同伴1名まで無料」の扱い</b>
+    <span>1口の購入で2名が入場する。CAMPFIRE 上の表記と、当日の受付・人数管理をどう設計するか。
+    <b>同伴者にどこまで提供するか</b>（席・軽食・ドリンク・チェキ）も併せて。</span></li>
+  <li><b>ノベルティの原価上限</b>
+    <span>リターンの調達費は寄付にかかる事前合意書 第1条(2) の実費相当額として控除できる＝
+    <b>かけた分だけ寄付額が減る</b>。1口あたりいくらまでかけてよいか。</span></li>
+  <li><b>ノベルティの納期リスク</b>
+    <span>海外調達（10日程度の見込み）。遅延・欠品時にお届け予定を守れるか。
+    <b>先にサンプルを1つ取り寄せることを推奨。</b></span></li>
+  <li><b>総入場180名</b>
+    <span>着席50名＋スタンディング130名。これまで「定員150名」で組んでいたので、
+    会場の実収容と消防法上の収容人数を確認したい。</span></li>
+  <li><b>ライブが35分になる</b>
+    <span>開演19:30・終演20:05のまま。<b>終演以降を5分後ろにずらすか、35分で確定か。</b></span></li>
+  <li><b>DJ席の席数</b>
+    <span>VVIP の区画は DJ席・V4・V1。座席図では V1＝6席／V4＝6席で12席、
+    <b>DJ席の席数だけ記載がない</b>。20名を収めるには8席必要。</span></li>
+  <li><b>出演料が「実費相当額」に当たるか</b>
+    <span>事前合意書 第1条(2) で控除できるのは実費相当額のみ。
+    出演料が報酬なら控除対象にならず、
+    <b>「必要経費には出演料が含まれます」という記載と食い違う。</b></span></li>
+</ol>
+
+<p class="foot">VALHALLA CHARITY LIVE ／ 2026年9月8日時点の確定内容。
+このあと変更があれば同じ形式で更新します。</p>
+
+</div>
