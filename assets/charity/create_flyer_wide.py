@@ -34,11 +34,13 @@ PEOPLE_X = ((150, 520), (585, 1000), (1105, 1520))
 MINCHO = "/System/Library/Fonts/ヒラギノ明朝 ProN.ttc"
 MINCHO_W6 = 2
 DIDOT = "/System/Library/Fonts/Supplemental/Didot.ttc"
+DIDOT_BOLD_INDEX = 2   # 日付だけ太いウェイトにして重さを出す
 
 
-def face(path: str, size: int) -> ImageFont.FreeTypeFont:
-    return ImageFont.truetype(path, size=size,
-                              index=MINCHO_W6 if path == MINCHO else 0)
+def face(path: str, size: int, index: int = -1) -> ImageFont.FreeTypeFont:
+    if index < 0:
+        index = MINCHO_W6 if path == MINCHO else 0
+    return ImageFont.truetype(path, size=size, index=index)
 
 
 def background() -> Image.Image:
@@ -300,7 +302,7 @@ def add_band(base: Image.Image) -> None:
     ・日付は大きく置く。数字は一瞬で読めるので、いちばん効く情報
     """
     d = ImageDraw.Draw(base)
-    band = H - 196
+    band = H - 224
     d.rectangle((0, band, W, H), fill=DEEPEST_CRIMSON + (255,))
 
     line = (232, 206, 206, 90)
@@ -321,10 +323,10 @@ def add_band(base: Image.Image) -> None:
            fill=line, width=1)
 
     # ② 日付。数字を大きく、字間を開けて置く
-    date_f = face(DIDOT, 78)
+    date_f = face(DIDOT, 84, DIDOT_BOLD_INDEX)
     date_t = "2026.10.18"
     dw = sum(d.textlength(c, font=date_f) for c in date_t) + 5 * (len(date_t) - 1)
-    sun_f = face(DIDOT, 40)
+    sun_f = face(DIDOT, 42, DIDOT_BOLD_INDEX)
     sun_t = "SUN"
     sw = sum(d.textlength(c, font=sun_f) for c in sun_t) + 8 * (len(sun_t) - 1)
     place_f = face(MINCHO, 38)
@@ -335,21 +337,21 @@ def add_band(base: Image.Image) -> None:
     total = dw + gap + sw + rule_gap * 2 + 1 + pw
     x = (W - total) / 2
     for c in date_t:
-        d.text((x, band + 66), c, font=date_f, fill=CREAM + (255,))
+        d.text((x, band + 62), c, font=date_f, fill=CREAM + (255,))
         x += d.textlength(c, font=date_f) + 5
     x += gap - 5
     for c in sun_t:
-        d.text((x, band + 100), c, font=sun_f, fill=(238, 214, 214, 255))
+        d.text((x, band + 98), c, font=sun_f, fill=(238, 214, 214, 255))
         x += d.textlength(c, font=sun_f) + 8
     x += rule_gap - 8
-    d.line((x, band + 74, x, band + 132), fill=line, width=1)   # 縦の区切り罫
+    d.line((x, band + 72, x, band + 136), fill=line, width=1)   # 縦の区切り罫
     x += rule_gap
-    d.text((x, band + 92), place_t, font=place_f, fill=CREAM + (255,))
+    d.text((x, band + 90), place_t, font=place_f, fill=CREAM + (255,))
 
     # ③ 寄付の一行。ここだけ和文で、静かに置く
     note = "収益から必要経費を差し引いた全額を、然るべき団体へ寄付します"
     nf = face(MINCHO, 27)
-    d.text(((W - d.textlength(note, font=nf)) / 2, band + 152), note, font=nf,
+    d.text(((W - d.textlength(note, font=nf)) / 2, band + 178), note, font=nf,
            fill=(236, 214, 214, 235))
 
 
