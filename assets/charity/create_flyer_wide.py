@@ -61,7 +61,8 @@ def background() -> Image.Image:
     return im
 
 
-def laser_layer(size: tuple[int, int], seed: int = 20261018) -> Image.Image:
+def laser_layer(size: tuple[int, int], seed: int = 20261018,
+                beams_per_side: int = 7, gain: float = 1.0) -> Image.Image:
     """黒地に赤いレーザーだけを描いた層を返す。
 
     背景に加算するのにも、白ホリゾントを塗り替えるのにも使う。
@@ -72,59 +73,27 @@ def laser_layer(size: tuple[int, int], seed: int = 20261018) -> Image.Image:
     dc, dg = ImageDraw.Draw(core), ImageDraw.Draw(glow)
     w, h = size
     beams = []
-    for _ in range(7):
+    for _ in range(beams_per_side):
         x0 = rnd.randint(round(-w * 0.26), round(w * 0.47))
         x1 = x0 + rnd.randint(round(w * 0.78), round(w * 1.35))
         y0 = rnd.randint(round(-h * 0.15), round(h * 0.48))
         y1 = y0 + rnd.randint(round(h * 0.22), round(h * 0.70))
-        beams.append((x0, y0, x1, y1, rnd.uniform(0.45, 1.0),
+        beams.append((x0, y0, x1, y1, rnd.uniform(0.45, 1.0) * gain,
                       rnd.choice((1, 2, 2, 3)), rnd.choice((10, 16, 22))))
     beams += [(w - x0, y0, w - x1, y1, b, cw, gw)
               for x0, y0, x1, y1, b, cw, gw in beams]
     for x0, y0, x1, y1, bright, cw, gw in beams:
+        b = min(1.0, bright)
         dc.line((x0, y0, x1, y1),
-                fill=(round(255 * bright), round(32 * bright), round(54 * bright)),
-                width=cw)
-        dg.line((x0, y0, x1, y1), fill=(round(150 * bright), 12, 22), width=gw)
+                fill=(round(255 * b), round(32 * b), round(54 * b)), width=cw)
+        dg.line((x0, y0, x1, y1), fill=(round(150 * b), 12, 22), width=gw)
     return ImageChops.add(glow.filter(ImageFilter.GaussianBlur(26)),
                           core.filter(ImageFilter.GaussianBlur(1.2)))
 
 
 def add_lasers(base: Image.Image) -> Image.Image:
-    """赤いレーザーを斜めに走らせる。
-
-    細い芯と、それを大きくぼかしたグローを別々に描き、加算で重ねる。
-    加算にすると下の夜景の明るさに足し算されるので、光が「乗っている」
-    のではなく「発している」ように見える。
-    本数・太さ・明るさをばらけさせて、等間隔の機械的な線にしない。
-    """
-    rnd = random.Random(20261018)                  # 毎回同じ絵になるよう種を固定
-    core = Image.new("RGB", (W, H), (0, 0, 0))
-    glow = Image.new("RGB", (W, H), (0, 0, 0))
-    dc, dg = ImageDraw.Draw(core), ImageDraw.Draw(glow)
-
-    beams = []
-    for _ in range(7):
-        # 左上から右下へ抜ける斜めの線。角度と位置をばらす。
-        x0 = rnd.randint(-500, 900)
-        x1 = x0 + rnd.randint(1500, 2600)
-        y0 = rnd.randint(-160, 520)
-        y1 = y0 + rnd.randint(240, 760)
-        beams.append((x0, y0, x1, y1, rnd.uniform(0.45, 1.0),
-                      rnd.choice((1, 2, 2, 3)), rnd.choice((10, 16, 22))))
-    # 同じ本数を、左右対称の角度で右側からも入れる。
-    # 片側だけだと画面が傾いて見え、ロゴのある左側に光が乗らない。
-    beams += [(W - x0, y0, W - x1, y1, b, cw, gw)
-              for x0, y0, x1, y1, b, cw, gw in beams]
-    for x0, y0, x1, y1, bright, cw, gw in beams:
-        red = (round(255 * bright), round(32 * bright), round(54 * bright))
-        dc.line((x0, y0, x1, y1), fill=red, width=cw)
-        dg.line((x0, y0, x1, y1), fill=(round(150 * bright), 12, 22), width=gw)
-
-    glow = glow.filter(ImageFilter.GaussianBlur(26))
-    core = core.filter(ImageFilter.GaussianBlur(1.2))
-    lit = ImageChops.add(base.convert("RGB"), glow)
-    return ImageChops.add(lit, core)
+    """背景にレーザーを加算する。加算なので光が「発している」ように見える。"""
+    return ImageChops.add(base.convert("RGB"), laser_layer((W, H)))
 
 
 def members_panel() -> Image.Image:
@@ -255,6 +224,13 @@ def main() -> None:
     canvas = add_lasers(background()).convert("RGBA")
     panel = members_panel()
     canvas.alpha_composite(panel, ((W - panel.width) // 2, 232))
+
+    # 写真の白ホリゾントは、どう処理しても薄い霞として残る。
+    # そこを隠すのではなく、**レーザーを重ねて背景そのものに変えてしまう**。
+    # 合成のあとに本数を増やした層を全面へ加算すると、
+    # 残った白がレーザーの光に見え、画面が1枚の絵としてつながる。
+    over = laser_layer((W, H), seed=4471, beams_per_side=11, gain=0.9)
+    canvas = ImageChops.add(canvas.convert("RGB"), over).convert("RGBA")
     add_type(canvas)
     out = canvas.convert("RGB")
     out.save(OUTPUT, quality=92, subsampling=0, optimize=True)
