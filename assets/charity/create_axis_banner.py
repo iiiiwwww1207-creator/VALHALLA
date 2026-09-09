@@ -5,7 +5,11 @@ from __future__ import annotations
 
 import math
 import os
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from logo_watermark import stamp
 
 from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageOps
 
@@ -225,6 +229,7 @@ def main() -> None:
         if not required.exists():
             raise FileNotFoundError(f"Required photograph is missing: {required}")
     canvas = make_background()
+    canvas = stamp(canvas)          # 地に VALHALLA のロゴを透かす
     add_header(canvas)
     add_timeline(canvas)
     add_cards(canvas)

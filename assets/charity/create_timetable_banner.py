@@ -8,7 +8,11 @@ from __future__ import annotations
 import math
 import os
 import random
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from logo_watermark import stamp
 
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
@@ -209,6 +213,7 @@ def add_typography(base: Image.Image) -> None:
 
 def main() -> None:
     canvas = make_background()
+    canvas = stamp(canvas)          # 地に VALHALLA のロゴを透かす
     add_nodes(canvas)
     add_typography(canvas)
     canvas = canvas.convert("RGB").resize((W, H), Image.Resampling.LANCZOS)

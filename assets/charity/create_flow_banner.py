@@ -8,7 +8,11 @@ from __future__ import annotations
 import math
 import os
 import random
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from logo_watermark import stamp
 
 from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageOps
 
@@ -307,6 +311,7 @@ def main() -> None:
         raise FileNotFoundError("Required image assets are missing")
 
     canvas = make_background()
+    canvas = stamp(canvas)          # 地に VALHALLA のロゴを透かす
     centers_x = (172, 530, 887, 1244, 1602)
     radius = 246 / 2
     for left, right in zip(centers_x, centers_x[1:]):
