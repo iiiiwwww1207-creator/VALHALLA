@@ -47,19 +47,21 @@ DEEP = colors.HexColor("#8E1019")
 LINE = colors.HexColor("#E7DFDF")
 
 PW, PH = A4
-MARGIN = 22 * mm
+# 和文は1行 40字前後がいちばん読みやすい。A4 で余白 22mm・9.6pt だと
+# 1行 49字になり、目が行を戻すときに迷う。余白を広げ、字を大きくする。
+MARGIN = 26 * mm
 CW = PW - MARGIN * 2
 
 S = {
-    "h2": ParagraphStyle("h2", fontName=MIN, fontSize=15, leading=24, textColor=INK,
+    "h2": ParagraphStyle("h2", fontName=MIN, fontSize=17, leading=27, textColor=INK,
                          spaceBefore=26, spaceAfter=2),
-    "p": ParagraphStyle("p", fontName=GO, fontSize=9.6, leading=18.5, textColor=INK,
+    "p": ParagraphStyle("p", fontName=GO, fontSize=10.4, leading=20.5, textColor=INK,
                         spaceAfter=9),
-    "li": ParagraphStyle("li", fontName=GO, fontSize=9.6, leading=18.5, textColor=INK,
+    "li": ParagraphStyle("li", fontName=GO, fontSize=10.4, leading=20.5, textColor=INK,
                          leftIndent=12, bulletIndent=2, spaceAfter=4),
-    "q": ParagraphStyle("q", fontName=MIN, fontSize=9.6, leading=19, textColor=INK,
+    "q": ParagraphStyle("q", fontName=MIN, fontSize=10.4, leading=21, textColor=INK,
                         leftIndent=12, spaceAfter=8),
-    "cap": ParagraphStyle("cap", fontName=GO, fontSize=7.6, leading=12, textColor=SUB,
+    "cap": ParagraphStyle("cap", fontName=GO, fontSize=8, leading=13, textColor=SUB,
                           alignment=TA_CENTER, spaceBefore=4, spaceAfter=14),
 }
 
@@ -79,6 +81,12 @@ def esc(t: str) -> str:
     return t
 
 
+# 図版の高さの上限。これが無いと縦長の写真が段の幅いっぱいに広がり、
+# 1枚で1ページを丸ごと占めてしまう。前後の本文がページから追い出されて
+# 白いだけのページが挟まり、通して読めなくなる。
+MAX_IMG_H = 108 * mm
+
+
 def picture(path: str):
     src = ROOT / path
     im = PILImage.open(src).convert("RGB")
@@ -87,7 +95,13 @@ def picture(path: str):
     buf = io.BytesIO()
     im.save(buf, "JPEG", quality=80, optimize=True)
     buf.seek(0)
-    return Image(buf, width=CW, height=CW * im.height / im.width)
+
+    w, h = CW, CW * im.height / im.width
+    if h > MAX_IMG_H:                      # 縦長は高さで頭打ちにして幅を詰める
+        w, h = MAX_IMG_H * im.width / im.height, MAX_IMG_H
+    img = Image(buf, width=w, height=h)
+    img.hAlign = "CENTER"
+    return img
 
 
 def build_story(body: str):
@@ -178,7 +192,7 @@ def cover(c, doc):
     c.drawString(MARGIN, PH - 22 * mm, "C A M P F I R E ページ本文 ドラフト")
     c.setFillColor(colors.HexColor("#FBF3F2"))
     c.setFont(MIN, 25)
-    c.drawString(MARGIN, PH - 35 * mm, "ビジュアル系文化の、再興。")
+    c.drawString(MARGIN, PH - 35 * mm, "文化 × エンタメ × AI")
     c.setFillColor(colors.HexColor("#EBC4C1"))
     c.setFont(GO, 9)
     c.drawString(MARGIN, PH - 46 * mm, "VALHALLA CHARITY LIVE ／ 2026年10月18日（日）")
