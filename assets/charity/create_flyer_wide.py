@@ -286,13 +286,13 @@ def add_type(base: Image.Image) -> None:
 
     # 主役：イベント名。頭の上に大きなアーチで置く。
     arc_text(base, "VALHALLA CHARITY LIVE", face(DIDOT, 104), CREAM + (255,),
-             W // 2, 2880, 2790, tracking=10)
+             W // 2, 2880, 2842, tracking=10)
 
     # 補足：3語のスローガン。主役より一回り小さく、内側のアーチに。
-    # 補足だが読ませたいので、頭にぶつからない範囲で最大まで上げる。
-    # いちばん背の高い人の頭頂が y≈298、上のアーチの下端が y≈194。
-    arc_text(base, "文化 × エンタメ × AI", face(MINCHO, 68), CREAM + (255,),
-             W // 2, 2880, 2668, tracking=14)
+    # 3語はイベント名とほぼ同じ大きさにする。そのぶんイベント名の弧を
+    # 上へ逃がして場所をつくった。頭頂 y≈298 との間はまだ空いている。
+    arc_text(base, "文化 × エンタメ × AI", face(MINCHO, 100), CREAM + (255,),
+             W // 2, 2880, 2706, tracking=16)
 
 
 def add_band(base: Image.Image) -> None:
