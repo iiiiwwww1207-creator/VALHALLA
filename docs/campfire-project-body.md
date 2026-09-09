@@ -900,6 +900,12 @@ CAMPFIRE で住所が取れるのは「配送あり」に設定したリター�
 白地ではゴールドが飛ぶため、**ロゴの形に沿って下地を暗く落とすハロー**（`#0a0710` へ88%）をかけて読ませている。**下地だけを加工し、ロゴ自体には一切手を加えていない。**
 サイズは地球幅の1.25倍、円からはみ出す部分は切らない。出力は 1912x2444。生成手順は本ファイルの履歴（git log）を参照 |
 | 支援コース一覧（§3-8に配置） | `assets/charity/returns_banner.jpg` | 1774x887。CAMPFIREは表が使えないため画像化。生成スクリプト `assets/charity/create_returns_banner.py` |
+**4枚の図版（これまでの活動／当日の流れ／リターン／資金の使い道）の地には
+VALHALLA のロゴを透かしで敷く（2026-09-09 確定）。**
+共通処理は `assets/charity/logo_watermark.py`。**画像幅の86%・不透明度42・中央**。
+ロゴ自体は無改変（拡大と不透明度のみ。色の塗り替え・単色化・変形はしない）。
+※ 濃度は 19→30→42→55 を並べて比較して決めた。19 は地に沈み、55 は時刻や金額と競る。
+
 | 当日の流れ（§3-6に配置） | `assets/charity/timetable_banner.jpg` | 1774x887。生成スクリプト `assets/charity/create_timetable_banner.py` |
 | 前回フライヤー（§3-5に配置） | `assets/charity/nezu/oneworld_flyer.jpg` | ONE WORLD SPECIAL EVENT 2026。904x1280・掲載可 |
 | （**掲載不可**・資料用） | `assets/charity/nezu/nezu_slide.jpg` | Zoom画面の撮影写真。Zoom UI・右クリックメニュー・境内配置図が写り込んでいる。**事実確認の資料としてのみ保持し、ページには載せない** |
