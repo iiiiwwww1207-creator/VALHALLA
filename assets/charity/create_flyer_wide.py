@@ -9,6 +9,7 @@
 """
 import math
 import random
+import sys
 
 import cv2
 import numpy as np
@@ -20,6 +21,7 @@ HERE = Path(__file__).resolve().parent
 MEMBERS = HERE / "members_white.jpg"
 VENUE = HERE / "venue" / "shibuya_night.jpg"
 OUTPUT = HERE / "flyer_wide.jpg"
+OUTPUT_NONAME = HERE / "flyer_wide_noname.jpg"
 
 W, H = 1920, 1080
 BLACK = (5, 3, 7)
@@ -561,7 +563,13 @@ def add_band(base: Image.Image) -> None:
            fill=(236, 214, 214, 235))
 
 
-def main() -> None:
+def main(with_names: bool = True) -> None:
+    """--no-names を付けると、3人の名前を入れない版を別ファイルに出す。
+
+    名前の有無で使い道が分かれる。名前ありは CAMPFIRE とフライヤー、
+    名前なしは SNS のように上から文字を載せる前提の場所で使う。
+    """
+    out_path = OUTPUT if with_names else OUTPUT_NONAME
     canvas = add_lasers(background()).convert("RGBA")
     placed, haze, solid = add_people(canvas)
 
@@ -569,7 +577,8 @@ def main() -> None:
     # 人物の上に乗らず、3人が文字の手前に立っているように見える。
     add_type(canvas)
     paste_people(canvas, placed)
-    add_names(canvas, placed)
+    if with_names:
+        add_names(canvas, placed)
     add_waist_words(canvas)
     add_band(canvas)
 
@@ -585,13 +594,13 @@ def main() -> None:
     over = Image.merge("RGB", [ImageChops.multiply(ch, keep) for ch in over.split()])
     canvas = ImageChops.add(canvas.convert("RGB"), over).convert("RGBA")
     out = canvas.convert("RGB")
-    out.save(OUTPUT, quality=92, subsampling=0, optimize=True)
+    out.save(out_path, quality=92, subsampling=0, optimize=True)
     if out.size != (W, H):
         raise RuntimeError(f"出力サイズが不正です: {out.size}")
-    if OUTPUT.stat().st_size > 2 * 1024 * 1024:
-        raise RuntimeError(f"出力が2MBを超えています: {OUTPUT.stat().st_size} bytes")
-    print(f"{OUTPUT} | {out.width}x{out.height} | {OUTPUT.stat().st_size} bytes")
+    if out_path.stat().st_size > 2 * 1024 * 1024:
+        raise RuntimeError(f"出力が2MBを超えています: {out_path.stat().st_size} bytes")
+    print(f"{out_path} | {out.width}x{out.height} | {out_path.stat().st_size} bytes")
 
 
 if __name__ == "__main__":
-    main()
+    main(with_names="--no-names" not in sys.argv)
