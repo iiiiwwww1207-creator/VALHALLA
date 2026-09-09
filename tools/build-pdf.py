@@ -102,10 +102,14 @@ def esc(t: str) -> str:
     return t
 
 
-# 図版の高さの上限。これが無いと縦長の写真が段の幅いっぱいに広がり、
-# 1枚で1ページを丸ごと占めてしまう。前後の本文がページから追い出されて
-# 白いだけのページが挟まり、通して読めなくなる。
-MAX_IMG_H = 108 * mm
+# 図版の大きさは2種類に揃える。
+#   横長（図版）  … 段の幅いっぱい
+#   縦長（写真）  … 幅 92mm で統一
+# 幅をばらばらに決めると、全面の図版と小さな写真が交互に出てページが落ち着かない。
+# 2つの幅しか使わないと決めれば、図版は図版どうし、写真は写真どうしで
+# 左右の端が必ず揃う。高さは絵の形なりでよく、そこは無理に合わせない。
+PORTRAIT_W = 92 * mm
+LANDSCAPE_MIN_RATIO = 1.2      # これより横長なら「図版」とみなす
 
 
 def picture(path: str):
@@ -117,10 +121,8 @@ def picture(path: str):
     im.save(buf, "JPEG", quality=80, optimize=True)
     buf.seek(0)
 
-    w, h = CW, CW * im.height / im.width
-    if h > MAX_IMG_H:                      # 縦長は高さで頭打ちにして幅を詰める
-        w, h = MAX_IMG_H * im.width / im.height, MAX_IMG_H
-    img = Image(buf, width=w, height=h)
+    w = CW if im.width / im.height >= LANDSCAPE_MIN_RATIO else PORTRAIT_W
+    img = Image(buf, width=w, height=w * im.height / im.width)
     img.hAlign = "CENTER"
     return img
 
