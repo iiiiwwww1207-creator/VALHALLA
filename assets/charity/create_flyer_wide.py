@@ -265,7 +265,9 @@ def add_names(base: Image.Image, placed) -> None:
     位置は決め打ちにせず、切り抜きのアルファから頭の天地と左右を毎回測る。
     """
     d0 = ImageDraw.Draw(base)
-    f = face(DIDOT, 34)
+    # 細いウェイトだと Ø の斜線が 1px しかなく、ネオンの上で O に見えてしまう。
+    # 帯の日付と同じ太いウェイトなら斜線が太り、小さくても Ø と読める。
+    f = face(DIDOT, 40, DIDOT_BOLD_INDEX)
     gap = 30
     sides = ("left", "right", "right")   # 左の人は左へ、中央と右は右へ逃がす
     boxes = []
@@ -294,7 +296,7 @@ def add_names(base: Image.Image, placed) -> None:
     sd = ImageDraw.Draw(scrim)
     for _, _, total, tx, y, _, _, _ in boxes:
         cx, cy = tx + total / 2, y + 22
-        sd.ellipse((cx - total * 0.78, cy - 62, cx + total * 0.78, cy + 62), fill=170)
+        sd.ellipse((cx - total * 0.76, cy - 68, cx + total * 0.76, cy + 68), fill=176)
     scrim = scrim.filter(ImageFilter.GaussianBlur(38))
     base.alpha_composite(Image.merge(
         "RGBA", [Image.new("L", (W, H), v) for v in (7, 4, 7)] + [scrim]))
@@ -379,10 +381,11 @@ def add_type(base: Image.Image) -> None:
     arc_text(base, "VALHALLA CHARITY LIVE", face(DIDOT, 104), CREAM + (255,),
              W // 2, 78 + ARC_R, ARC_R, tracking=18)
 
-    # 3語。イベント名と同じ大きさのまま、字間だけ開けて横幅を稼ぐ。
-    # 頂点 209 → インク下端 241。いちばん高い頭（y≈298）まで 57px 空く。
-    arc_text(base, "文化 × エンタメ × AI", face(MINCHO, 100), CREAM + (255,),
-             W // 2, 209 + ARC_R, ARC_R, tracking=52)
+    # 3語。字間を詰めて中央にまとめ、失う横幅は字の大きさで取り返す。
+    # 100pt/字間52（幅1721）→ 108pt/字間16（幅約1290）。塊として立つ。
+    # 頂点 217 → インク下端 252。いちばん高い頭（y≈298）まで 46px 空く。
+    arc_text(base, "文化 × エンタメ × AI", face(MINCHO, 108), CREAM + (255,),
+             W // 2, 217 + ARC_R, ARC_R, tracking=16)
 
 
 def add_band(base: Image.Image) -> None:
