@@ -487,18 +487,15 @@ def arc_text(base: Image.Image, text: str, font: ImageFont.FreeTypeFont,
 
 
 def add_type(base: Image.Image) -> None:
-    """上のイベント名。腰の3語と同じく、まっすぐ横一列に置く。
+    """上のイベント名。ここだけ弧に戻す（腰の3語はまっすぐのまま）。
 
-    弧をやめたぶん縦に食われないので、字を大きくできる。
-    126pt・字間5 で幅およそ 1816px、左右の余白は 50px ずつ。
-    高さは箱ではなくインクの中心で決める（弧のときの重心と揃う）。
+    半径 4600 の浅い弧。126pt・字間5 で弧長およそ 1816px、
+    見た目の幅 1804px、左右の余白は 58px ずつ。
+    頂点 94 → インク上端 40。端は 90px 下がるが、
+    いちばん高い頭（y≈298）までは十分に空いている。
     """
-    layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    block = word_block("VALHALLA CHARITY LIVE", face(DIDOT, 126), CREAM + (255,),
-                       tracking=5, stroke=0)
-    layer.alpha_composite(block, (round(W / 2 - block.width / 2),
-                                  round(140 - block.height / 2)))
-    with_scrim(base, layer, grow=13, blur=34, strength=1.5)
+    arc_text(base, "VALHALLA CHARITY LIVE", face(DIDOT, 126), CREAM + (255,),
+             W // 2, 94 + 4600, 4600, tracking=5)
 
 
 def add_band(base: Image.Image) -> None:
