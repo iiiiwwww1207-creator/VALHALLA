@@ -253,46 +253,82 @@ def paste_people(base: Image.Image, placed) -> None:
 
 
 def add_names(base: Image.Image, placed) -> None:
-    """3人の足元に、それぞれの名前をローマ字で置く。
+    """3人の顔の横に、それぞれの名前をローマ字で置く。
 
-    ここは白いスーツ（右）と黒い衣装（左・中央）が並ぶので、色を固定すると
-    どちらかで必ず消える。名前が乗る場所の明るさを実際に測り、
-    明るければ濃いクリムゾン、暗ければクリームに切り替える。
+    足元（衣装の上）に置くと、白いスーツと黒い衣装で必要な文字色が変わり、
+    3人の色を揃えられなかった。顔の横なら背景の上に乗るので色を統一できる。
+
+    ただし背景は渋谷の看板でネオンが明るい。文字の下にだけ、輪郭のない
+    楕円の影をぼかして敷き、そこを暗くしてからクリームで刷る。四角い板を
+    置くとチラシに見えるので、必ずぼかして境目を消すこと。
+
+    位置は決め打ちにせず、切り抜きのアルファから頭の天地と左右を毎回測る。
     """
+    d0 = ImageDraw.Draw(base)
+    f = face(DIDOT, 34)
+    gap = 30
+    sides = ("left", "right", "right")   # 左の人は左へ、中央と右は右へ逃がす
+    boxes = []
+
+    for (person, px, py), name, side in zip(placed, ("MIO", "KØU", "RAY"), sides):
+        alpha = person.getchannel("A")
+        bbox = alpha.getbbox()
+        if bbox is None:
+            continue
+        head_top = py + bbox[1]
+
+        # 頭の左右の端は、天辺から 140px ぶんの帯だけを見て測る（肩は含めない）
+        head = alpha.crop((0, bbox[1], person.width, min(person.height, bbox[1] + 140)))
+        hb = head.getbbox()
+        head_left = px + (hb[0] if hb else bbox[0])
+        head_right = px + (hb[2] if hb else bbox[2])
+
+        widths = [d0.textlength(c, font=f) for c in name]
+        total = sum(widths) + 12 * (len(name) - 1)
+        y = head_top + 58                                   # だいたい目の高さ
+        tx = (head_left - gap - total) if side == "left" else (head_right + gap)
+        boxes.append((name, widths, total, tx, y, side, head_left, head_right))
+
+    # ① 先に影だけを1枚の層で敷く（人物の上には出ないよう、幅は狭く）
+    scrim = Image.new("L", (W, H), 0)
+    sd = ImageDraw.Draw(scrim)
+    for _, _, total, tx, y, _, _, _ in boxes:
+        cx, cy = tx + total / 2, y + 22
+        sd.ellipse((cx - total * 0.78, cy - 62, cx + total * 0.78, cy + 62), fill=170)
+    scrim = scrim.filter(ImageFilter.GaussianBlur(38))
+    base.alpha_composite(Image.merge(
+        "RGBA", [Image.new("L", (W, H), v) for v in (7, 4, 7)] + [scrim]))
+
+    # ② そのうえに名前と、人物へつなぐ短い罫
     layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     d = ImageDraw.Draw(layer)
-    f = face(DIDOT, 34)
     gray = base.convert("L")
+    for name, widths, total, tx, y, side, head_left, head_right in boxes:
+        patch = gray.crop((round(tx) - 10, y - 6, round(tx + total) + 10, y + 44))
+        mean = sum(patch.getdata()) / max(1, patch.width * patch.height)
+        if mean > 150:
+            raise RuntimeError(f"{name} の下地が明るすぎます（{mean:.0f}）")
 
-    y = 786
-    for (person, x, _), name in zip(placed, ("MIO", "KØU", "RAY")):
-        cx = x + person.width // 2
-        widths = [d.textlength(c, font=f) for c in name]
-        total = sum(widths) + 12 * (len(name) - 1)
-
-        patch = gray.crop((round(cx - total / 2) - 12, y - 6,
-                           round(cx + total / 2) + 12, y + 44))
-        light = sum(patch.getdata()) / max(1, patch.width * patch.height) > 150
-        fill = DEEPEST_CRIMSON + (255,) if light else CREAM + (255,)
-        halo = (250, 246, 240, 200) if light else (6, 3, 6, 215)
-
-        # 名前の上に短い罫を1本。人物と名前を視覚的に結びつける
-        rule = (150, 14, 24, 235) if light else (214, 188, 188, 200)
-        d.line((cx - 30, y - 18, cx + 30, y - 18), fill=rule, width=2)
+        ry = y + 22
+        if side == "left":
+            d.line((tx + total + 10, ry, head_left - 12, ry),
+                   fill=(214, 188, 188, 185), width=2)
+        else:
+            d.line((head_right + 12, ry, tx - 10, ry),
+                   fill=(214, 188, 188, 185), width=2)
 
         shade = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-        sd = ImageDraw.Draw(shade)
-        tx = cx - total / 2
+        s2 = ImageDraw.Draw(shade)
+        cx = tx
         for c, w in zip(name, widths):
-            sd.text((tx, y), c, font=f, fill=halo)
-            tx += w + 12
+            s2.text((cx, y), c, font=f, fill=(6, 3, 6, 215))
+            cx += w + 12
         layer.alpha_composite(shade.filter(ImageFilter.GaussianBlur(7)))
-        layer.alpha_composite(shade.filter(ImageFilter.GaussianBlur(3)))
 
-        tx = cx - total / 2
+        cx = tx
         for c, w in zip(name, widths):
-            d.text((tx, y), c, font=f, fill=fill)
-            tx += w + 12
+            d.text((cx, y), c, font=f, fill=CREAM + (255,))
+            cx += w + 12
 
     base.alpha_composite(layer)
 
