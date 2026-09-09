@@ -400,20 +400,43 @@ def with_scrim(base: Image.Image, layer: Image.Image, grow: int, blur: float,
     base.alpha_composite(layer)
 
 
+def word_block(text: str, font: ImageFont.FreeTypeFont, fill, tracking: float,
+               stroke: int) -> Image.Image:
+    """1語を横一列に組んで、インクの範囲ぴったりに切り出して返す。
+
+    明朝と Didot では字面の高さも上下の余白も違う。箱の位置で揃えると
+    「文化」と「AI」の高さがずれるので、インクそのもので切って返し、
+    置くときに中心を合わせる。
+    """
+    pad = font.size
+    probe = ImageDraw.Draw(Image.new("L", (1, 1)))
+    widths = [probe.textlength(c, font=font) for c in text]
+    total = sum(widths) + tracking * (len(text) - 1)
+
+    block = Image.new("RGBA", (round(total) + pad * 2, font.size * 2 + pad), (0, 0, 0, 0))
+    d = ImageDraw.Draw(block)
+    x = pad
+    for c, w in zip(text, widths):
+        d.text((x, pad // 2), c, font=font, fill=fill, stroke_width=stroke,
+               stroke_fill=(8, 4, 8, 230) if stroke else None)
+        x += w + tracking
+    return block.crop(block.getbbox())
+
+
 def add_waist_words(base: Image.Image) -> None:
-    """「文化 × エンタメ × AI」を3人の腰の高さに、弧のまま置く。
+    """「文化 × エンタメ × AI」を3人の腰の高さに、まっすぐ横一列で置く。
 
     語と人物を1対1で重ね、× は人と人の隙間に落とす。
         文化 → MIO ／ × → すき間 ／ エンタメ → KØU ／ × → すき間 ／ AI → RAY
-    上に凸の弧なので中央の KØU のところがいちばん高い。3人は中央が大きく
-    左右が下がる配置なので、腰の高さもちょうどそう並んでいる。
+
+    高さは全部そろえる。書体ごとに字面が違うので、箱ではなくインクの
+    中心を y=WAIST に合わせる。
 
     RAY の白いスーツはここの明るさが 241。色を変えて逃げると3語がばらけるので、
-    文字の形から起こした影を先に敷いて、3語ともクリームで通す。
+    細い縁取りで手前のコントラストを作り、影は広く薄く敷いて、全部クリームで通す。
     """
+    WAIST = 700
     layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    radius = 2940                       # 端で 30px 下がる浅い弧
-    cy = 690 + radius
     mincho = face(MINCHO, 80)
     didot = face(DIDOT, 80, DIDOT_BOLD_INDEX)
     cross = face(MINCHO, 46)
@@ -423,8 +446,9 @@ def add_waist_words(base: Image.Image) -> None:
                                ("エンタメ", mincho, 960, 6),
                                ("×", cross, 1176, 0),
                                ("AI", didot, 1380, 8)):
-        arc_chars(layer, text, font, CREAM + (255,), cy, radius, cx, tracking=tr,
-                  stroke=2)
+        block = word_block(text, font, CREAM + (255,), tr, stroke=2)
+        layer.alpha_composite(block, (round(cx - block.width / 2),
+                                      round(WAIST - block.height / 2)))
 
     # 影は広く薄く。狭く濃く敷くと、RAY の白いスーツの上で汚れに見える。
     # 縁取りで手前のコントラストを確保してあるので、こちらは軽くていい。
