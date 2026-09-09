@@ -284,15 +284,24 @@ def arc_text(base: Image.Image, text: str, font: ImageFont.FreeTypeFont,
 def add_type(base: Image.Image) -> None:
     d = ImageDraw.Draw(base)
 
-    # 主役：イベント名。頭の上に大きなアーチで置く。
-    arc_text(base, "VALHALLA CHARITY LIVE", face(DIDOT, 104), CREAM + (255,),
-             W // 2, 2880, 2842, tracking=10)
+    # 2行とも、弧を浅くして横の余白まで使い切る。半径を大きくすると
+    # 弧は平たくなり、同じ文字量でも横に伸びて上への張り出しが減る。
+    # 半径を揃えてあるので、2行の間隔は端まで一定に保たれる。
+    #
+    #   R = 4600 / 字間で幅を作る / 頂点 y は下の実測値から決めた
+    #     Didot 104 …… 弧の点から見て 上 45px・下 33px にインクが乗る
+    #     明朝  100 …… 同じく 上 63px・下 32px
+    #
+    ARC_R = 4600
 
-    # 補足：3語のスローガン。主役より一回り小さく、内側のアーチに。
-    # 3語はイベント名とほぼ同じ大きさにする。そのぶんイベント名の弧を
-    # 上へ逃がして場所をつくった。頭頂 y≈298 との間はまだ空いている。
+    # 主役：イベント名。頂点 78 → インクの上端 33 で、天地とも切れない。
+    arc_text(base, "VALHALLA CHARITY LIVE", face(DIDOT, 104), CREAM + (255,),
+             W // 2, 78 + ARC_R, ARC_R, tracking=18)
+
+    # 3語。イベント名と同じ大きさのまま、字間だけ開けて横幅を稼ぐ。
+    # 頂点 209 → インク下端 241。いちばん高い頭（y≈298）まで 57px 空く。
     arc_text(base, "文化 × エンタメ × AI", face(MINCHO, 100), CREAM + (255,),
-             W // 2, 2880, 2706, tracking=16)
+             W // 2, 209 + ARC_R, ARC_R, tracking=52)
 
 
 def add_band(base: Image.Image) -> None:
