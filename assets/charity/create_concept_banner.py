@@ -25,7 +25,7 @@ HERE = Path(__file__).resolve().parent
 SRC = HERE / "concept"
 OUTPUT = HERE / "concept_banner.jpg"
 
-W, BAND = 1774, 660
+W, BAND = 1920, 360
 H = BAND * 3
 SCALE = 2
 SW, SH = W * SCALE, H * SCALE
@@ -169,7 +169,9 @@ def faces_ground(box: tuple[int, int], names: tuple[str, ...]) -> Image.Image:
     ground = Image.new("RGB", box, INK)
 
     # 隣と重ねてから溶かすので、重なるぶんを足して1枚あたりの幅を決める
-    strip = round(bw * 0.68)          # 3人ぶんの合計幅（右3分の1は見出しの場所）
+    strip = round(bw * 0.42)          # 3人ぶんの合計幅。帯が浅いので、
+                                  # 幅で拡大率が決まると顔が寄りすぎる。
+                                  # 高さ側で決まるところまで細くする
     n = len(names)
     col = round(strip / (n - (n - 1) * 0.30))
     seam = round(col * 0.30)
@@ -190,7 +192,7 @@ def faces_ground(box: tuple[int, int], names: tuple[str, ...]) -> Image.Image:
     mask = mask.filter(ImageFilter.GaussianBlur(seam * 0.45))
 
     for i, name in enumerate(names):
-        tile = cover(SRC / name, (col, bh), focus=0.28)
+        tile = cover(SRC / name, (col, bh), focus=0.12)
         tile = ImageEnhance.Color(tile).enhance(1.16)
         ground.paste(tile, (i * (col - seam), 0), mask)
 
@@ -226,50 +228,50 @@ def draw_band(base: Image.Image, index: int, spec: dict) -> None:
     d = ImageDraw.Draw(layer)
 
     right = spec["align"] == "right"
-    margin = 78 * SCALE
+    margin = 56 * SCALE
     x = (SW - margin) if right else margin
-    y = top + 96 * SCALE
+    y = top + 46 * SCALE
 
     # 欧文の小見出し。字間を開けた大文字で、上に細い罫を1本
-    roman_f = face(DIDOT, 25)
+    roman_f = face(DIDOT, 16)
     rw = tracked(d, (x, y), spec["roman"], roman_f, (236, 214, 214, 230), 11,
                  anchor_right=x if right else None)
-    ry = y - 22 * SCALE
+    ry = y - 14 * SCALE
     if right:
-        d.line((x - rw, ry, x - rw + 84 * SCALE, ry), fill=CRIMSON + (255,), width=3)
+        d.line((x - rw, ry, x - rw + 56 * SCALE, ry), fill=CRIMSON + (255,), width=3)
     else:
-        d.line((x, ry, x + 84 * SCALE, ry), fill=CRIMSON + (255,), width=3)
+        d.line((x, ry, x + 56 * SCALE, ry), fill=CRIMSON + (255,), width=3)
 
     # 見出し本体
-    label_f = face(MINCHO, 132)
+    label_f = face(MINCHO, 74)
     lw = d.textlength(spec["label"], font=label_f)
-    ly = y + 58 * SCALE
+    ly = y + 32 * SCALE
     lx = (x - lw) if right else x
     text_with_shadow(d, (lx, ly), spec["label"], label_f, CREAM + (255,), layer, 16)
 
     # 説明文。ページ本文と同じ文言を、文字段の幅で折り返す
-    limit = (776 if right else 1300) * SCALE
-    copy_f = face(MINCHO, 33)
-    cy = ly + 196 * SCALE
+    limit = (860 if right else 1180) * SCALE
+    copy_f = face(MINCHO, 21)
+    cy = ly + 112 * SCALE
     for line in wrap(d, spec["copy"], copy_f, limit):
         lwx = d.textlength(line, font=copy_f)
         text_with_shadow(d, ((x - lwx) if right else x, cy), line, copy_f,
                          (243, 236, 226, 255), layer, 9)
-        cy += 50 * SCALE
+        cy += 32 * SCALE
 
     # 補足の一行（事実の裏付け）。小さく、少し落とした色で
-    note_f = face(SANS, 23)
-    ny = cy + 12 * SCALE
+    note_f = face(SANS, 16)
+    ny = cy + 6 * SCALE
     for line in wrap(d, spec["note"], note_f, limit):
         nwx = d.textlength(line, font=note_f)
         text_with_shadow(d, ((x - nwx) if right else x, ny), line, note_f,
                          (214, 200, 196, 235), layer, 7)
-        ny += 38 * SCALE
+        ny += 24 * SCALE
 
     if spec.get("credit"):
-        cf = face(SANS, 15)
+        cf = face(SANS, 11)
         w = d.textlength(spec["credit"], font=cf)
-        cxp, cyp = SW - margin - w, top + (BAND - 34) * SCALE
+        cxp, cyp = SW - margin - w, top + (BAND - 24) * SCALE
         text_with_shadow(d, (cxp, cyp), spec["credit"], cf,
                          (232, 220, 216, 185), layer, 5)
 

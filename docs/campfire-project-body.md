@@ -103,11 +103,11 @@ MIO / RAY / KØU の3人組です。
 
 そして、**本イベントの収益から必要経費を差し引いた全額を、然るべき団体へ寄付いたします。**
 
-【画像】`assets/charity/group_field.jpg`（メンバー3人）
+【画像】`assets/charity/16x9/group_field.jpg`（メンバー3人）
 
 ### 2. 文化 ── 私たちは、もう一度やっています
 
-【画像】`assets/charity/axis_banner.jpg`
+【画像】`assets/charity/16x9/axis_banner.jpg`
 
 想いから書き始める前に、**すでにやったこと**から書かせてください。
 
@@ -117,7 +117,7 @@ MIO / RAY / KØU の3人組です。
 根津神社が後援した
 **「ONE WORLD SPECIAL EVENT 2026」** に、私たちは協賛・出演者として参加しました。
 
-【画像】`assets/charity/nezu/oneworld_flyer.jpg`（前回のフライヤー）
+【画像】`assets/charity/16x9/oneworld_flyer.jpg`（前回のフライヤー）
 
 - 5月23日（土）　Group Yggdrasill のユニット **YGD7（ユグドラ）** が出演
 - 5月24日（日）　VALHALLA が出演。境内でのスペシャルミュージックライブ
@@ -425,7 +425,7 @@ VALHALLA というバンドとして、音楽で社会に関わっていきた�
 - **クラウドファンディング**：CAMPFIRE
 - **寄付先**：然るべき団体〔団体名は開催後に本ページで報告します〕
 
-【画像】`assets/charity/venue_banner.jpg`（会場は近日公開予定）
+【画像】`assets/charity/16x9/venue_banner.jpg`（会場は近日公開予定）
 
 渋谷の夜景を見渡す**室内フロア**です。
 中央にステージを備えた円形のフロアと、窓際のバーラウンジ。
@@ -438,7 +438,7 @@ VALHALLA というバンドとして、音楽で社会に関わっていきた�
 
 **当日の流れ**
 
-【画像】`assets/charity/timetable_banner.jpg`
+【画像】`assets/charity/16x9/timetable_banner.jpg`
 
 - **17:45**　先行入場（VVIP席・MIOタイム）
 - **17:55**　軽食のご提供〔※ 軽食の有無・内容を確定し、リターンの記載にも反映すること〕
@@ -459,23 +459,23 @@ VALHALLA というバンドとして、音楽で社会に関わっていきた�
 
 〔※ 2本目を載せる場合はここに追加。本文が長くなるので**2本までを推奨**〕
 
-【画像】`assets/charity/mio.jpg`
+【画像】`assets/charity/members/mio_card.jpg`
 
 **MIO ／ 社美緒**（Guitar・主宰）
 Group Yggdrasill 会長。歌舞伎町を拠点に全国へ展開。
 YouTube「Mio Yashiro TV」登録者〔27万〕人。
 
-【画像】`assets/charity/rei.jpg`
+【画像】`assets/charity/members/rei_card.jpg`
 
 **RAY ／ 零**（Guitar）
 
-【画像】`assets/charity/kou.jpg`
+【画像】`assets/charity/members/kou_card.jpg`
 
 **KØU ／ コウ**（Vocal）
 
 ### 12. リターンのご紹介
 
-【画像】`assets/charity/returns_banner.jpg`（支援コース一覧）
+【画像】`assets/charity/16x9/returns_banner.jpg`（支援コース一覧）
 
 **※ お席のあるコース（S席・MIOタイム／VVIP席）は、すべて相席となります。**
 **グループごとの個室・貸切ではありませんので、あらかじめご了承ください。**
@@ -578,7 +578,7 @@ MIOタイムは当日のチェキ撮影、VVIP席は当日の対面での会話�
 
 ### 14. 資金の使い道
 
-【画像】`assets/charity/flow_banner.jpg`（支援が寄付になるまでの流れ）
+【画像】`assets/charity/16x9/flow_banner.jpg`（支援が寄付になるまでの流れ）
 
 **本イベントの収益から必要経費を差し引いた全額を、然るべき団体へ寄付いたします。**
 
@@ -634,7 +634,7 @@ MIOタイムは当日のチェキ撮影、VVIP席は当日の対面での会話�
 
 VALHALLA　MIO / RAY / KØU
 
-【画像】`assets/charity/group.jpg`
+【画像】`assets/charity/16x9/group.jpg`
 
 ### よくあるご質問
 

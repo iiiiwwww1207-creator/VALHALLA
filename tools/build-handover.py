@@ -26,6 +26,7 @@ BUILDS = (
     "create_flyer_wide.py", "create_concept_banner.py", "create_axis_banner.py",
     "create_timetable_banner.py", "create_returns_banner.py",
     "create_flow_banner.py", "create_venue_banner.py",
+    "create_member_cards.py",
 )
 TOOLS = ("build-artifact.py", "build-pdf.py", "build-body-plain.py",
          "build-body-doc.py", "build-returns-pdf.py")
@@ -33,14 +34,17 @@ TOOLS = ("build-artifact.py", "build-pdf.py", "build-body-plain.py",
 # CAMPFIRE に登録する順。左が配布名、右が中身
 IMAGES = (
     ("01_メインビジュアル.jpg",       CHARITY / "flyer_wide_noname.jpg"),
-    ("02_出演者_MIO_RAY_KOU.jpg",     CHARITY / "group_field_panel.jpg"),
-    ("03_支援コース一覧.jpg",         CHARITY / "returns_banner.jpg"),
-    ("04_当日の流れ.jpg",             CHARITY / "timetable_banner.jpg"),
-    ("05_会場_近日公開予定.jpg",      CHARITY / "venue_banner.jpg"),
-    ("06_文化×エンタメ×AI.jpg",       CHARITY / "axis_banner.jpg"),
-    ("07_支援が寄付になるまで.jpg",   CHARITY / "flow_banner.jpg"),
-    ("08_前回の活動_根津神社.jpg",    CHARITY / "nezu" / "nezu_flyer_fixed.jpg"),
+    ("02_出演者_MIO_RAY_KOU.jpg",     CHARITY / "16x9" / "group_field.jpg"),
+    ("03_支援コース一覧.jpg",         CHARITY / "16x9" / "returns_banner.jpg"),
+    ("04_当日の流れ.jpg",             CHARITY / "16x9" / "timetable_banner.jpg"),
+    ("05_会場_近日公開予定.jpg",      CHARITY / "16x9" / "venue_banner.jpg"),
+    ("06_文化×エンタメ×AI.jpg",       CHARITY / "16x9" / "axis_banner.jpg"),
+    ("07_支援が寄付になるまで.jpg",   CHARITY / "16x9" / "flow_banner.jpg"),
+    ("08_前回の活動_根津神社.jpg",    CHARITY / "16x9" / "oneworld_flyer.jpg"),
     ("09_3つの言葉.jpg",              CHARITY / "concept_banner.jpg"),
+    ("10_MIO.jpg",                    CHARITY / "members" / "mio_card.jpg"),
+    ("11_RAY.jpg",                    CHARITY / "members" / "rei_card.jpg"),
+    ("12_KOU.jpg",                    CHARITY / "members" / "kou_card.jpg"),
 )
 DOCS = (
     ("ページ全文（画像入り）.pdf",     ART / "campfire-draft.pdf"),
@@ -67,6 +71,7 @@ def main() -> None:
         run([sys.executable, str(CHARITY / name)])
     run([sys.executable, str(ROOT / "assets" / "charity" / "create_flyer_wide.py"),
          "--no-names"])
+    run([sys.executable, str(ROOT / "tools" / "fit-16x9.py")])
     for name in TOOLS:
         run([sys.executable, str(ROOT / "tools" / name)])
     run([sys.executable, str(ROOT / "tools" / "build-pdf.py"), "--embed"])
@@ -86,6 +91,14 @@ def main() -> None:
                  DEST / "はじめにお読みください.txt")
 
     # 配ったものより新しいソースが残っていないかを確かめる
+    # CAMPFIRE に出す画像は全部 16:9 に揃える約束（2026-09-10 kazuma 指示）
+    from PIL import Image
+    off = [n for n, _ in IMAGES
+           if abs(Image.open(DEST / "画像" / n).width
+                  / Image.open(DEST / "画像" / n).height - 16 / 9) > 0.01]
+    if off:
+        raise RuntimeError(f"16:9 になっていない画像があります: {off}")
+
     stale = [name for group, folder in ((IMAGES, "画像"), (FLYER, "フライヤー"),
                                         (DOCS, "資料"))
              for name, src in group
