@@ -252,6 +252,32 @@ def paste_people(base: Image.Image, placed) -> None:
         base.alpha_composite(person, (x, y))
 
 
+def glyph_mask(ch: str, font: ImageFont.FreeTypeFont, box: tuple[int, int],
+               at: tuple[float, float]) -> Image.Image:
+    """1文字ぶんのインクを L 画像で返す。Ø だけは斜線を太らせる。
+
+    書体が持っている斜線はこの大きさだと 1px 前後しかなく、背景のネオンに
+    負ける。太らせる位置を座標で決め打ちすると書体を変えた瞬間ずれるので、
+    「Ø と O の差＝斜線」を実際に引き算して求め、その形だけを膨らませる。
+
+    差にはボウルの縁のにじみも混ざるので、O のインクがある場所を除いてから
+    使う。膨らませたあと軽くぼかして、縁のギザつきを戻す。
+    """
+    mask = Image.new("L", box, 0)
+    ImageDraw.Draw(mask).text(at, ch, font=font, fill=255)
+    if ch != "Ø":
+        return mask
+
+    plain = Image.new("L", box, 0)
+    ImageDraw.Draw(plain).text(at, "O", font=font, fill=255)
+    diff = ImageChops.subtract(mask, plain).point(lambda v: 255 if v > 110 else 0)
+    outside = plain.point(lambda v: 255 if v < 60 else 0)
+    slash = ImageChops.multiply(diff, outside)
+    slash = slash.filter(ImageFilter.MaxFilter(3)).filter(
+        ImageFilter.GaussianBlur(0.6))
+    return ImageChops.lighter(mask, slash)
+
+
 def add_names(base: Image.Image, placed) -> None:
     """3人の顔の横に、それぞれの名前をローマ字で置く。
 
@@ -319,18 +345,18 @@ def add_names(base: Image.Image, placed) -> None:
             d.line((head_right + 12, ry, tx - 10, ry),
                    fill=(214, 188, 188, 185), width=2)
 
-        shade = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-        s2 = ImageDraw.Draw(shade)
+        ink = Image.new("L", (W, H), 0)
         cx = tx
         for c, w in zip(name, widths):
-            s2.text((cx, y), c, font=f, fill=(6, 3, 6, 215))
+            ink = ImageChops.lighter(ink, glyph_mask(c, f, (W, H), (cx, y)))
             cx += w + 12
-        layer.alpha_composite(shade.filter(ImageFilter.GaussianBlur(7)))
 
-        cx = tx
-        for c, w in zip(name, widths):
-            d.text((cx, y), c, font=f, fill=CREAM + (255,))
-            cx += w + 12
+        blank = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        shade = Image.composite(Image.new("RGBA", (W, H), (6, 3, 6, 215)),
+                                blank, ink)
+        layer.alpha_composite(shade.filter(ImageFilter.GaussianBlur(7)))
+        layer.alpha_composite(Image.composite(
+            Image.new("RGBA", (W, H), CREAM + (255,)), blank, ink))
 
     base.alpha_composite(layer)
 
