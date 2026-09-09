@@ -252,7 +252,7 @@ def paste_people(base: Image.Image, placed) -> None:
         base.alpha_composite(person, (x, y))
 
 
-NAME_SIZE = 40
+NAME_SIZE = 46
 NAME_SS = 4          # 名前だけ4倍で描いてから縮める（縁のギザつき対策）
 
 
@@ -331,26 +331,11 @@ def add_names(base: Image.Image, placed) -> None:
         tx = (head_left - gap - total) if side == "left" else (head_right + gap)
         boxes.append((name, widths, total, tx, y, side, head_left, head_right))
 
-    # ① 先に影だけを1枚の層で敷く（人物の上には出ないよう、幅は狭く）
-    scrim = Image.new("L", (W, H), 0)
-    sd = ImageDraw.Draw(scrim)
-    for _, _, total, tx, y, _, _, _ in boxes:
-        cx, cy = tx + total / 2, y + 22
-        sd.ellipse((cx - total * 0.76, cy - 68, cx + total * 0.76, cy + 68), fill=176)
-    scrim = scrim.filter(ImageFilter.GaussianBlur(38))
-    base.alpha_composite(Image.merge(
-        "RGBA", [Image.new("L", (W, H), v) for v in (7, 4, 7)] + [scrim]))
-
-    # ② そのうえに名前と、人物へつなぐ短い罫
+    # 影は文字の形から起こす。楕円の板だと端の文字が板からはみ出して沈み、
+    # KØU の U が背景の看板に飲まれていた。
     layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     d = ImageDraw.Draw(layer)
-    gray = base.convert("L")
     for name, widths, total, tx, y, side, head_left, head_right in boxes:
-        patch = gray.crop((round(tx) - 10, y - 6, round(tx + total) + 10, y + 44))
-        mean = sum(patch.getdata()) / max(1, patch.width * patch.height)
-        if mean > 150:
-            raise RuntimeError(f"{name} の下地が明るすぎます（{mean:.0f}）")
-
         ry = y + 22
         if side == "left":
             d.line((tx + total + 10, ry, head_left - 12, ry),
@@ -365,15 +350,85 @@ def add_names(base: Image.Image, placed) -> None:
             tile, ox, oy = glyph_tile(c)
             ink.paste(tile, (round(cx) + ox, y + oy), tile)
             cx += w + 12
-
-        blank = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-        shade = Image.composite(Image.new("RGBA", (W, H), (6, 3, 6, 215)),
-                                blank, ink)
-        layer.alpha_composite(shade.filter(ImageFilter.GaussianBlur(7)))
         layer.alpha_composite(Image.composite(
-            Image.new("RGBA", (W, H), CREAM + (255,)), blank, ink))
+            Image.new("RGBA", (W, H), CREAM + (255,)),
+            Image.new("RGBA", (W, H), (0, 0, 0, 0)), ink))
 
+    with_scrim(base, layer, grow=23, blur=26, strength=2.6)
+
+
+def arc_chars(layer: Image.Image, text: str, font: ImageFont.FreeTypeFont,
+              fill, cy: float, radius: float, center_x: float,
+              tracking: float = 0.0, stroke: int = 0) -> None:
+    """弧の上の、指定した x を中心にして文字列を置く。
+
+    arc_text は画面の中央に置くだけだが、こちらは置きたい x を渡せる。
+    3人の体と隙間に語を割りつけるために使う。x から角度を逆算し、
+    その角度を語の中心にして左右に文字を送る。
+    """
+    d = ImageDraw.Draw(layer)
+    widths = [d.textlength(c, font=font) + tracking for c in text]
+    total = sum(widths)
+    center = math.asin(max(-1.0, min(1.0, (center_x - W / 2) / radius)))
+    angle = center - total / radius / 2
+    for ch, w in zip(text, widths):
+        angle += (w / radius) / 2
+        glyph = Image.new("RGBA", (round(w) + 60, font.size + 70), (0, 0, 0, 0))
+        ImageDraw.Draw(glyph).text((30, 20), ch, font=font, fill=fill,
+                                   stroke_width=stroke,
+                                   stroke_fill=(8, 4, 8, 230) if stroke else None)
+        rot = glyph.rotate(-math.degrees(angle), resample=Image.Resampling.BICUBIC,
+                           expand=True)
+        x = W / 2 + radius * math.sin(angle)
+        y = cy - radius * math.cos(angle)
+        layer.alpha_composite(rot, (round(x - rot.width / 2), round(y - rot.height / 2)))
+        angle += (w / radius) / 2
+
+
+def with_scrim(base: Image.Image, layer: Image.Image, grow: int, blur: float,
+               strength: float) -> None:
+    """文字の形そのものから影を起こして敷き、そのうえに文字を重ねる。
+
+    楕円の板を敷く方式だと、端の文字が板からはみ出して背景に沈む。
+    文字のアルファを太らせてぼかせば、どの一文字にも同じだけ影がつく。
+    """
+    alpha = layer.getchannel("A").filter(ImageFilter.MaxFilter(grow))
+    alpha = alpha.filter(ImageFilter.GaussianBlur(blur))
+    alpha = alpha.point(lambda v: min(255, round(v * strength)))
+    base.alpha_composite(Image.merge(
+        "RGBA", [Image.new("L", base.size, v) for v in (7, 4, 7)] + [alpha]))
     base.alpha_composite(layer)
+
+
+def add_waist_words(base: Image.Image) -> None:
+    """「文化 × エンタメ × AI」を3人の腰の高さに、弧のまま置く。
+
+    語と人物を1対1で重ね、× は人と人の隙間に落とす。
+        文化 → MIO ／ × → すき間 ／ エンタメ → KØU ／ × → すき間 ／ AI → RAY
+    上に凸の弧なので中央の KØU のところがいちばん高い。3人は中央が大きく
+    左右が下がる配置なので、腰の高さもちょうどそう並んでいる。
+
+    RAY の白いスーツはここの明るさが 241。色を変えて逃げると3語がばらけるので、
+    文字の形から起こした影を先に敷いて、3語ともクリームで通す。
+    """
+    layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    radius = 2940                       # 端で 30px 下がる浅い弧
+    cy = 690 + radius
+    mincho = face(MINCHO, 80)
+    didot = face(DIDOT, 80, DIDOT_BOLD_INDEX)
+    cross = face(MINCHO, 46)
+
+    for text, font, cx, tr in (("文化", mincho, 540, 6),
+                               ("×", cross, 738, 0),
+                               ("エンタメ", mincho, 960, 6),
+                               ("×", cross, 1176, 0),
+                               ("AI", didot, 1380, 8)):
+        arc_chars(layer, text, font, CREAM + (255,), cy, radius, cx, tracking=tr,
+                  stroke=2)
+
+    # 影は広く薄く。狭く濃く敷くと、RAY の白いスーツの上で汚れに見える。
+    # 縁取りで手前のコントラストを確保してあるので、こちらは軽くていい。
+    with_scrim(base, layer, grow=9, blur=52, strength=1.25)
 
 
 def arc_text(base: Image.Image, text: str, font: ImageFont.FreeTypeFont,
@@ -406,27 +461,13 @@ def arc_text(base: Image.Image, text: str, font: ImageFont.FreeTypeFont,
 
 
 def add_type(base: Image.Image) -> None:
-    d = ImageDraw.Draw(base)
+    """上のアーチ。3語を腰へ下ろしたぶん、ここはイベント名だけを大きく置く。
 
-    # 2行とも、弧を浅くして横の余白まで使い切る。半径を大きくすると
-    # 弧は平たくなり、同じ文字量でも横に伸びて上への張り出しが減る。
-    # 半径を揃えてあるので、2行の間隔は端まで一定に保たれる。
-    #
-    #   R = 4600 / 字間で幅を作る / 頂点 y は下の実測値から決めた
-    #     Didot 104 …… 弧の点から見て 上 45px・下 33px にインクが乗る
-    #     明朝  100 …… 同じく 上 63px・下 32px
-    #
-    ARC_R = 4600
-
-    # 主役：イベント名。頂点 78 → インクの上端 33 で、天地とも切れない。
-    arc_text(base, "VALHALLA CHARITY LIVE", face(DIDOT, 104), CREAM + (255,),
-             W // 2, 78 + ARC_R, ARC_R, tracking=18)
-
-    # 3語。字間を詰めて中央にまとめ、失う横幅は字の大きさで取り返す。
-    # 100pt/字間52（幅1721）→ 108pt/字間16（幅約1290）。塊として立つ。
-    # 頂点 217 → インク下端 252。いちばん高い頭（y≈298）まで 46px 空く。
-    arc_text(base, "文化 × エンタメ × AI", face(MINCHO, 108), CREAM + (255,),
-             W // 2, 217 + ARC_R, ARC_R, tracking=16)
+    半径を大きくして弧を浅くし、横の余白まで使い切る。
+    118pt・字間10 で幅およそ 1820px。天地とも切れない。
+    """
+    arc_text(base, "VALHALLA CHARITY LIVE", face(DIDOT, 118), CREAM + (255,),
+             W // 2, 95 + 4600, 4600, tracking=10)
 
 
 def add_band(base: Image.Image) -> None:
@@ -500,6 +541,7 @@ def main() -> None:
     add_type(canvas)
     paste_people(canvas, placed)
     add_names(canvas, placed)
+    add_waist_words(canvas)
     add_band(canvas)
 
     # 人物の前にもレーザーを走らせる。ただし
