@@ -10,6 +10,7 @@
 import importlib.util
 import io
 import re
+import sys
 from pathlib import Path
 
 from PIL import Image as PILImage
@@ -39,6 +40,26 @@ art = _load("art", "build-artifact.py")
 pdfmetrics.registerFont(UnicodeCIDFont("HeiseiMin-W3"))
 pdfmetrics.registerFont(UnicodeCIDFont("HeiseiKakuGo-W5"))
 MIN, GO = "HeiseiMin-W3", "HeiseiKakuGo-W5"
+
+# 既定の HeiseiMin / HeiseiKakuGo は PDF に「埋め込まない」和文フォント。
+# 開く側の環境に和文フォントがあることを前提にしていて、Mac や Acrobat では
+# きれいに出るが、日本語環境の入っていない Windows や一部のビューアでは
+# 文字が出ないことがある。--embed を付けると、端末に入っている
+# Arial Unicode を実際に PDF に埋め込んだ版を別ファイルで出す。
+# 明朝ではなくなるので見た目は落ちるが、どこで開いても必ず読める。
+EMBED_SRC = "/System/Library/Fonts/Supplemental/Arial Unicode.ttf"
+OUT_EMBED = Path("/tmp/valhalla_artifact/campfire-draft-embed.pdf")
+
+
+def use_embedded_font() -> None:
+    """和文を埋め込みフォントに差し替える。"""
+    global MIN, GO, OUT
+    from reportlab.pdfbase.ttfonts import TTFont
+    if not Path(EMBED_SRC).exists():
+        raise FileNotFoundError(f"埋め込み用フォントが見つかりません: {EMBED_SRC}")
+    pdfmetrics.registerFont(TTFont("EmbedJP", EMBED_SRC))
+    MIN = GO = "EmbedJP"
+    OUT = OUT_EMBED
 
 INK = colors.HexColor("#171216")
 SUB = colors.HexColor("#6B6469")
@@ -212,6 +233,10 @@ def footer(c, doc):
 
 
 def main() -> None:
+    if "--embed" in sys.argv:
+        use_embedded_font()
+        for st in S.values():               # 差し替えたフォントを各スタイルに反映
+            st.fontName = MIN
     md = open(ROOT / prev.SRC, encoding="utf-8").read()
     body = art.for_sharing(prev.extract_body(md))
 
