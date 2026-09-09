@@ -252,6 +252,51 @@ def paste_people(base: Image.Image, placed) -> None:
         base.alpha_composite(person, (x, y))
 
 
+def add_names(base: Image.Image, placed) -> None:
+    """3人の足元に、それぞれの名前をローマ字で置く。
+
+    ここは白いスーツ（右）と黒い衣装（左・中央）が並ぶので、色を固定すると
+    どちらかで必ず消える。名前が乗る場所の明るさを実際に測り、
+    明るければ濃いクリムゾン、暗ければクリームに切り替える。
+    """
+    layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(layer)
+    f = face(DIDOT, 34)
+    gray = base.convert("L")
+
+    y = 786
+    for (person, x, _), name in zip(placed, ("MIO", "KØU", "RAY")):
+        cx = x + person.width // 2
+        widths = [d.textlength(c, font=f) for c in name]
+        total = sum(widths) + 12 * (len(name) - 1)
+
+        patch = gray.crop((round(cx - total / 2) - 12, y - 6,
+                           round(cx + total / 2) + 12, y + 44))
+        light = sum(patch.getdata()) / max(1, patch.width * patch.height) > 150
+        fill = DEEPEST_CRIMSON + (255,) if light else CREAM + (255,)
+        halo = (250, 246, 240, 200) if light else (6, 3, 6, 215)
+
+        # 名前の上に短い罫を1本。人物と名前を視覚的に結びつける
+        rule = (150, 14, 24, 235) if light else (214, 188, 188, 200)
+        d.line((cx - 30, y - 18, cx + 30, y - 18), fill=rule, width=2)
+
+        shade = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        sd = ImageDraw.Draw(shade)
+        tx = cx - total / 2
+        for c, w in zip(name, widths):
+            sd.text((tx, y), c, font=f, fill=halo)
+            tx += w + 12
+        layer.alpha_composite(shade.filter(ImageFilter.GaussianBlur(7)))
+        layer.alpha_composite(shade.filter(ImageFilter.GaussianBlur(3)))
+
+        tx = cx - total / 2
+        for c, w in zip(name, widths):
+            d.text((tx, y), c, font=f, fill=fill)
+            tx += w + 12
+
+    base.alpha_composite(layer)
+
+
 def arc_text(base: Image.Image, text: str, font: ImageFont.FreeTypeFont,
              fill, cx: int, cy: int, radius: float, tracking: float = 0.0) -> None:
     """円弧に沿って1文字ずつ回転させて描く（上に凸のアーチ）。
@@ -374,6 +419,7 @@ def main() -> None:
     # 人物の上に乗らず、3人が文字の手前に立っているように見える。
     add_type(canvas)
     paste_people(canvas, placed)
+    add_names(canvas, placed)
     add_band(canvas)
 
     # 人物の前にもレーザーを走らせる。ただし
