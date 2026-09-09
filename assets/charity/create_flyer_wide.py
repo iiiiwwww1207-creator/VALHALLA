@@ -252,30 +252,44 @@ def paste_people(base: Image.Image, placed) -> None:
         base.alpha_composite(person, (x, y))
 
 
-def glyph_mask(ch: str, font: ImageFont.FreeTypeFont, box: tuple[int, int],
-               at: tuple[float, float]) -> Image.Image:
-    """1文字ぶんのインクを L 画像で返す。Ø だけは斜線を太らせる。
+NAME_SIZE = 40
+NAME_SS = 4          # 名前だけ4倍で描いてから縮める（縁のギザつき対策）
 
-    書体が持っている斜線はこの大きさだと 1px 前後しかなく、背景のネオンに
-    負ける。太らせる位置を座標で決め打ちすると書体を変えた瞬間ずれるので、
-    「Ø と O の差＝斜線」を実際に引き算して求め、その形だけを膨らませる。
 
-    差にはボウルの縁のにじみも混ざるので、O のインクがある場所を除いてから
-    使う。膨らませたあと軽くぼかして、縁のギザつきを戻す。
+def glyph_tile(ch: str) -> tuple[Image.Image, int, int]:
+    """名前の1文字を、4倍で描いてから縮めて返す。(タイル, 左オフセット, 上オフセット)
+
+    Ø だけは斜線を太らせる。書体が持つ斜線はこの大きさだと 1px 前後しかなく、
+    背景のネオンに負けるため。ただし太らせる位置を座標で決め打ちすると
+    書体を変えた瞬間ずれるので、「Ø と O の差＝斜線」を引き算で求め、
+    その形だけを膨らませる。差にはボウルの縁のにじみも混ざるので、
+    O のインクがある場所は除いてから使う。
+
+    膨らませたマスクは階段状になる。だから一連の処理を4倍のまま行い、
+    最後に縮小する。縮小そのものが縁をならすので、あとからぼかす必要がない。
     """
-    mask = Image.new("L", box, 0)
-    ImageDraw.Draw(mask).text(at, ch, font=font, fill=255)
-    if ch != "Ø":
-        return mask
+    f = face(DIDOT, NAME_SIZE * NAME_SS, DIDOT_BOLD_INDEX)
+    pad = NAME_SIZE * NAME_SS // 2
+    w = round(f.getlength(ch)) + pad * 2
+    h = NAME_SIZE * NAME_SS * 2
+    at = (pad, pad // 2)
 
-    plain = Image.new("L", box, 0)
-    ImageDraw.Draw(plain).text(at, "O", font=font, fill=255)
-    diff = ImageChops.subtract(mask, plain).point(lambda v: 255 if v > 110 else 0)
-    outside = plain.point(lambda v: 255 if v < 60 else 0)
-    slash = ImageChops.multiply(diff, outside)
-    slash = slash.filter(ImageFilter.MaxFilter(3)).filter(
-        ImageFilter.GaussianBlur(0.6))
-    return ImageChops.lighter(mask, slash)
+    m = Image.new("L", (w, h), 0)
+    ImageDraw.Draw(m).text(at, ch, font=f, fill=255)
+
+    if ch == "Ø":
+        plain = Image.new("L", (w, h), 0)
+        ImageDraw.Draw(plain).text(at, "O", font=f, fill=255)
+        diff = ImageChops.subtract(m, plain).point(lambda v: 255 if v > 110 else 0)
+        outside = plain.point(lambda v: 255 if v < 60 else 0)
+        slash = ImageChops.multiply(diff, outside)
+        m = ImageChops.lighter(m, slash.filter(ImageFilter.MaxFilter(NAME_SS * 2 + 1)))
+
+    tile = m.resize((w // NAME_SS, h // NAME_SS), Image.Resampling.LANCZOS)
+    # Didot は縦画と横画の差が激しい。縮めるとヘアラインが薄い灰色になり、
+    # 背景の上では消えてしまう。中間調を持ち上げて、細い画を取り戻す。
+    tile = tile.point(lambda v: round(255 * (v / 255) ** 0.6))
+    return tile, -(pad // NAME_SS), -(at[1] // NAME_SS)
 
 
 def add_names(base: Image.Image, placed) -> None:
@@ -293,7 +307,7 @@ def add_names(base: Image.Image, placed) -> None:
     d0 = ImageDraw.Draw(base)
     # 細いウェイトだと Ø の斜線が 1px しかなく、ネオンの上で O に見えてしまう。
     # 帯の日付と同じ太いウェイトなら斜線が太り、小さくても Ø と読める。
-    f = face(DIDOT, 40, DIDOT_BOLD_INDEX)
+    f = face(DIDOT, NAME_SIZE, DIDOT_BOLD_INDEX)
     gap = 30
     sides = ("left", "right", "right")   # 左の人は左へ、中央と右は右へ逃がす
     boxes = []
@@ -348,7 +362,8 @@ def add_names(base: Image.Image, placed) -> None:
         ink = Image.new("L", (W, H), 0)
         cx = tx
         for c, w in zip(name, widths):
-            ink = ImageChops.lighter(ink, glyph_mask(c, f, (W, H), (cx, y)))
+            tile, ox, oy = glyph_tile(c)
+            ink.paste(tile, (round(cx) + ox, y + oy), tile)
             cx += w + 12
 
         blank = Image.new("RGBA", (W, H), (0, 0, 0, 0))
