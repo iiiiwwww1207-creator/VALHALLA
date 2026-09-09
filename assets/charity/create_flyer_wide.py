@@ -289,7 +289,9 @@ def add_type(base: Image.Image) -> None:
              W // 2, 2880, 2790, tracking=10)
 
     # 補足：3語のスローガン。主役より一回り小さく、内側のアーチに。
-    arc_text(base, "文化 × エンタメ × AI", face(MINCHO, 52), CREAM + (255,),
+    # 補足だが読ませたいので、頭にぶつからない範囲で最大まで上げる。
+    # いちばん背の高い人の頭頂が y≈298、上のアーチの下端が y≈194。
+    arc_text(base, "文化 × エンタメ × AI", face(MINCHO, 68), CREAM + (255,),
              W // 2, 2880, 2668, tracking=14)
 
 
