@@ -184,7 +184,11 @@ def main() -> None:
     n_img = html.count("<figure")
     n_tbd = html.count('class="wip"') + html.count('class="tbd"')
 
-    doc = f"""<title>VALHALLA CHARITY LIVE 本文</title>
+    # 文字コードを自分で名乗る。Artifact の枠は付けてくれるが、
+    # この HTML を単体でブラウザやローカルサーバから開くと、
+    # 宣言が無いぶん日本語が化ける。
+    doc = f"""<meta charset="utf-8">
+<title>VALHALLA CHARITY LIVE 本文</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="{FONTS}">
 <style>{CSS}</style>

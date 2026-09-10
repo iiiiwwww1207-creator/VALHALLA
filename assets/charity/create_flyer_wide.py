@@ -197,7 +197,7 @@ def cutouts() -> list[Image.Image]:
 
 
 def add_people(base: Image.Image):
-    """中央を大きく、左右を小さく下げて、中央へ視線が集まる形にする。
+    """3人を同じ大きさで、足元をそろえて横一列に置く。
 
     ここでは背後のもやまでを描き、(配置, もやのマスク, シルエット) を返す。
     人物そのものは paste_people で最後に貼る。文字より後に貼ることで、
@@ -205,7 +205,13 @@ def add_people(base: Image.Image):
     """
     people = cutouts()
     base_y = 968                                   # 足元をそろえる高さ
-    plan = ((0, 0.52, -420), (1, 0.62, 0), (2, 0.52, 420))
+    # 以前は中央だけ 0.62、左右を 0.52 にして中央を大きく見せていたが、
+    # 3人は同じ大きさにする（kazuma 判断 2026-09-10）。
+    # 0.59 は、頭の上端が y=331 になり、上のイベント名（インク下端 y=298）
+    # との間が 33px 空く値。これ以上大きくすると頭が文字に触れ、
+    # これより小さいと上が空きすぎて3人が浮いて見える。
+    RATIO = 0.59
+    plan = ((0, RATIO, -420), (1, RATIO, 0), (2, RATIO, 420))
     placed = []
     for idx, ratio, dx in plan:
         person = people[idx]
@@ -428,7 +434,9 @@ def word_block(text: str, font: ImageFont.FreeTypeFont, fill, tracking: float,
 def add_waist_words(base: Image.Image) -> None:
     """「文化 × エンタメ × AI」を3人の腰の高さに、まっすぐ横一列で置く。
 
-    語と人物を1対1で重ね、× は人と人の隙間に落とす。
+    語と人物を1対1で重ね、× は語と語のちょうど中間に置く。
+    人の隙間の真ん中に置くと、「エンタメ」が4文字で長いぶん右だけ
+    詰まって見えたため、語の端からの距離で揃えている。
         文化 → MIO ／ × → すき間 ／ エンタメ → KØU ／ × → すき間 ／ AI → RAY
 
     高さは全部そろえる。書体ごとに字面が違うので、箱ではなくインクの
@@ -444,9 +452,9 @@ def add_waist_words(base: Image.Image) -> None:
     cross = face(MINCHO, 46)
 
     for text, font, cx, tr in (("文化", mincho, 540, 6),
-                               ("×", cross, 738, 0),
+                               ("×", cross, 707, 0),
                                ("エンタメ", mincho, 960, 6),
-                               ("×", cross, 1176, 0),
+                               ("×", cross, 1222, 0),
                                ("AI", didot, 1380, 8)):
         block = word_block(text, font, CREAM + (255,), tr, stroke=2)
         layer.alpha_composite(block, (round(cx - block.width / 2),
