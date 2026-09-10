@@ -495,15 +495,18 @@ def arc_text(base: Image.Image, text: str, font: ImageFont.FreeTypeFont,
 
 
 def add_type(base: Image.Image) -> None:
-    """上のイベント名。ここだけ弧に戻す（腰の3語はまっすぐのまま）。
+    """上のイベント名。ここだけ弧（腰の3語はまっすぐのまま）。
 
-    半径 4600 の浅い弧。126pt・字間5 で弧長およそ 1816px、
-    見た目の幅 1804px、左右の余白は 58px ずつ。
-    頂点 94 → インク上端 40。端は 90px 下がるが、
-    いちばん高い頭（y≈298）までは十分に空いている。
+    3人を同じ大きさにして頭が下がったぶん、上に余裕ができたので字を上げた。
+    126pt → 136pt。ただし効いている制約は高さではなく幅で、
+    21文字を 1920px に収めるには字間を 0 まで詰めるところが限界。
+
+    半径も 4600 → 3400 に詰めている。弧を深くすると、同じ弧長でも
+    横の張り出しが減るので、そのぶん字を大きくできる。端が 126px 下がるが、
+    下がる場所は人物より外側なので誰にも当たらない。
     """
-    arc_text(base, "VALHALLA CHARITY LIVE", face(DIDOT, 126), CREAM + (255,),
-             W // 2, 94 + 4600, 4600, tracking=5)
+    arc_text(base, "VALHALLA CHARITY LIVE", face(DIDOT, 136), CREAM + (255,),
+             W // 2, 87 + 3400, 3400, tracking=0)
 
 
 def add_band(base: Image.Image) -> None:
