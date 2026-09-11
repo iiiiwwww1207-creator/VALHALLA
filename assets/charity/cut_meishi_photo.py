@@ -99,7 +99,7 @@ def fade_shoulder(rgba: Image.Image) -> Image.Image:
     """
     a = np.array(rgba.convert("RGBA"))
     alpha = a[..., 3].astype(np.float32)
-    y0, y1, x0, x1 = 1020, 1680, 700, 980
+    y0, y1, x0, x1 = 1020, 1460, 700, 980   # 髪の高さだけ。肩には効かせない
 
     ramp = np.ones(alpha.shape[1], np.float32)
     ramp[:x0] = 0.0
@@ -131,8 +131,8 @@ def polish(rgba: Image.Image) -> Image.Image:
     a = np.array(rgba.convert("RGBA"))
     alpha = a[..., 3]
 
-    alpha = cv2.medianBlur(alpha, 15)
-    k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (21, 21))
+    alpha = cv2.medianBlur(alpha, 9)
+    k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (13, 13))
     alpha = cv2.morphologyEx(alpha, cv2.MORPH_CLOSE, k)
     alpha = cv2.morphologyEx(alpha, cv2.MORPH_OPEN, k)
 
@@ -142,9 +142,12 @@ def polish(rgba: Image.Image) -> Image.Image:
         biggest = 1 + int(np.argmax(st[1:, cv2.CC_STAT_AREA]))
         alpha[lab != biggest] = 0
 
-    alpha = cv2.GaussianBlur(alpha, (0, 0), 3.2)
-    alpha = np.clip((alpha.astype(np.int16) - 128) * 3 + 128, 0, 255).astype(np.uint8)
-    alpha = cv2.GaussianBlur(alpha, (0, 0), 1.1)
+    # 黒いスーツは背景も暗く、抜いた時点で境目が 100px ほどのなだらかな
+    # 斜面になっている。ゆるく直すと「ボケた縁」のまま残るので、
+    # いったん強く立ててから、ごく軽くだけぼかして戻す。
+    alpha = cv2.GaussianBlur(alpha, (0, 0), 2.0)
+    alpha = np.clip((alpha.astype(np.int16) - 128) * 8 + 128, 0, 255).astype(np.uint8)
+    alpha = cv2.GaussianBlur(alpha, (0, 0), 0.9)
 
     out = a.copy()
     out[..., 3] = alpha
