@@ -30,11 +30,13 @@ MINCHO_W6 = 2
 SANS = "/System/Library/Fonts/ヒラギノ角ゴシック W3.ttc"
 DIDOT = "/System/Library/Fonts/Supplemental/Didot.ttc"
 
+# 和名は載せない。バンドとしての活動なので英字表記で通す（2026-09-11）。
+# ホストとしての表記は別にあり（KØU／彩波レイ／社美緒）、混ぜない。
 CARDS = (
-    ("mio_card.jpg", "mio.jpg", "MIO", "社美緒", "Guitar ／ 主宰",
+    ("mio_card.jpg", "mio.jpg", "MIO", "", "Guitar ／ 主宰",
      "Group Yggdrasill 会長"),
-    ("rei_card.jpg", "rei.jpg", "RAY", "零", "Guitar", ""),
-    ("kou_card.jpg", "kou.jpg", "KØU", "コウ", "Vocal", ""),
+    ("rei_card.jpg", "rei.jpg", "RAY", "", "Guitar", ""),
+    ("kou_card.jpg", "kou.jpg", "KØU", "", "Vocal", ""),
 )
 
 
@@ -94,10 +96,13 @@ def build(out_name: str, photo: str, roman: str, kanji: str, part: str,
     d.line((x, 300, x + 96, 300), fill=CRIMSON + (255,), width=3)
 
     tracked(d, (x, 340), roman, face(DIDOT, 132), CREAM + (255,), 12)
-    d.text((x + 4, 520), kanji, font=face(MINCHO, 56), fill=(236, 224, 220, 255))
-    d.text((x + 4, 616), part, font=face(SANS, 30), fill=(206, 190, 190, 255))
+    y = 520
+    if kanji:
+        d.text((x + 4, y), kanji, font=face(MINCHO, 56), fill=(236, 224, 220, 255))
+        y += 96
+    d.text((x + 4, y), part, font=face(SANS, 30), fill=(206, 190, 190, 255))
     if note:
-        d.text((x + 4, 668), note, font=face(SANS, 26), fill=(184, 170, 172, 255))
+        d.text((x + 4, y + 52), note, font=face(SANS, 26), fill=(184, 170, 172, 255))
 
     eyebrow = face(DIDOT, 22)
     tracked(d, (x, 244), "VALHALLA", eyebrow, (222, 190, 190, 235), 10)
