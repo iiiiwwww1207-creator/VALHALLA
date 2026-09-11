@@ -28,3 +28,6 @@ serve.py
 # keep web-optimized afterparty videos (small, for GitHub Pages)
 !assets/charity/video/bg_loop.mp4
 !assets/charity/video/synchro_digest.mp4
+
+# 受領した宣材の切り抜き。このリポジトリは公開なので素材は置かない
+assets/charity/meishi/*.png
