@@ -134,6 +134,7 @@ def build(cut_name: str, out_name: str) -> None:
 
 def main() -> None:
     build("valhalla_cut.png", "meishi_mio_pv.jpg")
+    build("hostcall_cut.png", "meishi_mio_hostcall.jpg")
 
 
 if __name__ == "__main__":

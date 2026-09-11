@@ -40,6 +40,52 @@ def refine(rgba: Image.Image) -> Image.Image:
     return rgba
 
 
+def drop_bystander(rgba: Image.Image) -> Image.Image:
+    """記者会見のカットだけ。MIO の後ろに立っている別の人物を消す。
+
+    人物専用モデルは、後ろの人も「人物」として拾ってしまう。縦に切って
+    分けようとしても、その人と MIO の頭が重なっているので顔まで切れる。
+
+    そこで色で分ける。MIO の左どなりの帯（x<940・y<1360）に居るのは
+    **MIO の青い髪か、後ろの人か**のどちらかしかない。青だけを残せば、
+    後ろの人は消えて MIO の髪は残る。
+    """
+    a = np.array(rgba.convert("RGBA"))
+    alpha, rgb = a[..., 3].copy(), a[..., :3].astype(np.int16)
+    h, w = alpha.shape
+
+    band = np.zeros(alpha.shape, bool)
+    band[0:1360, 0:940] = True
+    blue = (rgb[..., 2] > rgb[..., 0] + 12) & (rgb[..., 2] > 55)
+    keep = cv2.morphologyEx(blue.astype(np.uint8), cv2.MORPH_CLOSE,
+                            cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (31, 31)))
+    keep = cv2.dilate(keep, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (7, 7)))
+    alpha[band & (keep == 0)] = 0
+
+    # 隙間を埋めたぶん、後ろの人の肌と服が戻ってしまう。暖色を落とす。
+    # 金のチェーンも暖色なので、チェーンより左（x<790）だけを対象にする。
+    warm = rgb[..., 0] > rgb[..., 2] + 8
+    left = np.zeros(alpha.shape, bool)
+    left[0:1360, 0:790] = True
+    alpha[left & warm] = 0
+
+    # 帯より下にも、後ろの人の腕が左端に残る。MIO はそこでは黒いスーツなので、
+    # 左端の暖色はすべて落として構わない。
+    arm = np.zeros(alpha.shape, bool)
+    arm[1360:2700, 0:520] = True
+    alpha[arm & warm] = 0
+
+    # 肩のあたりに残る灰色（後ろの人の服）は、青の条件をきつくして落とす
+    lower = np.zeros(alpha.shape, bool)
+    lower[860:1360, 690:940] = True
+    alpha[lower & ~(rgb[..., 2] > rgb[..., 0] + 24)] = 0
+
+    alpha = cv2.GaussianBlur(alpha, (0, 0), 1.6)
+    out = a.copy()
+    out[..., 3] = alpha
+    return Image.fromarray(out)
+
+
 def cut(path: Path, session) -> Image.Image:
     im = Image.open(path).convert("RGB")
 
@@ -57,6 +103,8 @@ def cut(path: Path, session) -> Image.Image:
                     alpha_matting_background_threshold=15,
                     alpha_matting_erode_size=12)
     cutout = refine(cutout.convert("RGBA"))
+    if "HOSTCALL" in path.name:
+        cutout = drop_bystander(cutout)
     return cutout.crop(cutout.getchannel("A").point(
         lambda v: 255 if v > 12 else 0).getbbox())
 
