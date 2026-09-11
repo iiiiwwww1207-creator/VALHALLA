@@ -86,6 +86,71 @@ def drop_bystander(rgba: Image.Image) -> Image.Image:
     return Image.fromarray(out)
 
 
+def fade_shoulder(rgba: Image.Image) -> Image.Image:
+    """肩の高さに残る、後ろの人の服を溶かして消す。
+
+    ここだけは色でも質感でも明るさでも分けられなかった。
+    後ろの人はピントが外れていて、そこにある MIO の髪も影で沈んでいて、
+    どの数字を見ても差が出ない。明るさで切ると髪まで穴が空く。
+
+    なので**切らずに、左へ向かって透明にしていく**。残っているのは
+    輪郭のはっきりしない淡い影なので、勾配で薄めれば見えなくなり、
+    髪の端も一緒にぼけて自然につながる。暗い地に置く前提の処理。
+    """
+    a = np.array(rgba.convert("RGBA"))
+    alpha = a[..., 3].astype(np.float32)
+    y0, y1, x0, x1 = 1020, 1680, 700, 980
+
+    ramp = np.ones(alpha.shape[1], np.float32)
+    ramp[:x0] = 0.0
+    ramp[x0:x1] = np.linspace(0.0, 1.0, x1 - x0) ** 0.85
+
+    band = np.ones(alpha.shape[0], np.float32)          # 上下も急に変わらないように
+    fade = 110
+    band[:y0 - fade] = 0.0
+    band[y0 - fade:y0] = np.linspace(0.0, 1.0, fade)
+    band[y1:y1 + fade] = np.linspace(1.0, 0.0, fade)
+    band[y1 + fade:] = 0.0
+
+    w = band[:, None] * (1.0 - ramp)[None, :]           # 効かせる強さ
+    alpha *= 1.0 - w
+    out = a.copy()
+    out[..., 3] = np.clip(alpha, 0, 255).astype(np.uint8)
+    return Image.fromarray(out)
+
+
+def polish(rgba: Image.Image) -> Image.Image:
+    """縁を整える。色で人を消したあとの後始末。
+
+    ・浮いた破片を落とす ── いちばん大きい塊だけ残す。
+      色で消すと、消しきれなかった灰色が本体から離れて宙に浮く
+    ・ギザギザを取る ── 黒いスーツは背景との差が小さく、
+      マスクの縁が点々になる。中央値ぼかしと開閉で粒を落とす
+    ・最後にわずかにぼかして、紙に置いたときに切り貼りに見えないようにする
+    """
+    a = np.array(rgba.convert("RGBA"))
+    alpha = a[..., 3]
+
+    alpha = cv2.medianBlur(alpha, 15)
+    k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (21, 21))
+    alpha = cv2.morphologyEx(alpha, cv2.MORPH_CLOSE, k)
+    alpha = cv2.morphologyEx(alpha, cv2.MORPH_OPEN, k)
+
+    solid = (alpha > 60).astype(np.uint8)
+    n, lab, st, _ = cv2.connectedComponentsWithStats(solid, 8)
+    if n > 1:
+        biggest = 1 + int(np.argmax(st[1:, cv2.CC_STAT_AREA]))
+        alpha[lab != biggest] = 0
+
+    alpha = cv2.GaussianBlur(alpha, (0, 0), 3.2)
+    alpha = np.clip((alpha.astype(np.int16) - 128) * 3 + 128, 0, 255).astype(np.uint8)
+    alpha = cv2.GaussianBlur(alpha, (0, 0), 1.1)
+
+    out = a.copy()
+    out[..., 3] = alpha
+    return Image.fromarray(out)
+
+
 def cut(path: Path, session) -> Image.Image:
     im = Image.open(path).convert("RGB")
 
@@ -103,10 +168,17 @@ def cut(path: Path, session) -> Image.Image:
                     alpha_matting_background_threshold=15,
                     alpha_matting_erode_size=12)
     cutout = refine(cutout.convert("RGBA"))
-    if "HOSTCALL" in path.name:
-        cutout = drop_bystander(cutout)
-    return cutout.crop(cutout.getchannel("A").point(
+
+    # 先に余白を落として原点を確定させる。以降の処理は座標を直に書くので、
+    # ここで切っておかないと、切り抜く範囲が毎回ずれる。
+    cutout = cutout.crop(cutout.getchannel("A").point(
         lambda v: 255 if v > 12 else 0).getbbox())
+
+    if "HOSTCALL" in path.name:
+        cutout = fade_shoulder(polish(drop_bystander(cutout)))
+        cutout = cutout.crop(cutout.getchannel("A").point(
+            lambda v: 255 if v > 12 else 0).getbbox())
+    return cutout
 
 
 def main() -> None:
