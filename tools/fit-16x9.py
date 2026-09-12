@@ -31,7 +31,9 @@ PLAN = (
     ("returns_banner.jpg",         "extend", 0.5),
     ("flow_banner.jpg",            "extend", 0.5),
     ("venue_banner.jpg",           "extend", 0.5),
-    ("group_field.jpg",            "crop",   0.42),   # 3人の頭が全部入る位置
+    # 野球場のカットは縦位置で、16:9 に切ると胸から下が落ちる。
+    # バンドの宣材（group_band）はもともと 1.77 で、3人の全身が収まっている。
+    ("group_band.jpg",             "crop",   0.50),
     ("group.jpg",                  "crop",   0.45),
     ("nezu/oneworld_flyer.jpg",    "mat",    0.5),
 )
