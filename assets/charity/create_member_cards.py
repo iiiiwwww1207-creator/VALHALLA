@@ -30,10 +30,10 @@ MINCHO_W6 = 2
 SANS = "/System/Library/Fonts/ヒラギノ角ゴシック W3.ttc"
 DIDOT = "/System/Library/Fonts/Supplemental/Didot.ttc"
 
-# 和名は載せない。バンドとしての活動なので英字表記で通す（2026-09-11）。
-# ホストとしての表記は別にあり（KØU／彩波レイ／社美緒）、混ぜない。
+# 併記は MIO だけ（2026-09-11 kazuma 判断）。「社美緒」は経営者としての名前なので
+# 併記して矛盾しない。RAY と KØU はホスト表記しか無いので英字のみで通す。
 CARDS = (
-    ("mio_card.jpg", "mio.jpg", "MIO", "", "Guitar ／ 主宰",
+    ("mio_card.jpg", "mio.jpg", "MIO", "社美緒", "Guitar ／ 主宰",
      "Group Yggdrasill 会長"),
     ("rei_card.jpg", "rei.jpg", "RAY", "", "Guitar", ""),
     ("kou_card.jpg", "kou.jpg", "KØU", "", "Vocal", ""),
