@@ -33,7 +33,8 @@ TOOLS = ("build-artifact.py", "build-pdf.py", "build-body-plain.py",
 
 # CAMPFIRE に登録する順。左が配布名、右が中身
 IMAGES = (
-    ("01_メインビジュアル.jpg",       CHARITY / "flyer_wide_noname.jpg"),
+    ("01_メインビジュアル_CAMPFIRE用_3対2.jpg", CHARITY / "flyer_3x2_noname.jpg"),
+    ("01b_メインビジュアル_16対9.jpg", CHARITY / "flyer_wide_noname.jpg"),
     ("02_出演者_MIO_RAY_KOU.jpg",     CHARITY / "16x9" / "group_field.jpg"),
     ("03_支援コース一覧.jpg",         CHARITY / "16x9" / "returns_banner.jpg"),
     ("04_当日の流れ.jpg",             CHARITY / "16x9" / "timetable_banner.jpg"),
@@ -71,6 +72,7 @@ def main() -> None:
         run([sys.executable, str(CHARITY / name)])
     run([sys.executable, str(ROOT / "assets" / "charity" / "create_flyer_wide.py"),
          "--no-names"])
+    run([sys.executable, str(ROOT / "assets" / "charity" / "create_flyer_wide.py"), "--3x2"])
     run([sys.executable, str(ROOT / "tools" / "fit-16x9.py")])
     for name in TOOLS:
         run([sys.executable, str(ROOT / "tools" / name)])
@@ -94,8 +96,9 @@ def main() -> None:
     # CAMPFIRE に出す画像は全部 16:9 に揃える約束（2026-09-10 kazuma 指示）
     from PIL import Image
     off = [n for n, _ in IMAGES
-           if abs(Image.open(DEST / "画像" / n).width
-                  / Image.open(DEST / "画像" / n).height - 16 / 9) > 0.01]
+           if "3対2" not in n
+           and abs(Image.open(DEST / "画像" / n).width
+                   / Image.open(DEST / "画像" / n).height - 16 / 9) > 0.01]
     if off:
         raise RuntimeError(f"16:9 になっていない画像があります: {off}")
 

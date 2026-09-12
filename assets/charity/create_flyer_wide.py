@@ -22,8 +22,16 @@ MEMBERS = HERE / "members_white.jpg"
 VENUE = HERE / "venue" / "shibuya_night.jpg"
 OUTPUT = HERE / "flyer_wide.jpg"
 OUTPUT_NONAME = HERE / "flyer_wide_noname.jpg"
+OUTPUT_3X2 = HERE / "flyer_3x2_noname.jpg"
 
+# CAMPFIRE のメイン画像は 3:2 が推奨。16:9 のまま入れると左右が切られ、
+# イベント名の V と E が落ちる。--3x2 で 1920x1280 の版を別に出す。
+# 幅は同じなので、文字の大きさは変えず、増えた高さは人物と余白に使う。
 W, H = 1920, 1080
+BAND_H = 224          # 最下部の帯の高さ
+FOOT = 968            # 足元をそろえる高さ
+PEOPLE = 0.59         # 人物の高さ（画面の高さに対する比）
+WAIST = 700           # 腰の3語を置く高さ
 BLACK = (5, 3, 7)
 CRIMSON = (193, 18, 31)
 DARK_CRIMSON = (142, 16, 25)
@@ -204,13 +212,13 @@ def add_people(base: Image.Image):
     文字が人物にかからない（人物が手前に立つ）。
     """
     people = cutouts()
-    base_y = 968                                   # 足元をそろえる高さ
+    base_y = FOOT                                  # 足元をそろえる高さ
     # 以前は中央だけ 0.62、左右を 0.52 にして中央を大きく見せていたが、
     # 3人は同じ大きさにする（kazuma 判断 2026-09-10）。
     # 0.59 は、頭の上端が y=331 になり、上のイベント名（インク下端 y=298）
     # との間が 33px 空く値。これ以上大きくすると頭が文字に触れ、
     # これより小さいと上が空きすぎて3人が浮いて見える。
-    RATIO = 0.59
+    RATIO = PEOPLE
     plan = ((0, RATIO, -420), (1, RATIO, 0), (2, RATIO, 420))
     placed = []
     for idx, ratio, dx in plan:
@@ -445,7 +453,6 @@ def add_waist_words(base: Image.Image) -> None:
     RAY の白いスーツはここの明るさが 241。色を変えて逃げると3語がばらけるので、
     細い縁取りで手前のコントラストを作り、影は広く薄く敷いて、全部クリームで通す。
     """
-    WAIST = 700
     layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     mincho = face(MINCHO, 80)
     didot = face(DIDOT, 80, DIDOT_BOLD_INDEX)
@@ -518,7 +525,7 @@ def add_band(base: Image.Image) -> None:
     ・日付は大きく置く。数字は一瞬で読めるので、いちばん効く情報
     """
     d = ImageDraw.Draw(base)
-    band = H - 224
+    band = H - BAND_H
     d.rectangle((0, band, W, H), fill=DEEPEST_CRIMSON + (255,))
 
     line = (232, 206, 206, 90)
@@ -571,13 +578,27 @@ def add_band(base: Image.Image) -> None:
            fill=(236, 214, 214, 235))
 
 
+def use_3x2() -> None:
+    """CAMPFIRE のメイン画像用に 1920x1280（3:2）へ組み替える。
+
+    幅は変わらないので、イベント名と3語の大きさはそのまま。
+    増えた 200px は、人物を大きくするのと、帯を少し厚くするのに使う。
+    """
+    global H, BAND_H, FOOT, PEOPLE, WAIST
+    H = 1280
+    BAND_H = 265
+    FOOT = 1147                # 帯の上端より少し下（足元は帯に隠れる）
+    PEOPLE = 0.62              # 794px。頭の上端 353、題字のインク下端 298 との間 55px
+    WAIST = 790                # 頭の上端 + 身長の 55%
+
+
 def main(with_names: bool = True) -> None:
     """--no-names を付けると、3人の名前を入れない版を別ファイルに出す。
 
     名前の有無で使い道が分かれる。名前ありは CAMPFIRE とフライヤー、
     名前なしは SNS のように上から文字を載せる前提の場所で使う。
     """
-    out_path = OUTPUT if with_names else OUTPUT_NONAME
+    out_path = OUTPUT_3X2 if H != 1080 else (OUTPUT if with_names else OUTPUT_NONAME)
     canvas = add_lasers(background()).convert("RGBA")
     placed, haze, solid = add_people(canvas)
 
@@ -611,4 +632,8 @@ def main(with_names: bool = True) -> None:
 
 
 if __name__ == "__main__":
-    main(with_names="--no-names" not in sys.argv)
+    if "--3x2" in sys.argv:
+        use_3x2()
+        main(with_names=False)
+    else:
+        main(with_names="--no-names" not in sys.argv)
