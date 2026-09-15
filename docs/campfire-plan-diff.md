@@ -130,4 +130,5 @@
 7. **目標金額 650万で行くか**
 8. **CAMPFIRE本体を作り込むか、LPへ誘導するか**
 
-**プレビューURL（先方発行）**：`https://camp-fire.jp/projects/973190/preview?token=39u6ce7a`
+**プレビューURL（先方発行）**：`https://camp-fire.jp/projects/973190/preview?token=〔管理画面で確認〕`
+※ このリポジトリは公開なので、限定公開URLのトークンは書かない。
