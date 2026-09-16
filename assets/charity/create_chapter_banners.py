@@ -11,7 +11,7 @@ CAMPFIRE 掲載ページは CHAPTER 03〜09 の約4,000字に図版が1枚も無
     ch05_havetowant 一日の内訳が変わる（24時間の帯・2本）
     ch07_loop       3つは一周してつながる（循環図）★本文の核
     ch08_pass       見せる → 伝える → 増える
-    ch13_schedule   公開から寄付の報告まで（年表）
+    ch13_schedule   公開から支援の報告まで（年表）
 
 使い方: python3 assets/charity/create_chapter_banners.py
 """

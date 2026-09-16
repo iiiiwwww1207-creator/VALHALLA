@@ -517,7 +517,7 @@ def add_type(base: Image.Image) -> None:
 
 
 def add_band(base: Image.Image) -> None:
-    """最下部の帯。人物より前に描いて、日付と寄付の一行を必ず読ませる。
+    """最下部の帯。人物より前に描いて、日付と支援の一行を必ず読ませる。
 
     組み方は、支援を集めているクラウドファンディングのヘッダーを参考にした。
     ・細い罫線で情報の塊を囲い、帯を「デザインされた面」に見せる
@@ -571,8 +571,8 @@ def add_band(base: Image.Image) -> None:
     x += rule_gap
     d.text((x, band + 90), place_t, font=place_f, fill=CREAM + (255,))
 
-    # ③ 寄付の一行。ここだけ和文で、静かに置く
-    note = "収益から必要経費を差し引いた全額を、然るべき団体へ寄付します"
+    # ③ 支援の一行。ここだけ和文で、静かに置く
+    note = "収益から必要経費を差し引いた全額で、然るべき団体を支援します"
     nf = face(MINCHO, 27)
     d.text(((W - d.textlength(note, font=nf)) / 2, band + 178), note, font=nf,
            fill=(236, 214, 214, 235))
