@@ -48,3 +48,16 @@ def stamp(base: Image.Image, scale: float = 0.86, opacity: int = 42,
     layer.alpha_composite(logo, (round(base.width * center[0] - width / 2),
                                  round(base.height * center[1] - height / 2)))
     return Image.alpha_composite(base.convert("RGBA"), layer)
+
+
+# ── 2026-09-16 追記（kazuma 指摘）
+#
+# 既定の「幅0.86・濃さ42・中央」は、中身の詰まった図版では成立するが、
+# 余白のある図版では次の2つが目立つ：
+#
+#   ① 木の部分が上端で切れて、茶色い塊（土の山）に見える
+#   ② ゴシック体の太い線が本文を突き抜けて、文字が濁る
+#
+# 余白のある図版では stamp(scale=0.40, opacity=15, center=<文字の無い場所>)
+# を使う。この大きさならロゴ全体が枠に収まるので、塊ではなくロゴに見える。
+# 写真や回路で地が埋まっている図版では、透かしを入れない。

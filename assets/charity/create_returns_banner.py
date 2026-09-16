@@ -269,7 +269,10 @@ def add_footer(base: Image.Image) -> None:
 
 def main() -> None:
     canvas = make_background()
-    canvas = stamp(canvas)          # 地に VALHALLA のロゴを透かす
+    # 透かしは小さく、文字の無いところへ。
+    # 既定（幅0.86・濃さ42）だと木の部分が上端で切れて茶色い塊に見え、
+    # ゴシック体の線がコース名と特典の行を突き抜けて読みにくくなる
+    canvas = stamp(canvas, scale=0.40, opacity=15, center=(0.63, 0.74))
     add_header(canvas)
     add_cards(canvas)
     add_footer(canvas)

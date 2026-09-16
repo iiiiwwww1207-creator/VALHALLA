@@ -23,7 +23,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from PIL import Image, ImageDraw, ImageEnhance, ImageFilter
+from PIL import Image, ImageChops, ImageDraw, ImageEnhance, ImageFilter
 
 from banner_kit import (ASH, BLACK, CREAM, CRIMSON, DARK_CRIMSON, H, LATIN,
                         MINCHO, SANS, SANS_B, SCALE, SILVER, SW, SH, W, arrow,
@@ -36,11 +36,11 @@ HERE = Path(__file__).resolve().parent
 
 def photo(path: Path, box, darken: float = 0.42, blur: float = 0.0,
           span: tuple[float, float] | None = None,
-          tint: float = 0.0, vfocus: float = 0.5) -> Image.Image:
+          crush: float = 0.0, vfocus: float = 0.5) -> Image.Image:
     """写真を box（実寸）に収めて切り抜き、地に馴染むまで落とす。
 
     span … 先に横方向を切り出す範囲（幅に対する比）。3人並びから1人だけ抜くため
-    tint … 白飛びした地を黒地に馴染ませるため、深紅を重ねる強さ（0〜1）
+    crush … 白飛びした地を黒へ沈める強さ（0〜1）。明るい画素ほど強くかかる
     vfocus … 縦の切り取り位置（0=上端寄せ / 0.5=中央）。顔が切れるのを避ける
     """
     x0, y0, x1, y1 = box
@@ -58,9 +58,15 @@ def photo(path: Path, box, darken: float = 0.42, blur: float = 0.0,
     if blur:
         im = im.filter(ImageFilter.GaussianBlur(blur * SCALE))
     im = ImageEnhance.Brightness(im).enhance(darken)
-    if tint:
-        wash = Image.new("RGB", im.size, DARK_CRIMSON)
-        im = Image.blend(im, wash, tint)
+    if crush:
+        # 白い背景だけを黒へ沈める。暗い衣装はそのまま残るので、
+        # 深紅で全面を染めるより「写真のまま」黒地に馴染む。
+        # RGB を別々に曲げると肌が緑に転ぶので、明度から作った1枚の
+        # 倍率で3チャンネルを同じだけ落とす（色相を動かさない）
+        lum = im.convert("L")
+        gain = lum.point([round(255 * (1 - crush * (v / 255) ** 2.4))
+                          for v in range(256)])
+        im = ImageChops.multiply(im, Image.merge("RGB", (gain, gain, gain)))
     return im.convert("RGBA")
 
 
@@ -81,12 +87,18 @@ def fade_left(layer: Image.Image, box, hard: float = 0.30) -> Image.Image:
 # ───────────────────────────────── CHAPTER 03
 
 def ch03_entame(out: Path) -> None:
+    """白バックの宣材は明度の曲線では地と肌が分離できないので、背景を外して置く。"""
     img = ground()
-    box = (887, 0, W, H)
-    shot = fade_left(photo(HERE / "group_band.jpg", box, darken=0.30,
-                           span=(0.26, 0.73), tint=0.30, vfocus=0.22), box, hard=0.46)
-    img.alpha_composite(shot, spos((box[0], box[1])))
-    img = stamp(img, scale=0.62, opacity=30, center=(0.30, 0.52))
+    cut = Image.open(HERE / "group_band_cutout.png").convert("RGBA")
+    a, b = 0.325, 0.685                   # 3人並びから中央のひとりだけを取る
+    cut = cut.crop((round(cut.width * a), 0, round(cut.width * b), cut.height))
+    target_h = round(H * 1.02 * SCALE)
+    cut = cut.resize((round(cut.width * target_h / cut.height), target_h),
+                     Image.Resampling.LANCZOS)
+    rgb = ImageEnhance.Brightness(cut.convert("RGB")).enhance(0.72)
+    cut = Image.merge("RGBA", (*rgb.split(), cut.getchannel("A")))
+    img.alpha_composite(cut, (SW - cut.width - round(120 * SCALE),
+                              SH - cut.height + round(30 * SCALE)))
     d = ImageDraw.Draw(img)
     eyebrow(d, "CHAPTER 03 ／ エンタメ")
 
@@ -123,13 +135,17 @@ def ch04_ai(out: Path) -> None:
     band.putalpha(mask)
     img.alpha_composite(band, (0, SH - band.height))
 
-    img = stamp(img, scale=0.70, opacity=26, center=(0.50, 0.40))
     d = ImageDraw.Draw(img)
     eyebrow(d, "CHAPTER 04 ／ AI")
 
     big = face(MINCHO, 58)
     centered(d, W / 2, 210, "have to を、AI に。", big, CREAM)
     centered(d, W / 2, 292, "空いた時間を、音楽に。", big, CREAM)
+    scrim = Image.new("RGBA", (SW, SH), (0, 0, 0, 0))
+    ImageDraw.Draw(scrim).rectangle(sbox((W / 2 - 430, 372, W / 2 + 430, 512)),
+                                    fill=(*BLACK, 205))
+    img.alpha_composite(scrim.filter(ImageFilter.GaussianBlur(26 * SCALE)))
+    d = ImageDraw.Draw(img)
     d.line(sbox((W / 2 - 110, 400, W / 2 + 110, 400)), fill=CRIMSON, width=2 * SCALE)
     centered(d, W / 2, 428,
              "好きなことに使う時間は、勝手には生まれません。",
@@ -143,7 +159,7 @@ def ch04_ai(out: Path) -> None:
 # ───────────────────────────────── CHAPTER 05
 
 def ch05_havetowant(out: Path) -> None:
-    img = stamp(ground(), scale=0.78, opacity=18, center=(0.50, 0.52))
+    img = stamp(ground(), scale=0.40, opacity=15, center=(0.50, 0.76))
     d = ImageDraw.Draw(img)
     eyebrow(d, "CHAPTER 05 ／ have to と want to")
 
@@ -190,7 +206,7 @@ def ch05_havetowant(out: Path) -> None:
 # ───────────────────────────────── CHAPTER 07  ★本文の核
 
 def ch07_loop(out: Path) -> None:
-    img = stamp(ground(), scale=0.50, opacity=20, center=(0.285, 0.53))
+    img = ground()
     d = ImageDraw.Draw(img)
     eyebrow(d, "CHAPTER 07 ／ 3つは、一周してつながる")
 
@@ -249,7 +265,7 @@ def ch07_loop(out: Path) -> None:
 # ───────────────────────────────── CHAPTER 08
 
 def ch08_pass(out: Path) -> None:
-    img = stamp(ground(), scale=0.86, opacity=22, center=(0.50, 0.54))
+    img = stamp(ground(), scale=0.40, opacity=15, center=(0.50, 0.74))
     d = ImageDraw.Draw(img)
     eyebrow(d, "CHAPTER 08 ／ 見せて、伝えて、増やす")
 
@@ -275,7 +291,7 @@ def ch08_pass(out: Path) -> None:
 # ───────────────────────────────── CHAPTER 13
 
 def ch13_schedule(out: Path) -> None:
-    img = stamp(ground(), scale=0.86, opacity=20, center=(0.50, 0.54))
+    img = stamp(ground(), scale=0.40, opacity=15, center=(0.50, 0.76))
     d = ImageDraw.Draw(img)
     eyebrow(d, "CHAPTER 13 ／ スケジュール")
 
