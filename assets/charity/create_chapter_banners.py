@@ -332,9 +332,29 @@ def _wrap(text: str, n: int) -> list[str]:
     return out or [text]
 
 
+# 本文にはめる版（既存の図版と同じ 1500x844）の置き場と、対応表
+BODY = Path.home() / "Desktop" / "VALHALLA_本文にはめる画像"
+JOBS = [(ch03_entame, "ch03_entame.jpg", "IMAGE-14.jpg"),
+        (ch04_ai, "ch04_ai.jpg", "IMAGE-15.jpg"),
+        (ch05_havetowant, "ch05_havetowant.jpg", "IMAGE-16.jpg"),
+        (ch07_loop, "ch07_loop.jpg", "IMAGE-17.jpg"),
+        (ch08_pass, "ch08_pass.jpg", "IMAGE-18.jpg"),
+        (ch13_schedule, "ch13_schedule.jpg", "IMAGE-19.jpg")]
+
+
+def export(src: Path, dst: Path) -> None:
+    """本文用に 1500x844 で書き出す。ここまでを必ず1回で通す。
+
+    図版だけ直して流し込みを忘れると、ページには古い絵が残る。
+    一度それをやったので、作るのと配るのを分けない。
+    """
+    im = Image.open(src).convert("RGB").resize((1500, 844), Image.Resampling.LANCZOS)
+    im.save(dst, "JPEG", quality=90, optimize=True, progressive=True)
+
+
 if __name__ == "__main__":
-    jobs = [(ch03_entame, "ch03_entame.jpg"), (ch04_ai, "ch04_ai.jpg"),
-            (ch05_havetowant, "ch05_havetowant.jpg"), (ch07_loop, "ch07_loop.jpg"),
-            (ch08_pass, "ch08_pass.jpg"), (ch13_schedule, "ch13_schedule.jpg")]
-    for fn, name in jobs:
+    for fn, name, body in JOBS:
         fn(HERE / name)
+        if BODY.is_dir():
+            export(HERE / name, BODY / body)
+            print(f"    → {body}")
