@@ -220,7 +220,7 @@ def main() -> None:
             canvas.setFont(GO, 7.8)
             canvas.drawString(MARGIN, PH - 28.5 * mm,
                               "2026年10月18日（日）渋谷　OPEN 19:00 ／ 受付締切 19:25 ／ "
-                              "START 19:30 ／ ライブ終演 20:05　ご支援に対してお渡しするもの・体験のすべて")
+                              "START 19:30 ／ ライブ終演 20:05　ご支援へのお返しと、当日の体験のすべて")
         canvas.setFillColor(SUB)
         canvas.setFont(GO, 7)
         canvas.drawRightString(PW - MARGIN, 10 * mm, str(canvas.getPageNumber()))
