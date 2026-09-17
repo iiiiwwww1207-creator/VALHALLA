@@ -36,7 +36,7 @@ ZONES = {
     "DJ1": (478, 285), "DJ2": (350, 380), "V4": (452, 560), "V1": (878, 560),
     "V6": (350, 625), "V5": (452, 715), "V3": (1005, 622), "V2": (878, 715),
     "S4": (160, 782), "S3": (333, 910), "S1": (1105, 795), "S2": (1000, 925),
-    "BAR": (663, 993), "FLOOR": (663, 700),
+    "BAR": (663, 993), "FRONT": (663, 585), "FLOOR": (663, 790),
 }
 VVIP = ("DJ1", "DJ2", "V4", "V1")
 SSEAT = ("V2", "V3", "V5", "V6", "S1", "S2", "S3", "S4")
@@ -88,11 +88,17 @@ def build(out: Path) -> None:
     for name in SSEAT:
         pin(d, at(name), 27, BLUE, 2.0)
 
-    # 中央＝ステージとスタンディング
-    cx, cy = at("FLOOR")
-    pin(d, (cx, cy), 96, CRIMSON, 2.2)
-    centered(d, cx, cy - 30, "スタンディング", face(MINCHO, 26), CREAM)
-    centered(d, cx, cy + 10, "最前列席／ライブ席", face(SANS, 18), SILVER)
+    # DJブースのすぐ手前が最前列。丸ではなく楕円で、前方だけを囲う
+    fx, fy = at("FRONT")
+    rx, ry = 82, 32
+    d.ellipse(sbox((fx - rx, fy - ry, fx + rx, fy + ry)), outline=CRIMSON,
+              width=round(2.4 * SCALE))
+    centered(d, fx, fy - 13, "最前列席", face(SANS_B, 21), CREAM)
+
+    # その後ろがライブ席（スタンディング）
+    bx, by_ = at("FLOOR")
+    centered(d, bx, by_ - 12, "ライブ席", face(SANS_B, 21), (214, 170, 176))
+    centered(d, bx, by_ + 16, "スタンディング", face(SANS, 16), ASH)
 
     # 右側の凡例
     x = 900
@@ -100,10 +106,12 @@ def build(out: Path) -> None:
     rows = [
         (GOLD, "VVIP席", "図の金色の4区画から、先着順でお選びいただけます"),
         (BLUE, "S席・MIOタイム", "図の青色の区画。お席は主催者が指定します"),
-        (CRIMSON, "最前列席／ライブ席", "中央のフロアで立ってご覧いただきます"),
+        (CRIMSON, "最前列席", "DJブース前の最前列エリアで立ってご覧いただきます"),
+        (None, "ライブ席", "その後ろの中央フロアで立ってご覧いただきます"),
     ]
     for color, title, sub in rows:
-        pin(d, (x + 15, y + 15), 15, color, 2.4)
+        if color:
+            pin(d, (x + 15, y + 15), 15, color, 2.4)
         d.text(spos((x + 48, y - 2)), title, font=face(SANS_B, 27), fill=CREAM)
         d.text(spos((x + 48, y + 36)), sub, font=face(SANS, 19), fill=SILVER)
         d.line(sbox((x, y + 78, 1704, y + 78)), fill=(58, 48, 52), width=SCALE)
