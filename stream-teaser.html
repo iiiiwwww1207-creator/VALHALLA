@@ -54,7 +54,11 @@
   .date{font-family:var(--disp);font-weight:600;color:#fff;line-height:.94;
     font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1;
     text-shadow:0 8px 40px rgba(0,0,0,.9)}
-  .date .day{color:var(--crimson-l)}
+  .date{display:flex;align-items:baseline;justify-content:center}
+  .date .today{font-family:"Noto Serif JP",serif;font-weight:700;color:var(--crimson-l)}
+  .date .hh{font-family:var(--disp);font-weight:600;color:#fff}
+  .subdate{font-family:var(--disp);font-weight:400;color:var(--sub);
+    font-variant-numeric:lining-nums}
   .time{font-family:var(--disp);font-weight:500;color:#fff;
     font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1}
   .jp{font-family:"Noto Serif JP",serif;font-weight:700;color:#fff;
@@ -73,9 +77,10 @@
   .b45 .kick{margin-top:8px;font-size:19px;letter-spacing:.42em;text-indent:.42em}
   .b45 .label{gap:22px;margin-bottom:26px}
   .b45 .label span{font-size:23px;letter-spacing:.40em;text-indent:.40em}
-  .b45 .date{font-size:128px;margin-top:16px}
-  .b45 .date .mon{font-size:58px;letter-spacing:.02em}
-  .b45 .time{margin-top:12px;font-size:46px;letter-spacing:.06em}
+  .b45 .date{font-size:110px;margin-top:14px;gap:26px}
+  .b45 .date .today{font-size:76px;letter-spacing:.10em}
+  .b45 .time{margin-top:4px;font-size:36px;letter-spacing:.30em;text-indent:.30em}
+  .b45 .subdate{margin-top:14px;font-size:30px;letter-spacing:.14em}
   .b45 .jp{margin-top:6px;font-size:116px;font-weight:700;letter-spacing:.09em;text-indent:.09em;line-height:1.08}
   .b45 .absent{margin-top:26px;padding:15px 34px 17px;font-size:27px;letter-spacing:.06em}
 
@@ -87,9 +92,10 @@
   .b916 .kick{margin-top:10px;font-size:21px;letter-spacing:.42em;text-indent:.42em}
   .b916 .label{gap:24px;margin-bottom:30px}
   .b916 .label span{font-size:25px;letter-spacing:.40em;text-indent:.40em}
-  .b916 .date{font-size:136px;margin-top:18px}
-  .b916 .date .mon{font-size:62px}
-  .b916 .time{margin-top:14px;font-size:50px;letter-spacing:.06em}
+  .b916 .date{font-size:118px;margin-top:16px;gap:28px}
+  .b916 .date .today{font-size:82px;letter-spacing:.10em}
+  .b916 .time{margin-top:5px;font-size:38px;letter-spacing:.30em;text-indent:.30em}
+  .b916 .subdate{margin-top:16px;font-size:32px;letter-spacing:.14em}
   .b916 .jp{margin-top:8px;font-size:124px;font-weight:700;letter-spacing:.09em;text-indent:.09em;line-height:1.08}
   .b916 .absent{margin-top:30px;padding:17px 38px 19px;font-size:29px;letter-spacing:.06em}
 
@@ -106,8 +112,9 @@
     <div class="body">
       <div class="label"><span>On Air</span></div>
       <div class="jp">ライブ配信</div>
-      <div class="date"><span class="mon">9.</span>18<span class="day">.</span><span class="mon">FRI</span></div>
-      <div class="time">19:00 START</div>
+      <div class="date"><span class="today">本日</span><span class="hh">19:00</span></div>
+      <div class="time">START</div>
+      <div class="subdate">2026.9.18 FRI</div>
       <div class="absent">※ <b>RAY</b> は欠席となります</div>
     </div>
   </div>
@@ -122,8 +129,9 @@
     <div class="body">
       <div class="label"><span>On Air</span></div>
       <div class="jp">ライブ配信</div>
-      <div class="date"><span class="mon">9.</span>18<span class="day">.</span><span class="mon">FRI</span></div>
-      <div class="time">19:00 START</div>
+      <div class="date"><span class="today">本日</span><span class="hh">19:00</span></div>
+      <div class="time">START</div>
+      <div class="subdate">2026.9.18 FRI</div>
       <div class="absent">※ <b>RAY</b> は欠席となります</div>
     </div>
   </div>
