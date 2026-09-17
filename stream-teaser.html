@@ -5,11 +5,12 @@
 <title>VALHALLA ライブ配信 告知</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500;600;700&family=Cinzel:wght@400;500;600&family=Noto+Serif+JP:wght@500;600;700&family=Noto+Sans+JP:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Playfair+Display:wght@400;500;600;700&family=Cinzel:wght@400;500;600&family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --crimson:#C1121F; --crimson-l:#E0303C;
     --cream:#F3EDE1; --sub:rgba(243,237,225,.74);
+    --disp:'Playfair Display',serif;   /* 日時などの表示書体 */
   }
   *{margin:0;padding:0;box-sizing:border-box}
   body{background:#0a0709;display:flex;flex-direction:column;align-items:center;
@@ -36,8 +37,10 @@
   .in{position:relative;z-index:3;display:flex;flex-direction:column;
     height:100%;width:100%}
 
-  /* ロゴは下の文字群の先頭に置く（上は写真を見せるため空ける） */
-  .logo{display:block;margin:0 auto;filter:drop-shadow(0 6px 22px rgba(0,0,0,.9))}
+  /* ロゴは下の黒い領域いっぱいに、透かしとして敷く */
+  .mark{position:absolute;left:50%;transform:translateX(-50%);z-index:2;
+    pointer-events:none;opacity:.23;
+    filter:grayscale(.55) brightness(1.35) contrast(.88)}
   .kick{font-family:'Cinzel',serif;font-weight:500;color:var(--crimson-l);
     text-shadow:0 3px 18px rgba(0,0,0,.95)}
 
@@ -48,10 +51,12 @@
   .label span{font-family:'Cinzel',serif;font-weight:500;color:var(--crimson-l);
     text-transform:uppercase;white-space:nowrap}
 
-  .date{font-family:'Bodoni Moda',serif;font-weight:600;color:#fff;line-height:.94;
+  .date{font-family:var(--disp);font-weight:600;color:#fff;line-height:.94;
+    font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1;
     text-shadow:0 8px 40px rgba(0,0,0,.9)}
   .date .day{color:var(--crimson-l)}
-  .time{font-family:'Bodoni Moda',serif;font-weight:500;color:#fff}
+  .time{font-family:var(--disp);font-weight:500;color:#fff;
+    font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1}
   .jp{font-family:"Noto Serif JP",serif;font-weight:600;color:var(--cream)}
 
   /* 欠席の告知：見落とされないよう枠で囲む */
@@ -63,7 +68,7 @@
   /* ══════════ 1080x1350（Instagram フィード／X） ══════════ */
   .b45{width:1080px;height:1350px}
   .b45 .in{padding:54px 62px 60px}
-  .b45 .logo{width:196px;margin-top:22px}
+  .b45 .mark{width:1010px;bottom:8px}
   .b45 .kick{margin-top:8px;font-size:19px;letter-spacing:.42em;text-indent:.42em}
   .b45 .label{gap:22px;margin-bottom:26px}
   .b45 .label span{font-size:23px;letter-spacing:.40em;text-indent:.40em}
@@ -77,7 +82,7 @@
   .b916{width:1080px;height:1920px}
   .b916 .ph{background-position:center 34%}
   .b916 .in{padding:150px 62px 170px}
-  .b916 .logo{width:224px;margin-top:26px}
+  .b916 .mark{width:1020px;bottom:120px}
   .b916 .kick{margin-top:10px;font-size:21px;letter-spacing:.42em;text-indent:.42em}
   .b916 .label{gap:24px;margin-bottom:30px}
   .b916 .label span{font-size:25px;letter-spacing:.40em;text-indent:.40em}
@@ -93,14 +98,15 @@
 
 <!-- ═══ 1080x1350 ═══ -->
 <section class="board b45">
-  <div class="ph"></div><div class="scrim"></div><div class="vein"></div>
+  <div class="ph"></div><div class="scrim"></div>
+  <img class="mark" src="assets/charity/logo_gold.webp" alt="VALHALLA">
+  <div class="vein"></div>
   <div class="in">
     <div class="body">
       <div class="label"><span>On Air</span></div>
       <div class="date"><span class="mon">9.</span>18<span class="day">.</span><span class="mon">FRI</span></div>
       <div class="time">19:00 START</div>
       <div class="jp">ライブ配信</div>
-      <img class="logo" src="assets/charity/logo_gold.webp" alt="VALHALLA">
       <div class="absent">※ <b>RAY</b> は欠席となります</div>
     </div>
   </div>
@@ -108,14 +114,15 @@
 
 <!-- ═══ 1080x1920 ═══ -->
 <section class="board b916">
-  <div class="ph"></div><div class="scrim"></div><div class="vein"></div>
+  <div class="ph"></div><div class="scrim"></div>
+  <img class="mark" src="assets/charity/logo_gold.webp" alt="VALHALLA">
+  <div class="vein"></div>
   <div class="in">
     <div class="body">
       <div class="label"><span>On Air</span></div>
       <div class="date"><span class="mon">9.</span>18<span class="day">.</span><span class="mon">FRI</span></div>
       <div class="time">19:00 START</div>
       <div class="jp">ライブ配信</div>
-      <img class="logo" src="assets/charity/logo_gold.webp" alt="VALHALLA">
       <div class="absent">※ <b>RAY</b> は欠席となります</div>
     </div>
   </div>

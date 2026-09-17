@@ -12,10 +12,10 @@ OUTPUT = HERE / "stream_base_1080x1350.jpg"
 
 OUTPUT_SIZE = (1080, 1350)
 
-# Source-space crop: 2108 x 2635 = 4:5. Keep the source's right and bottom
-# edges to protect all three people while placing KØU's face centre at about
-# y=583 in the finished frame. RAY retains visible headroom at the top.
-CROP_BOX = (335, 1029, 2443, 3664)
+# Source-space crop: 2072 x 2590 = 4:5. The crop uses the source's bottom edge
+# and leaves RAY 36 source pixels (18.8 output pixels) of headroom. Horizontally,
+# it places the mean x coordinate of the three measured face centres at 539.8px.
+CROP_BOX = (238, 1074, 2310, 3664)
 
 # Face bounds measured in the 2443 x 3664 source and visually checked against
 # the eyes, chin and hairline. Values are (left, top, right, bottom).
@@ -115,8 +115,9 @@ def lift_kou_face(image: Image.Image, amount: float = 1.12) -> Image.Image:
 
     # The solid ellipse covers the face; the blur makes the transition around
     # it broad enough to remain invisible after JPEG encoding.
-    radius_x = face_width * 0.58
-    radius_y = face_height * 0.62
+    # Expand the measured face bounds by 12% in both axes.
+    radius_x = face_width * 0.56
+    radius_y = face_height * 0.56
     mask = Image.new("L", image.size, 0)
     draw = ImageDraw.Draw(mask)
     draw.ellipse(
@@ -176,10 +177,21 @@ def main() -> None:
     print(f"Wrote: {OUTPUT}")
     print(f"Output size: {width}x{height}")
     print(f"Crop box: x={crop_left}..{crop_right}, y={crop_top}..{crop_bottom}")
+    face_output_x_values = []
     for label, (left, top, right, bottom) in FACE_BOXES.items():
+        face_x = (left + right) / 2
         face_y = (top + bottom) / 2
-        output_y = output_point((left + right) / 2, face_y)[1]
-        print(f"Face {label}: source centre y={face_y:.1f}, output y={output_y:.1f}")
+        output_x, output_y = output_point(face_x, face_y)
+        face_output_x_values.append(output_x)
+        print(
+            f"Face {label}: source centre=({face_x:.1f}, {face_y:.1f}), "
+            f"output centre=({output_x:.1f}, {output_y:.1f})"
+        )
+    face_mean_x = sum(face_output_x_values) / len(face_output_x_values)
+    print(
+        f"Face x mean: {face_mean_x:.1f} "
+        f"({face_mean_x - width / 2:+.1f}px from output centre)"
+    )
     ray_headroom = output_point(0, RAY_HEAD_TOP_Y)[1]
     print(
         f"KOU face bottom: source y={KOU_FACE_BOTTOM_Y}, "
