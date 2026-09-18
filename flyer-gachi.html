@@ -37,15 +37,17 @@
     filter:drop-shadow(0 .35mm 0 rgba(0,0,0,.8)) drop-shadow(0 1mm 2mm rgba(0,0,0,.9))}
 
   /* ── ヘッダー ── */
-  .hd{flex:none;padding:4.2mm 10mm 0;text-align:center;position:relative;z-index:2}
-  .hd .logo{width:27mm;display:block;margin:0 auto 1.2mm}
+  .hd{flex:none;padding:50mm 10mm 0;text-align:center;position:relative;z-index:2}
+  .hd .logo{position:absolute;top:5mm;right:7mm;width:22mm;display:block;
+    filter:drop-shadow(0 1mm 3mm rgba(0,0,0,.9))}
   .hd .en{font-family:'Cinzel',serif;font-weight:600;font-size:3.1mm;
     letter-spacing:.44em;text-indent:.44em;color:var(--gold-l)}
-  .hd h1{font-family:"Noto Serif JP",serif;font-weight:900;font-size:12.4mm;
-    line-height:1;letter-spacing:.02em;margin-top:1mm}
-  .hd .date{margin-top:1.4mm;font-family:'Cinzel',serif;font-weight:700;font-size:6.4mm;
+  .hd h1{font-family:"Noto Serif JP",serif;font-weight:900;font-size:13.2mm;
+    line-height:1;letter-spacing:.02em;margin-top:.6mm;
+    filter:drop-shadow(0 .4mm 0 rgba(90,64,10,.9)) drop-shadow(0 1mm 2mm rgba(0,0,0,.95)) drop-shadow(0 0 6mm rgba(0,0,0,.9))}
+  .hd .date{margin-top:1mm;font-family:'Cinzel',serif;font-weight:700;font-size:6.4mm;
     letter-spacing:.06em;color:#fff}
-  .hd .tag{margin-top:1mm;font-family:"Noto Serif JP",serif;font-weight:700;
+  .hd .tag{margin-top:.6mm;font-family:"Noto Serif JP",serif;font-weight:700;
     font-size:4.6mm;letter-spacing:.22em;color:var(--cream)}
   .hd .tag i{font-style:normal;color:var(--gold-l);margin:0 .6mm}
 
@@ -59,21 +61,19 @@
         rgba(6,5,4,.42) 30%,rgba(6,5,4,.36) 44%,rgba(6,5,4,.62) 56%,
         rgba(4,3,3,.66) 64%,rgba(4,3,3,.62) 76%,rgba(4,3,3,.84) 86%,rgba(4,3,3,.94) 100%),
       linear-gradient(180deg,rgba(120,14,22,.22),rgba(90,10,18,.26))}
-  .trio{position:absolute;left:0;right:0;top:0;height:98mm;z-index:1;
-    background:url('assets/charity/group_flat_cut.png') center -8mm/172mm auto no-repeat;
-    opacity:.78;filter:saturate(.9) contrast(1.04);
-    -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 66%,transparent 100%);
-    mask-image:linear-gradient(180deg,#000 0%,#000 66%,transparent 100%)}
-  .trioveil{position:absolute;left:0;right:0;top:0;height:98mm;z-index:1;
-    background:linear-gradient(180deg,rgba(6,5,4,.34) 0%,rgba(6,5,4,.16) 36%,
-      rgba(6,5,4,.40) 70%,rgba(6,5,4,0) 100%)}
-  .who{flex:none;margin-top:1.4mm;text-align:center;position:relative;z-index:2;
+  .trio{position:absolute;left:0;right:0;top:0;height:96mm;z-index:1;
+    background:url('assets/charity/group_flat_cut.png') center -10mm/196mm auto no-repeat;
+    opacity:1;filter:saturate(.96) contrast(1.04) drop-shadow(0 2mm 6mm rgba(0,0,0,.7));
+    -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 78%,transparent 100%);
+    mask-image:linear-gradient(180deg,#000 0%,#000 78%,transparent 100%)}
+  .trioveil{display:none}
+  .who{flex:none;margin-top:.8mm;text-align:center;position:relative;z-index:2;
     font-family:'Cinzel',serif;font-weight:600;font-size:3.5mm;letter-spacing:.28em;
     color:#fff;text-shadow:0 1mm 3mm rgba(0,0,0,.95)}
   .who i{font-style:normal;color:var(--gold-l);margin:0 1.8mm}
 
   /* ── 本体 ── */
-  .main{flex:1;padding:3mm 7mm 0;position:relative;z-index:2;
+  .main{flex:1;padding:2.2mm 7mm 0;position:relative;z-index:2;
     display:flex;flex-direction:column}
 
   .secttl{display:flex;align-items:center;gap:3mm;margin-bottom:1.8mm}
@@ -86,7 +86,7 @@
   .top2{display:grid;grid-template-columns:1fr 1fr;gap:2.6mm}
   .card{border:.35mm solid var(--line);background:
       linear-gradient(180deg,rgba(217,180,74,.13),rgba(217,180,74,.04) 46%,rgba(0,0,0,.30));
-    padding:2mm 2.4mm 2.2mm}
+    padding:1.7mm 2.4mm 1.8mm}
   .card .nm{font-family:"Noto Serif JP",serif;font-weight:900;font-size:4.6mm;
     letter-spacing:.04em;line-height:1.1}
   .card .pr{font-family:'Cinzel',serif;font-weight:700;font-size:7mm;line-height:1;
@@ -94,14 +94,14 @@
   .card .cap{margin-top:1.2mm;font-size:2.5mm;font-weight:700;letter-spacing:.04em;
     color:#0a0806;background:var(--gold-l);display:inline-block;padding:.5mm 2mm .7mm}
   .card ul{margin-top:1.4mm;list-style:none}
-  .card li{position:relative;padding-left:2.6mm;font-size:2.3mm;line-height:1.42;
-    color:var(--cream);margin-bottom:.55mm}
+  .card li{position:relative;padding-left:2.6mm;font-size:2.2mm;line-height:1.36;
+    color:var(--cream);margin-bottom:.4mm}
   .card li::before{content:"";position:absolute;left:0;top:1.2mm;width:1.1mm;height:1.1mm;
     background:var(--gold);transform:rotate(45deg)}
   .card li b{color:#fff;font-weight:700}
 
   /* 下位3コース：横並び */
-  .low3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2mm;margin-top:2mm}
+  .low3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2mm;margin-top:1.6mm}
   .mini{border:.3mm solid rgba(217,180,74,.32);background:rgba(217,180,74,.06);
     padding:1.6mm 2mm 1.8mm;text-align:center}
   .mini .nm{font-family:"Noto Serif JP",serif;font-weight:900;font-size:3.9mm;
@@ -109,10 +109,10 @@
   .mini .pr{font-family:'Cinzel',serif;font-weight:700;font-size:5.4mm;line-height:1;
     margin-top:.6mm}
   .mini .cap{margin-top:.9mm;font-size:2.3mm;font-weight:700;color:var(--gold-l)}
-  .mini .ds{margin-top:1.2mm;font-size:2.35mm;line-height:1.42;color:var(--sub)}
+  .mini .ds{margin-top:.9mm;font-size:2.2mm;line-height:1.38;color:var(--sub)}
 
   /* 注記 */
-  .rule{margin-top:2mm;border:.35mm solid rgba(193,18,31,.55);
+  .rule{margin-top:1.6mm;border:.35mm solid rgba(193,18,31,.55);
     background:rgba(193,18,31,.10);padding:1.4mm 2.6mm 1.6mm;
     display:grid;grid-template-columns:1fr 1fr;gap:.4mm 4mm}
   .rule p{position:relative;padding-left:2.8mm;font-size:2.2mm;line-height:1.4;
@@ -131,7 +131,7 @@
   .cap2 b{color:#fff;font-weight:700}
 
   /* ── 下部：CF・支援金・LINE ── */
-  .foot{flex:none;margin:auto -7mm 0;padding:2.4mm 7mm 0;
+  .foot{flex:none;margin:auto -7mm 0;padding:2mm 7mm 0;
     border-top:.4mm solid var(--line);
     background:linear-gradient(180deg,rgba(217,180,74,.08),transparent 60%);
     display:grid;grid-template-columns:1fr auto;gap:5mm;align-items:start}
@@ -244,7 +244,7 @@
       <p>ファンミは <b>VIP・VVIP</b> に付帯（11/28 土・都内）</p>
     </div>
 
-    <div class="secttl" style="margin-top:3.4mm"><b class="gold">当日のながれ</b></div>
+    <div class="secttl" style="margin-top:2.4mm"><b class="gold">当日のながれ</b></div>
     <div class="tt">
       <div><span>18:00</span>VIP 先行入場</div>
       <div><span>18:15</span>VIPタイム（チェキ＋ハイタッチ）</div>
