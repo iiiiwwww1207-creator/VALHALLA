@@ -51,13 +51,22 @@
 
   /* 写真は地として全面に薄く（横帯だと3人の顔が入りきらないため） */
   .bg{position:absolute;inset:0;z-index:0;
-    background:url('assets/charity/venue/shibuya_free_b.jpg') center 38%/cover no-repeat;
-    opacity:.46;filter:saturate(.78) contrast(1.06)}
+    background:url('assets/charity/venue/shibuya_free_b.jpg') center 30%/cover no-repeat;
+    opacity:.64;filter:saturate(.82) contrast(1.06)}
   .bgveil{position:absolute;inset:0;z-index:1;
     background:
-      linear-gradient(180deg,rgba(6,5,4,.86) 0%,rgba(6,5,4,.58) 13%,
-        rgba(6,5,4,.50) 22%,rgba(6,5,4,.78) 34%,rgba(4,3,3,.91) 50%,rgba(4,3,3,.95) 100%),
+      linear-gradient(180deg,rgba(6,5,4,.55) 0%,rgba(6,5,4,.62) 22%,
+        rgba(6,5,4,.42) 30%,rgba(6,5,4,.36) 44%,rgba(6,5,4,.60) 56%,
+        rgba(4,3,3,.86) 68%,rgba(4,3,3,.94) 100%),
       linear-gradient(180deg,rgba(120,14,22,.22),rgba(90,10,18,.26))}
+  .trio{position:absolute;left:0;right:0;top:0;height:98mm;z-index:1;
+    background:url('assets/charity/group_field_stream.jpg') center 47%/cover no-repeat;
+    opacity:.60;filter:saturate(.85) contrast(1.04);
+    -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 72%,transparent 100%);
+    mask-image:linear-gradient(180deg,#000 0%,#000 72%,transparent 100%)}
+  .trioveil{position:absolute;left:0;right:0;top:0;height:98mm;z-index:1;
+    background:linear-gradient(180deg,rgba(6,5,4,.34) 0%,rgba(6,5,4,.16) 36%,
+      rgba(6,5,4,.40) 70%,rgba(6,5,4,0) 100%)}
   .who{flex:none;margin-top:1.4mm;text-align:center;position:relative;z-index:2;
     font-family:'Cinzel',serif;font-weight:600;font-size:3.5mm;letter-spacing:.28em;
     color:#fff;text-shadow:0 1mm 3mm rgba(0,0,0,.95)}
@@ -158,6 +167,7 @@
 <body>
 <section class="page">
   <div class="bg"></div><div class="bgveil"></div>
+  <div class="trio"></div><div class="trioveil"></div>
 
   <div class="hd">
     <img class="logo" src="assets/charity/logo_gold.webp" alt="VALHALLA">
