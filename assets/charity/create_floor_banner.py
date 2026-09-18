@@ -127,7 +127,7 @@ def build(out: Path) -> None:
 
     y += 156
     d.text(spos((x, y)), "着席 50名 ／ スタンディング 130名", font=face(SANS_B, 22), fill=GOLD)
-    d.text(spos((x, y + 36)), "ドリンクは会場（図の BAR）が提供します",
+    d.text(spos((x, y + 36)), "ドリンクは会場（図の BAR）が提供します　全コース飲み放題",
            font=face(SANS, 19), fill=ASH)
 
     finish(img, out)
@@ -135,3 +135,11 @@ def build(out: Path) -> None:
 
 if __name__ == "__main__":
     build(OUTPUT)
+
+# 作ったら、その場で本文へ流し込む。分けると古い絵が残る。
+_BODY = Path.home() / "Desktop" / "VALHALLA_本文にはめる画像" / "IMAGE-20.jpg"
+if _BODY.parent.is_dir():
+    from PIL import Image as _I
+    _I.open(OUTPUT).convert("RGB").resize((1500, 844), _I.Resampling.LANCZOS).save(
+        _BODY, "JPEG", quality=90, optimize=True, progressive=True)
+    print(f"→ {_BODY.name} へ流し込み")
