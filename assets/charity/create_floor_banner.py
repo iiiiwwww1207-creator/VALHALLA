@@ -41,8 +41,11 @@ ZONES = {
 VVIP = ("DJ1", "DJ2", "V4", "V1")
 SSEAT = ("V2", "V3", "V5", "V6", "S1", "S2", "S3", "S4")
 
-GOLD = (201, 169, 97)
-BLUE = (108, 140, 196)
+# 会場図の地が赤紫〜マゼンタなので、そこに近い色は沈む。
+# 金は明るい琥珀へ、青は水色寄りへ振って、地から離す
+GOLD = (255, 205, 112)
+BLUE = (104, 205, 255)
+FRONT_RED = (255, 92, 104)
 
 
 def plan_layer(size: int) -> tuple[Image.Image, float, tuple[int, int]]:
@@ -60,9 +63,35 @@ def plan_layer(size: int) -> tuple[Image.Image, float, tuple[int, int]]:
 
 
 def pin(draw: ImageDraw.ImageDraw, xy, r: float, color, width: float = 2.4) -> None:
+    """凡例用の小さな印。輪郭だけで足りる。"""
     x, y = xy
     draw.ellipse(sbox((x - r, y - r, x + r, y + r)), outline=color,
                  width=round(width * SCALE))
+
+
+def zone_mark(img: Image.Image, xy, r: float, color, width: float = 3.4) -> None:
+    """図の上の区画印。
+
+    細い輪郭1本だと、会場図の光る卓に紛れて読めない。
+    ① 外側に黒い影を落として地から切り離し
+    ② 内側を薄く塗って面として見せ（卓番号は透ける濃さに留める）
+    ③ 明るい輪郭を太めに引く
+    の3枚重ねにする。
+    """
+    x, y = xy
+    layer = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    d = ImageDraw.Draw(layer)
+    # ① 影
+    d.ellipse(sbox((x - r - 3, y - r - 3, x + r + 3, y + r + 3)),
+              fill=(0, 0, 0, 150))
+    layer = layer.filter(ImageFilter.GaussianBlur(round(2.2 * SCALE)))
+    d = ImageDraw.Draw(layer)
+    # ② 面。卓番号が読める濃さで
+    d.ellipse(sbox((x - r, y - r, x + r, y + r)), fill=color + (58,))
+    # ③ 輪郭
+    d.ellipse(sbox((x - r, y - r, x + r, y + r)), outline=color + (255,),
+              width=round(width * SCALE))
+    img.alpha_composite(layer)
 
 
 def build(out: Path) -> None:
@@ -84,15 +113,25 @@ def build(out: Path) -> None:
 
     # 区画に印を打つ。VVIP は金、S席は青
     for name in VVIP:
-        pin(d, at(name), 34, GOLD, 2.6)
+        zone_mark(img, at(name), 34, GOLD, 3.8)
     for name in SSEAT:
-        pin(d, at(name), 27, BLUE, 2.0)
+        zone_mark(img, at(name), 27, BLUE, 3.2)
+    d = ImageDraw.Draw(img)
 
     # DJブースのすぐ手前が最前列。丸ではなく楕円で、前方だけを囲う
     fx, fy = at("FRONT")
     rx, ry = 82, 32
-    d.ellipse(sbox((fx - rx, fy - ry, fx + rx, fy + ry)), outline=CRIMSON,
-              width=round(2.4 * SCALE))
+    front = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    fd = ImageDraw.Draw(front)
+    fd.ellipse(sbox((fx - rx - 3, fy - ry - 3, fx + rx + 3, fy + ry + 3)),
+               fill=(0, 0, 0, 150))
+    front = front.filter(ImageFilter.GaussianBlur(round(2.2 * SCALE)))
+    fd = ImageDraw.Draw(front)
+    fd.ellipse(sbox((fx - rx, fy - ry, fx + rx, fy + ry)), fill=FRONT_RED + (56,))
+    fd.ellipse(sbox((fx - rx, fy - ry, fx + rx, fy + ry)),
+               outline=FRONT_RED + (255,), width=round(3.4 * SCALE))
+    img.alpha_composite(front)
+    d = ImageDraw.Draw(img)
     centered(d, fx, fy - 13, "最前列席", face(SANS_B, 21), CREAM)
 
     # その後ろがライブ席（スタンディング）
@@ -106,12 +145,12 @@ def build(out: Path) -> None:
     rows = [
         (GOLD, "VVIP席", "図の金色の4区画から、先着順でお選びいただけます"),
         (BLUE, "S席・MIOタイム", "図の青色の区画。お席は主催者が指定します"),
-        (CRIMSON, "最前列席", "DJブース前の最前列エリアで立ってご覧いただきます"),
+        (FRONT_RED, "最前列席", "DJブース前の最前列エリアで立ってご覧いただきます"),
         (None, "ライブ席", "その後ろの中央フロアで立ってご覧いただきます"),
     ]
     for color, title, sub in rows:
         if color:
-            pin(d, (x + 15, y + 15), 15, color, 2.4)
+            pin(d, (x + 15, y + 15), 15, color, 3.2)
         d.text(spos((x + 48, y - 2)), title, font=face(SANS_B, 27), fill=CREAM)
         d.text(spos((x + 48, y + 36)), sub, font=face(SANS, 19), fill=SILVER)
         d.line(sbox((x, y + 78, 1704, y + 78)), fill=(58, 48, 52), width=SCALE)
@@ -127,8 +166,10 @@ def build(out: Path) -> None:
 
     y += 156
     d.text(spos((x, y)), "着席 50名 ／ スタンディング 130名", font=face(SANS_B, 22), fill=GOLD)
-    d.text(spos((x, y + 36)), "ドリンクは会場（図の BAR）が提供します　全コース飲み放題",
-           font=face(SANS, 19), fill=ASH)
+    lead, lead_f = "ドリンクは会場（図の BAR）が提供します　", face(SANS, 19)
+    d.text(spos((x, y + 36)), lead, font=lead_f, fill=SILVER)
+    d.text(spos((x + d.textlength(lead, font=lead_f) / SCALE, y + 36)),
+           "全コース飲み放題", font=face(SANS_B, 19), fill=GOLD)
 
     finish(img, out)
 
