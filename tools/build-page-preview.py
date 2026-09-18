@@ -22,7 +22,7 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "docs" / "campfire-live-page.txt"
-STAMP = "2026年9月18日 18:10 時点"
+STAMP = "2026年9月19日 版"
 IMGDIR = Path.home() / "Desktop" / "VALHALLA_本文にはめる画像"
 THUMBS = Path("/tmp/valhalla_artifact/thumbs")
 OUT = Path("/tmp/valhalla_artifact/campfire-page-preview.html")

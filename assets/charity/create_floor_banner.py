@@ -46,6 +46,8 @@ SSEAT = ("V2", "V3", "V5", "V6", "S1", "S2", "S3", "S4")
 GOLD = (255, 205, 112)
 BLUE = (104, 205, 255)
 FRONT_RED = (255, 92, 104)
+SEAT_RED  = (255, 92, 104)
+FRONT_BLUE = (104, 205, 255)
 
 
 def plan_layer(size: int) -> tuple[Image.Image, float, tuple[int, int]]:
@@ -135,7 +137,8 @@ def build(out: Path) -> None:
     # 区画に印を打つ。VVIP は金、VIP席は青
     for name in VVIP:
         zone_mark(img, at(name), 34, GOLD, 3.8)
-    # V2・V3・V5・V6・S1〜S4 は今回は使用しないので、印は打たない
+    for name in SSEAT:
+        zone_mark(img, at(name), 27, SEAT_RED, 3.2)
     d = ImageDraw.Draw(img)
 
     # ステージのすぐ手前が最前列。丸ではなく楕円で、前方だけを囲う
@@ -147,9 +150,9 @@ def build(out: Path) -> None:
                fill=(0, 0, 0, 150))
     front = front.filter(ImageFilter.GaussianBlur(round(2.2 * SCALE)))
     fd = ImageDraw.Draw(front)
-    fd.ellipse(sbox((fx - rx, fy - ry, fx + rx, fy + ry)), fill=FRONT_RED + (56,))
+    fd.ellipse(sbox((fx - rx, fy - ry, fx + rx, fy + ry)), fill=FRONT_BLUE + (56,))
     fd.ellipse(sbox((fx - rx, fy - ry, fx + rx, fy + ry)),
-               outline=FRONT_RED + (255,), width=round(3.4 * SCALE))
+               outline=FRONT_BLUE + (255,), width=round(3.4 * SCALE))
     img.alpha_composite(front)
     d = ImageDraw.Draw(img)
     centered(d, fx, fy - 13, "最前列席", face(SANS_B, 21), CREAM)
@@ -163,10 +166,10 @@ def build(out: Path) -> None:
     x = 900
     y = 176
     rows = [
-        (GOLD, "VVIPプラン", "図の金色の4区画から、先着順でお選びいただけます"),
-        (FRONT_RED, "VIPプラン", "ステージ前の最前列エリアで立ってご覧いただきます"),
-        (None, "MIOタイム", "18:15〜 ステージ前でチェキ＋ハイタッチ（VIPプランの方）"),
-        (None, "ライブプラン", "その後ろの中央フロアで立ってご覧いただきます"),
+        (GOLD, "VVIPプラン", "ソファー席（図の金色の4区画）から、先着順でお選びいただけます"),
+        (FRONT_BLUE, "VIPプラン", "ステージ前の最前列エリア（青の楕円）で立ってご覧いただきます"),
+        (FRONT_BLUE, "VIPチェキタイム", "18:15〜 ステージ前でチェキ＋ハイタッチ（VIPプランの方）"),
+        (SEAT_RED, "ライブプラン", "赤丸の区画と、その間の中央フロアでご覧いただきます"),
     ]
     for color, title, sub in rows:
         if color:
@@ -185,7 +188,7 @@ def build(out: Path) -> None:
         d.text(spos((x, y + 40 + i * 32)), line, font=face(SANS, 19), fill=SILVER)
 
     y += 156
-    d.text(spos((x, y)), "来場は限定100口　着席 20名 ／ スタンディング 90名", font=face(SANS_B, 22), fill=GOLD)
+    d.text(spos((x, y)), "来場は限定50口　着席 10名 ／ スタンディング 45名", font=face(SANS_B, 22), fill=GOLD)
     lead, lead_f = "ドリンクは会場（図の BAR）が提供します　", face(SANS, 19)
     d.text(spos((x, y + 36)), lead, font=lead_f, fill=SILVER)
     d.text(spos((x + d.textlength(lead, font=lead_f) / SCALE, y + 36)),
