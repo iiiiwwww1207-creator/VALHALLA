@@ -224,7 +224,7 @@ def main() -> None:
         canvas.setFillColor(SUB)
         canvas.setFont(GO, 7)
         canvas.drawRightString(PW - MARGIN, 10 * mm, str(canvas.getPageNumber()))
-        canvas.drawString(MARGIN, 10 * mm, "VALHALLA CHARITY LIVE ／ リターン品一覧（2026年9月8日時点）")
+        canvas.drawString(MARGIN, 10 * mm, "VALHALLA CHARITY LIVE ／ リターン品一覧（2026年9月18日時点）")
         canvas.restoreState()
 
     doc = BaseDocTemplate(str(OUT), pagesize=A4,

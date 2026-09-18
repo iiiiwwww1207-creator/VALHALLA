@@ -89,13 +89,11 @@ def build(cut_name: str, out_name: str) -> None:
     name_f = face(DIDOT, round(11 * MM))
     tracked(d, (BLEED + round(4 * MM), BLEED + round(12 * MM)), "MIO",
             name_f, CREAM + (255,), round(1.0 * MM))
-    d.text((BLEED + round(4.5 * MM), BLEED + round(25 * MM)), "Guitar ／ 主宰",
+    d.text((BLEED + round(4.5 * MM), BLEED + round(25 * MM)), "Guitar",
            font=face(SANS, round(2.6 * MM)), fill=(212, 196, 196, 255))
 
-    # 下：QR の置き場所（中身が決まったら差し替える）
-    # 人物の白いパンツの上に文字が来ると読めないので、
-    # 先に右下だけ落としてから QR と説明を置く
-    qs = round(17 * MM)
+    # 下：サインの置き場所。人物の白いパンツの上に文字が来ると読めないので、
+    # 先に右下だけ落としてから、本人が手で書くための余白を確保する
     corner = Image.new("L", (W, H), 0)
     ImageDraw.Draw(corner).ellipse(
         (W * 0.30, H * 0.62, W * 1.45, H * 1.30), fill=210)
@@ -103,17 +101,14 @@ def build(cut_name: str, out_name: str) -> None:
     base.alpha_composite(Image.merge(
         "RGBA", [Image.new("L", (W, H), v) for v in (8, 5, 7)] + [corner]))
     d = ImageDraw.Draw(base)
-    qx, qy = W - BLEED - round(4 * MM) - qs, H - BLEED - round(4 * MM) - qs
-    d.rectangle((qx, qy, qx + qs, qy + qs), fill=(250, 246, 242, 236))
-    d.rectangle((qx, qy, qx + qs, qy + qs), outline=(150, 120, 120, 255), width=2)
     qf = face(SANS, round(2.0 * MM))
-    for i, line in enumerate(("QR", "（中身は", "調整中）")):
-        w = d.textlength(line, font=qf)
-        d.text((qx + qs / 2 - w / 2, qy + qs / 2 - round(3.4 * MM) + i * round(2.6 * MM)),
-               line, font=qf, fill=(120, 96, 96, 255))
-    cap = "限定シャンパンコール動画"
-    d.text((qx + qs - d.textlength(cap, font=qf), qy - round(3.2 * MM)),
-           cap, font=qf, fill=(226, 208, 204, 255))
+    cap = "Signature"
+    d.text((W - BLEED - round(4 * MM) - d.textlength(cap, font=qf),
+            H - BLEED - round(13 * MM)),
+           cap, font=qf, fill=(150, 126, 122, 255))
+    d.line((W - BLEED - round(4 * MM) - round(34 * MM), H - BLEED - round(6 * MM),
+            W - BLEED - round(4 * MM), H - BLEED - round(6 * MM)),
+           fill=(150, 126, 122, 190), width=2)
 
     # 仕上がり線（入稿時は消す。いまは確認用）
     guide = Image.new("RGBA", (W, H), (0, 0, 0, 0))
