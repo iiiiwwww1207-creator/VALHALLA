@@ -37,16 +37,16 @@
     filter:drop-shadow(0 .35mm 0 rgba(0,0,0,.8)) drop-shadow(0 1mm 2mm rgba(0,0,0,.9))}
 
   /* ── ヘッダー ── */
-  .hd{flex:none;padding:6mm 10mm 0;text-align:center;position:relative;z-index:2}
-  .hd .logo{width:34mm;display:block;margin:0 auto 1.6mm}
+  .hd{flex:none;padding:4.2mm 10mm 0;text-align:center;position:relative;z-index:2}
+  .hd .logo{width:27mm;display:block;margin:0 auto 1.2mm}
   .hd .en{font-family:'Cinzel',serif;font-weight:600;font-size:3.1mm;
     letter-spacing:.44em;text-indent:.44em;color:var(--gold-l)}
-  .hd h1{font-family:"Noto Serif JP",serif;font-weight:900;font-size:15.6mm;
-    line-height:1;letter-spacing:.02em;margin-top:1.4mm}
-  .hd .date{margin-top:2mm;font-family:'Cinzel',serif;font-weight:700;font-size:7.6mm;
+  .hd h1{font-family:"Noto Serif JP",serif;font-weight:900;font-size:12.4mm;
+    line-height:1;letter-spacing:.02em;margin-top:1mm}
+  .hd .date{margin-top:1.4mm;font-family:'Cinzel',serif;font-weight:700;font-size:6.4mm;
     letter-spacing:.06em;color:#fff}
-  .hd .tag{margin-top:1.4mm;font-family:"Noto Serif JP",serif;font-weight:700;
-    font-size:4.4mm;letter-spacing:.14em;color:var(--cream)}
+  .hd .tag{margin-top:1mm;font-family:"Noto Serif JP",serif;font-weight:700;
+    font-size:3.7mm;letter-spacing:.14em;color:var(--cream)}
 
   /* 写真は地として全面に薄く（横帯だと3人の顔が入りきらないため） */
   .bg{position:absolute;inset:0;z-index:0;
@@ -56,96 +56,96 @@
     background:
       linear-gradient(180deg,rgba(6,5,4,.72) 0%,rgba(6,5,4,.52) 18%,
         rgba(6,5,4,.80) 36%,rgba(4,3,3,.93) 52%,rgba(4,3,3,.96) 100%)}
-  .who{flex:none;margin-top:2.2mm;text-align:center;position:relative;z-index:2;
-    font-family:'Cinzel',serif;font-weight:600;font-size:4.2mm;letter-spacing:.30em;
+  .who{flex:none;margin-top:1.4mm;text-align:center;position:relative;z-index:2;
+    font-family:'Cinzel',serif;font-weight:600;font-size:3.5mm;letter-spacing:.28em;
     color:#fff;text-shadow:0 1mm 3mm rgba(0,0,0,.95)}
   .who i{font-style:normal;color:var(--gold-l);margin:0 1.8mm}
 
   /* ── 本体 ── */
-  .main{flex:1;padding:5mm 8mm 0;position:relative;z-index:2;
+  .main{flex:1;padding:3mm 7mm 0;position:relative;z-index:2;
     display:flex;flex-direction:column}
 
-  .secttl{display:flex;align-items:center;gap:3mm;margin-bottom:2.4mm}
+  .secttl{display:flex;align-items:center;gap:3mm;margin-bottom:1.8mm}
   .secttl::before,.secttl::after{content:"";height:.35mm;flex:1;
     background:linear-gradient(90deg,transparent,var(--gold),transparent)}
-  .secttl b{font-family:"Noto Serif JP",serif;font-weight:900;font-size:7mm;
+  .secttl b{font-family:"Noto Serif JP",serif;font-weight:900;font-size:5.8mm;
     letter-spacing:.10em;white-space:nowrap}
 
   /* 上位2コース：大きい箱 */
   .top2{display:grid;grid-template-columns:1fr 1fr;gap:2.6mm}
-  .card{border:.4mm solid var(--line);background:
+  .card{border:.35mm solid var(--line);background:
       linear-gradient(180deg,rgba(217,180,74,.13),rgba(217,180,74,.04) 46%,rgba(0,0,0,.30));
-    padding:2.6mm 3mm 2.8mm}
-  .card .nm{font-family:"Noto Serif JP",serif;font-weight:900;font-size:5.4mm;
+    padding:2mm 2.4mm 2.2mm}
+  .card .nm{font-family:"Noto Serif JP",serif;font-weight:900;font-size:4.6mm;
     letter-spacing:.04em;line-height:1.1}
-  .card .pr{font-family:'Cinzel',serif;font-weight:700;font-size:8.4mm;line-height:1;
-    margin-top:1mm}
+  .card .pr{font-family:'Cinzel',serif;font-weight:700;font-size:7mm;line-height:1;
+    margin-top:.6mm}
   .card .cap{margin-top:1.2mm;font-size:2.5mm;font-weight:700;letter-spacing:.04em;
     color:#0a0806;background:var(--gold-l);display:inline-block;padding:.5mm 2mm .7mm}
-  .card ul{margin-top:2mm;list-style:none}
-  .card li{position:relative;padding-left:3mm;font-size:2.65mm;line-height:1.5;
-    color:var(--cream);margin-bottom:.9mm}
-  .card li::before{content:"";position:absolute;left:0;top:1.5mm;width:1.4mm;height:1.4mm;
+  .card ul{margin-top:1.4mm;list-style:none}
+  .card li{position:relative;padding-left:2.6mm;font-size:2.3mm;line-height:1.42;
+    color:var(--cream);margin-bottom:.55mm}
+  .card li::before{content:"";position:absolute;left:0;top:1.2mm;width:1.1mm;height:1.1mm;
     background:var(--gold);transform:rotate(45deg)}
   .card li b{color:#fff;font-weight:700}
 
   /* 下位3コース：横並び */
-  .low3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2.2mm;margin-top:2.6mm}
-  .mini{border:.35mm solid rgba(217,180,74,.32);background:rgba(217,180,74,.06);
-    padding:2mm 2.4mm 2.2mm;text-align:center}
+  .low3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2mm;margin-top:2mm}
+  .mini{border:.3mm solid rgba(217,180,74,.32);background:rgba(217,180,74,.06);
+    padding:1.6mm 2mm 1.8mm;text-align:center}
   .mini .nm{font-family:"Noto Serif JP",serif;font-weight:900;font-size:3.9mm;
     color:var(--cream);letter-spacing:.02em}
-  .mini .pr{font-family:'Cinzel',serif;font-weight:700;font-size:6.2mm;line-height:1;
-    margin-top:.8mm}
+  .mini .pr{font-family:'Cinzel',serif;font-weight:700;font-size:5.4mm;line-height:1;
+    margin-top:.6mm}
   .mini .cap{margin-top:.9mm;font-size:2.3mm;font-weight:700;color:var(--gold-l)}
   .mini .ds{margin-top:1.2mm;font-size:2.35mm;line-height:1.42;color:var(--sub)}
 
   /* 注記 */
-  .rule{margin-top:2.4mm;border:.35mm solid rgba(193,18,31,.55);
-    background:rgba(193,18,31,.10);padding:1.8mm 3mm 2mm;
+  .rule{margin-top:2mm;border:.35mm solid rgba(193,18,31,.55);
+    background:rgba(193,18,31,.10);padding:1.4mm 2.6mm 1.6mm;
     display:grid;grid-template-columns:1fr 1fr;gap:.4mm 4mm}
-  .rule p{position:relative;padding-left:3.2mm;font-size:2.4mm;line-height:1.46;
+  .rule p{position:relative;padding-left:2.8mm;font-size:2.2mm;line-height:1.4;
     color:var(--cream)}
   .rule p::before{content:"●";position:absolute;left:0;top:0;font-size:1.8mm;
     color:var(--crimson-l)}
   .rule b{color:#fff;font-weight:700}
 
   /* 当日のながれ */
-  .tt{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.4mm 3mm}
-  .tt div{display:flex;align-items:baseline;gap:2.2mm;font-size:2.6mm;
-    color:var(--cream);border-bottom:.25mm solid rgba(217,180,74,.22);padding-bottom:1mm}
-  .tt span{font-family:'Cinzel',serif;font-weight:700;font-size:3.4mm;
+  .tt{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1mm 3mm}
+  .tt div{display:flex;align-items:baseline;gap:1.8mm;font-size:2.25mm;
+    color:var(--cream);border-bottom:.22mm solid rgba(217,180,74,.22);padding-bottom:.7mm}
+  .tt span{font-family:'Cinzel',serif;font-weight:700;font-size:2.9mm;
     color:var(--gold-l);white-space:nowrap}
-  .cap2{margin-top:2.2mm;font-size:2.4mm;line-height:1.5;color:var(--sub)}
+  .cap2{margin-top:1.6mm;font-size:2.15mm;line-height:1.45;color:var(--sub)}
   .cap2 b{color:#fff;font-weight:700}
 
   /* ── 下部：CF・支援金・LINE ── */
-  .foot{flex:none;margin:auto -8mm 0;padding:3mm 8mm 0;
+  .foot{flex:none;margin:auto -7mm 0;padding:2.4mm 7mm 0;
     border-top:.4mm solid var(--line);
     background:linear-gradient(180deg,rgba(217,180,74,.08),transparent 60%);
     display:grid;grid-template-columns:1fr auto;gap:5mm;align-items:start}
   .cf .k{font-family:'Cinzel',serif;font-weight:600;font-size:2.7mm;
     letter-spacing:.38em;text-indent:.38em;color:var(--gold-l)}
-  .cf .brand{font-family:'Cinzel',serif;font-weight:700;font-size:10mm;line-height:1;
-    margin-top:.8mm}
-  .cf .fav{display:inline-block;margin-top:1.8mm;padding:1.3mm 3.4mm 1.5mm;
+  .cf .brand{font-family:'Cinzel',serif;font-weight:700;font-size:8.4mm;line-height:1;
+    margin-top:.6mm}
+  .cf .fav{display:inline-block;margin-top:1.3mm;padding:1.1mm 3mm 1.3mm;
     border:.35mm solid var(--gold);background:rgba(217,180,74,.14);
-    font-weight:700;font-size:3.1mm;letter-spacing:.04em;color:#fff}
-  .cf .camp{margin-top:1.6mm;font-size:2.5mm;line-height:1.5;color:var(--cream)}
+    font-weight:700;font-size:2.8mm;letter-spacing:.04em;color:#fff}
+  .cf .camp{margin-top:1.2mm;font-size:2.25mm;line-height:1.45;color:var(--cream)}
   .cf .camp b{color:var(--gold-l)}
-  .money{margin-top:2.2mm;padding-top:1.8mm;border-top:.3mm solid rgba(217,180,74,.28);
-    font-family:"Noto Serif JP",serif;font-size:2.75mm;line-height:1.56;color:var(--cream)}
+  .money{margin-top:1.6mm;padding-top:1.3mm;border-top:.3mm solid rgba(217,180,74,.28);
+    font-family:"Noto Serif JP",serif;font-size:2.4mm;line-height:1.5;color:var(--cream)}
   .money b{color:#fff;font-weight:700}
 
   .qr{text-align:center}
   .qr .k{font-family:'Cinzel',serif;font-weight:600;font-size:2.4mm;
     letter-spacing:.24em;color:var(--gold-l)}
-  .qr .box{width:24mm;height:24mm;background:#fff;padding:1.4mm;margin:1.4mm auto 0}
+  .qr .box{width:21mm;height:21mm;background:#fff;padding:1.2mm;margin:1.2mm auto 0}
   .qr .box img{width:100%;height:100%;display:block}
   .qr .id{margin-top:1mm;font-weight:700;font-size:2.9mm;color:#fff}
   .qr .ds{margin-top:.6mm;font-size:2.25mm;color:var(--sub)}
 
-  .credit{flex:none;margin:2.6mm -8mm 0;padding:1.6mm 8mm 2.4mm;
+  .credit{flex:none;margin:2mm -7mm 0;padding:1.3mm 7mm 2mm;
     background:rgba(0,0,0,.55);font-size:1.95mm;line-height:1.45;
     color:rgba(245,239,224,.5)}
 </style>
@@ -166,77 +166,82 @@
 
   <div class="main">
 
-    <div class="secttl"><b class="gold">支援コース</b></div>
+    <div class="secttl"><b class="gold">支援プラン</b></div>
 
     <div class="top2">
       <div class="card">
-        <div class="nm silver">VVIP席</div>
-        <div class="pr gold">¥330,000</div>
-        <div class="cap">10口・20名／着席</div>
+        <div class="nm silver">VVIP プラン</div>
+        <div class="pr gold">¥300,000</div>
+        <div class="cap">5口・同伴1名まで／計10名・ソファー席</div>
         <ul>
-          <li><b>1口で2名まで入場可</b>（同伴1名無料）</li>
-          <li><b>席を先着順で選べる</b>（DJ席・V4・V1）</li>
-          <li>MIOタイム（各卓を巡回・チェキ）</li>
-          <li>ファンミーティング参加権<br>（<b>30分のグループセッション</b>／MIOへのQ&amp;A）</li>
-          <li>なりきりしゃーみーグッズ一式</li>
-          <li>限定名刺（当日・現物）</li>
+          <li><b>ソファー席を先着順でお選びいただけます</b></li>
+          <li><b>18:30 先行入場</b>（※再入場はできません）</li>
+          <li><b>MIO がお席へ伺い、約6分 対面</b></li>
+          <li>チェキ・写真・動画の撮影OK</li>
+          <li>限定名刺（サイン入り／ネックストラップ付き）</li>
+          <li>しゃーみーグッズ（ノート・ペン・トートバッグ）</li>
+          <li><b>梵字オリジナルTシャツ</b></li>
+          <li>MIO が滝で浄化したクリスタル（滝行の動画付き）</li>
+          <li>フリードリンク（飲み放題）</li>
+          <li><b>11/28 ファンミ：VVIP限定30分セッション</b>（当日お預かりしたQ&amp;Aに MIO が回答）</li>
+          <li>11/28 ファンミ：限定シャンパンコール体験</li>
+          <li><b>やしろ学園への優待</b></li>
         </ul>
       </div>
       <div class="card">
-        <div class="nm silver">S席・MIOタイム</div>
-        <div class="pr gold">¥150,000</div>
-        <div class="cap">15口・30名／着席</div>
+        <div class="nm silver">VIP プラン</div>
+        <div class="pr gold">¥50,000</div>
+        <div class="cap">15口・15名／スタンディング最前列</div>
         <ul>
-          <li><b>1口で2名まで入場可</b>（同伴1名無料）</li>
-          <li>着席エリア（V6・V5・V2・V3・S席）</li>
-          <li>MIOタイム（各卓を巡回・チェキ）</li>
-          <li>ファンミーティング参加権</li>
-          <li>なりきりしゃーみーグッズ一式</li>
-          <li>限定名刺（当日・現物）</li>
+          <li><b>最前列エリアでのライブ観覧</b></li>
+          <li><b>18:00 先行入場</b></li>
+          <li><b>MIO とチェキ撮影＋ハイタッチ</b>（18:15〜／お一人1分）</li>
+          <li>限定名刺（サイン入り／ネックストラップ付き）</li>
+          <li>フリードリンク（飲み放題）</li>
+          <li><b>11/28 ファンミ：MIO が梵字を書きます</b>（お持ちいただいた物に直接／無ければサイン色紙に）</li>
+          <li>11/28 ファンミ：限定シャンパンコール観覧（後方より）</li>
+          <li>11/28 ファンミ：オリジナルうちわ／ゲーム参加</li>
         </ul>
       </div>
     </div>
 
-    <div class="low3">
+    <div class="low3" style="grid-template-columns:1fr 1fr">
       <div class="mini">
-        <div class="nm">最前列席</div>
-        <div class="pr gold">¥50,000</div>
-        <div class="cap">30名／スタンディング</div>
-        <div class="ds">最前列で観覧<br>ファンミーティング参加権</div>
-      </div>
-      <div class="mini">
-        <div class="nm">ライブ席</div>
+        <div class="nm">ライブプラン</div>
         <div class="pr gold">¥10,000</div>
-        <div class="cap">100名／スタンディング</div>
-        <div class="ds">後方エリアで観覧<br>アコースティックライブ</div>
+        <div class="cap">30名／スタンディング</div>
+        <div class="ds">アコースティックライブ観覧<br>フリードリンク（飲み放題）</div>
       </div>
       <div class="mini">
-        <div class="nm">シンプル応援</div>
-        <div class="pr gold">¥5,000</div>
-        <div class="cap">数量無制限／来場不要</div>
-        <div class="ds">限定名刺（デジタル版）<br>お礼メッセージ</div>
+        <div class="nm">応援プラン</div>
+        <div class="pr gold">¥1,000</div>
+        <div class="cap">数量無制限／来場なし</div>
+        <div class="ds">限定名刺（デジタル版）<br>LINE公式アカウントでお届け</div>
       </div>
     </div>
 
     <div class="rule">
-      <p><b>19:00 開場／19:25 受付締切／19:30 開演</b></p>
+      <p><b>19:00 開場／19:25 受付締切／19:30 開演／20:05 終演</b></p>
       <p>会場は<b>東京・渋谷</b>（詳細は追ってお知らせします）</p>
-      <p>着席エリアは<b>すべて相席</b>です。個室・貸切ではありません</p>
+      <p>目標金額 <b>150万円</b>／募集は <b>10月31日</b>まで</p>
       <p><b>20歳以上・男女問わず</b>ご参加いただけます</p>
-      <p>ファンミーティングは<b>5万円以上の全コース</b>に付帯（11月・都内）</p>
-      <p>チケットは<b>電子チケット</b>を10月上旬にメールでお送りします</p>
+      <p>チケットは<b>電子チケット</b>をメールでお送りします</p>
+      <p>ファンミは <b>VIP・VVIP</b> に付帯（11/28 土・都内）</p>
     </div>
 
-    <div class="secttl" style="margin-top:4mm"><b class="gold">当日のながれ</b></div>
+    <div class="secttl" style="margin-top:3.4mm"><b class="gold">当日のながれ</b></div>
     <div class="tt">
-      <div><span>18:00</span>リハーサル</div>
-      <div><span>19:00</span>開場</div>
+      <div><span>18:00</span>VIP 先行入場</div>
+      <div><span>18:15</span>VIPタイム（チェキ＋ハイタッチ）</div>
+      <div><span>18:30</span>VVIP 先行入場</div>
+      <div><span>19:00</span>一般入場開始</div>
       <div><span>19:25</span>受付締切</div>
-      <div><span>19:30</span>開演／アコースティックライブ</div>
-      <div><span>20:00</span>MIOタイム（各卓を巡回・チェキ）</div>
-      <div><span>22:00</span>終演</div>
+      <div><span>19:30</span>ライブ開演</div>
+      <div><span>20:05</span>終演（VVIP以外ご退場）</div>
+      <div><span>20:10</span>VVIP（MIO がお席へ）</div>
+      <div><span>21:10</span>お見送り</div>
     </div>
-    <p class="cap2">総入場 <b>180名</b>（着席 50名／スタンディング 130名）　　当日の MIO タイムは<b>チェキのみ</b>です。やしろ語録動画の撮影は11月のファンミーティングで行います。</p>
+    <p class="cap2"><b>再入場はできません。</b>　お申し込み締切：<b>10月18日(日) 17:00</b>　／　まずは少人数で目標達成を目指し、<b>達成しだい枠を追加</b>します。</p>
 
     <div class="foot">
       <div class="cf">
