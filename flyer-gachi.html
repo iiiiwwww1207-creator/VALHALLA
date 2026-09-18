@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>VALHALLA CHARITY LIVE 2026.10.18</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+JP:wght@500;600;700;900&family=Noto+Sans+JP:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  @page{ size:A4 portrait; margin:0 }
+  :root{
+    --gold-hi:#FBF0BE; --gold:#D9B44A; --gold-d:#8A6A18; --gold-l:#F3DE93;
+    --crimson:#C1121F; --crimson-l:#E0303C;
+    --cream:#F5EFE0; --sub:rgba(245,239,224,.72);
+    --line:rgba(217,180,74,.42);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#000;font-family:"Noto Sans JP",sans-serif}
+
+  .page{position:relative;width:210mm;height:297mm;overflow:hidden;
+    background:
+      radial-gradient(ellipse 90% 40% at 50% 4%, rgba(160,120,30,.22), transparent 60%),
+      radial-gradient(ellipse 70% 30% at 50% 62%, rgba(193,18,31,.16), transparent 64%),
+      linear-gradient(180deg,#0a0806 0%,#050404 40%,#0b0806 72%,#040303 100%);
+    display:flex;flex-direction:column}
+
+  /* 金の立体文字 */
+  .gold{
+    background:linear-gradient(177deg,#fffbe8 0%,var(--gold-hi) 16%,var(--gold) 42%,
+      var(--gold-d) 54%,var(--gold) 66%,var(--gold-hi) 84%,#fffdf0 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 .4mm 0 rgba(90,64,10,.9)) drop-shadow(0 1mm 2mm rgba(0,0,0,.95))}
+  .silver{
+    background:linear-gradient(177deg,#ffffff 0%,#e8e8ee 20%,#b9b9c4 46%,
+      #6e6e78 54%,#c9c9d2 70%,#ffffff 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 .35mm 0 rgba(0,0,0,.8)) drop-shadow(0 1mm 2mm rgba(0,0,0,.9))}
+
+  /* ── ヘッダー ── */
+  .hd{flex:none;padding:6mm 10mm 0;text-align:center;position:relative;z-index:2}
+  .hd .logo{width:34mm;display:block;margin:0 auto 1.6mm}
+  .hd .en{font-family:'Cinzel',serif;font-weight:600;font-size:3.1mm;
+    letter-spacing:.44em;text-indent:.44em;color:var(--gold-l)}
+  .hd h1{font-family:"Noto Serif JP",serif;font-weight:900;font-size:15.6mm;
+    line-height:1;letter-spacing:.02em;margin-top:1.4mm}
+  .hd .date{margin-top:2mm;font-family:'Cinzel',serif;font-weight:700;font-size:7.6mm;
+    letter-spacing:.06em;color:#fff}
+  .hd .tag{margin-top:1.4mm;font-family:"Noto Serif JP",serif;font-weight:700;
+    font-size:4.4mm;letter-spacing:.14em;color:var(--cream)}
+
+  /* 写真は地として全面に薄く（横帯だと3人の顔が入りきらないため） */
+  .bg{position:absolute;inset:0;z-index:0;
+    background:url('assets/charity/group_field_stream.jpg') center 30%/cover no-repeat;
+    opacity:.40;filter:grayscale(.12) contrast(1.06)}
+  .bgveil{position:absolute;inset:0;z-index:1;
+    background:
+      linear-gradient(180deg,rgba(6,5,4,.72) 0%,rgba(6,5,4,.52) 18%,
+        rgba(6,5,4,.80) 36%,rgba(4,3,3,.93) 52%,rgba(4,3,3,.96) 100%)}
+  .who{flex:none;margin-top:2.2mm;text-align:center;position:relative;z-index:2;
+    font-family:'Cinzel',serif;font-weight:600;font-size:4.2mm;letter-spacing:.30em;
+    color:#fff;text-shadow:0 1mm 3mm rgba(0,0,0,.95)}
+  .who i{font-style:normal;color:var(--gold-l);margin:0 1.8mm}
+
+  /* ── 本体 ── */
+  .main{flex:1;padding:5mm 8mm 0;position:relative;z-index:2;
+    display:flex;flex-direction:column}
+
+  .secttl{display:flex;align-items:center;gap:3mm;margin-bottom:2.4mm}
+  .secttl::before,.secttl::after{content:"";height:.35mm;flex:1;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+  .secttl b{font-family:"Noto Serif JP",serif;font-weight:900;font-size:7mm;
+    letter-spacing:.10em;white-space:nowrap}
+
+  /* 上位2コース：大きい箱 */
+  .top2{display:grid;grid-template-columns:1fr 1fr;gap:2.6mm}
+  .card{border:.4mm solid var(--line);background:
+      linear-gradient(180deg,rgba(217,180,74,.13),rgba(217,180,74,.04) 46%,rgba(0,0,0,.30));
+    padding:2.6mm 3mm 2.8mm}
+  .card .nm{font-family:"Noto Serif JP",serif;font-weight:900;font-size:5.4mm;
+    letter-spacing:.04em;line-height:1.1}
+  .card .pr{font-family:'Cinzel',serif;font-weight:700;font-size:8.4mm;line-height:1;
+    margin-top:1mm}
+  .card .cap{margin-top:1.2mm;font-size:2.5mm;font-weight:700;letter-spacing:.04em;
+    color:#0a0806;background:var(--gold-l);display:inline-block;padding:.5mm 2mm .7mm}
+  .card ul{margin-top:2mm;list-style:none}
+  .card li{position:relative;padding-left:3mm;font-size:2.65mm;line-height:1.5;
+    color:var(--cream);margin-bottom:.9mm}
+  .card li::before{content:"";position:absolute;left:0;top:1.5mm;width:1.4mm;height:1.4mm;
+    background:var(--gold);transform:rotate(45deg)}
+  .card li b{color:#fff;font-weight:700}
+
+  /* 下位3コース：横並び */
+  .low3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2.2mm;margin-top:2.6mm}
+  .mini{border:.35mm solid rgba(217,180,74,.32);background:rgba(217,180,74,.06);
+    padding:2mm 2.4mm 2.2mm;text-align:center}
+  .mini .nm{font-family:"Noto Serif JP",serif;font-weight:900;font-size:3.9mm;
+    color:var(--cream);letter-spacing:.02em}
+  .mini .pr{font-family:'Cinzel',serif;font-weight:700;font-size:6.2mm;line-height:1;
+    margin-top:.8mm}
+  .mini .cap{margin-top:.9mm;font-size:2.3mm;font-weight:700;color:var(--gold-l)}
+  .mini .ds{margin-top:1.2mm;font-size:2.35mm;line-height:1.42;color:var(--sub)}
+
+  /* 注記 */
+  .rule{margin-top:2.4mm;border:.35mm solid rgba(193,18,31,.55);
+    background:rgba(193,18,31,.10);padding:1.8mm 3mm 2mm;
+    display:grid;grid-template-columns:1fr 1fr;gap:.4mm 4mm}
+  .rule p{position:relative;padding-left:3.2mm;font-size:2.4mm;line-height:1.46;
+    color:var(--cream)}
+  .rule p::before{content:"●";position:absolute;left:0;top:0;font-size:1.8mm;
+    color:var(--crimson-l)}
+  .rule b{color:#fff;font-weight:700}
+
+  /* 当日のながれ */
+  .tt{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.4mm 3mm}
+  .tt div{display:flex;align-items:baseline;gap:2.2mm;font-size:2.6mm;
+    color:var(--cream);border-bottom:.25mm solid rgba(217,180,74,.22);padding-bottom:1mm}
+  .tt span{font-family:'Cinzel',serif;font-weight:700;font-size:3.4mm;
+    color:var(--gold-l);white-space:nowrap}
+  .cap2{margin-top:2.2mm;font-size:2.4mm;line-height:1.5;color:var(--sub)}
+  .cap2 b{color:#fff;font-weight:700}
+
+  /* ── 下部：CF・支援金・LINE ── */
+  .foot{flex:none;margin:auto -8mm 0;padding:3mm 8mm 0;
+    border-top:.4mm solid var(--line);
+    background:linear-gradient(180deg,rgba(217,180,74,.08),transparent 60%);
+    display:grid;grid-template-columns:1fr auto;gap:5mm;align-items:start}
+  .cf .k{font-family:'Cinzel',serif;font-weight:600;font-size:2.7mm;
+    letter-spacing:.38em;text-indent:.38em;color:var(--gold-l)}
+  .cf .brand{font-family:'Cinzel',serif;font-weight:700;font-size:10mm;line-height:1;
+    margin-top:.8mm}
+  .cf .fav{display:inline-block;margin-top:1.8mm;padding:1.3mm 3.4mm 1.5mm;
+    border:.35mm solid var(--gold);background:rgba(217,180,74,.14);
+    font-weight:700;font-size:3.1mm;letter-spacing:.04em;color:#fff}
+  .cf .camp{margin-top:1.6mm;font-size:2.5mm;line-height:1.5;color:var(--cream)}
+  .cf .camp b{color:var(--gold-l)}
+  .money{margin-top:2.2mm;padding-top:1.8mm;border-top:.3mm solid rgba(217,180,74,.28);
+    font-family:"Noto Serif JP",serif;font-size:2.75mm;line-height:1.56;color:var(--cream)}
+  .money b{color:#fff;font-weight:700}
+
+  .qr{text-align:center}
+  .qr .k{font-family:'Cinzel',serif;font-weight:600;font-size:2.4mm;
+    letter-spacing:.24em;color:var(--gold-l)}
+  .qr .box{width:24mm;height:24mm;background:#fff;padding:1.4mm;margin:1.4mm auto 0}
+  .qr .box img{width:100%;height:100%;display:block}
+  .qr .id{margin-top:1mm;font-weight:700;font-size:2.9mm;color:#fff}
+  .qr .ds{margin-top:.6mm;font-size:2.25mm;color:var(--sub)}
+
+  .credit{flex:none;margin:2.6mm -8mm 0;padding:1.6mm 8mm 2.4mm;
+    background:rgba(0,0,0,.55);font-size:1.95mm;line-height:1.45;
+    color:rgba(245,239,224,.5)}
+</style>
+</head>
+<body>
+<section class="page">
+  <div class="bg"></div><div class="bgveil"></div>
+
+  <div class="hd">
+    <img class="logo" src="assets/charity/logo_gold.webp" alt="VALHALLA">
+    <div class="en">Valhalla Charity Live</div>
+    <h1 class="gold">チャリティーライブ</h1>
+    <div class="date">2026<span style="color:var(--gold-l)">.</span>10<span style="color:var(--gold-l)">.</span>18 SUN</div>
+    <div class="tag">ビジュアル系文化を守り、継ぐ。</div>
+  </div>
+
+  <div class="who">MIO<i>／</i>RAY<i>／</i>KØU</div>
+
+  <div class="main">
+
+    <div class="secttl"><b class="gold">支援コース</b></div>
+
+    <div class="top2">
+      <div class="card">
+        <div class="nm silver">VVIP席</div>
+        <div class="pr gold">¥330,000</div>
+        <div class="cap">10口・20名／着席</div>
+        <ul>
+          <li><b>1口で2名まで入場可</b>（同伴1名無料）</li>
+          <li><b>席を先着順で選べる</b>（DJ席・V4・V1）</li>
+          <li>MIOタイム（各卓を巡回・チェキ）</li>
+          <li>ファンミーティング参加権<br>（<b>30分のグループセッション</b>／MIOへのQ&amp;A）</li>
+          <li>なりきりしゃーみーグッズ一式</li>
+          <li>限定名刺（当日・現物）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="nm silver">S席・MIOタイム</div>
+        <div class="pr gold">¥150,000</div>
+        <div class="cap">15口・30名／着席</div>
+        <ul>
+          <li><b>1口で2名まで入場可</b>（同伴1名無料）</li>
+          <li>着席エリア（V6・V5・V2・V3・S席）</li>
+          <li>MIOタイム（各卓を巡回・チェキ）</li>
+          <li>ファンミーティング参加権</li>
+          <li>なりきりしゃーみーグッズ一式</li>
+          <li>限定名刺（当日・現物）</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="low3">
+      <div class="mini">
+        <div class="nm">最前列席</div>
+        <div class="pr gold">¥50,000</div>
+        <div class="cap">30名／スタンディング</div>
+        <div class="ds">最前列で観覧<br>ファンミーティング参加権</div>
+      </div>
+      <div class="mini">
+        <div class="nm">ライブ席</div>
+        <div class="pr gold">¥10,000</div>
+        <div class="cap">100名／スタンディング</div>
+        <div class="ds">後方エリアで観覧<br>アコースティックライブ</div>
+      </div>
+      <div class="mini">
+        <div class="nm">シンプル応援</div>
+        <div class="pr gold">¥5,000</div>
+        <div class="cap">数量無制限／来場不要</div>
+        <div class="ds">限定名刺（デジタル版）<br>お礼メッセージ</div>
+      </div>
+    </div>
+
+    <div class="rule">
+      <p><b>19:00 開場／19:25 受付締切／19:30 開演</b></p>
+      <p>会場は<b>東京・渋谷</b>（詳細は追ってお知らせします）</p>
+      <p>着席エリアは<b>すべて相席</b>です。個室・貸切ではありません</p>
+      <p><b>20歳以上・男女問わず</b>ご参加いただけます</p>
+      <p>ファンミーティングは<b>5万円以上の全コース</b>に付帯（11月・都内）</p>
+      <p>チケットは<b>電子チケット</b>を10月上旬にメールでお送りします</p>
+    </div>
+
+    <div class="secttl" style="margin-top:4mm"><b class="gold">当日のながれ</b></div>
+    <div class="tt">
+      <div><span>18:00</span>リハーサル</div>
+      <div><span>19:00</span>開場</div>
+      <div><span>19:25</span>受付締切</div>
+      <div><span>19:30</span>開演／アコースティックライブ</div>
+      <div><span>20:00</span>MIOタイム（各卓を巡回・チェキ）</div>
+      <div><span>22:00</span>終演</div>
+    </div>
+    <p class="cap2">総入場 <b>180名</b>（着席 50名／スタンディング 130名）　　当日の MIO タイムは<b>チェキのみ</b>です。やしろ語録動画の撮影は11月のファンミーティングで行います。</p>
+
+    <div class="foot">
+      <div class="cf">
+        <div class="k">Crowdfunding</div>
+        <div class="brand gold">CAMPFIRE</div>
+        <div class="fav">お気に入り登録をお願いします</div>
+        <div class="camp">お気に入りが <b>300件</b> に達したら、<br>
+          限定オリジナルステッカーを<b>ご登録者全員</b>にお配りします。</div>
+        <div class="money">お預かりした<b>支援金</b>から必要経費を精算し、<br>
+          全額を然るべき団体へ<b>お渡しします</b>。同団体を通じて、<br>
+          教育・文化を支える活動に充てられます。</div>
+      </div>
+      <div class="qr">
+        <div class="k">LINE OFFICIAL</div>
+        <div class="box"><img src="assets/charity/qr_line.svg" alt="LINE公式アカウント"></div>
+        <div class="id">@328vnfzj</div>
+        <div class="ds">狼煙は、ここに上がる。</div>
+      </div>
+    </div>
+
+    <p class="credit">主催：VALHALLA ／ 昼の本編「WRAPPING THE EARTH TOKYO 2026」主催：公益財団法人クロノス保全財団。お申し込みは CAMPFIRE にて受付予定。特定商取引法に基づく表記は特設ページに掲載します。会場イメージ：Unsplash。</p>
+
+  </div>
+</section>
+</body>
+</html>
