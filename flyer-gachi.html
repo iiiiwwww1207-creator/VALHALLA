@@ -137,8 +137,8 @@
     display:grid;grid-template-columns:1fr auto;gap:5mm;align-items:start}
   .cf .k{font-family:'Cinzel',serif;font-weight:600;font-size:2.7mm;
     letter-spacing:.38em;text-indent:.38em;color:var(--gold-l)}
-  .cf .brand{font-family:'Cinzel',serif;font-weight:700;font-size:8.4mm;line-height:1;
-    margin-top:.6mm}
+  /* CAMPFIRE 公式ロゴ（黒地用の白版・ガイドラインにより色変更不可） */
+  .cf .brandlogo{display:block;width:52mm;height:auto;margin-top:1.2mm}
   /* ロゴと訴求を横並びにする */
   .cfrow{display:grid;grid-template-columns:auto 1fr;gap:5mm;align-items:center}
   .cfask{padding-left:5mm;border-left:.3mm solid rgba(217,180,74,.32)}
@@ -263,7 +263,7 @@
         <div class="cfrow">
           <div class="cfbrand">
             <div class="k">Crowdfunding</div>
-            <div class="brand gold">CAMPFIRE</div>
+            <img class="brandlogo" src="assets/charity/campfire/campfire-logo-white.png" alt="CAMPFIRE">
           </div>
           <div class="cfask">
             <div class="fav">お気に入り登録をお願いします</div>

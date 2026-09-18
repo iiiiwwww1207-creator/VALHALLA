@@ -50,6 +50,15 @@ kazuma が共有した社学園・VALHALLA求人フライヤーの様式（金�
 フライヤーは反映済み。⚠️ `campfire-lp-creation` ブランチ側の本文・図版
 （`create_returns_banner.py` 等にステッカー表記が焼き込まれている可能性）は未反映。
 
+## CAMPFIRE ロゴを公式素材へ（2026-09-19）
+kazuma が送った**赤い炎の「C」ロゴは 2022年9月リニューアル前の旧ロゴ**。
+公式のロゴ利用ガイドライン（`assets/charity/campfire/CAMPFIRE_logo_guideline.pdf`）が
+**色・サイズ・デザインの変更を禁止**しているため、旧ロゴは使わず
+**現行公式パックの黒地用・白版**（`campfire-logo-white.png`）を置いた。
+配布元: help.camp-fire.jp のサービスロゴ配布（Google Drive の zip）。
+カラー版 `campfire-logo.png` も同梱してある（白地に置く場合用）。
+ガイドライン上、CF プロジェクトの宣伝目的での使用は許可されている。
+
 ## 🔴 フライヤーに反映できていない未確定事項
 1. **応援プランが 1,000円 か 5,000円**（口頭は1,000／編集画面は全角の５,000）
 2. **呼称が MIO YASHIRO か 社美緒か**（編集で MIO YASHIRO に置換された）。
