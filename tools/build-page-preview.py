@@ -22,6 +22,7 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "docs" / "campfire-live-page.txt"
+STAMP = "2026年9月18日 18:10 時点"
 IMGDIR = Path.home() / "Desktop" / "VALHALLA_本文にはめる画像"
 THUMBS = Path("/tmp/valhalla_artifact/thumbs")
 OUT = Path("/tmp/valhalla_artifact/campfire-page-preview.html")
@@ -81,8 +82,7 @@ def build() -> None:
             p = IMGDIR / name
             if not p.exists():
                 raise FileNotFoundError(f"画像がありません: {name}")
-            new = name in {f"IMAGE-{i}.jpg" for i in
-                           ("13", "14", "15", "16", "17", "18", "19")}
+            new = False
             n_img += 1
             tag = '<span class="badge">今回ふやした図版</span>' if new else ""
             body.append(f'<figure class="{"fig new" if new else "fig"}">'
@@ -134,8 +134,8 @@ def build() -> None:
            f'<title>VALHALLA CHARITY LIVE 掲載プレビュー</title>\n'
            f'<style>{css}</style>\n'
            f'<header class="bar">'
-           f'<strong>差し込み後のページ（下書き）</strong>'
-           f'<span>図版 {n_img} 枚 ／ 動画 2 本　—　CAMPFIRE にはまだ反映していません</span>'
+           f'<strong>ここが正。OK が出たら CAMPFIRE へ流します</strong>'
+           f'<span>図版 {n_img} 枚 ／ 動画 2 本　—　{STAMP}</span>'
            f'</header>\n'
            f'<main>\n'
            f'<p class="lead">文化 × エンタメ × AI。2026年10月18日（日）渋谷で '
