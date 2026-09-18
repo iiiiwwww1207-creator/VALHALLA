@@ -282,8 +282,10 @@ def ch08_pass(out: Path) -> None:
         node(d, (x, cy), r, width=2)
         centered(d, x, cy - 26, title, face(MINCHO, 40), CREAM)
         centered(d, x, cy + r + 44, sub, face(SANS, 21), SILVER)
-    centered(d, W / 2, 168, "背中を見せるだけでは、そこで止まります。",
+    centered(d, W / 2, 148, "背中を見せるだけでは、そこで止まります。",
              face(SANS, 25), SILVER)
+    centered(d, W / 2, 190, "あり方を届ける人になります。",
+             face(SANS_B, 25), CREAM)
     img = footer(img, ["この夜は、", "そのはじまりの一歩です。"])
     finish(img, out)
 
