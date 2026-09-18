@@ -129,10 +129,13 @@
     letter-spacing:.38em;text-indent:.38em;color:var(--gold-l)}
   .cf .brand{font-family:'Cinzel',serif;font-weight:700;font-size:8.4mm;line-height:1;
     margin-top:.6mm}
-  .cf .fav{display:inline-block;margin-top:1.3mm;padding:1.1mm 3mm 1.3mm;
+  /* ロゴと訴求を横並びにする */
+  .cfrow{display:grid;grid-template-columns:auto 1fr;gap:5mm;align-items:center}
+  .cfask{padding-left:5mm;border-left:.3mm solid rgba(217,180,74,.32)}
+  .cf .fav{display:inline-block;margin-top:0;padding:1.1mm 3mm 1.3mm;
     border:.35mm solid var(--gold);background:rgba(217,180,74,.14);
     font-weight:700;font-size:2.8mm;letter-spacing:.04em;color:#fff}
-  .cf .camp{margin-top:1.2mm;font-size:2.25mm;line-height:1.45;color:var(--cream)}
+  .cf .camp{margin-top:1.4mm;font-size:2.25mm;line-height:1.45;color:var(--cream)}
   .cf .camp b{color:var(--gold-l)}
   .money{margin-top:1.6mm;padding-top:1.3mm;border-top:.3mm solid rgba(217,180,74,.28);
     font-family:"Noto Serif JP",serif;font-size:2.4mm;line-height:1.5;color:var(--cream)}
@@ -246,11 +249,17 @@
 
     <div class="foot">
       <div class="cf">
-        <div class="k">Crowdfunding</div>
-        <div class="brand gold">CAMPFIRE</div>
-        <div class="fav">お気に入り登録をお願いします</div>
-        <div class="camp">お気に入りが <b>300件</b> に達したら、<br>
-          限定オリジナルステッカーを<b>ご登録者全員</b>にお配りします。</div>
+        <div class="cfrow">
+          <div class="cfbrand">
+            <div class="k">Crowdfunding</div>
+            <div class="brand gold">CAMPFIRE</div>
+          </div>
+          <div class="cfask">
+            <div class="fav">お気に入り登録をお願いします</div>
+            <div class="camp">お気に入りが <b>300件</b> に達したら、限定オリジナル<br>
+              ステッカーを<b>ご登録者全員</b>にお配りします。</div>
+          </div>
+        </div>
         <div class="money">お預かりした<b>支援金</b>から必要経費を精算し、<br>
           全額を然るべき団体へ<b>お渡しします</b>。同団体を通じて、<br>
           教育・文化を支える活動に充てられます。</div>
