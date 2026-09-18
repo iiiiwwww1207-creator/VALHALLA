@@ -103,7 +103,28 @@ def build(out: Path) -> None:
     ox, oy = round(70 * SCALE), round((H * SCALE - plan.height) / 2)
     img.alpha_composite(plan, (ox, oy))
 
+    # 会場図には「DJ BOOTH」と刷られているが、この日は生演奏の舞台になる。
+    # 紫の弧はそのまま活かし、文字のところだけ溶かして置き換える
+    box = sbox((380, 281, 556, 337))
+    patch = img.crop(box)
+    # 白い文字をそのままぼかすと、白が広がって灰色の板になる。
+    # 先に明るいところだけ弧の色まで落としてから、ぼかして均す
+    cap = 96
+    patch = Image.merge("RGBA", [
+        ch.point(lambda v: min(v, cap)) if i < 3 else ch
+        for i, ch in enumerate(patch.split())])
+    patch = patch.filter(ImageFilter.GaussianBlur(round(9 * SCALE)))
+    # 縁は羽根にして、板に見えないようにする
+    mask = Image.new("L", patch.size, 0)
+    ImageDraw.Draw(mask).rounded_rectangle(
+        (round(4 * SCALE), round(4 * SCALE),
+         patch.width - round(4 * SCALE), patch.height - round(4 * SCALE)),
+        radius=round(12 * SCALE), fill=255)
+    mask = mask.filter(ImageFilter.GaussianBlur(round(6 * SCALE)))
+    img.paste(patch, box, mask)
+
     d = ImageDraw.Draw(img)
+    centered(d, 467, 297, "ステージ", face(SANS_B, 24), (246, 238, 240))
     eyebrow(d, "VALHALLA CHARITY LIVE ／ フロア")
 
     def at(name: str) -> tuple[float, float]:
@@ -118,7 +139,7 @@ def build(out: Path) -> None:
         zone_mark(img, at(name), 27, BLUE, 3.2)
     d = ImageDraw.Draw(img)
 
-    # DJブースのすぐ手前が最前列。丸ではなく楕円で、前方だけを囲う
+    # ステージのすぐ手前が最前列。丸ではなく楕円で、前方だけを囲う
     fx, fy = at("FRONT")
     rx, ry = 82, 32
     front = Image.new("RGBA", img.size, (0, 0, 0, 0))
@@ -145,7 +166,7 @@ def build(out: Path) -> None:
     rows = [
         (GOLD, "VVIP席", "図の金色の4区画から、先着順でお選びいただけます"),
         (BLUE, "S席・MIOタイム", "図の青色の区画。お席は主催者が指定します"),
-        (FRONT_RED, "最前列席", "DJブース前の最前列エリアで立ってご覧いただきます"),
+        (FRONT_RED, "最前列席", "ステージ前の最前列エリアで立ってご覧いただきます"),
         (None, "ライブ席", "その後ろの中央フロアで立ってご覧いただきます"),
     ]
     for color, title, sub in rows:
