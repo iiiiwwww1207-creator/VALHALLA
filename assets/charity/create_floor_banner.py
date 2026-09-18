@@ -10,7 +10,7 @@
 
 区画の対応（docs/campfire-project-body.md より）:
     VVIP席  … DJ1・DJ2・V4・V1
-    S席     … V2・V3・V5・V6・S1〜S4
+    VIP席     … V2・V3・V5・V6・S1〜S4
     中央    … ステージとスタンディング
 """
 from __future__ import annotations
@@ -132,7 +132,7 @@ def build(out: Path) -> None:
         px, py = ZONES[name]
         return ((ox + px * k) / SCALE, (oy + py * k) / SCALE)
 
-    # 区画に印を打つ。VVIP は金、S席は青
+    # 区画に印を打つ。VVIP は金、VIP席は青
     for name in VVIP:
         zone_mark(img, at(name), 34, GOLD, 3.8)
     for name in SSEAT:
@@ -165,7 +165,7 @@ def build(out: Path) -> None:
     y = 176
     rows = [
         (GOLD, "VVIP席", "図の金色の4区画から、先着順でお選びいただけます"),
-        (BLUE, "S席・MIOタイム", "図の青色の区画。お席は主催者が指定します"),
+        (BLUE, "VIP席・MIOタイム", "図の青色の区画。お席は主催者が指定します"),
         (FRONT_RED, "最前列席", "ステージ前の最前列エリアで立ってご覧いただきます"),
         (None, "ライブ席", "その後ろの中央フロアで立ってご覧いただきます"),
     ]
@@ -180,7 +180,7 @@ def build(out: Path) -> None:
     y += 16
     d.text(spos((x, y)), "お席はすべて相席です", font=face(SANS_B, 24), fill=CREAM)
     for i, line in enumerate([
-            "着席のコース（S席・VVIP席）は、グループごとの",
+            "着席のコース（VIP席・VVIP席）は、グループごとの",
             "個室・貸切ではありません。ほかのお客様と同じ",
             "区画・同じテーブルになります。"]):
         d.text(spos((x, y + 40 + i * 32)), line, font=face(SANS, 19), fill=SILVER)

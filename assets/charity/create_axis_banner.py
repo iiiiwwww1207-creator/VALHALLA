@@ -244,3 +244,12 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+# 作ったら、その場で本文へ流し込む。分けると古い絵が残る。
+_SRC = Path(__file__).resolve().parent / "axis_banner.jpg"
+_BODY = Path.home() / "Desktop" / "VALHALLA_本文にはめる画像" / "IMAGE-04.jpg"
+if _BODY.parent.is_dir() and _SRC.exists():
+    from PIL import Image as _I
+    _I.open(_SRC).convert("RGB").resize((1500, 844), _I.Resampling.LANCZOS).save(
+        _BODY, "JPEG", quality=90, optimize=True, progressive=True)
+    print(f"→ {_BODY.name} へ流し込み")

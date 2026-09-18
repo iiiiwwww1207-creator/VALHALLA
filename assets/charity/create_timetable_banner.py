@@ -184,7 +184,7 @@ def add_nodes(base: Image.Image) -> None:
     label_font = face(MINCHO, 29)
     cues = ("", "OPEN", "START", "", "", "END")
     times = ("17:45", "19:00", "19:30", "20:05", "20:10", "21:10")
-    labels = ("S席 先行入場", "一般入場", "開演", "終演", "VVIP席", "見送り")
+    labels = ("VIP席 先行入場", "一般入場", "開演", "終演", "VVIP席", "見送り")
     for x, cue, time, label in zip(centers_x, cues, times, labels):
         if cue:
             cue_width = sum(td.textlength(char, font=cue_font) for char in cue)
@@ -234,3 +234,12 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+# 作ったら、その場で本文へ流し込む。分けると古い絵が残る。
+_SRC = Path(__file__).resolve().parent / "timetable_banner.jpg"
+_BODY = Path.home() / "Desktop" / "VALHALLA_本文にはめる画像" / "IMAGE-07.jpg"
+if _BODY.parent.is_dir() and _SRC.exists():
+    from PIL import Image as _I
+    _I.open(_SRC).convert("RGB").resize((1500, 844), _I.Resampling.LANCZOS).save(
+        _BODY, "JPEG", quality=90, optimize=True, progressive=True)
+    print(f"→ {_BODY.name} へ流し込み")

@@ -184,7 +184,7 @@ def add_cards(base: Image.Image) -> None:
          ("最前列エリアで観覧", "［11/28］ハイタッチ",
           "［11/28］シャンパンコール観覧", "［11/28］うちわ",
           "［11/28］ゲーム参加")),
-        ("S SEAT", "S席・MIOタイム", "¥150,000", "15口 ／ 同伴1名まで可 ／ 相席 ／ 17:45 先行入場",
+        ("VIP SEAT", "VIP席・MIOタイム", "¥150,000", "15口 ／ 同伴1名まで可 ／ 相席 ／ 17:45 先行入場",
          ("お席をご用意します", "MIOとのチェキ（1分）", "限定名刺（サイン入り）",
           "なりきりグッズ（ノート・ペン）", "［11/28］握手・うちわ・ゲーム",
           "［11/28］やしろ語録動画")),
@@ -290,3 +290,12 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+# 作ったら、その場で本文へ流し込む。分けると古い絵が残る。
+_SRC = Path(__file__).resolve().parent / "returns_banner.jpg"
+_BODY = Path.home() / "Desktop" / "VALHALLA_本文にはめる画像" / "IMAGE-11.jpg"
+if _BODY.parent.is_dir() and _SRC.exists():
+    from PIL import Image as _I
+    _I.open(_SRC).convert("RGB").resize((1500, 844), _I.Resampling.LANCZOS).save(
+        _BODY, "JPEG", quality=90, optimize=True, progressive=True)
+    print(f"→ {_BODY.name} へ流し込み")
