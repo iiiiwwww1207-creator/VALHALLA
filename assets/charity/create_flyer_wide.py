@@ -572,7 +572,7 @@ def add_band(base: Image.Image) -> None:
     d.text((x, band + 90), place_t, font=place_f, fill=CREAM + (255,))
 
     # ③ 支援の一行。ここだけ和文で、静かに置く
-    note = "収益から必要経費を差し引いた全額を、教育文化セキュリティ財団へお渡しします"
+    note = "収益から必要経費を差し引いた全額は、教育文化セキュリティ財団の公益活動に充てられます"
     nf = face(MINCHO, 27)
     d.text(((W - d.textlength(note, font=nf)) / 2, band + 178), note, font=nf,
            fill=(236, 214, 214, 235))
