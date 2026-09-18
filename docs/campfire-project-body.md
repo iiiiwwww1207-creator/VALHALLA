@@ -105,7 +105,7 @@ MIO / RAY / KØU の3人組です。
 
 【画像】`assets/charity/16x9/group_band.jpg`（メンバー3人）
 
-### 2. 文化 ── 私たちは、もう一度やっています
+### 2. 文化 ── 2度目のチャレンジです
 
 【画像】`assets/charity/16x9/axis_banner.jpg`
 
