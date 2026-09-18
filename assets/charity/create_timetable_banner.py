@@ -183,8 +183,8 @@ def add_nodes(base: Image.Image) -> None:
     time_font = face(LATIN, 60)
     label_font = face(MINCHO, 29)
     cues = ("", "OPEN", "START", "", "", "END")
-    times = ("17:45", "19:00", "19:30", "20:05", "20:10", "21:10")
-    labels = ("VIP席 先行入場", "一般入場", "開演", "終演", "VVIP席", "見送り")
+    times = ("18:00", "19:00", "19:30", "20:05", "20:10", "21:10")
+    labels = ("VIP 先行入場", "一般入場", "開演", "終演", "VVIP", "見送り")
     for x, cue, time, label in zip(centers_x, cues, times, labels):
         if cue:
             cue_width = sum(td.textlength(char, font=cue_font) for char in cue)

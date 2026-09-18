@@ -135,8 +135,7 @@ def build(out: Path) -> None:
     # 区画に印を打つ。VVIP は金、VIP席は青
     for name in VVIP:
         zone_mark(img, at(name), 34, GOLD, 3.8)
-    for name in SSEAT:
-        zone_mark(img, at(name), 27, BLUE, 3.2)
+    # V2・V3・V5・V6・S1〜S4 は今回は使用しないので、印は打たない
     d = ImageDraw.Draw(img)
 
     # ステージのすぐ手前が最前列。丸ではなく楕円で、前方だけを囲う
@@ -164,10 +163,10 @@ def build(out: Path) -> None:
     x = 900
     y = 176
     rows = [
-        (GOLD, "VVIP席", "図の金色の4区画から、先着順でお選びいただけます"),
-        (BLUE, "VIP席・MIOタイム", "図の青色の区画。お席は主催者が指定します"),
-        (FRONT_RED, "最前列席", "ステージ前の最前列エリアで立ってご覧いただきます"),
-        (None, "ライブ席", "その後ろの中央フロアで立ってご覧いただきます"),
+        (GOLD, "VVIPプラン", "図の金色の4区画から、先着順でお選びいただけます"),
+        (FRONT_RED, "VIPプラン", "ステージ前の最前列エリアで立ってご覧いただきます"),
+        (None, "MIOタイム", "18:15〜 ステージ前でチェキ＋ハイタッチ（VIPプランの方）"),
+        (None, "ライブプラン", "その後ろの中央フロアで立ってご覧いただきます"),
     ]
     for color, title, sub in rows:
         if color:
@@ -180,13 +179,13 @@ def build(out: Path) -> None:
     y += 16
     d.text(spos((x, y)), "お席はすべて相席です", font=face(SANS_B, 24), fill=CREAM)
     for i, line in enumerate([
-            "着席のコース（VIP席・VVIP席）は、グループごとの",
+            "着席のコース（VVIPプラン）は、グループごとの",
             "個室・貸切ではありません。ほかのお客様と同じ",
             "区画・同じテーブルになります。"]):
         d.text(spos((x, y + 40 + i * 32)), line, font=face(SANS, 19), fill=SILVER)
 
     y += 156
-    d.text(spos((x, y)), "着席 50名 ／ スタンディング 130名", font=face(SANS_B, 22), fill=GOLD)
+    d.text(spos((x, y)), "来場は限定100口　着席 20名 ／ スタンディング 90名", font=face(SANS_B, 22), fill=GOLD)
     lead, lead_f = "ドリンクは会場（図の BAR）が提供します　", face(SANS, 19)
     d.text(spos((x, y + 36)), lead, font=lead_f, fill=SILVER)
     d.text(spos((x + d.textlength(lead, font=lead_f) / SCALE, y + 36)),
