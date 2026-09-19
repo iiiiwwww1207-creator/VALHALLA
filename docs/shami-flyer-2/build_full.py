@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deterministically build the second Shagakuen announcement flyer."""
+"""Build the 1122 x 1402 one-column Shagakuen announcement flyer."""
 
 from pathlib import Path
 import re
@@ -10,11 +10,12 @@ COPY, BG, MIO = ROOT / "copy.md", ROOT / "ref/bg.png", ROOT / "ref/mio.jpg"
 OUT = ROOT / "out/flyer2_final.png"
 W, H = 1122, 1402
 FONT = "/System/Library/Fonts/ヒラギノ明朝 ProN.ttc"
-CREAM, MUTED = (248, 241, 222, 255), (224, 215, 193, 255)
+CREAM = (245, 239, 228, 255)
 GOLD_TOP, GOLD_BOTTOM = (255, 231, 157, 255), (178, 122, 35, 255)
 TEXT_X, TEXT_RIGHT = 60, 760
-PHOTO_BOX = (780, 700, 1122, 1255)
-BOXES = []
+PHOTO_BOX = (780, 640, 1122, 1402)
+CTA_BOX = (60, 1274, 1062, 1370)
+BODY_SIZE, BODY_STEP = 21, round(21 * 1.45)
 
 
 def font(size, bold=False):
@@ -35,8 +36,9 @@ def gold_layer(size, mask):
     gd = ImageDraw.Draw(grad)
     for y in range(size[1]):
         t = (y % 90) / 89
-        c = tuple(round(GOLD_TOP[i] * (1-t) + GOLD_BOTTOM[i] * t) for i in range(3)) + (255,)
-        gd.line((0, y, size[0], y), fill=c)
+        color = tuple(round(GOLD_TOP[i] * (1 - t) + GOLD_BOTTOM[i] * t)
+                      for i in range(3)) + (255,)
+        gd.line((0, y, size[0], y), fill=color)
     return Image.composite(grad, Image.new("RGBA", size), mask)
 
 
@@ -51,161 +53,145 @@ def gold_text(base, xy, text, f, anchor="la", stroke=0):
 
 
 def add_portrait(base):
+    """Place the portrait in the specified lower-right field with soft top/left edges."""
     src = Image.open(MIO).convert("RGB").crop((250, 65, 995, 1510))
     pw, ph = PHOTO_BOX[2] - PHOTO_BOX[0], PHOTO_BOX[3] - PHOTO_BOX[1]
-    src.thumbnail((pw, ph), Image.Resampling.LANCZOS)
-    pic = Image.new("RGBA", (pw, ph))
-    pic.paste(ImageEnhance.Brightness(ImageEnhance.Contrast(src).enhance(1.08)).enhance(.78),
-              ((pw-src.width)//2, 0))
-    m = Image.new("L", (pw, ph), 0)
-    p = m.load()
+    scale = max(pw / src.width, ph / src.height)
+    src = src.resize((round(src.width * scale), round(src.height * scale)), Image.Resampling.LANCZOS)
+    left = (src.width - pw) // 2
+    src = src.crop((left, 0, left + pw, ph))
+    src = ImageEnhance.Brightness(ImageEnhance.Contrast(src).enhance(1.08)).enhance(.78)
+    pic = src.convert("RGBA")
+    mask = Image.new("L", (pw, ph), 0)
+    pix = mask.load()
     for y in range(ph):
         for x in range(pw):
-            # Required soft left/top blend; bottom clears the CTA band.
-            p[x, y] = min(238, int(min(1, x/72) * min(1, y/85) * min(1, (ph-y)/95) * 255))
-    pic.putalpha(m.filter(ImageFilter.GaussianBlur(10)))
+            pix[x, y] = min(238, int(min(1, x / 72) * min(1, y / 85) * 255))
+    pic.putalpha(mask.filter(ImageFilter.GaussianBlur(10)))
     base.alpha_composite(pic, PHOTO_BOX[:2])
 
 
-def fitted_title(base, text, y):
-    """Render every headline at one natural 55px size, without scaling."""
-    f = font(55, True)
-    cx = W // 2
-    gold_text(base, (cx, y), text, f, anchor="ma", stroke=1)
-    bb = ImageDraw.Draw(base).textbbox((cx, y), text, font=f, anchor="ma", stroke_width=1)
-    assert bb[2] - bb[0] <= 1000, f"headline wider than 1000px: {text}"
-    BOXES.append((*bb, text))
-    return y + 60
+def text_box(draw, xy, text, f, anchor="la", stroke=0):
+    return (*draw.textbbox(xy, text, font=f, anchor=anchor, stroke_width=stroke), text)
 
 
-def body_layout(base, s, target_top, target_bottom):
-    """Flow 24px copy at 1.5 leading through areas that exclude the portrait."""
-    fs = 24
-    f, fb, fh = font(fs), font(29, True), font(29, True)
-    leading, gap = round(fs * 1.5), 20
-    # Two upper columns, then the 700px-wide lane beside the portrait.
-    regions = [(60, 545, target_top, 695), (565, 1062, target_top, 695),
-               (60, 400, 700, target_bottom), (420, 760, 700, target_bottom)]
-    ri, x, right, y, bottom = 0, *regions[0]
-    d = ImageDraw.Draw(base)
-    boxes = []
+def render_title(base, lines, boxes):
+    """Three centered, unscaled lines at one font size, all within 1000 px."""
+    draw = ImageDraw.Draw(base)
+    title_font = font(52, True)
+    y = 29
+    for line in lines:
+        gold_text(base, (W // 2, y), line, title_font, anchor="ma", stroke=1)
+        box = text_box(draw, (W // 2, y), line, title_font, "ma", 1)
+        assert box[2] - box[0] <= 1000, f"headline wider than 1000px: {line}"
+        boxes.append(box)
+        y += 57
+    return y + 6
 
-    def advance_region(reason=""):
-        nonlocal ri, x, right, y, bottom
-        ri += 1
-        assert ri < len(regions), f"body copy does not fit available regions: {reason}"
-        x, right, y, bottom = regions[ri]
 
-    def wrap(text, ff, width):
-        out, cur = [], ""
-        for ch in text:
-            trial = cur + ch
-            if cur and ff.getlength(trial) > width:
-                out.append(cur); cur = ch
-            else:
-                cur = trial
-        if cur: out.append(cur)
-        if len(out) > 1 and len(out[-1]) <= 2 and len(out[-2]) > 3:
-            out[-1] = out[-2][-2:] + out[-1]
-            out[-2] = out[-2][:-2]
-        return out or [""]
+def render_copy(base, source, y, boxes):
+    """Render copy.md verbatim: one source line is exactly one rendered line."""
+    draw = ImageDraw.Draw(base)
+    body = font(BODY_SIZE)
+    subhead = font(22, True)
+    hero = font(28, True)
+    blocks = []
 
-    def put(text, kind="body", extra_gap=0):
+    def put(line, f=body, gold=False, x=TEXT_X, anchor="la", step=BODY_STEP):
         nonlocal y
-        ff = fh if kind == "hero" else (fb if kind != "body" else f)
-        step = max(leading, round(ff.size * 1.28))
-        for line in wrap(text, ff, right-x):
-            # The region limit applies to visible glyphs, not the following leading.
-            if y + ff.getbbox(line, stroke_width=1)[3] > bottom:
-                advance_region(f"{line!r} at y={y}, bottom={bottom}")
-            if kind == "body":
-                d.text((x, y), line, font=ff, fill=(245,239,228,255),
-                       stroke_width=1, stroke_fill=(0,0,0,190))
-            else:
-                gold_text(base, (x, y), line, ff)
-            bb = d.textbbox((x, y), line, font=ff, stroke_width=1)
-            boxes.append((*bb, line))
-            y += step
-        y += extra_gap
+        assert "\n" not in line
+        if gold:
+            gold_text(base, (x, y), line, f, anchor=anchor)
+        else:
+            draw.text((x, y), line, font=f, anchor=anchor, fill=CREAM,
+                      stroke_width=1, stroke_fill=(0, 0, 0, 190))
+        box = text_box(draw, (x, y), line, f, anchor, 1 if not gold else 0)
+        boxes.append(box)
+        y += step
+        return box
 
-    def block(lines, gap_after=True):
-        nonlocal y
-        for line in lines:
-            if line:
-                # Highlight requested key phrases without shrinking the body copy.
-                highlight = any(k in line for k in ("才覚領域", "できる青春"))
-                put(line, "gold" if highlight else "body")
-            else:
-                # Paragraph separation is already represented by the 20px block gap.
-                pass
-        if gap_after: y += gap
+    def paragraph_lines(key):
+        return [line for line in source[key].splitlines() if line]
 
-    block(s["リード"].splitlines())
-    put("想いを語り、行動に変える。", "gold")
-    block(s["想いを語り、行動に変える。"].splitlines())
-    put("― MIO YASHIRO からのメッセージ ―", "gold")
-    msg = s["MIO YASHIRO からのメッセージ"].splitlines()
-    put(msg[0], "hero")
-    block(msg[1:-1], gap_after=False)
-    put(msg[-1], "gold", gap)
-    # This heading and everything after it must live in the left photo lane.
-    if ri < 2:
-        ri = 1
-        advance_region()
-    put("そして、その挑戦を仲間と楽しむ。", "gold")
-    block(s["そして、その挑戦を仲間と楽しむ。"].splitlines())
-    block(s["結び"].splitlines(), gap_after=False)
-    return boxes
+    # Above the message heading the available field is 1000 px wide.
+    for line in paragraph_lines("リード"):
+        put(line, gold=("才覚領域" in line))
+    y += 1
+    put("想いを語り、行動に変える。", subhead, True)
+    for line in paragraph_lines("想いを語り、行動に変える。"):
+        put(line)
+    y += 1
+    message_heading = put("― MIO YASHIRO からのメッセージ ―", subhead, True,
+                          x=(TEXT_X + TEXT_RIGHT) // 2, anchor="ma")
+    assert message_heading[1] < PHOTO_BOX[1], "message heading must be above portrait"
+
+    # From here on every line is confined to x=60..760 beside the portrait.
+    msg = paragraph_lines("MIO YASHIRO からのメッセージ")
+    put(msg[0], hero, True, step=34)
+    for line in msg[1:-1]:
+        put(line)
+    y += 0
+    put(msg[-1], body, True, x=TEXT_RIGHT, anchor="ra")
+    y += 1
+    put("そして、その挑戦を仲間と楽しむ。", subhead, True)
+    for line in paragraph_lines("そして、その挑戦を仲間と楽しむ。"):
+        put(line, gold=("できる青春" in line))
+    y += 0
+    for line in paragraph_lines("結び"):
+        put(line)
+    return y
 
 
-def assert_no_overlap(boxes):
+def assert_layout(boxes, message_index):
+    punctuation_only = re.compile(r"^[、。，．・！？）」』]+$")
     for i, a in enumerate(boxes):
-        for b in boxes[i+1:]:
-            # Touching edges are fine; actual glyph rectangles may not intersect.
+        assert not punctuation_only.fullmatch(a[4].strip()), f"orphan punctuation: {a[4]!r}"
+        for b in boxes[i + 1:]:
             overlap = a[0] < b[2] and b[0] < a[2] and a[1] < b[3] and b[1] < a[3]
             assert not overlap, f"text overlap: {a[4]!r} / {b[4]!r}"
-        if a[4] != "10.15 詳細公開":
-            assert a[0] >= TEXT_X-2 and a[2] <= 1064, f"text outside field: {a[4]!r}"
-        assert not (a[0] < PHOTO_BOX[2] and a[2] > PHOTO_BOX[0] and
-                    a[1] < PHOTO_BOX[3] and a[3] > PHOTO_BOX[1]), f"text in photo: {a[4]!r}"
+        if i >= message_index:
+            assert a[0] >= TEXT_X - 2 and a[2] <= TEXT_RIGHT + 2, f"text outside left lane: {a[4]!r}"
+            intrudes = (a[0] < PHOTO_BOX[2] and a[2] > PHOTO_BOX[0] and
+                        a[1] < CTA_BOX[1] and a[3] > PHOTO_BOX[1])
+            assert not intrudes, f"text in photo: {a[4]!r}"
 
 
 def main():
-    global BOXES
-    BOXES = []
-    s = sections(COPY)
+    source = sections(COPY)
+    forbidden = "\u793e\u3055\u3093"
+    assert forbidden not in COPY.read_text(encoding="utf-8"), f"forbidden wording: {forbidden}"
     base = Image.open(BG).convert("RGBA")
     assert base.size == (W, H)
     shade = Image.new("RGBA", base.size)
-    ImageDraw.Draw(shade).rectangle((35, 20, 1087, 1382), fill=(0,0,0,92))
+    ImageDraw.Draw(shade).rectangle((35, 20, 1087, 1382), fill=(0, 0, 0, 92))
     base.alpha_composite(shade)
     add_portrait(base)
-    d = ImageDraw.Draw(base)
-    d.rounded_rectangle((43, 28, 1079, 1375), radius=8, outline=(205,158,57,180), width=2)
+    draw = ImageDraw.Draw(base)
+    draw.rounded_rectangle((43, 28, 1079, 1375), radius=8,
+                           outline=(205, 158, 57, 180), width=2)
 
-    y = 34
-    for line in s["見出し（3行・据え置き）"].splitlines():
-        y = fitted_title(base, line, y)
-    # Requested fallback (c): 24px beneath the headline.
-    body_top = y + 24
-    cta_top = 1300
-    body_boxes = body_layout(base, s, body_top, cta_top-8)
-    BOXES.extend(body_boxes)
+    boxes = []
+    y = render_title(base, source["見出し（3行・据え置き）"].splitlines(), boxes)
+    before = len(boxes)
+    y = render_copy(base, source, y, boxes)
+    message_index = next(i for i, b in enumerate(boxes)
+                         if b[4] == "― MIO YASHIRO からのメッセージ ―") + 1
+    assert y <= CTA_BOX[1] - 5, f"copy reaches CTA band: y={y}"
 
-    # Full-width bottom anchor, deliberately above the inner frame baseline.
-    band = (60, cta_top, 1062, 1370)
-    d.rounded_rectangle(band, radius=8, fill=(0,0,0,224), outline=(232,186,76,240), width=2)
-    cta = s["CTA"]
-    cf = font(64, True)
-    gold_text(base, ((band[0]+band[2])//2, (band[1]+band[3])//2), cta, cf, anchor="mm", stroke=1)
-    bb = d.textbbox(((band[0]+band[2])//2, (band[1]+band[3])//2), cta, font=cf, anchor="mm", stroke_width=1)
-    BOXES.append((*bb, cta))
+    draw.rounded_rectangle(CTA_BOX, radius=8, fill=(0, 0, 0, 224),
+                           outline=(232, 186, 76, 240), width=2)
+    cta = source["CTA"]
+    cta_font = font(76, True)
+    center = ((CTA_BOX[0] + CTA_BOX[2]) // 2, (CTA_BOX[1] + CTA_BOX[3]) // 2)
+    gold_text(base, center, cta, cta_font, anchor="mm", stroke=1)
+    cta_box = text_box(draw, center, cta, cta_font, "mm", 1)
+    assert CTA_BOX[0] <= cta_box[0] and cta_box[2] <= CTA_BOX[2]
 
-    assert_no_overlap(BOXES)
+    assert_layout(boxes, message_index)
     OUT.parent.mkdir(exist_ok=True)
     base.convert("RGB").save(OUT, quality=96)
-    assert all(not (b[4].strip() in {"。", "い。", "ば、", "く。"}) for b in BOXES)
-    print(f"saved {OUT} ({W}x{H}); {len(BOXES)} line boxes; overlap/photo-field audit OK")
+    assert Image.open(OUT).size == (1122, 1402)
+    print(f"saved {OUT} ({W}x{H}); {len(boxes)} copy lines; final y={y}; audits OK")
 
 
 if __name__ == "__main__":
