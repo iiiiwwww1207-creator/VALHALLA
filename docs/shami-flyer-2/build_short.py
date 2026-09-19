@@ -134,11 +134,11 @@ def main():
         y += LEADING
 
     y += 15
-    put("― 社さんからのメッセージ ―", 410, y, font(24, True),
+    put("― MIO YASHIRO からのメッセージ ―", 410, y, font(24, True),
         anchor="ma", gold=True, field_right=TEXT_RIGHT)
     y += 43
 
-    message = s["社さんからのメッセージ"].splitlines()
+    message = s["MIO YASHIRO からのメッセージ"].splitlines()
     put(message[0], TEXT_X, y, font(48, True), gold=True,
         field_right=TEXT_RIGHT)
     y += round(48 * 1.55)
