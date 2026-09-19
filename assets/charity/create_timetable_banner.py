@@ -160,9 +160,13 @@ def ring(draw: ImageDraw.ImageDraw, center: tuple[int, int], diameter: int,
 
 
 def add_nodes(base: Image.Image) -> None:
-    # Five equal-size nodes on an exact 345 px rhythm, centered on the canvas.
-    centers_x = (197, 473, 749, 1025, 1301, 1577)
-    cy, diameter = 520, 190
+    # 本文の #TIME 行と 1:1 で対応させる（9点）。図だけ少ないと読み手がずれる。
+    # 左右マージン 110、等間隔ピッチで並べる。
+    MARGIN = 110
+    STEPS = 9
+    pitch = (W - MARGIN * 2) / (STEPS - 1)
+    centers_x = tuple(round(MARGIN + pitch * i) for i in range(STEPS))
+    cy, diameter = 520, 150
 
     # Keep the crimson ribbon strictly between adjacent circles.
     radius = diameter // 2
@@ -179,20 +183,22 @@ def add_nodes(base: Image.Image) -> None:
     base.alpha_composite(layer)
 
     td = ImageDraw.Draw(base)
-    cue_font = face(LATIN, 18)
-    time_font = face(LATIN, 60)
-    label_font = face(MINCHO, 29)
-    cues = ("", "OPEN", "START", "", "", "END")
-    times = ("18:00", "19:00", "19:30", "20:05", "20:10", "21:10")
-    labels = ("VIP 先行入場", "一般入場", "開演", "終演", "VVIP", "見送り")
+    cue_font = face(LATIN, 16)
+    time_font = face(LATIN, 45)
+    label_font = face(MINCHO, 22)
+    cues = ("", "", "", "OPEN", "", "START", "", "", "END")
+    times = ("18:00", "18:15", "18:30", "19:00", "19:25",
+             "19:30", "20:05", "20:10", "21:10")
+    labels = ("VIP 先行入場", "MIOタイム", "VVIP 先行入場", "一般入場", "受付締切",
+              "開演", "終演", "VVIP", "見送り")
     for x, cue, time, label in zip(centers_x, cues, times, labels):
         if cue:
             cue_width = sum(td.textlength(char, font=cue_font) for char in cue)
             cue_width += 5 * SCALE * (len(cue) - 1)
-            draw_tracked(td, (round(x - cue_width / (2 * SCALE)), 394), cue,
-                         cue_font, CRIMSON, 5)
+            draw_tracked(td, (round(x - cue_width / (2 * SCALE)), 405), cue,
+                         cue_font, CRIMSON, 4)
         td.text(spos((x, cy + 2)), time, font=time_font, fill=CREAM, anchor="mm")
-        td.text(spos((x, 660)), label, font=label_font, fill=CREAM, anchor="mm")
+        td.text(spos((x, 645)), label, font=label_font, fill=CREAM, anchor="mm")
 
 
 def add_typography(base: Image.Image) -> None:
