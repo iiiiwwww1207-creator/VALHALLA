@@ -73,10 +73,10 @@
   .who i{font-style:normal;color:var(--gold-l);margin:0 1.8mm}
 
   /* ── 本体 ── */
-  .main{flex:1;padding:2.2mm 7mm 0;position:relative;z-index:2;
+  .main{flex:1;padding:1.4mm 7mm 0;position:relative;z-index:2;
     display:flex;flex-direction:column}
 
-  .secttl{display:flex;align-items:center;gap:3mm;margin-bottom:1.8mm}
+  .secttl{display:flex;align-items:center;gap:3mm;margin-bottom:1.5mm}
   .secttl::before,.secttl::after{content:"";height:.35mm;flex:1;
     background:linear-gradient(90deg,transparent,var(--gold),transparent)}
   .secttl b{font-family:"Noto Serif JP",serif;font-weight:900;font-size:5.8mm;
@@ -101,7 +101,7 @@
   .card li b{color:#fff;font-weight:700}
 
   /* 下位3コース：横並び */
-  .low3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2mm;margin-top:1.6mm}
+  .low3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2mm;margin-top:1.1mm}
   .mini{border:.3mm solid rgba(217,180,74,.32);background:rgba(217,180,74,.06);
     padding:1.6mm 2mm 1.8mm;text-align:center}
   .mini .nm{font-family:"Noto Serif JP",serif;font-weight:900;font-size:3.9mm;
@@ -112,7 +112,7 @@
   .mini .ds{margin-top:.9mm;font-size:2.2mm;line-height:1.38;color:var(--sub)}
 
   /* 注記 */
-  .rule{margin-top:1.6mm;border:.35mm solid rgba(193,18,31,.55);
+  .rule{margin-top:1.1mm;border:.35mm solid rgba(193,18,31,.55);
     background:rgba(193,18,31,.10);padding:1.4mm 2.6mm 1.6mm;
     display:grid;grid-template-columns:1fr 1fr;gap:.4mm 4mm}
   .rule p{position:relative;padding-left:2.8mm;font-size:2.2mm;line-height:1.4;
@@ -127,11 +127,11 @@
     color:var(--cream);border-bottom:.22mm solid rgba(217,180,74,.22);padding-bottom:.5mm}
   .tt span{font-family:'Cinzel',serif;font-weight:700;font-size:2.9mm;
     color:var(--gold-l);white-space:nowrap}
-  .cap2{margin-top:1.6mm;font-size:2.15mm;line-height:1.45;color:var(--sub)}
+  .cap2{margin-top:0.9mm;font-size:2.15mm;line-height:1.45;color:var(--sub)}
   .cap2 b{color:#fff;font-weight:700}
 
   /* ── 下部：CF・支援金・LINE ── */
-  .foot{flex:none;margin:auto -7mm 0;padding:2mm 7mm 0;
+  .foot{flex:none;margin:0 -7mm 0;padding:1.2mm 7mm 0;
     border-top:.4mm solid var(--line);
     background:linear-gradient(180deg,rgba(217,180,74,.08),transparent 60%);
     display:grid;grid-template-columns:1fr auto;gap:5mm;align-items:start}
@@ -168,8 +168,9 @@
   .qr .id{margin-top:1mm;font-weight:700;font-size:2.9mm;color:#fff}
   .qr .ds{margin-top:.6mm;font-size:2.25mm;color:var(--sub)}
 
-  .credit{flex:none;margin:1.4mm -7mm 0;padding:1.1mm 7mm 1.6mm;
-    background:rgba(0,0,0,.55);font-size:1.85mm;line-height:1.4;white-space:nowrap;overflow:hidden;
+  .pagebottom{flex:none;margin-top:auto;display:flex;flex-direction:column}
+  .credit{flex:none;margin:0.9mm -7mm 0;padding:0.8mm 7mm 1.0mm;
+    background:rgba(0,0,0,.55);font-size:1.65mm;line-height:1.4;white-space:nowrap;overflow:hidden;
     color:rgba(245,239,224,.5)}
 </style>
 </head>
@@ -209,7 +210,7 @@
           <li>フリードリンク（飲み放題）</li>
           <li><b>11/28 ファンミ：VVIP限定30分セッション</b>（当日お預かりしたQ&amp;Aに MIO が回答）</li>
           <li>11/28 ファンミ：限定シャンパンコール体験</li>
-          <li><b>やしろ学園への優待</b></li>
+          <li><b>社学園への優待</b></li>
         </ul>
       </div>
       <div class="card">
@@ -268,6 +269,7 @@
     </div>
     <p class="cap2"><b>再入場はできません。</b>　お申し込み締切：<b>10月18日(日) 17:00</b>　／　まずは少人数で目標達成を目指し、<b>達成しだい枠を追加</b>します。</p>
 
+    <div class="pagebottom">
     <div class="foot">
       <div class="cf">
         <div class="cfrow">
@@ -283,8 +285,8 @@
         </div>
         <div class="money">
           <div class="mk">Charity</div>
-          <div class="mt">お預かりした<b>支援金</b>から必要経費を精算し、<br>全額を<b>主催団体の公益活動</b>に充てます。</div>
-          <div class="ms">同財団が行う、教育・文化を支える活動に使われます。</div>
+          <div class="mt">お預かりした<b>支援金</b>から必要経費を精算し、<br>全額を<b>公益財団法人 教育文化セキュリティ財団</b>へお渡しします。</div>
+          <div class="ms">同財団を通じて、教育・文化を支える活動に充てられます。</div>
         </div>
       </div>
       <div class="qr">
@@ -295,7 +297,8 @@
       </div>
     </div>
 
-    <p class="credit">主催：公益財団法人 教育文化セキュリティ財団 ／ 企画・出演：VALHALLA ／ 同日の午後に開かれる「WRAPPING THE EARTH TOKYO 2026」も同財団の主催です ／ お申し込みは CAMPFIRE にて受付予定 ／ 特定商取引法に基づく表記は特設ページに掲載</p>
+    <p class="credit">主催・運営：Group Yggdrasill ／ 企画・出演：VALHALLA ／ お渡し先：公益財団法人 教育文化セキュリティ財団（同日午後の「WRAPPING THE EARTH TOKYO 2026」主催）／ お申し込みは CAMPFIRE にて ／ 特定商取引法に基づく表記は特設ページに掲載</p>
+    </div>
 
   </div>
 </section>
