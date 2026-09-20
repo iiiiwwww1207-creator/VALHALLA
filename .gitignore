@@ -35,3 +35,6 @@ assets/charity/meishi/*.png
 # 先方から受け取った生の素材（公開リポジトリなので置かない）。
 # ここから組んだ図版だけをコミットする
 assets/charity/received/
+
+# 公開前の図版URL（公開リポジトリに出さない）
+tools/campfire-image-urls.json
