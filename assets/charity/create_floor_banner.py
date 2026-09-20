@@ -188,7 +188,7 @@ def build(out: Path) -> None:
         d.text(spos((x, y + 40 + i * 32)), line, font=face(SANS, 19), fill=SILVER)
 
     y += 156
-    d.text(spos((x, y)), "来場は限定50口　着席 10名 ／ スタンディング 45名", font=face(SANS_B, 22), fill=GOLD)
+    d.text(spos((x, y)), "着席は VVIPプランのみ　ほかのコースはスタンディングです", font=face(SANS_B, 22), fill=GOLD)
     lead, lead_f = "ドリンクは会場（図の BAR）が提供します　", face(SANS, 19)
     d.text(spos((x, y + 36)), lead, font=lead_f, fill=SILVER)
     d.text(spos((x + d.textlength(lead, font=lead_f) / SCALE, y + 36)),
