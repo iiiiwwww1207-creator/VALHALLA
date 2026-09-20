@@ -61,10 +61,10 @@ DRAW = [
     (CENTER, 76.2, "全額を教育文化セキュリティ財団の公益活動に充てます", 11.05, WHITE, 0.05),
     (CENTER, 58.2, "※必要経費には、会場費・機材費・決済手数料が含まれます（出演料は無償）。",
      6.6, NOTE, 0.0),
-    (CENTER, 47.0, "充てた金額は開催後にご報告します。", 6.6, NOTE, 0.0),
+    (CENTER, 47.0, "お渡しした金額は開催後にご報告します。", 6.6, NOTE, 0.0),
 ]
-FOOTER = ("主催：VALHALLA ／ 同じ日の昼に開かれる「WRAPPING THE EARTH TOKYO 2026」"
-          "主催：公益財団法人 教育文化セキュリティ財団。お申し込みは CAMPFIRE にて。"
+FOOTER = ("主催・運営：Group Yggdrasill ／ 企画・出演：VALHALLA ／ お渡し先：公益財団法人 教育文化セキュリティ財団。"
+          "同じ日の昼に開かれる「WRAPPING THE EARTH TOKYO 2026」は同財団の主催です。お申し込みは CAMPFIRE にて。"
           "特定商取引法に基づく表記は特設ページに掲載します。")
 FOOTER_X, FOOTER_Y, FOOTER_SIZE, FOOTER_MAX = 39.7, 11.7, 5.38, 515.0
 

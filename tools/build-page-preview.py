@@ -140,7 +140,7 @@ def build() -> None:
            f'<main>\n'
            f'<p class="lead">文化 × エンタメ × AI。2026年10月18日（日）渋谷で '
            f'VALHALLA CHARITY LIVE を開催します。出演は MIO / RAY / KØU。'
-           f'来場は限定50口。収益から必要経費を差し引いた全額は、主催である公益財団法人 教育文化セキュリティ財団の公益活動に充てられます。</p>\n'
+           f'来場は限定50口。主催・運営は Group Yggdrasill。収益から必要経費を差し引いた全額を、公益財団法人 教育文化セキュリティ財団へお渡しします。</p>\n'
            + "\n".join(body) + "\n</main>\n")
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(doc, encoding="utf-8")

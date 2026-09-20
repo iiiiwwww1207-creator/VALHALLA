@@ -572,7 +572,7 @@ def add_band(base: Image.Image) -> None:
     d.text((x, band + 90), place_t, font=place_f, fill=CREAM + (255,))
 
     # ③ 支援の一行。ここだけ和文で、静かに置く
-    note = "収益から必要経費を差し引いた全額は、教育文化セキュリティ財団の公益活動に充てられます"
+    note = "収益から必要経費を差し引いた全額を、教育文化セキュリティ財団へお渡しします"
     nf = face(MINCHO, 27)
     d.text(((W - d.textlength(note, font=nf)) / 2, band + 178), note, font=nf,
            fill=(236, 214, 214, 235))
@@ -637,3 +637,13 @@ if __name__ == "__main__":
         main(with_names=False)
     else:
         main(with_names="--no-names" not in sys.argv)
+
+# 作ったら、その場で本文へ流し込む。分けると古い絵が残る。
+if __name__ == "__main__" and "--3x2" not in sys.argv and "--no-names" in sys.argv:
+    _SRC = Path(__file__).resolve().parent / "flyer_wide_noname.jpg"
+    _BODY = Path.home() / "Desktop" / "VALHALLA_本文にはめる画像" / "IMAGE-01.jpg"
+    if _BODY.parent.is_dir() and _SRC.exists():
+        from PIL import Image as _I
+        _I.open(_SRC).convert("RGB").resize((1500, 844), _I.Resampling.LANCZOS).save(
+            _BODY, "JPEG", quality=90, optimize=True, progressive=True)
+        print(f"→ {_BODY.name} へ流し込み")

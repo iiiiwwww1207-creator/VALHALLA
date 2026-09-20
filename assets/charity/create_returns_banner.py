@@ -254,7 +254,7 @@ def add_footer(base: Image.Image) -> None:
     d = ImageDraw.Draw(base)
     text = (
         "2026.10.18 SUN　渋谷　OPEN 19:00 ／ START 19:30 ／ "
-        "ライブ終演 20:05　※収益から必要経費を除いた全額は主催団体の公益活動に充てられます"
+        "ライブ終演 20:05　※収益から必要経費を除いた全額を教育文化セキュリティ財団へお渡しします"
     )
     footer_font = face(SANS, 16)
     if d.textlength(text, font=footer_font) > (W - 100) * SCALE:
