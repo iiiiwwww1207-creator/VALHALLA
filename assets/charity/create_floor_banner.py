@@ -2,7 +2,7 @@
 """会場のフロア図を、支援者が読める形に描き直す。
 
 会場から受け取った図（floor.jpg）は卓番号（V1〜V6・S1〜S4・DJ1/DJ2）のままで、
-初めて見る人には「DJ席・V4・V1 から先着順で選べます」が何のことか分からない。
+初めて見る人には「DJ席・V4・V1 から当日のご到着順で選べます」が何のことか分からない。
 図をそのまま出すのではなく、区画に色を敷いて、コース名で読めるようにする。
 
 会場の図面そのものは動かさない。上に色と凡例を重ねるだけなので、
@@ -155,18 +155,18 @@ def build(out: Path) -> None:
                outline=FRONT_BLUE + (255,), width=round(3.4 * SCALE))
     img.alpha_composite(front)
     d = ImageDraw.Draw(img)
-    centered(d, fx, fy - 13, "最前列席", face(SANS_B, 21), CREAM)
+    centered(d, fx, fy - 13, "最前列エリア", face(SANS_B, 21), CREAM)
 
     # その後ろがライブ席（スタンディング）
     bx, by_ = at("FLOOR")
-    centered(d, bx, by_ - 12, "ライブ席", face(SANS_B, 21), (214, 170, 176))
+    centered(d, bx, by_ - 12, "ライブエリア", face(SANS_B, 21), (214, 170, 176))
     centered(d, bx, by_ + 16, "スタンディング", face(SANS, 16), ASH)
 
     # 右側の凡例
     x = 900
     y = 176
     rows = [
-        (GOLD, "VVIPプラン", "ソファー席（図の金色の4区画）から、先着順でお選びいただけます"),
+        (GOLD, "VVIPプラン", "ソファー席（図の金色の4区画）から、当日のご到着順でお選びいただけます"),
         (FRONT_BLUE, "VIPプラン", "ステージ前の最前列エリア（青の楕円）で立ってご覧いただきます"),
         (FRONT_BLUE, "VIPチェキタイム", "18:15〜 ステージ前でチェキ＋ハイタッチ（VIPプランの方）"),
         (SEAT_RED, "ライブプラン", "赤丸の区画と、その間の中央フロアでご覧いただきます"),
@@ -182,9 +182,9 @@ def build(out: Path) -> None:
     y += 16
     d.text(spos((x, y)), "お席はすべて相席です", font=face(SANS_B, 24), fill=CREAM)
     for i, line in enumerate([
-            "着席のコース（VVIPプラン）は、グループごとの",
-            "個室・貸切ではありません。ほかのお客様と同じ",
-            "区画・同じテーブルになります。"]):
+            "5口を4区画でご案内するため、着席のコース",
+            "（VVIPプラン）はグループごとの個室・貸切では",
+            "ありません。ほかのお客様と同じ区画になります。"]):
         d.text(spos((x, y + 40 + i * 32)), line, font=face(SANS, 19), fill=SILVER)
 
     y += 156
@@ -193,6 +193,8 @@ def build(out: Path) -> None:
     d.text(spos((x, y + 36)), lead, font=lead_f, fill=SILVER)
     d.text(spos((x + d.textlength(lead, font=lead_f) / SCALE, y + 36)),
            "全コース飲み放題", font=face(SANS_B, 19), fill=GOLD)
+    d.text(spos((x, y + 68)), "※ お席を選べる順番は当日のご到着順です。ご支援の順番ではありません。",
+           font=face(SANS, 17), fill=ASH)
 
     finish(img, out)
 
