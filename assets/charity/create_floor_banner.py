@@ -8,10 +8,11 @@
 会場の図面そのものは動かさない。上に色と凡例を重ねるだけなので、
 実際の配置と食い違わない。
 
-区画の対応（docs/campfire-project-body.md より）:
-    VVIP席  … DJ1・DJ2・V4・V1
-    VIP席     … V2・V3・V5・V6・S1〜S4
-    中央    … ステージとスタンディング
+区画の対応（2026-09-20 更新。15万円のコースが無くなり、席は VVIP に一本化）:
+    お席（12区画） … DJ1・DJ2・V1〜V6・S1〜S4 ── すべて VVIP が選べる
+    最前列エリア     … VIPプラン（スタンディング）
+    ライブエリア     … ライブプラン（スタンディング）
+    1口につき1区画。ほかのお客様と同じ区画にはならない。
 """
 from __future__ import annotations
 
@@ -38,8 +39,8 @@ ZONES = {
     "S4": (160, 782), "S3": (333, 910), "S1": (1105, 795), "S2": (1000, 925),
     "BAR": (663, 993), "FRONT": (663, 585), "FLOOR": (663, 790),
 }
-VVIP = ("DJ1", "DJ2", "V4", "V1")
-SSEAT = ("V2", "V3", "V5", "V6", "S1", "S2", "S3", "S4")
+# 15万円のコースが無くなったので、席は全部 VVIP が選べる
+VVIP = ("DJ1", "DJ2", "V4", "V1", "V2", "V3", "V5", "V6", "S1", "S2", "S3", "S4")
 
 # 会場図の地が赤紫〜マゼンタなので、そこに近い色は沈む。
 # 金は明るい琥珀へ、青は水色寄りへ振って、地から離す
@@ -134,11 +135,9 @@ def build(out: Path) -> None:
         px, py = ZONES[name]
         return ((ox + px * k) / SCALE, (oy + py * k) / SCALE)
 
-    # 区画に印を打つ。VVIP は金、VIP席は青
+    # 席の区画はすべて金。どれを選んでも VVIP の席という意味になる
     for name in VVIP:
-        zone_mark(img, at(name), 34, GOLD, 3.8)
-    for name in SSEAT:
-        zone_mark(img, at(name), 27, SEAT_RED, 3.2)
+        zone_mark(img, at(name), 30, GOLD, 3.6)
     d = ImageDraw.Draw(img)
 
     # ステージのすぐ手前が最前列。丸ではなく楕円で、前方だけを囲う
@@ -159,17 +158,17 @@ def build(out: Path) -> None:
 
     # その後ろがライブ席（スタンディング）
     bx, by_ = at("FLOOR")
-    centered(d, bx, by_ - 12, "ライブエリア", face(SANS_B, 21), (214, 170, 176))
+    centered(d, bx, by_ - 12, "ライブエリア", face(SANS_B, 21), SEAT_RED)
     centered(d, bx, by_ + 16, "スタンディング", face(SANS, 16), ASH)
 
     # 右側の凡例
     x = 900
     y = 176
     rows = [
-        (GOLD, "VVIPプラン", "ソファー席（図の金色の4区画）から、当日のご到着順でお選びいただけます"),
+        (GOLD, "VVIPプラン", "図の金色の12区画から、当日のご到着順で1区画をお選びいただけます"),
         (FRONT_BLUE, "VIPプラン", "ステージ前の最前列エリア（青の楕円）で立ってご覧いただきます"),
         (FRONT_BLUE, "VIPチェキタイム", "18:15〜 ステージ前でチェキ＋ハイタッチ（VIPプランの方）"),
-        (SEAT_RED, "ライブプラン", "赤丸の区画と、その間の中央フロアでご覧いただきます"),
+        (SEAT_RED, "ライブプラン", "中央のライブエリア（スタンディング）でご覧いただきます"),
     ]
     for color, title, sub in rows:
         if color:
@@ -180,11 +179,11 @@ def build(out: Path) -> None:
         y += 106
 
     y += 16
-    d.text(spos((x, y)), "お席はすべて相席です", font=face(SANS_B, 24), fill=CREAM)
+    d.text(spos((x, y)), "1口につき、1区画", font=face(SANS_B, 24), fill=CREAM)
     for i, line in enumerate([
-            "5口を4区画でご案内するため、着席のコース",
-            "（VVIPプラン）はグループごとの個室・貸切では",
-            "ありません。ほかのお客様と同じ区画になります。"]):
+            "お席のご用意は VVIPプランのみです。1口につき",
+            "1区画をお使いいただけます。ほかのお客様と",
+            "同じ区画になることはありません。"]):
         d.text(spos((x, y + 40 + i * 32)), line, font=face(SANS, 19), fill=SILVER)
 
     y += 156
