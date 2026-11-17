@@ -181,7 +181,7 @@
 
   <section class="block" id="videos">
     <div class="head"><span class="head__no">02</span><h2>出ている動画</h2></div>
-    <p class="note">グループの YouTube「Mio Yashiro TV」に出た回。タップで再生。</p>
+    <p class="note">出ている YouTube をまとめた。タップで再生。</p>
     <div class="videos" id="video-list"></div>
   </section>
 
@@ -283,10 +283,16 @@
     { svc: "YouTube", name: "Mio Yashiro TV -ANOTHER STORY-", handle: "グループのチャンネル", url: "https://www.youtube.com/@MioYashiroTV-ANOTHERSTORY-" },
   ];
 
+  // 出演を確かめた回だけ載せる（タイトル・概要欄の出演者・サムネの名前で確認）。チャンネルごとに並べる
   const VIDEOS = [
-    { id: "qbTPlV1pyik", title: "「だからホスト嫌い。」デヴィ夫人の前で8人のホスト達が接客バトル！【歌舞伎町ホストピタリティ】" },
-    { id: "yhx1eQjbGLI", title: "【接客王は誰だ⁉︎】朝日奈優VS月咲繭の結果は…" },
-    { id: "uBk2k5pBI7c", title: "【接客王は誰だ⁉︎】朝日奈優、女の子を引き込めず…" },
+    { ch: "Mio Yashiro TV -ANOTHER STORY-", id: "Frhb4q94_wg", title: "【社美緒×朝日奈優×場地圭介】ユグドラシル古参の二人が社美緒の昔話を暴露！？本人も忘れているとんでもエピソードとは…？" },
+    { ch: "Mio Yashiro TV -ANOTHER STORY-", id: "qbTPlV1pyik", title: "「だからホスト嫌い。」デヴィ夫人の前で8人のホスト達が接客バトル！【歌舞伎町ホストピタリティ】" },
+    { ch: "Mio Yashiro TV -ANOTHER STORY-", id: "yhx1eQjbGLI", title: "【接客王は誰だ⁉︎】朝日奈優VS月咲繭の結果は…" },
+    { ch: "Mio Yashiro TV -ANOTHER STORY-", id: "uBk2k5pBI7c", title: "【接客王は誰だ⁉︎】朝日奈優、女の子を引き込めず…" },
+    { ch: "階段降りたらVALHALLA", id: "3bnhgPb7WWI", title: "【ガチ本音】ホストの攻略法を丸裸に。売れっ子ホストが語る「沼らせる」テクニックと黒歴史を大公開【BARばじひな】" },
+    { ch: "階段降りたらVALHALLA", id: "gOLBelWEI2g", title: "【内部告発】冬島水月VS桜木凌のガチ喧嘩勃発！？極秘タレコミアンケートでキャストのヤバい裏の顔が次々と暴かれ現場は大騒然…！" },
+    { ch: "ゆっきーTV -桜威優希斗-", id: "yUdvCHNfPio", title: "【企画終了の危機!?】桜威優希斗の友達を作ろうヴァルハラ編!!朝日奈、場地の紹介で苺愛ロマが登場!!" },
+    { ch: "ゆっきーTV -桜威優希斗-", id: "I9EvFOnwZRo", title: "ヴァルハラから朝日奈優がスナックテキおじへ来店し、貘の代打で橘マオが緊急出勤！" },
   ];
 
   const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -308,7 +314,7 @@
         </button>
       </div>
       <div class="v__meta">
-        <p class="v__ch">Mio Yashiro TV -ANOTHER STORY-</p>
+        <p class="v__ch">${esc(v.ch)}</p>
         <h3 class="v__title">${esc(v.title)}</h3>
       </div>
     </article>`).join("");
