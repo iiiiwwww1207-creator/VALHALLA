@@ -24,10 +24,11 @@ from pathlib import Path
 KEY_FILE = Path.home() / ".config" / "valhalla" / "youtube_api_key"
 API = "https://www.googleapis.com/youtube/v3/"
 
-# 調べるチャンネル（ID が分かっているものは ID、分からないものはハンドル）
+# 調べるチャンネル（グループの公式と、出演したことのあるチャンネル。切り抜きチャンネルは入れない）
 CHANNELS = [
-    {"name": "Mio Yashiro TV -ANOTHER STORY-", "handle": "@MioYashiroTV-ANOTHERSTORY-"},
-    {"name": "Mio Yashiro TV", "handle": "@MioYashiroTV"},
+    {"name": "Mio Yashiro TV -ANOTHER STORY-", "id": "UCninvP_urk9uqWp7tweG4Rg"},
+    {"name": "Mio Yashiro TV", "id": "UCH6wqY1Ve2N47oKZ4tgirqA"},
+    {"name": "VALHALLA-Official Channel-", "id": "UCCpSot5qWdstDvIxIyhMcyw"},
     {"name": "階段降りたらVALHALLA", "id": "UCBTAJ9FuUNMHa1o3JtLt4oA"},
     {"name": "ゆっきーTV -桜威優希斗-", "id": "UCTNUTlMgMT2fIRBruz-etQw"},
 ]

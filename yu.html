@@ -69,11 +69,11 @@
   }
 
   /* ---- 動画 ---- */
-  .videos{display:grid;gap:40px 28px;grid-template-columns:1fr}
-  @media (min-width:760px){
-    .videos{grid-template-columns:1fr 1fr}
-    .videos .v:first-child{grid-column:1/-1}
-  }
+  .videos{display:grid;gap:24px 14px;grid-template-columns:1fr 1fr}
+  @media (min-width:760px){.videos{grid-template-columns:repeat(3,1fr);gap:36px 24px}}
+  .v--main{grid-column:1/-1}
+  .v-group{grid-column:1/-1;font-family:var(--mincho);font-weight:700;font-size:18px;letter-spacing:.06em;padding-top:28px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+  .v-group span{white-space:nowrap;font-family:var(--sans);font-weight:400;font-size:12px;color:var(--ink-2)}
   .v__frame{position:relative;aspect-ratio:16/9;background:var(--ink);overflow:hidden}
   .v__frame button{all:unset;cursor:pointer;position:absolute;inset:0;display:block}
   .v__frame button img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .3s ease;opacity:.9}
@@ -83,7 +83,10 @@
   .v__frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
   .v__meta{padding-top:14px}
   .v__ch{font-size:12px;color:var(--ink-2)}
-  .v__title{font-family:var(--mincho);font-weight:500;font-size:17px;line-height:1.6;margin-top:4px}
+  .v__title{font-family:var(--mincho);font-weight:500;font-size:14px;line-height:1.6;margin-top:4px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .v--main .v__title{font-size:18px;-webkit-line-clamp:unset}
+  .v:not(.v--main) .v__play{left:8px;bottom:8px;padding:4px 9px;font-size:11px}
+  .v:not(.v--main) .v__meta{padding-top:8px}
 
   /* ---- 写真（大小を非対称に） ---- */
   .photos{display:grid;gap:14px;grid-template-columns:repeat(6,1fr)}
@@ -283,15 +286,23 @@
     { svc: "YouTube", name: "Mio Yashiro TV -ANOTHER STORY-", handle: "グループのチャンネル", url: "https://www.youtube.com/@MioYashiroTV-ANOTHERSTORY-" },
   ];
 
-  // 出演を確かめた回だけ載せる（タイトル・概要欄の出演者・サムネの名前で確認）。チャンネルごとに並べる
+  // 出演を確かめた回だけ載せる（タイトルか概要欄に名前がある回）。tools/find_yu_videos.py で洗い出した
+  // main: 一番上に大きく出す1本。それ以外はチャンネルごと・新しい順
   const VIDEOS = [
-    { ch: "Mio Yashiro TV -ANOTHER STORY-", id: "Frhb4q94_wg", title: "【社美緒×朝日奈優×場地圭介】ユグドラシル古参の二人が社美緒の昔話を暴露！？本人も忘れているとんでもエピソードとは…？" },
-    { ch: "Mio Yashiro TV -ANOTHER STORY-", id: "qbTPlV1pyik", title: "「だからホスト嫌い。」デヴィ夫人の前で8人のホスト達が接客バトル！【歌舞伎町ホストピタリティ】" },
-    { ch: "Mio Yashiro TV -ANOTHER STORY-", id: "yhx1eQjbGLI", title: "【接客王は誰だ⁉︎】朝日奈優VS月咲繭の結果は…" },
+    { ch: "Mio Yashiro TV -ANOTHER STORY-", id: "Frhb4q94_wg", main: true, title: "【社美緒×朝日奈優×場地圭介】ユグドラシル古参の二人が社美緒の昔話を暴露！？本人も忘れているとんでもエピソードとは…？" },
     { ch: "Mio Yashiro TV -ANOTHER STORY-", id: "uBk2k5pBI7c", title: "【接客王は誰だ⁉︎】朝日奈優、女の子を引き込めず…" },
-    { ch: "階段降りたらVALHALLA", id: "3bnhgPb7WWI", title: "【ガチ本音】ホストの攻略法を丸裸に。売れっ子ホストが語る「沼らせる」テクニックと黒歴史を大公開【BARばじひな】" },
+    { ch: "Mio Yashiro TV -ANOTHER STORY-", id: "yhx1eQjbGLI", title: "【接客王は誰だ⁉︎】朝日奈優VS月咲繭の結果は…" },
+    { ch: "Mio Yashiro TV -ANOTHER STORY-", id: "lmMSlz4006Y", title: "【接客王は誰だ⁉︎】朝日奈優のスキンシップがいやらしい⁉︎" },
+    { ch: "Mio Yashiro TV -ANOTHER STORY-", id: "qbTPlV1pyik", title: "「だからホスト嫌い。」デヴィ夫人の前で8人のホスト達が接客バトル！【歌舞伎町ホストピタリティ】" },
     { ch: "階段降りたらVALHALLA", id: "gOLBelWEI2g", title: "【内部告発】冬島水月VS桜木凌のガチ喧嘩勃発！？極秘タレコミアンケートでキャストのヤバい裏の顔が次々と暴かれ現場は大騒然…！" },
+    { ch: "階段降りたらVALHALLA", id: "YUeXju9ewQQ", title: "【BARばじひな】場地圭介＆朝日奈優がBARのマスターに⁉桜木凌の意外な弱点を大暴露…" },
+    { ch: "階段降りたらVALHALLA", id: "RxNrtV-Kx0w", title: "【BARばじひな】場地圭介＆朝日奈優がBARのマスターに⁉OPからかましまくりの桜木凌が来店！！" },
+    { ch: "階段降りたらVALHALLA", id: "3bnhgPb7WWI", title: "【ガチ本音】ホストの攻略法を丸裸に。売れっ子ホストが語る「沼らせる」テクニックと黒歴史を大公開【BARばじひな】" },
+    { ch: "階段降りたらVALHALLA", id: "XUaHJAAnwMQ", title: "【VALHALLAに痛客現る⁉】最恐の姫に朝日奈優がまさかの選択…！？" },
     { ch: "ゆっきーTV -桜威優希斗-", id: "yUdvCHNfPio", title: "【企画終了の危機!?】桜威優希斗の友達を作ろうヴァルハラ編!!朝日奈、場地の紹介で苺愛ロマが登場!!" },
+    { ch: "ゆっきーTV -桜威優希斗-", id: "6bvwzgmGVgA", title: "【ドパガキって俺の事か】ヴァルハラ朝日奈優が人生年表に参戦!!自身の人生を振り返り朝日奈とテキおじ3人の意外な関係性が明らかに…" },
+    { ch: "ゆっきーTV -桜威優希斗-", id: "ZegJQ0HbXXU", title: "【見てはいけないものを発見した】ゲストに朝日奈と場地を招きサルサフェスに参加するも、世界初の驚愕のお酒を発見する!!" },
+    { ch: "ゆっきーTV -桜威優希斗-", id: "CzulhKK-YEs", title: "「ロン毛どの位やってるの？」ヴァルハラ場地と貘、似た者同士が初対面！朝日奈優から無責任なパスを受けた場地は…" },
     { ch: "ゆっきーTV -桜威優希斗-", id: "I9EvFOnwZRo", title: "ヴァルハラから朝日奈優がスナックテキおじへ来店し、貘の代打で橘マオが緊急出勤！" },
   ];
 
@@ -305,19 +316,27 @@
     </a></li>`).join("");
 
   // サムネだけ先に出して、押されたら YouTube を読み込む（ページを軽く保つため）
-  document.getElementById("video-list").innerHTML = VIDEOS.map(v => `
-    <article class="v">
+  const card = v => `
+    <article class="v${v.main ? " v--main" : ""}">
       <div class="v__frame">
         <button type="button" data-id="${v.id}" aria-label="再生：${esc(v.title)}">
-          <img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="" loading="lazy">
+          <img src="https://i.ytimg.com/vi/${v.id}/${v.main ? "hqdefault" : "mqdefault"}.jpg" alt="" loading="lazy">
           <span class="v__play">再生する</span>
         </button>
       </div>
       <div class="v__meta">
-        <p class="v__ch">${esc(v.ch)}</p>
+        ${v.main ? `<p class="v__ch">${esc(v.ch)}</p>` : ""}
         <h3 class="v__title">${esc(v.title)}</h3>
       </div>
-    </article>`).join("");
+    </article>`;
+  const rest = VIDEOS.filter(v => !v.main);
+  const channels = [...new Set(rest.map(v => v.ch))];
+  document.getElementById("video-list").innerHTML =
+    VIDEOS.filter(v => v.main).map(card).join("") +
+    channels.map(ch => {
+      const list = rest.filter(v => v.ch === ch);
+      return `<h3 class="v-group">${esc(ch)}<span>${list.length}本</span></h3>` + list.map(card).join("");
+    }).join("");
 
   document.getElementById("video-list").addEventListener("click", e => {
     const btn = e.target.closest("button[data-id]");
