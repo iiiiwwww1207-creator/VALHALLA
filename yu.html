@@ -101,8 +101,7 @@
   }
 
   /* ---- プロフィール ---- */
-  .profile{display:grid;gap:40px}
-  @media (min-width:760px){.profile{grid-template-columns:1fr 1fr;gap:64px}}
+  .profile{max-width:640px}
   .profile p{font-family:var(--mincho);font-size:17px;line-height:2.1}
   dl.facts{border-top:1px solid var(--ink)}
   dl.facts div{display:grid;grid-template-columns:7em 1fr;gap:16px;padding:14px 2px;border-bottom:1px solid var(--rule)}
@@ -122,12 +121,44 @@
   .shop__btns{display:flex;flex-wrap:wrap;gap:12px}
   .age{font-size:12px;color:var(--ink-2);margin-top:24px}
 
+
+  /* ---- 物語（スクロールで場面が進む） ---- */
+  .progress{position:fixed;top:0;left:0;height:3px;width:100%;background:var(--shu);transform-origin:0 50%;transform:scaleX(0);z-index:10}
+  .story{position:relative;background:#14110E;color:#EFE8DC;border-top:1px solid var(--rule)}
+  .story__stage{position:sticky;top:0;height:100svh;overflow:hidden}
+  .story__stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%;opacity:0;transform:scale(1.04);transition:opacity .9s ease,transform 1.6s cubic-bezier(.2,.7,.2,1)}
+  .story__stage img.is-on{opacity:1;transform:scale(1)}
+  .story__stage::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,17,14,.35) 0%,rgba(20,17,14,.3) 45%,rgba(20,17,14,.85) 100%)}
+  .story__count{position:absolute;right:var(--gutter);top:24px;z-index:1;font-family:var(--mincho);font-size:13px;letter-spacing:.14em;color:#EFE8DC}
+  .story__count span{color:#E0705F}
+  .story__steps{position:relative;margin-top:-100svh;padding:0 var(--gutter) 30svh}
+  .story__intro{min-height:80svh;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:12svh;max-width:1120px;margin:0 auto}
+  .story__intro .head__no{color:#E0705F}
+  .story__intro h2{font-family:var(--mincho);font-weight:700;font-size:clamp(40px,9vw,80px);letter-spacing:.1em;line-height:1.2;margin:6px 0 10px}
+  .story__intro p:last-child{font-size:13px;opacity:.8}
+  .step{max-width:1120px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;justify-content:center}
+  .step > *{max-width:26em}
+  .step{padding:0}
+  .step__when,.step h3,.step > p:last-child{background:rgba(20,17,14,.78);padding:0 20px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+  .step__when{font-family:var(--mincho);font-size:13px;letter-spacing:.16em;color:#E0705F;padding-top:20px;align-self:flex-start}
+  .step h3{font-family:var(--mincho);font-weight:700;font-size:clamp(24px,5vw,34px);line-height:1.5;padding-top:6px;padding-bottom:6px}
+  .step > p:last-child{font-family:var(--mincho);font-size:16px;line-height:2;padding-bottom:22px}
+  .step{opacity:.35;transition:opacity .5s ease}
+  .step.is-on{opacity:1}
+  @media (min-width:880px){
+    .step{align-items:flex-start}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .story__stage img{transform:none}
+  }
+
   footer{padding:40px 0 56px;border-top:1px solid var(--rule);font-size:12px;color:var(--ink-2)}
 
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
+<div class="progress" id="progress" aria-hidden="true"></div>
 
 <header class="hero">
   <div class="hero__photo">
@@ -165,10 +196,56 @@
     </div>
   </section>
 
+</main>
+
+<!-- 物語：写真は画面に止めたまま、文章のカードが流れてきたら写真を切り替える。文章は仮（kazuma の言葉に差し替える） -->
+<section class="story" id="story" aria-label="朝日奈 優の話">
+  <div class="story__stage" aria-hidden="true">
+    <img src="assets/yu/beach.jpg" alt="" class="is-on" data-scene="0">
+    <img src="assets/yu/hero.jpg" alt="" data-scene="1" loading="lazy">
+    <img src="assets/yu/studio.jpg" alt="" data-scene="2" loading="lazy" style="object-position:38% 20%">
+    <img src="assets/yu/khaki.jpg" alt="" data-scene="3" loading="lazy">
+    <img src="assets/yu/glasses.jpg" alt="" data-scene="4" loading="lazy">
+    <div class="story__count"><span id="story-no">01</span> / 05</div>
+  </div>
+  <div class="story__steps">
+    <div class="story__intro">
+      <p class="head__no">04</p>
+      <h2>俺の話</h2>
+      <p>スクロールすると、話が進みます。</p>
+    </div>
+    <article class="step" data-scene="0">
+      <p class="step__when">2019</p>
+      <h3>何者でもないまま、東京へ</h3>
+      <p>静岡で育って、大学をやめて東京に出てきた。決めていたのは「ここで変わる」ってことだけ。</p>
+    </article>
+    <article class="step" data-scene="1">
+      <p class="step__when">歌舞伎町</p>
+      <h3>右も左も分からないところから</h3>
+      <p>最初は何もできなかった。目の前の一人とちゃんと話す。それだけを毎晩くり返した。</p>
+    </article>
+    <article class="step" data-scene="2">
+      <p class="step__when">VALHALLA</p>
+      <h3>勝った夜も、負けた回も</h3>
+      <p>Group Yggdrasill の VALHALLA で。グループの YouTube の接客バトルにも出た。上の動画に、そのまま残ってる。</p>
+    </article>
+    <article class="step" data-scene="3">
+      <p class="step__when">バジひな</p>
+      <h3>相方と、外に出していく</h3>
+      <p>場地圭介と2人で TikTok を始めた。店の中だけじゃ見せられない顔を、ここで出してる。</p>
+    </article>
+    <article class="step" data-scene="4">
+      <p class="step__when">これから</p>
+      <h3>店の外でも、つくる</h3>
+      <p>夜の仕事を土台にして、自分の手で新しいものをつくり始めてる。その途中も、ここに足していく。</p>
+    </article>
+  </div>
+</section>
+
+<div class="wrap">
   <section class="block" id="about">
-    <div class="head"><span class="head__no">04</span><h2>俺のこと</h2></div>
+    <div class="head"><span class="head__no">05</span><h2>プロフィール</h2></div>
     <div class="profile">
-      <p>歌舞伎町の VALHALLA にいます。<br>相方の場地圭介と「バジひな」で TikTok もやってる。<br>派手に見られがちだけど、根っこは凝り性。好きになったものはとことん調べるタイプ。</p>
       <dl class="facts">
         <div><dt>お店</dt><dd>VALHALLA（Group Yggdrasill）</dd></div>
         <div><dt>好きなもの</dt><dd>ラーメン巡り、競艇、服</dd></div>
@@ -179,7 +256,7 @@
   </section>
 
   <section class="block" id="shop">
-    <div class="head"><span class="head__no">05</span><h2>会いに来る</h2></div>
+    <div class="head"><span class="head__no">06</span><h2>会いに来る</h2></div>
     <div class="shop">
       <div>
         <p class="shop__name">VALHALLA</p>
@@ -194,7 +271,7 @@
     <p class="age">ご来店は20歳以上の方に限ります。</p>
   </section>
 
-</main>
+</div>
 
 <footer><div class="wrap">© Yu Asahina</div></footer>
 
@@ -246,6 +323,30 @@
     f.allowFullscreen = true;
     btn.replaceWith(f);
   });
+
+  // 物語：画面の真ん中に来たカードに合わせて、後ろの写真を切り替える
+  const stageImgs = [...document.querySelectorAll(".story__stage img")];
+  const storyNo = document.getElementById("story-no");
+  const steps = [...document.querySelectorAll(".step")];
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      const n = en.target.dataset.scene;
+      steps.forEach(s => s.classList.toggle("is-on", s === en.target));
+      stageImgs.forEach(img => img.classList.toggle("is-on", img.dataset.scene === n));
+      storyNo.textContent = String(+n + 1).padStart(2, "0");
+    });
+  }, { rootMargin: "-45% 0px -45% 0px" });
+  steps.forEach(s => io.observe(s));
+
+  // 一番上の読んだ量のバー
+  const bar = document.getElementById("progress");
+  const onScroll = () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    bar.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`;
+  };
+  addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
 </script>
 </body>
 </html>
