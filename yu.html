@@ -155,6 +155,14 @@
     .story__stage img{transform:none}
   }
 
+  /* ---- 一問一答 ---- */
+  .qa{border-top:1px solid var(--ink)}
+  .qa div{display:grid;grid-template-columns:1fr;gap:6px;padding:20px 2px;border-bottom:1px solid var(--rule)}
+  @media (min-width:760px){.qa div{grid-template-columns:16em 1fr;gap:24px}}
+  .qa dt{font-family:var(--mincho);font-weight:700;font-size:16px}
+  .qa dt::before{content:"Q.";color:var(--shu);margin-right:.5em}
+  .qa dd{font-size:15px;line-height:1.9}
+
   footer{padding:40px 0 56px;border-top:1px solid var(--rule);font-size:12px;color:var(--ink-2)}
 
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -258,8 +266,14 @@
     </div>
   </section>
 
+  <section class="block" id="qa" hidden>
+    <div class="head"><span class="head__no">06</span><h2>一問一答</h2></div>
+    <p class="note">初回の席でよく聞かれること、先に答えておきます。</p>
+    <dl class="qa" id="qa-list"></dl>
+  </section>
+
   <section class="block" id="shop">
-    <div class="head"><span class="head__no">06</span><h2>会いに来る</h2></div>
+    <div class="head"><span class="head__no">07</span><h2>会いに来る</h2></div>
     <div class="shop">
       <div>
         <p class="shop__name">VALHALLA</p>
@@ -348,6 +362,38 @@
     f.allowFullscreen = true;
     btn.replaceWith(f);
   });
+
+  // 一問一答：答えを入れた質問だけ出す（全部空ならこの欄ごと出さない）
+  const QA = [
+    // 基本
+    { q: "呼び方は？", a: "" },
+    { q: "出身は？", a: "" },
+    { q: "誕生日は？", a: "" },
+    // 好き・嫌い
+    { q: "好きな食べ物", a: "" },
+    { q: "苦手な食べ物", a: "" },
+    { q: "好きなお酒", a: "" },
+    { q: "休みの日は何してる？", a: "" },
+    { q: "最近ハマってること", a: "" },
+    { q: "好きな服・ブランド", a: "" },
+    { q: "嫌いなこと・苦手なこと", a: "" },
+    // 仕事
+    { q: "ホストになった理由", a: "" },
+    { q: "接客で大事にしてること", a: "" },
+    { q: "席でどんな話をするのが好き？", a: "" },
+    { q: "お酒が弱くても大丈夫？", a: "" },
+    { q: "初めて来る人に一言", a: "" },
+    // 中身
+    { q: "自分を一言でいうと", a: "" },
+    { q: "よく言われるギャップ", a: "" },
+    { q: "タトゥーに込めた意味", a: "" },
+    { q: "これから叶えたいこと", a: "" },
+  ];
+  const answered = QA.filter(x => x.a.trim());
+  if (answered.length) {
+    document.getElementById("qa-list").innerHTML = answered.map(x => `<div><dt>${esc(x.q)}</dt><dd>${esc(x.a)}</dd></div>`).join("");
+    document.getElementById("qa").hidden = false;
+  }
 
   // 物語：画面の真ん中に来たカードに合わせて、後ろの写真を切り替える
   const stageImgs = [...document.querySelectorAll(".story__stage img")];
