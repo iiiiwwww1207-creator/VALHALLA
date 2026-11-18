@@ -5,213 +5,255 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>朝日奈 優 | Yu Asahina</title>
 <meta name="description" content="歌舞伎町 VALHALLA の朝日奈 優。Instagram・TikTok・出演動画をまとめたページ。">
+<meta name="theme-color" content="#0B0809">
 <meta property="og:title" content="朝日奈 優 | Yu Asahina">
 <meta property="og:description" content="Instagram・TikTok・出演動画をまとめたページ。">
 <meta property="og:image" content="assets/yu/hero.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&family=Shippori+Mincho:wght@500;700;800&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  /* 生成り × 墨 × 朱。朱は「優」の一字と小さな印だけに使う */
+  /* 黒 × クリムゾン。赤は「優」の一字・数字・ボタン・縦線だけに使う。
+     見出しは灰色の巨大な英字（GACKT 公式の型）、日本語は明朝で小さく添える */
   :root{
-    --paper:#F2EDE4;
-    --paper-2:#E9E2D6;
-    --ink:#1C1915;
-    --ink-2:#5E574D;
-    --rule:#CFC6B7;
-    --shu:#B23A2C;
+    --bg:#0B0809;
+    --bg-2:#151012;
+    --ink:#EFE8E6;
+    --mute:#A0959A;
+    --dim:#2F2629;
+    --rule:#2A2124;
+    --crimson:#B8102E;
+    --crimson-hi:#E3243F;
+    --display:"Oswald","Arial Narrow",sans-serif;
     --mincho:"Shippori Mincho","Hiragino Mincho ProN",serif;
     --sans:"Noto Sans JP","Hiragino Sans",sans-serif;
     --gutter:clamp(20px,5vw,64px);
+    --ease:cubic-bezier(.2,.75,.2,1);
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html{-webkit-text-size-adjust:100%}
-  body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.85;letter-spacing:.02em}
+  html{-webkit-text-size-adjust:100%;background:var(--bg)}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.85;letter-spacing:.02em;overflow-x:hidden}
   img{display:block;max-width:100%;height:auto}
   a{color:inherit}
-  .wrap{max-width:1120px;margin:0 auto;padding:0 var(--gutter)}
+  ::selection{background:var(--crimson);color:#fff}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 var(--gutter)}
 
-  /* ---- ヒーロー ---- */
-  .hero{display:grid;grid-template-columns:1fr;min-height:100svh}
-  .hero__photo{position:relative;overflow:hidden;background:var(--paper-2);aspect-ratio:4/5}
-  .hero__photo img{width:100%;height:100%;object-fit:cover;object-position:50% 18%}
-  .hero__text{padding:36px var(--gutter) 56px;display:flex;flex-direction:column;justify-content:flex-end;gap:20px}
-  .place{font-size:12px;color:var(--ink-2);letter-spacing:.14em}
-  .name{font-family:var(--mincho);font-weight:700;font-size:clamp(52px,13vw,112px);line-height:1.05;letter-spacing:.06em}
-  .name em{font-style:normal;color:var(--shu)}
-  .name-en{font-family:var(--mincho);font-size:15px;color:var(--ink-2);letter-spacing:.2em}
-  .lead{font-family:var(--mincho);font-size:clamp(17px,2.2vw,20px);line-height:2;max-width:22em}
+  /* ---- 上の帯（ロゴと DM） ---- */
+  .bar{position:fixed;inset:0 0 auto 0;z-index:20;height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 0 0 var(--gutter);transition:background-color .4s ease,border-color .4s ease;border-bottom:1px solid transparent}
+  .bar.is-solid{background:rgba(11,8,9,.94);border-color:var(--rule)}
+  .bar__logo{font-family:var(--display);font-weight:500;font-size:15px;letter-spacing:.32em;text-decoration:none}
+  .bar__dm{align-self:stretch;display:flex;align-items:center;gap:10px;padding:0 22px;background:var(--crimson);color:#fff;text-decoration:none;font-family:var(--display);font-size:14px;letter-spacing:.18em;transition:background-color .2s ease}
+  .bar__dm:hover{background:var(--crimson-hi)}
+  .progress{position:absolute;left:0;bottom:-1px;height:2px;width:100%;background:var(--crimson-hi);transform-origin:0 50%;transform:scaleX(0)}
+
+  /* ---- ヒーロー（写真を全面に、名前が下から出てくる） ---- */
+  .hero{position:relative;height:100svh;min-height:560px;overflow:hidden}
+  .hero__photo{position:absolute;inset:0}
+  .hero__photo img{width:100%;height:100%;object-fit:cover;object-position:50% 18%;animation:heroIn 2.6s var(--ease) both}
+  .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,8,9,.55) 0%,rgba(11,8,9,0) 22%,rgba(11,8,9,.15) 50%,rgba(11,8,9,.92) 86%,var(--bg) 100%)}
+  .hero__text{position:absolute;left:0;right:0;bottom:0;z-index:1;padding:0 var(--gutter) clamp(40px,8svh,80px);max-width:1160px;margin:0 auto}
+  .place{font-family:var(--display);font-size:12px;letter-spacing:.34em;color:var(--mute)}
+  .place b{font-weight:500;color:var(--crimson-hi)}
+  .name{font-family:var(--mincho);font-weight:800;font-size:clamp(60px,16vw,148px);line-height:1;letter-spacing:.04em;margin:14px 0 10px}
+  .name span{display:block;overflow:hidden;padding-bottom:.06em}
+  .name span i{display:block;font-style:normal;animation:rise 1.3s var(--ease) both}
+  .name span:nth-child(2) i{animation-delay:.18s}
+  .name em{font-style:normal;color:var(--crimson-hi)}
+  .name-en{font-family:var(--display);font-weight:300;font-size:clamp(14px,2vw,18px);letter-spacing:.5em;color:var(--mute);animation:fade 1.2s .7s both}
+  .lead{font-family:var(--mincho);font-size:clamp(16px,2.2vw,19px);line-height:2.1;margin-top:22px;padding-left:16px;border-left:2px solid var(--crimson);max-width:24em;animation:fade 1.2s .95s both}
   @media (min-width:880px){
-    .hero{grid-template-columns:minmax(0,5fr) minmax(0,6fr)}
-    .hero__photo{aspect-ratio:auto;order:2}
-    .hero__text{order:1;padding:64px var(--gutter) 72px}
+    .hero__photo{left:36%}
+    .hero::after{background:linear-gradient(90deg,var(--bg) 36%,rgba(11,8,9,.4) 52%,rgba(11,8,9,0) 70%),linear-gradient(180deg,rgba(11,8,9,.5) 0%,rgba(11,8,9,0) 20%,rgba(11,8,9,0) 75%,var(--bg) 100%)}
+    .hero__text{max-width:none;margin:0;padding-left:max(var(--gutter),calc((100vw - 1160px)/2 + var(--gutter)))}
   }
+  .scroll-cue{position:absolute;right:var(--gutter);bottom:clamp(40px,8svh,80px);z-index:1;font-family:var(--display);font-size:11px;letter-spacing:.3em;color:var(--mute);writing-mode:vertical-rl;display:flex;align-items:center;gap:12px}
+  .scroll-cue::after{content:"";width:1px;height:64px;background:linear-gradient(var(--crimson-hi),transparent);animation:cue 2.2s ease-in-out infinite}
+  @keyframes heroIn{from{transform:scale(1.14);filter:brightness(.4)}to{transform:scale(1);filter:brightness(1)}}
+  @keyframes rise{from{transform:translateY(105%)}to{transform:none}}
+  @keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  @keyframes cue{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 
-  /* ---- セクション共通 ---- */
-  section.block{padding:88px 0;border-top:1px solid var(--rule)}
-  .head{display:flex;align-items:baseline;gap:16px;margin-bottom:36px}
-  .head__no{font-family:var(--mincho);font-size:13px;color:var(--shu)}
-  .head h2{font-family:var(--mincho);font-weight:700;font-size:clamp(24px,4vw,34px);letter-spacing:.08em}
-  .note{color:var(--ink-2);font-size:13px;margin-top:-20px;margin-bottom:32px}
+  /* ---- 見出し（灰色の巨大な英字が下からせり上がり、赤い線が左から引かれる） ---- */
+  section.block{padding:clamp(96px,14vw,160px) 0 0}
+  .head{margin-bottom:clamp(36px,6vw,56px)}
+  .head__big{font-family:var(--display);font-weight:700;font-size:clamp(76px,21vw,230px);line-height:.82;letter-spacing:-.005em;color:var(--dim);overflow:hidden;text-transform:uppercase;margin-left:-.04em}
+  .head__big span{display:block;transform:translateY(102%);transition:transform 1.15s var(--ease)}
+  .head__sub{display:flex;align-items:center;gap:14px;margin-top:18px;font-family:var(--mincho);font-weight:700;font-size:clamp(18px,3vw,24px);letter-spacing:.12em}
+  .head__sub b{font-family:var(--display);font-weight:500;font-size:13px;letter-spacing:.2em;color:var(--crimson-hi)}
+  .head__sub::after{content:"";flex:1;height:1px;background:var(--crimson);transform:scaleX(0);transform-origin:0 50%;transition:transform 1.4s .35s var(--ease)}
+  .head.is-in .head__big span{transform:none}
+  .head.is-in .head__sub::after{transform:scaleX(1)}
+  .note{color:var(--mute);font-size:13px;margin:-20px 0 36px}
+
+  /* ---- スクロールで出てくる（共通） ---- */
+  .js [data-reveal]{opacity:0;transform:translateY(26px);transition:opacity .9s var(--ease) var(--d,0ms),transform 1.1s var(--ease) var(--d,0ms)}
+  .js [data-reveal].is-in{opacity:1;transform:none}
+  .js .photos figure{clip-path:inset(100% 0 0 0);transition:clip-path 1.3s cubic-bezier(.75,0,.2,1) var(--d,0ms)}
+  .js .photos figure img{transform:scale(1.22);transition:transform 1.8s var(--ease) var(--d,0ms)}
+  .js .photos figure.is-in{clip-path:inset(0 0 0 0)}
+  .js .photos figure.is-in img{transform:scale(1)}
 
   /* ---- SNS ---- */
-  .links{list-style:none;border-top:1px solid var(--ink)}
+  .links{list-style:none;border-top:1px solid var(--rule)}
   .links li{border-bottom:1px solid var(--rule)}
-  .links a{display:grid;grid-template-columns:7.5em 1fr auto;align-items:center;gap:16px;padding:22px 4px;text-decoration:none;transition:background-color .2s ease}
-  .links a:hover{background:var(--paper-2)}
-  .links .svc{font-family:var(--mincho);font-weight:700;font-size:18px}
-  .links .handle{font-size:14px;color:var(--ink-2);min-width:0;overflow-wrap:anywhere}
-  .links .handle b{display:block;font-weight:500;color:var(--ink);font-size:15px}
-  .links .open{font-size:12px;letter-spacing:.12em;border:1px solid var(--ink);padding:6px 12px;white-space:nowrap}
-  @media (max-width:520px){
-    .links a{grid-template-columns:1fr auto}
-    .links .svc{grid-column:1/-1}
-  }
+  .links a{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px 20px;padding:26px 6px 26px 20px;text-decoration:none;transition:background-color .3s ease}
+  .links a::before{content:"";position:absolute;left:0;top:22%;bottom:22%;width:2px;background:var(--crimson);transform:scaleY(.35);transition:transform .35s var(--ease)}
+  .links a:hover{background:var(--bg-2)}
+  .links a:hover::before{transform:scaleY(1)}
+  .links .svc{font-family:var(--display);font-weight:500;font-size:clamp(28px,6vw,40px);letter-spacing:.06em;line-height:1;text-transform:uppercase}
+  .links .handle{grid-column:1;font-size:13px;color:var(--mute);min-width:0;overflow-wrap:anywhere}
+  .links .handle b{font-weight:500;color:var(--ink);margin-right:.8em}
+  .links .open{grid-column:2;grid-row:1/3;font-family:var(--display);font-size:13px;letter-spacing:.2em;color:var(--crimson-hi);white-space:nowrap}
+  .links .open::after{content:" →";transition:margin .3s var(--ease)}
+  .links a:hover .open::after{margin-left:6px}
 
   /* ---- 動画 ---- */
-  .videos{display:grid;gap:24px 14px;grid-template-columns:1fr 1fr}
-  @media (min-width:760px){.videos{grid-template-columns:repeat(3,1fr);gap:36px 24px}}
+  .videos{display:grid;gap:28px 14px;grid-template-columns:1fr 1fr}
+  @media (min-width:760px){.videos{grid-template-columns:repeat(3,1fr);gap:40px 24px}}
   .v--main{grid-column:1/-1}
-  .v-group{grid-column:1/-1;font-family:var(--mincho);font-weight:700;font-size:18px;letter-spacing:.06em;padding-top:28px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:baseline;gap:12px}
-  .v-group span{white-space:nowrap;font-family:var(--sans);font-weight:400;font-size:12px;color:var(--ink-2)}
-  .v__frame{position:relative;aspect-ratio:16/9;background:var(--ink);overflow:hidden}
+  .v-group{grid-column:1/-1;font-family:var(--mincho);font-weight:700;font-size:17px;letter-spacing:.06em;padding:30px 0 0 14px;border-left:2px solid var(--crimson);display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:12px}
+  .v-group span{white-space:nowrap;font-family:var(--display);font-weight:300;font-size:13px;letter-spacing:.14em;color:var(--mute)}
+  .v__frame{position:relative;aspect-ratio:16/9;background:#000;overflow:hidden}
   .v__frame button{all:unset;cursor:pointer;position:absolute;inset:0;display:block}
-  .v__frame button img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .3s ease;opacity:.9}
-  .v__frame button:hover img{transform:scale(1.02);opacity:1}
-  .v__frame button:focus-visible{outline:2px solid var(--shu);outline-offset:3px}
-  .v__play{position:absolute;left:16px;bottom:16px;background:var(--paper);color:var(--ink);font-size:12px;letter-spacing:.12em;padding:7px 14px}
+  .v__frame button img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease),filter .4s ease;filter:grayscale(.35) brightness(.82)}
+  .v__frame button:hover img{transform:scale(1.04);filter:none}
+  .v__frame button:focus-visible{outline:2px solid var(--crimson-hi);outline-offset:3px}
+  .v__play{position:absolute;left:0;bottom:0;background:var(--crimson);color:#fff;font-family:var(--display);font-size:12px;letter-spacing:.2em;padding:8px 16px}
   .v__frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
   .v__meta{padding-top:14px}
-  .v__ch{font-size:12px;color:var(--ink-2)}
-  .v__title{font-family:var(--mincho);font-weight:500;font-size:14px;line-height:1.6;margin-top:4px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-  .v--main .v__title{font-size:18px;-webkit-line-clamp:unset}
-  .v:not(.v--main) .v__play{left:8px;bottom:8px;padding:4px 9px;font-size:11px}
+  .v__ch{font-family:var(--display);font-size:12px;letter-spacing:.14em;color:var(--crimson-hi)}
+  .v__title{font-family:var(--mincho);font-weight:500;font-size:14px;line-height:1.65;margin-top:4px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .v--main .v__title{font-size:clamp(17px,2.4vw,21px);-webkit-line-clamp:unset}
+  .v:not(.v--main) .v__play{padding:4px 10px;font-size:11px}
   .v:not(.v--main) .v__meta{padding-top:8px}
 
-  /* ---- 写真（大小を非対称に） ---- */
+  /* ---- 写真（大小を非対称に。下から幕が上がるように出る） ---- */
   .photos{display:grid;gap:14px;grid-template-columns:repeat(6,1fr)}
-  .photos figure{overflow:hidden;background:var(--paper-2)}
+  .photos figure{overflow:hidden;background:var(--bg-2)}
   .photos img{width:100%;height:100%;object-fit:cover}
   .p1{grid-column:1/5;aspect-ratio:3/2}
   .p2{grid-column:5/7;aspect-ratio:2/3;align-self:end}
   .p3{grid-column:1/3;aspect-ratio:2/3}
-  .p4{grid-column:3/5;aspect-ratio:3/4;margin-top:48px}
+  .p4{grid-column:3/5;aspect-ratio:3/4;margin-top:64px}
   .p5{grid-column:5/7;aspect-ratio:2/3}
   @media (max-width:640px){
     .photos{grid-template-columns:repeat(2,1fr);gap:10px}
     .p1{grid-column:1/-1}
     .p2,.p3,.p4,.p5{grid-column:auto;margin-top:0;aspect-ratio:2/3}
+    .p3,.p5{margin-top:36px}
   }
 
-  /* ---- プロフィール ---- */
-  .profile{max-width:640px}
-  .profile p{font-family:var(--mincho);font-size:17px;line-height:2.1}
-  dl.facts{border-top:1px solid var(--ink)}
-  dl.facts div{display:grid;grid-template-columns:7em 1fr;gap:16px;padding:14px 2px;border-bottom:1px solid var(--rule)}
-  dl.facts dt{font-size:13px;color:var(--ink-2)}
-  dl.facts dd{font-size:15px}
-
-  /* ---- お店 ---- */
-  .shop{display:grid;gap:28px}
-  @media (min-width:760px){.shop{grid-template-columns:1fr auto;align-items:end}}
-  .shop__name{font-family:var(--mincho);font-weight:700;font-size:clamp(30px,5vw,44px);letter-spacing:.1em}
-  .shop__addr{color:var(--ink-2);margin-top:8px}
-  .btn{display:inline-block;text-decoration:none;background:var(--ink);color:var(--paper);padding:16px 28px;font-size:14px;letter-spacing:.1em;transition:background-color .2s ease}
-  .btn:hover{background:var(--shu)}
-  .btn--line{background:transparent;color:var(--ink);border:1px solid var(--ink)}
-  .btn--line:hover{background:var(--paper-2)}
-  .shop__dm{font-family:var(--mincho);font-size:17px;margin-top:16px}
-  .shop__btns{display:flex;flex-wrap:wrap;gap:12px}
-  .age{font-size:12px;color:var(--ink-2);margin-top:24px}
-
-
-  /* ---- 物語（スクロールで場面が進む） ---- */
-  .progress{position:fixed;top:0;left:0;height:3px;width:100%;background:var(--shu);transform-origin:0 50%;transform:scaleX(0);z-index:10}
-  .story{position:relative;background:#14110E;color:#EFE8DC;border-top:1px solid var(--rule)}
+  /* ---- 物語（写真は止めたまま、文章が流れてきたら場面が変わる） ---- */
+  .story{position:relative;background:#000;margin-top:clamp(96px,14vw,160px)}
   .story__stage{position:sticky;top:0;height:100svh;overflow:hidden}
-  .story__stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%;opacity:0;transform:scale(1.04);transition:opacity .9s ease,transform 1.6s cubic-bezier(.2,.7,.2,1)}
+  .story__stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%;opacity:0;transform:scale(1.08);transition:opacity 1.1s ease,transform 2.2s var(--ease);filter:saturate(.8)}
   .story__stage img.is-on{opacity:1;transform:scale(1)}
-  .story__stage::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,17,14,.35) 0%,rgba(20,17,14,.3) 45%,rgba(20,17,14,.85) 100%)}
-  .story__count{position:absolute;right:var(--gutter);top:24px;z-index:1;font-family:var(--mincho);font-size:13px;letter-spacing:.14em;color:#EFE8DC}
-  .story__count span{color:#E0705F}
+  .story__stage::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.2) 40%,rgba(0,0,0,.88) 100%),linear-gradient(90deg,rgba(120,8,26,.28),transparent 60%)}
+  .story__count{position:absolute;right:var(--gutter);top:72px;z-index:1;font-family:var(--display);font-size:14px;letter-spacing:.2em;color:var(--mute)}
+  .story__count span{font-size:44px;font-weight:500;color:var(--crimson-hi);letter-spacing:.02em;margin-right:6px}
   .story__steps{position:relative;margin-top:-100svh;padding:0 var(--gutter) 30svh}
-  .story__intro{min-height:80svh;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:12svh;max-width:1120px;margin:0 auto}
-  .story__intro .head__no{color:#E0705F}
-  .story__intro h2{font-family:var(--mincho);font-weight:700;font-size:clamp(40px,9vw,80px);letter-spacing:.1em;line-height:1.2;margin:6px 0 10px}
-  .story__intro p:last-child{font-size:13px;opacity:.8}
-  .step{max-width:1120px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;justify-content:center}
+  .story__intro{min-height:90svh;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:12svh;max-width:1160px;margin:0 auto}
+  .story__intro .head__big{color:rgba(239,232,230,.16)}
+  .story__intro .head{margin-bottom:12px}
+  .story__intro > p{font-size:13px;color:var(--mute)}
+  .step{max-width:1160px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;justify-content:center}
   .step > *{max-width:26em}
-  .step{padding:0}
-  .step__when,.step h3,.step > p:last-child{background:rgba(20,17,14,.78);padding:0 20px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
-  .step__when{font-family:var(--mincho);font-size:13px;letter-spacing:.16em;color:#E0705F;padding-top:20px;align-self:flex-start}
-  .step h3{font-family:var(--mincho);font-weight:700;font-size:clamp(24px,5vw,34px);line-height:1.5;padding-top:6px;padding-bottom:6px}
-  .step > p:last-child{font-family:var(--mincho);font-size:16px;line-height:2;padding-bottom:22px}
-  .step{opacity:.35;transition:opacity .5s ease}
-  .step.is-on{opacity:1}
-  @media (min-width:880px){
-    .step{align-items:flex-start}
-  }
-  @media (prefers-reduced-motion:reduce){
-    .story__stage img{transform:none}
-  }
+  .step__card{background:rgba(11,8,9,.82);border-left:2px solid var(--crimson);padding:22px 24px 24px;opacity:.25;transform:translateX(-18px);transition:opacity .7s ease,transform .9s var(--ease)}
+  .step.is-on .step__card{opacity:1;transform:none}
+  .step__when{font-family:var(--display);font-size:13px;letter-spacing:.3em;color:var(--crimson-hi);text-transform:uppercase}
+  .step h3{font-family:var(--mincho);font-weight:800;font-size:clamp(24px,5vw,34px);line-height:1.5;margin:6px 0 10px}
+  .step__card p:last-child{font-family:var(--mincho);font-size:16px;line-height:2}
 
-  /* ---- 一問一答 ---- */
-  .qa{border-top:1px solid var(--ink)}
-  .qa div{display:grid;grid-template-columns:1fr;gap:6px;padding:20px 2px;border-bottom:1px solid var(--rule)}
+  /* ---- プロフィール・一問一答・料金の表 ---- */
+  dl.facts{border-top:1px solid var(--rule);max-width:760px}
+  dl.facts div{display:grid;grid-template-columns:7.5em 1fr;gap:16px;padding:16px 2px;border-bottom:1px solid var(--rule)}
+  dl.facts dt{font-size:13px;color:var(--mute)}
+  dl.facts dd{font-size:15px}
+  .qa{border-top:1px solid var(--rule)}
+  .qa div{display:grid;grid-template-columns:1fr;gap:6px;padding:22px 2px;border-bottom:1px solid var(--rule)}
   @media (min-width:760px){.qa div{grid-template-columns:16em 1fr;gap:24px}}
   .qa dt{font-family:var(--mincho);font-weight:700;font-size:16px}
-  .qa dt::before{content:"Q.";color:var(--shu);margin-right:.5em}
-  .qa dd{font-size:15px;line-height:1.9}
+  .qa dt::before{content:"Q.";font-family:var(--display);color:var(--crimson-hi);margin-right:.6em}
+  .qa dd{font-size:15px;line-height:1.9;color:#D8CFCD}
 
   /* ---- 料金 ---- */
   .price{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);grid-template-columns:1fr 1fr}
-  .plan{background:var(--paper);padding:20px 16px;display:flex;flex-direction:column;gap:6px}
-  .plan--main{grid-column:1/-1;background:var(--ink);color:var(--paper);padding:28px 20px}
-  .plan__name{font-family:var(--mincho);font-weight:700;font-size:16px;letter-spacing:.06em}
-  .plan__name span{font-family:var(--sans);font-weight:400;font-size:12px;margin-left:.8em;opacity:.75}
-  .plan__yen{font-family:var(--mincho);font-size:13px;white-space:nowrap}
-  .plan__yen b{font-size:clamp(22px,6.4vw,28px);font-weight:700;letter-spacing:.02em}
-  .plan--main .plan__yen b{font-size:clamp(36px,8vw,48px);color:#E0705F}
-  .plan__sub{font-size:12px;color:var(--ink-2);line-height:1.6}
-  .plan--main .plan__sub{color:#CFC6B7;font-size:13px}
   @media (min-width:760px){.price{grid-template-columns:repeat(4,1fr)}}
-  .price__info{margin-top:36px}
+  .plan{background:var(--bg);padding:22px 16px;display:flex;flex-direction:column;gap:6px}
+  .plan--main{grid-column:1/-1;background:var(--crimson);padding:30px 22px 28px;position:relative;overflow:hidden}
+  .plan--main::after{content:"FREE DRINK";position:absolute;right:-.06em;bottom:-.2em;font-family:var(--display);font-weight:700;font-size:clamp(64px,16vw,150px);line-height:1;color:rgba(0,0,0,.16);pointer-events:none;white-space:nowrap}
+  .plan__name{font-family:var(--mincho);font-weight:700;font-size:16px;letter-spacing:.08em;position:relative;z-index:1}
+  .plan__name span{font-family:var(--sans);font-weight:400;font-size:12px;margin-left:.8em;opacity:.8}
+  .plan__yen{font-family:var(--mincho);font-size:13px;white-space:nowrap;position:relative;z-index:1}
+  .plan__yen b{font-family:var(--display);font-size:clamp(26px,7vw,34px);font-weight:500;letter-spacing:.02em;margin:0 2px}
+  .plan--main .plan__yen b{font-size:clamp(52px,12vw,76px);font-weight:700;color:#fff}
+  .plan__sub{font-size:12px;color:var(--mute);line-height:1.6;position:relative;z-index:1}
+  .plan--main .plan__sub{color:rgba(255,255,255,.85);font-size:13px}
+  .price__info{margin-top:40px}
 
-  footer{padding:40px 0 56px;border-top:1px solid var(--rule);font-size:12px;color:var(--ink-2)}
+  /* ---- 会いに来る ---- */
+  .shop{display:grid;gap:32px}
+  @media (min-width:760px){.shop{grid-template-columns:1fr auto;align-items:end}}
+  .shop__name{font-family:var(--display);font-weight:700;font-size:clamp(48px,11vw,96px);line-height:1;letter-spacing:.06em}
+  .shop__addr{color:var(--mute);margin-top:12px}
+  .shop__dm{font-family:var(--mincho);font-size:18px;margin-top:18px}
+  .shop__btns{display:flex;flex-wrap:wrap;gap:12px}
+  .btn{display:inline-flex;align-items:center;gap:10px;text-decoration:none;background:var(--crimson);color:#fff;padding:18px 30px;font-size:14px;letter-spacing:.12em;transition:background-color .2s ease}
+  .btn:hover{background:var(--crimson-hi)}
+  .btn--line{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+  .btn--line:hover{background:var(--bg-2)}
+  .age{font-size:12px;color:var(--mute);margin-top:28px}
 
-  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  footer{margin-top:clamp(96px,14vw,160px);padding:36px 0 56px;border-top:1px solid var(--rule);font-family:var(--display);font-size:12px;letter-spacing:.24em;color:var(--mute)}
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    .js [data-reveal]{opacity:1;transform:none}
+    .head__big span{transform:none}
+    .head__sub::after{transform:scaleX(1)}
+    .js .photos figure{clip-path:none}
+    .js .photos figure img{transform:none}
+    .step__card{opacity:1;transform:none}
+  }
 </style>
+<script>document.documentElement.classList.add("js")</script>
 </head>
 <body>
-<div class="progress" id="progress" aria-hidden="true"></div>
 
-<header class="hero">
+<div class="bar" id="bar">
+  <a class="bar__logo" href="#top">YU ASAHINA</a>
+  <a class="bar__dm" href="https://ig.me/m/valhalla_yuu" target="_blank" rel="noopener">DM</a>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+</div>
+
+<header class="hero" id="top">
   <div class="hero__photo">
     <img src="assets/yu/hero.jpg" alt="朝日奈 優" fetchpriority="high">
   </div>
   <div class="hero__text">
-    <p class="place">歌舞伎町 ／ VALHALLA</p>
-    <h1 class="name">朝日奈<br><em>優</em></h1>
-    <p class="name-en">Yu Asahina</p>
+    <p class="place">KABUKICHO <b>／</b> VALHALLA</p>
+    <h1 class="name"><span><i>朝日奈</i></span><span><i><em>優</em></i></span></h1>
+    <p class="name-en">YU ASAHINA</p>
     <p class="lead">初回の短い時間じゃ話しきれないから、<br>俺のことはここにまとめておく。</p>
   </div>
+  <div class="scroll-cue" aria-hidden="true">SCROLL</div>
 </header>
 
 <main class="wrap">
 
   <section class="block" id="follow">
-    <div class="head"><span class="head__no">01</span><h2>フォローする</h2></div>
-    <ul class="links" id="links"></ul>
+    <div class="head"><p class="head__big"><span>Follow</span></p><p class="head__sub"><b>01</b>フォローする</p></div>
+    <ul class="links" id="links" data-stagger></ul>
   </section>
 
   <section class="block" id="videos">
-    <div class="head"><span class="head__no">02</span><h2>出ている動画</h2></div>
-    <p class="note">出ている YouTube をまとめた。タップで再生。</p>
-    <div class="videos" id="video-list"></div>
+    <div class="head"><p class="head__big"><span>Movie</span></p><p class="head__sub"><b>02</b>出ている動画</p></div>
+    <p class="note" data-reveal>出ている YouTube をまとめた。タップで再生。</p>
+    <div class="videos" id="video-list" data-stagger></div>
   </section>
 
   <section class="block" id="photos">
-    <div class="head"><span class="head__no">03</span><h2>写真</h2></div>
+    <div class="head"><p class="head__big"><span>Photo</span></p><p class="head__sub"><b>03</b>写真</p></div>
     <div class="photos">
       <figure class="p1"><img src="assets/yu/studio.jpg" alt="朝日奈 優" loading="lazy"></figure>
       <figure class="p2"><img src="assets/yu/glasses.jpg" alt="眼鏡をかけた朝日奈 優" loading="lazy"></figure>
@@ -231,65 +273,62 @@
     <img src="assets/yu/studio.jpg" alt="" data-scene="2" loading="lazy" style="object-position:38% 20%">
     <img src="assets/yu/khaki.jpg" alt="" data-scene="3" loading="lazy">
     <img src="assets/yu/glasses.jpg" alt="" data-scene="4" loading="lazy">
-    <div class="story__count"><span id="story-no">01</span> / 05</div>
+    <div class="story__count"><span id="story-no">01</span>/ 05</div>
   </div>
   <div class="story__steps">
     <div class="story__intro">
-      <p class="head__no">04</p>
-      <h2>俺の話</h2>
+      <div class="head"><p class="head__big"><span>Story</span></p><p class="head__sub"><b>04</b>俺の話</p></div>
       <p>スクロールすると、話が進みます。</p>
     </div>
-    <article class="step" data-scene="0">
+    <article class="step" data-scene="0"><div class="step__card">
       <p class="step__when">2019</p>
       <h3>何者でもないまま、東京へ</h3>
       <p>静岡で育って、大学をやめて東京に出てきた。決めていたのは「ここで変わる」ってことだけ。</p>
-    </article>
-    <article class="step" data-scene="1">
-      <p class="step__when">歌舞伎町</p>
+    </div></article>
+    <article class="step" data-scene="1"><div class="step__card">
+      <p class="step__when">Kabukicho</p>
       <h3>右も左も分からないところから</h3>
       <p>最初は何もできなかった。目の前の一人とちゃんと話す。それだけを毎晩くり返した。</p>
-    </article>
-    <article class="step" data-scene="2">
-      <p class="step__when">VALHALLA</p>
+    </div></article>
+    <article class="step" data-scene="2"><div class="step__card">
+      <p class="step__when">Valhalla</p>
       <h3>勝った夜も、負けた回も</h3>
       <p>Group Yggdrasill の VALHALLA で。グループの YouTube の接客バトルにも出た。上の動画に、そのまま残ってる。</p>
-    </article>
-    <article class="step" data-scene="3">
-      <p class="step__when">バジひな</p>
+    </div></article>
+    <article class="step" data-scene="3"><div class="step__card">
+      <p class="step__when">Bajihina</p>
       <h3>相方と、外に出していく</h3>
       <p>場地圭介と2人で TikTok を始めた。店の中だけじゃ見せられない顔を、ここで出してる。</p>
-    </article>
-    <article class="step" data-scene="4">
-      <p class="step__when">これから</p>
+    </div></article>
+    <article class="step" data-scene="4"><div class="step__card">
+      <p class="step__when">Next</p>
       <h3>店の外でも、つくる</h3>
       <p>夜の仕事を土台にして、自分の手で新しいものをつくり始めてる。その途中も、ここに足していく。</p>
-    </article>
+    </div></article>
   </div>
 </section>
 
 <div class="wrap">
   <section class="block" id="about">
-    <div class="head"><span class="head__no">05</span><h2>プロフィール</h2></div>
-    <div class="profile">
-      <dl class="facts">
-        <div><dt>お店</dt><dd>VALHALLA（Group Yggdrasill）</dd></div>
-        <div><dt>好きなもの</dt><dd>ラーメン巡り、競艇、服</dd></div>
-        <div><dt>いま勉強中</dt><dd>日本酒（日本酒検定）</dd></div>
-        <div><dt>相方</dt><dd>場地圭介（バジ）</dd></div>
-      </dl>
-    </div>
+    <div class="head"><p class="head__big"><span>Profile</span></p><p class="head__sub"><b>05</b>プロフィール</p></div>
+    <dl class="facts" data-stagger>
+      <div><dt>お店</dt><dd>VALHALLA（Group Yggdrasill）</dd></div>
+      <div><dt>好きなもの</dt><dd>ラーメン巡り、競艇、服</dd></div>
+      <div><dt>いま勉強中</dt><dd>日本酒（日本酒検定）</dd></div>
+      <div><dt>相方</dt><dd>場地圭介（バジ）</dd></div>
+    </dl>
   </section>
 
   <section class="block" id="qa" hidden>
-    <div class="head"><span class="head__no">06</span><h2>一問一答</h2></div>
-    <p class="note">初回の席でよく聞かれること、先に答えておきます。</p>
-    <dl class="qa" id="qa-list"></dl>
+    <div class="head"><p class="head__big"><span>Q&amp;A</span></p><p class="head__sub"><b>06</b>一問一答</p></div>
+    <p class="note" data-reveal>初回の席でよく聞かれること、先に答えておきます。</p>
+    <dl class="qa" id="qa-list" data-stagger></dl>
   </section>
 
   <section class="block" id="price">
-    <div class="head"><span class="head__no">07</span><h2>料金</h2></div>
-    <p class="note">指名で来てもらうときの料金です。表示はすべてサービス料・税込みです。</p>
-    <div class="price">
+    <div class="head"><p class="head__big"><span>System</span></p><p class="head__sub"><b>07</b>料金</p></div>
+    <p class="note" data-reveal>指名で来てもらうときの料金です。表示はすべてサービス料・税込みです。</p>
+    <div class="price" data-stagger>
       <div class="plan plan--main">
         <p class="plan__name">飲み放題<span>メインフロア</span></p>
         <p class="plan__yen">90分 <b>30,000</b>円</p>
@@ -314,7 +353,7 @@
         <p class="plan__yen"><b>35,000</b>円〜</p>
       </div>
     </div>
-    <dl class="facts price__info">
+    <dl class="facts price__info" data-stagger>
       <div><dt>営業時間</dt><dd>19時半〜24時45分</dd></div>
       <div><dt>定休日</dt><dd>火曜日（例外あり）</dd></div>
       <div><dt>持ち物</dt><dd>顔写真つきの身分証を1点（運転免許証・マイナンバーカード・パスポート）</dd></div>
@@ -322,24 +361,24 @@
   </section>
 
   <section class="block" id="shop">
-    <div class="head"><span class="head__no">08</span><h2>会いに来る</h2></div>
-    <div class="shop">
+    <div class="head"><p class="head__big"><span>Access</span></p><p class="head__sub"><b>08</b>会いに来る</p></div>
+    <div class="shop" data-stagger>
       <div>
         <p class="shop__name">VALHALLA</p>
         <p class="shop__addr">東京都新宿区歌舞伎町2-28-2 東松ビル B1F</p>
         <p class="shop__dm">御指名は Instagram の DM まで。</p>
       </div>
       <div class="shop__btns">
-        <a class="btn" href="https://ig.me/m/valhalla_yuu" target="_blank" rel="noopener">DM を送る</a>
+        <a class="btn" href="https://ig.me/m/valhalla_yuu" target="_blank" rel="noopener">DM を送る →</a>
         <a class="btn btn--line" href="https://www.google.com/maps/search/?api=1&query=%E6%9D%B1%E4%BA%AC%E9%83%BD%E6%96%B0%E5%AE%BF%E5%8C%BA%E6%AD%8C%E8%88%9E%E4%BC%8E%E7%94%BA2-28-2" target="_blank" rel="noopener">地図をひらく</a>
       </div>
     </div>
-    <p class="age">ご来店は20歳以上の方に限ります。</p>
+    <p class="age" data-reveal>ご来店は20歳以上の方に限ります。</p>
   </section>
 
 </div>
 
-<footer><div class="wrap">© Yu Asahina</div></footer>
+<footer><div class="wrap">© YU ASAHINA — VALHALLA</div></footer>
 
 <script>
   // ここを書き換えればページに反映される。url が空の行は表示しない
@@ -459,14 +498,34 @@
   }, { rootMargin: "-45% 0px -45% 0px" });
   steps.forEach(s => io.observe(s));
 
-  // 一番上の読んだ量のバー
-  const bar = document.getElementById("progress");
+  // 上の帯：読んだ量のバーと、ヒーローを過ぎたら黒く塗る
+  const progress = document.getElementById("progress");
+  const topBar = document.getElementById("bar");
   const onScroll = () => {
     const max = document.documentElement.scrollHeight - innerHeight;
-    bar.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`;
+    progress.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`;
+    topBar.classList.toggle("is-solid", scrollY > innerHeight * 0.6);
   };
   addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+
+  // スクロールで出てくる：見出し・写真・[data-reveal] が画面に入ったら is-in を付ける（一度だけ）
+  // data-stagger の子は横に並ぶ順に少しずつ遅らせる
+  document.querySelectorAll("[data-stagger]").forEach(p => {
+    [...p.children].forEach((c, i) => {
+      c.setAttribute("data-reveal", "");
+      c.style.setProperty("--d", `${(i % 4) * 90}ms`);
+    });
+  });
+  document.querySelectorAll(".photos figure").forEach((f, i) => f.style.setProperty("--d", `${(i % 2) * 120}ms`));
+  const reveal = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      en.target.classList.add("is-in");
+      reveal.unobserve(en.target);
+    });
+  }, { rootMargin: "0px 0px -12% 0px" });
+  document.querySelectorAll(".head, [data-reveal], .photos figure").forEach(el => reveal.observe(el));
 </script>
 </body>
 </html>
