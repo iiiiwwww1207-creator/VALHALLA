@@ -321,7 +321,7 @@
   </section>
 
   <section class="block" id="store" hidden>
-    <div class="head"><p class="head__big"><span>Shop</span></p><p class="head__sub"><b></b>グッズ・イベント</p></div>
+    <div class="head"><p class="head__big"><span>Shop</span></p><p class="head__sub"><b></b>商品・イベント</p></div>
     <p class="note" data-reveal>買う・予約するボタンから、外部の決済ページに進みます。</p>
     <div class="shop-items" id="shop-items" data-stagger></div>
     <p class="shop-legal" id="shop-legal" data-reveal></p>
@@ -497,7 +497,7 @@
 
   // SHOP：商品・イベントを1つ1行で足す。空なら SHOP の欄ごと出さない
   // who: 誰の物か（["yu"] / ["baji"] / ["yu","baji"]）。2人の物は両方のページに出る
-  // kind: "goods"（グッズ）/ "event"（イベント・予約）
+  // kind: "goods"（商品。数珠などの物）/ "event"（イベント・予約）
   // url: Stripe の支払いリンクや BASE の商品ページなど、決済できるページの URL。空なら「準備中」
   // soldOut: true で売り切れ表示。date はイベントの日付（表示用の文字）
   const ITEMS = [
@@ -678,7 +678,7 @@
     $("qa-list").innerHTML = answered.map(([q, a]) => `<div><dt>${esc(q)}</dt><dd>${esc(a)}</dd></div>`).join("");
     $("qa").hidden = !answered.length;
 
-    const KIND = { goods: "GOODS", event: "EVENT" };
+    const KIND = { goods: "ITEM", event: "EVENT" };
     const items = ITEMS.filter(it => it.who.includes(who));
     const itemCard = it => {
       const both = it.who.length > 1;
