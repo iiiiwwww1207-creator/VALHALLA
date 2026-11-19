@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>朝日奈 優 | Yu Asahina</title>
-<meta name="description" content="歌舞伎町 VALHALLA の朝日奈 優。Instagram・TikTok・出演動画をまとめたページ。">
+<title>朝日奈 優 | バジひな</title>
+<meta name="description" content="歌舞伎町 VALHALLA の朝日奈 優と場地 圭介（バジひな）。Instagram・TikTok・出演動画・料金・空き状況をまとめたページ。">
 <meta name="theme-color" content="#0B0809">
-<meta property="og:title" content="朝日奈 優 | Yu Asahina">
+<meta property="og:title" content="バジひな | 朝日奈 優 × 場地 圭介">
 <meta property="og:description" content="Instagram・TikTok・出演動画をまとめたページ。">
 <meta property="og:image" content="assets/yu/hero.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,7 +41,13 @@
   /* ---- 上の帯（ロゴと DM） ---- */
   .bar{position:fixed;inset:0 0 auto 0;z-index:20;height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 0 0 var(--gutter);transition:background-color .4s ease,border-color .4s ease;border-bottom:1px solid transparent}
   .bar.is-solid{background:rgba(11,8,9,.94);border-color:var(--rule)}
-  .bar__logo{font-family:var(--display);font-weight:500;font-size:15px;letter-spacing:.32em;text-decoration:none}
+  .who{display:flex;align-self:stretch;margin-left:calc(var(--gutter) * -1 + 6px)}
+  .who__btn{all:unset;cursor:pointer;position:relative;display:flex;align-items:center;padding:0 14px;font-family:var(--display);font-weight:500;font-size:15px;letter-spacing:.3em;color:var(--mute);transition:color .25s ease}
+  .who__btn::after{content:"";position:absolute;left:14px;right:calc(14px + .3em);bottom:12px;height:2px;background:var(--crimson-hi);transform:scaleX(0);transform-origin:0 50%;transition:transform .4s var(--ease)}
+  .who__btn[aria-pressed="true"]{color:var(--ink)}
+  .who__btn[aria-pressed="true"]::after{transform:scaleX(1)}
+  .who__btn:hover{color:var(--ink)}
+  .who__btn:focus-visible{outline:2px solid var(--crimson-hi);outline-offset:-6px}
   .bar__dm{align-self:stretch;display:flex;align-items:center;gap:10px;padding:0 22px;background:var(--crimson);color:#fff;text-decoration:none;font-family:var(--display);font-size:14px;letter-spacing:.18em;transition:background-color .2s ease}
   .bar__dm:hover{background:var(--crimson-hi)}
   .progress{position:absolute;left:0;bottom:-1px;height:2px;width:100%;background:var(--crimson-hi);transform-origin:0 50%;transform:scaleX(0)}
@@ -66,6 +72,9 @@
     .hero::after{background:linear-gradient(90deg,var(--bg) 36%,rgba(11,8,9,.4) 52%,rgba(11,8,9,0) 70%),linear-gradient(180deg,rgba(11,8,9,.5) 0%,rgba(11,8,9,0) 20%,rgba(11,8,9,0) 75%,var(--bg) 100%)}
     .hero__text{max-width:none;margin:0;padding-left:max(var(--gutter),calc((100vw - 1160px)/2 + var(--gutter)))}
   }
+  .hero__switch{all:unset;cursor:pointer;margin-top:26px;font-family:var(--display);font-size:13px;letter-spacing:.24em;color:var(--crimson-hi);border-bottom:1px solid currentColor;padding-bottom:4px;animation:fade 1.2s 1.15s both}
+  .hero__switch:hover{color:var(--ink)}
+  .hero__switch:focus-visible{outline:2px solid var(--crimson-hi);outline-offset:4px}
   .scroll-cue{position:absolute;right:var(--gutter);bottom:clamp(40px,8svh,80px);z-index:1;font-family:var(--display);font-size:11px;letter-spacing:.3em;color:var(--mute);writing-mode:vertical-rl;display:flex;align-items:center;gap:12px}
   .scroll-cue::after{content:"";width:1px;height:64px;background:linear-gradient(var(--crimson-hi),transparent);animation:cue 2.2s ease-in-out infinite}
   @keyframes heroIn{from{transform:scale(1.14);filter:brightness(.4)}to{transform:scale(1);filter:brightness(1)}}
@@ -111,6 +120,8 @@
   .videos{display:grid;gap:28px 14px;grid-template-columns:1fr 1fr}
   @media (min-width:760px){.videos{grid-template-columns:repeat(3,1fr);gap:40px 24px}}
   .v--main{grid-column:1/-1}
+  .videos--solo{margin-top:28px}
+  .videos--solo:empty{display:none}
   .v-group{grid-column:1/-1;font-family:var(--mincho);font-weight:700;font-size:17px;letter-spacing:.06em;padding:30px 0 0 14px;border-left:2px solid var(--crimson);display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:12px}
   .v-group span{white-space:nowrap;font-family:var(--display);font-weight:300;font-size:13px;letter-spacing:.14em;color:var(--mute)}
   .v__frame{position:relative;aspect-ratio:16/9;background:#000;overflow:hidden}
@@ -237,20 +248,24 @@
 <body>
 
 <div class="bar" id="bar">
-  <a class="bar__logo" href="#top">YU ASAHINA</a>
-  <a class="bar__dm" href="https://ig.me/m/valhalla_yuu" target="_blank" rel="noopener">DM</a>
+  <nav class="who" aria-label="表示する人">
+    <button type="button" class="who__btn" data-p="yu" aria-pressed="true">YU</button>
+    <button type="button" class="who__btn" data-p="baji" aria-pressed="false">BAJI</button>
+  </nav>
+  <a class="bar__dm" data-dm href="https://ig.me/m/valhalla_yuu" target="_blank" rel="noopener">DM</a>
   <div class="progress" id="progress" aria-hidden="true"></div>
 </div>
 
 <header class="hero" id="top">
   <div class="hero__photo">
-    <img src="assets/yu/hero.jpg" alt="朝日奈 優" fetchpriority="high">
+    <img id="hero-img" src="assets/yu/hero.jpg" alt="朝日奈 優" fetchpriority="high">
   </div>
   <div class="hero__text">
     <p class="place">KABUKICHO <b>／</b> VALHALLA</p>
-    <h1 class="name"><span><i>朝日奈</i></span><span><i><em>優</em></i></span></h1>
-    <p class="name-en">YU ASAHINA</p>
-    <p class="lead">初回の短い時間じゃ話しきれないから、<br>俺のことはここにまとめておく。</p>
+    <h1 class="name" id="hero-name"><span><i>朝日奈</i></span><span><i><em>優</em></i></span></h1>
+    <p class="name-en" id="hero-en">YU ASAHINA</p>
+    <p class="lead">初回の短い時間じゃ話しきれないから、<br>ここにまとめておく。</p>
+    <button type="button" class="hero__switch" id="hero-switch"></button>
   </div>
   <div class="scroll-cue" aria-hidden="true">SCROLL</div>
 </header>
@@ -265,31 +280,18 @@
   <section class="block" id="videos">
     <div class="head"><p class="head__big"><span>Movie</span></p><p class="head__sub"><b>02</b>出ている動画</p></div>
     <p class="note" data-reveal>出ている YouTube をまとめた。タップで再生。</p>
-    <div class="videos" id="video-list" data-stagger></div>
+    <div class="videos" id="video-pair" data-stagger></div>
+    <div class="videos videos--solo" id="video-solo" data-stagger></div>
   </section>
 
   <section class="block" id="photos">
     <div class="head"><p class="head__big"><span>Photo</span></p><p class="head__sub"><b>03</b>写真</p></div>
-    <div class="photos">
-      <figure class="p1"><img src="assets/yu/studio.jpg" alt="朝日奈 優" loading="lazy"></figure>
-      <figure class="p2"><img src="assets/yu/glasses.jpg" alt="眼鏡をかけた朝日奈 優" loading="lazy"></figure>
-      <figure class="p3"><img src="assets/yu/beach.jpg" alt="海辺の朝日奈 優" loading="lazy"></figure>
-      <figure class="p4"><img src="assets/yu/crouch.jpg" alt="朝日奈 優" loading="lazy"></figure>
-      <figure class="p5"><img src="assets/yu/khaki.jpg" alt="朝日奈 優" loading="lazy"></figure>
-    </div>
+    <div class="photos" id="photo-list"></div>
   </section>
 
-</main>
-
-<div class="wrap">
   <section class="block" id="about">
     <div class="head"><p class="head__big"><span>Profile</span></p><p class="head__sub"><b>04</b>プロフィール</p></div>
-    <dl class="facts" data-stagger>
-      <div><dt>お店</dt><dd>VALHALLA（Group Yggdrasill）</dd></div>
-      <div><dt>好きなもの</dt><dd>ラーメン巡り、競艇、服</dd></div>
-      <div><dt>いま勉強中</dt><dd>日本酒（日本酒検定）</dd></div>
-      <div><dt>相方</dt><dd>場地圭介（バジ）</dd></div>
-    </dl>
+    <dl class="facts" id="facts" data-stagger></dl>
   </section>
 
   <section class="block" id="qa" hidden>
@@ -335,7 +337,7 @@
 
   <section class="block" id="schedule">
     <div class="head"><p class="head__big"><span>Schedule</span></p><p class="head__sub"><b>07</b>空き状況</p></div>
-    <p class="note" data-reveal>来たい日をタップすると、その日で DM を送れます。</p>
+    <p class="note" data-reveal><span data-name></span>の空き状況です。来たい日をタップすると、その日で DM を送れます。</p>
     <div class="cal__legend" data-reveal>
       <span><i class="st-open">◎</i>空いてる</span>
       <span><i class="st-few">△</i>少なめ</span>
@@ -354,7 +356,7 @@
     <div class="cal__pick" id="cal-pick" hidden>
       <p class="cal__date" id="cal-date"></p>
       <p class="cal__msg" id="cal-msg"></p>
-      <div><a class="btn" id="cal-dm" href="https://ig.me/m/valhalla_yuu" target="_blank" rel="noopener">この日で DM を送る →</a></div>
+      <div><a class="btn" id="cal-dm" data-dm href="https://ig.me/m/valhalla_yuu" target="_blank" rel="noopener">この日で DM を送る →</a></div>
     </div>
     <p class="cal__updated" id="cal-updated"></p>
   </section>
@@ -368,53 +370,119 @@
         <p class="shop__dm">御指名は Instagram の DM まで。</p>
       </div>
       <div class="shop__btns">
-        <a class="btn" href="https://ig.me/m/valhalla_yuu" target="_blank" rel="noopener">DM を送る →</a>
+        <a class="btn" data-dm href="https://ig.me/m/valhalla_yuu" target="_blank" rel="noopener"><span data-name></span>に DM を送る →</a>
         <a class="btn btn--line" href="https://www.google.com/maps/search/?api=1&query=%E6%9D%B1%E4%BA%AC%E9%83%BD%E6%96%B0%E5%AE%BF%E5%8C%BA%E6%AD%8C%E8%88%9E%E4%BC%8E%E7%94%BA2-28-2" target="_blank" rel="noopener">地図をひらく</a>
       </div>
     </div>
     <p class="age" data-reveal>ご来店は20歳以上の方に限ります。</p>
   </section>
 
-</div>
+</main>
 
-<footer><div class="wrap">© YU ASAHINA — VALHALLA</div></footer>
+<footer><div class="wrap">© BAJIHINA — 朝日奈 優 × 場地 圭介 — VALHALLA</div></footer>
 
 <script>
-  // ここを書き換えればページに反映される。url が空の行は表示しない
-  const LINKS = [
-    { svc: "Instagram", name: "朝日奈 優", handle: "@valhalla_yuu", url: "https://www.instagram.com/valhalla_yuu/" },
-    { svc: "TikTok", name: "バジひな（場地圭介と2人で）", handle: "@valhalla_0409", url: "https://www.tiktok.com/@valhalla_0409" },
+  // ===== ここを書き換えればページに反映される =====
+
+  // 2人それぞれの情報。url が空のリンクは表示しない
+  const PEOPLE = {
+    yu: {
+      name: "朝日奈 優", short: "優", jp: ["朝日奈", "優"], en: "YU ASAHINA",
+      ig: "valhalla_yuu",
+      hero: "assets/yu/hero.jpg",
+      photos: [
+        ["assets/yu/studio.jpg", ""], ["assets/yu/glasses.jpg", "眼鏡"], ["assets/yu/beach.jpg", "海辺"],
+        ["assets/yu/crouch.jpg", ""], ["assets/yu/khaki.jpg", ""],
+      ],
+      links: [
+        { svc: "Instagram", name: "朝日奈 優", handle: "@valhalla_yuu", url: "https://www.instagram.com/valhalla_yuu/" },
+        { svc: "TikTok", name: "朝日奈 優", handle: "@yutya1207", url: "https://www.tiktok.com/@yutya1207" },
+        { svc: "X", name: "朝日奈 優", handle: "@ygd_yuyuyu", url: "https://x.com/ygd_yuyuyu" },
+      ],
+      facts: [
+        ["お店", "VALHALLA（Group Yggdrasill）"],
+        ["好きなもの", "ラーメン巡り、競艇、服"],
+        ["いま勉強中", "日本酒（日本酒検定）"],
+        ["ホストを始めたきっかけ", "姉が勝手に応募した"],
+        ["相方", "場地 圭介（バジ）"],
+      ],
+    },
+    baji: {
+      name: "場地 圭介", short: "圭介", jp: ["場地", "圭介"], en: "KEISUKE BAJI",
+      ig: "valhalla_baji",
+      hero: "assets/baji/hero.jpg",
+      photos: [
+        ["assets/baji/street.jpg", "横丁"], ["assets/baji/glasses.jpg", "眼鏡"], ["assets/baji/leopard.jpg", ""],
+        ["assets/baji/squat.jpg", ""], ["assets/baji/black.jpg", ""],
+      ],
+      links: [
+        { svc: "Instagram", name: "場地 圭介", handle: "@valhalla_baji", url: "https://www.instagram.com/valhalla_baji/" },
+        { svc: "TikTok", name: "場地 圭介", handle: "@valhalla_baji", url: "https://www.tiktok.com/@valhalla_baji" },
+        { svc: "X", name: "場地 圭介", handle: "@ROUGE_SHIN_", url: "https://x.com/ROUGE_SHIN_" },
+      ],
+      facts: [
+        ["お店", "VALHALLA（Group Yggdrasill）"],
+        ["誕生日", "8月22日（しし座）"],
+        ["身長", "180cm"],
+        ["血液型", "A型"],
+        ["ホストを始めたきっかけ", "コロナショック"],
+        ["相方", "朝日奈 優（ゆう）"],
+      ],
+    },
+  };
+
+  // 2人どちらのページにも出すリンク
+  const SHARED_LINKS = [
+    { svc: "TikTok", name: "バジひな（2人で）", handle: "@valhalla_0409", url: "https://www.tiktok.com/@valhalla_0409" },
     { svc: "YouTube", name: "Mio Yashiro TV -ANOTHER STORY-", handle: "グループのチャンネル", url: "https://www.youtube.com/@MioYashiroTV-ANOTHERSTORY-" },
   ];
 
   // 出演を確かめた回だけ載せる（タイトルか概要欄に名前がある回）。tools/find_yu_videos.py で洗い出した
-  // main: 一番上に大きく出す1本。それ以外はチャンネルごと・新しい順
+  // who: 出ている人。2人とも入っている回は「2人で出ている」にまとめる。main: 一番上に大きく出す1本
   const VIDEOS = [
-    { ch: "Mio Yashiro TV -ANOTHER STORY-", id: "Frhb4q94_wg", main: true, title: "【社美緒×朝日奈優×場地圭介】ユグドラシル古参の二人が社美緒の昔話を暴露！？本人も忘れているとんでもエピソードとは…？" },
-    { ch: "Mio Yashiro TV -ANOTHER STORY-", id: "uBk2k5pBI7c", title: "【接客王は誰だ⁉︎】朝日奈優、女の子を引き込めず…" },
-    { ch: "Mio Yashiro TV -ANOTHER STORY-", id: "yhx1eQjbGLI", title: "【接客王は誰だ⁉︎】朝日奈優VS月咲繭の結果は…" },
-    { ch: "Mio Yashiro TV -ANOTHER STORY-", id: "lmMSlz4006Y", title: "【接客王は誰だ⁉︎】朝日奈優のスキンシップがいやらしい⁉︎" },
-    { ch: "Mio Yashiro TV -ANOTHER STORY-", id: "qbTPlV1pyik", title: "「だからホスト嫌い。」デヴィ夫人の前で8人のホスト達が接客バトル！【歌舞伎町ホストピタリティ】" },
-    { ch: "階段降りたらVALHALLA", id: "gOLBelWEI2g", title: "【内部告発】冬島水月VS桜木凌のガチ喧嘩勃発！？極秘タレコミアンケートでキャストのヤバい裏の顔が次々と暴かれ現場は大騒然…！" },
-    { ch: "階段降りたらVALHALLA", id: "YUeXju9ewQQ", title: "【BARばじひな】場地圭介＆朝日奈優がBARのマスターに⁉桜木凌の意外な弱点を大暴露…" },
-    { ch: "階段降りたらVALHALLA", id: "RxNrtV-Kx0w", title: "【BARばじひな】場地圭介＆朝日奈優がBARのマスターに⁉OPからかましまくりの桜木凌が来店！！" },
-    { ch: "階段降りたらVALHALLA", id: "3bnhgPb7WWI", title: "【ガチ本音】ホストの攻略法を丸裸に。売れっ子ホストが語る「沼らせる」テクニックと黒歴史を大公開【BARばじひな】" },
-    { ch: "階段降りたらVALHALLA", id: "XUaHJAAnwMQ", title: "【VALHALLAに痛客現る⁉】最恐の姫に朝日奈優がまさかの選択…！？" },
-    { ch: "ゆっきーTV -桜威優希斗-", id: "yUdvCHNfPio", title: "【企画終了の危機!?】桜威優希斗の友達を作ろうヴァルハラ編!!朝日奈、場地の紹介で苺愛ロマが登場!!" },
-    { ch: "ゆっきーTV -桜威優希斗-", id: "6bvwzgmGVgA", title: "【ドパガキって俺の事か】ヴァルハラ朝日奈優が人生年表に参戦!!自身の人生を振り返り朝日奈とテキおじ3人の意外な関係性が明らかに…" },
-    { ch: "ゆっきーTV -桜威優希斗-", id: "ZegJQ0HbXXU", title: "【見てはいけないものを発見した】ゲストに朝日奈と場地を招きサルサフェスに参加するも、世界初の驚愕のお酒を発見する!!" },
-    { ch: "ゆっきーTV -桜威優希斗-", id: "CzulhKK-YEs", title: "「ロン毛どの位やってるの？」ヴァルハラ場地と貘、似た者同士が初対面！朝日奈優から無責任なパスを受けた場地は…" },
-    { ch: "ゆっきーTV -桜威優希斗-", id: "I9EvFOnwZRo", title: "ヴァルハラから朝日奈優がスナックテキおじへ来店し、貘の代打で橘マオが緊急出勤！" },
+    { who: ["yu", "baji"], ch: "Mio Yashiro TV -ANOTHER STORY-", id: "Frhb4q94_wg", main: true, title: "【社美緒×朝日奈優×場地圭介】ユグドラシル古参の二人が社美緒の昔話を暴露！？本人も忘れているとんでもエピソードとは…？" },
+    { who: ["yu", "baji"], ch: "ゆっきーTV -桜威優希斗-", id: "yUdvCHNfPio", title: "【企画終了の危機!?】桜威優希斗の友達を作ろうヴァルハラ編!!朝日奈、場地の紹介で苺愛ロマが登場!!" },
+    { who: ["yu", "baji"], ch: "階段降りたらVALHALLA", id: "YUeXju9ewQQ", title: "【BARばじひな】場地圭介＆朝日奈優がBARのマスターに⁉桜木凌の意外な弱点を大暴露…" },
+    { who: ["yu", "baji"], ch: "階段降りたらVALHALLA", id: "RxNrtV-Kx0w", title: "【BARばじひな】場地圭介＆朝日奈優がBARのマスターに⁉OPからかましまくりの桜木凌が来店！！" },
+    { who: ["yu", "baji"], ch: "階段降りたらVALHALLA", id: "3bnhgPb7WWI", title: "【ガチ本音】ホストの攻略法を丸裸に。売れっ子ホストが語る「沼らせる」テクニックと黒歴史を大公開【BARばじひな】" },
+    { who: ["yu", "baji"], ch: "ゆっきーTV -桜威優希斗-", id: "ZegJQ0HbXXU", title: "【見てはいけないものを発見した】ゲストに朝日奈と場地を招きサルサフェスに参加するも、世界初の驚愕のお酒を発見する!!" },
+    { who: ["yu", "baji"], ch: "ゆっきーTV -桜威優希斗-", id: "CzulhKK-YEs", title: "「ロン毛どの位やってるの？」ヴァルハラ場地と貘、似た者同士が初対面！朝日奈優から無責任なパスを受けた場地は…" },
+    { who: ["yu"], ch: "階段降りたらVALHALLA", id: "gOLBelWEI2g", title: "【内部告発】冬島水月VS桜木凌のガチ喧嘩勃発！？極秘タレコミアンケートでキャストのヤバい裏の顔が次々と暴かれ現場は大騒然…！" },
+    { who: ["yu"], ch: "ゆっきーTV -桜威優希斗-", id: "6bvwzgmGVgA", title: "【ドパガキって俺の事か】ヴァルハラ朝日奈優が人生年表に参戦!!自身の人生を振り返り朝日奈とテキおじ3人の意外な関係性が明らかに…" },
+    { who: ["yu"], ch: "階段降りたらVALHALLA", id: "XUaHJAAnwMQ", title: "【VALHALLAに痛客現る⁉】最恐の姫に朝日奈優がまさかの選択…！？" },
+    { who: ["yu"], ch: "Mio Yashiro TV -ANOTHER STORY-", id: "uBk2k5pBI7c", title: "【接客王は誰だ⁉︎】朝日奈優、女の子を引き込めず…" },
+    { who: ["yu"], ch: "Mio Yashiro TV -ANOTHER STORY-", id: "yhx1eQjbGLI", title: "【接客王は誰だ⁉︎】朝日奈優VS月咲繭の結果は…" },
+    { who: ["yu"], ch: "Mio Yashiro TV -ANOTHER STORY-", id: "lmMSlz4006Y", title: "【接客王は誰だ⁉︎】朝日奈優のスキンシップがいやらしい⁉︎" },
+    { who: ["yu"], ch: "Mio Yashiro TV -ANOTHER STORY-", id: "qbTPlV1pyik", title: "「だからホスト嫌い。」デヴィ夫人の前で8人のホスト達が接客バトル！【歌舞伎町ホストピタリティ】" },
+    { who: ["yu"], ch: "ゆっきーTV -桜威優希斗-", id: "I9EvFOnwZRo", title: "ヴァルハラから朝日奈優がスナックテキおじへ来店し、貘の代打で橘マオが緊急出勤！" },
+    { who: ["baji"], ch: "ゆっきーTV -桜威優希斗-", id: "1BsmzUsI7Lw", title: "【この街では人情を信じるな】人生の半分を新宿で過ごした場地圭介が耐え続け苦労してきた自身の半生を語る!!" },
   ];
 
-  const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  // 一問一答：答えを入れた質問だけ出す（全部空ならこの欄ごと出さない）
+  const QUESTIONS = [
+    "呼び方は？", "出身は？", "誕生日は？",
+    "好きな食べ物", "苦手な食べ物", "好きなお酒", "休みの日は何してる？", "最近ハマってること", "好きな服・ブランド", "嫌いなこと・苦手なこと",
+    "ホストになった理由", "接客で大事にしてること", "席でどんな話をするのが好き？", "お酒が弱くても大丈夫？", "初めて来る人に一言",
+    "自分を一言でいうと", "よく言われるギャップ", "タトゥーに込めた意味", "これから叶えたいこと",
+  ];
+  const ANSWERS = {
+    yu: {},   // 例: { "呼び方は？": "ゆう" }
+    baji: {},
+  };
 
-  document.getElementById("links").innerHTML = LINKS.filter(l => l.url).map(l => `
-    <li><a href="${esc(l.url)}" target="_blank" rel="noopener">
-      <span class="svc">${esc(l.svc)}</span>
-      <span class="handle"><b>${esc(l.name)}</b>${esc(l.handle)}</span>
-      <span class="open">ひらく</span>
-    </a></li>`).join("");
+  // 空き状況："YYYY-MM-DD": "open"（空いてる）/ "few"（少なめ）/ "full"（埋まってる）/ "off"（休み）
+  // 書いていない日は「未定」。火曜は店休日だが、ここに書けばその日だけ上書きできる（例外の営業日）
+  const SCHEDULE_UPDATED = "";
+  const SCHEDULE = {
+    yu: {},
+    baji: {},
+  };
+
+  // ===== ここから下は仕組み =====
+
+  const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const $ = id => document.getElementById(id);
+  let who = new URLSearchParams(location.search).get("p") === "baji" ? "baji" : "yu";
 
   // サムネだけ先に出して、押されたら YouTube を読み込む（ページを軽く保つため）
   const card = v => `
@@ -426,20 +494,15 @@
         </button>
       </div>
       <div class="v__meta">
-        ${v.main ? `<p class="v__ch">${esc(v.ch)}</p>` : ""}
+        <p class="v__ch">${esc(v.ch)}</p>
         <h3 class="v__title">${esc(v.title)}</h3>
       </div>
     </article>`;
-  const rest = VIDEOS.filter(v => !v.main);
-  const channels = [...new Set(rest.map(v => v.ch))];
-  document.getElementById("video-list").innerHTML =
-    VIDEOS.filter(v => v.main).map(card).join("") +
-    channels.map(ch => {
-      const list = rest.filter(v => v.ch === ch);
-      return `<h3 class="v-group">${esc(ch)}<span>${list.length}本</span></h3>` + list.map(card).join("");
-    }).join("");
+  const group = (label, list) => list.length ? `<h3 class="v-group">${label}<span>${list.length}本</span></h3>` + list.map(card).join("") : "";
+  const pair = VIDEOS.filter(v => v.who.length > 1);
+  $("video-pair").innerHTML = group("2人で出ている", pair);
 
-  document.getElementById("video-list").addEventListener("click", e => {
+  document.querySelectorAll(".videos").forEach(list => list.addEventListener("click", e => {
     const btn = e.target.closest("button[data-id]");
     if (!btn) return;
     const f = document.createElement("iframe");
@@ -448,46 +511,9 @@
     f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
     f.allowFullscreen = true;
     btn.replaceWith(f);
-  });
+  }));
 
-  // 一問一答：答えを入れた質問だけ出す（全部空ならこの欄ごと出さない）
-  const QA = [
-    // 基本
-    { q: "呼び方は？", a: "" },
-    { q: "出身は？", a: "" },
-    { q: "誕生日は？", a: "" },
-    // 好き・嫌い
-    { q: "好きな食べ物", a: "" },
-    { q: "苦手な食べ物", a: "" },
-    { q: "好きなお酒", a: "" },
-    { q: "休みの日は何してる？", a: "" },
-    { q: "最近ハマってること", a: "" },
-    { q: "好きな服・ブランド", a: "" },
-    { q: "嫌いなこと・苦手なこと", a: "" },
-    // 仕事
-    { q: "ホストになった理由", a: "" },
-    { q: "接客で大事にしてること", a: "" },
-    { q: "席でどんな話をするのが好き？", a: "" },
-    { q: "お酒が弱くても大丈夫？", a: "" },
-    { q: "初めて来る人に一言", a: "" },
-    // 中身
-    { q: "自分を一言でいうと", a: "" },
-    { q: "よく言われるギャップ", a: "" },
-    { q: "タトゥーに込めた意味", a: "" },
-    { q: "これから叶えたいこと", a: "" },
-  ];
-  const answered = QA.filter(x => x.a.trim());
-  if (answered.length) {
-    document.getElementById("qa-list").innerHTML = answered.map(x => `<div><dt>${esc(x.q)}</dt><dd>${esc(x.a)}</dd></div>`).join("");
-    document.getElementById("qa").hidden = false;
-  }
-
-  // 空き状況：ここを書き換えればカレンダーに反映される
-  // "YYYY-MM-DD": "open"（空いてる）/ "few"（少なめ）/ "full"（埋まってる）/ "off"（休み）
-  // 書いていない日は「未定」。火曜は店休日だが、ここに書けばその日だけ上書きできる（例外の営業日）
-  const SCHEDULE_UPDATED = "";
-  const SCHEDULE = {
-  };
+  // ---- 空き状況のカレンダー ----
   const STATUS = {
     open: { mark: "◎", label: "空いてる", msg: "この日は空いてます。" },
     few:  { mark: "△", label: "少なめ", msg: "この日は少し埋まってます。早めに DM ください。" },
@@ -498,21 +524,21 @@
   const WD = ["日", "月", "火", "水", "木", "金", "土"];
   const pad = n => String(n).padStart(2, "0");
   const keyOf = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-  const statusOf = d => SCHEDULE[keyOf(d)] || (d.getDay() === 2 ? "off" : "none");
+  const statusOf = d => SCHEDULE[who][keyOf(d)] || (d.getDay() === 2 ? "off" : "none");
 
   const today = new Date(); today.setHours(0, 0, 0, 0);
   const firstMonth = new Date(today.getFullYear(), today.getMonth(), 1);
   const MONTHS_AHEAD = 2; // 今月＋2か月先まで見せる
   let shown = new Date(firstMonth);
   let picked = null;
-  const grid = document.getElementById("cal-grid");
+  const grid = $("cal-grid");
 
   const drawCalendar = () => {
     const y = shown.getFullYear(), m = shown.getMonth();
-    document.getElementById("cal-month").innerHTML = `${y}.${pad(m + 1)}<small>${m + 1}月</small>`;
+    $("cal-month").innerHTML = `${y}.${pad(m + 1)}<small>${m + 1}月</small>`;
     const offset = (y - firstMonth.getFullYear()) * 12 + m - firstMonth.getMonth();
-    document.getElementById("cal-prev").disabled = offset <= 0;
-    document.getElementById("cal-next").disabled = offset >= MONTHS_AHEAD;
+    $("cal-prev").disabled = offset <= 0;
+    $("cal-next").disabled = offset >= MONTHS_AHEAD;
     let html = WD.map(w => `<div class="cal__wd">${w}</div>`).join("");
     html += '<div class="cal__day is-blank"></div>'.repeat(new Date(y, m, 1).getDay());
     const last = new Date(y, m + 1, 0).getDate();
@@ -536,50 +562,28 @@
     picked = new Date(y, m - 1, d);
     const st = statusOf(picked);
     const label = `${m}月${d}日（${WD[picked.getDay()]}）`;
-    document.getElementById("cal-date").innerHTML = `${label}<span>${STATUS[st].label}</span>`;
-    document.getElementById("cal-msg").textContent = STATUS[st].msg;
-    const dm = document.getElementById("cal-dm");
-    const canAsk = st !== "off" && st !== "full";
-    dm.parentElement.hidden = !canAsk;
-    dm.dataset.text = `${label}に指名で行きたいです。`;
-    document.getElementById("cal-pick").hidden = false;
+    $("cal-date").innerHTML = `${label}<span>${STATUS[st].label}</span>`;
+    $("cal-msg").textContent = STATUS[st].msg;
+    const dm = $("cal-dm");
+    dm.parentElement.hidden = st === "off" || st === "full";
+    dm.dataset.text = `${label}に${PEOPLE[who].short}くんの指名で行きたいです。`;
+    $("cal-pick").hidden = false;
     drawCalendar();
   });
 
   // DM には文面を渡せないので、先にコピーしておいて貼り付けてもらう
-  document.getElementById("cal-dm").addEventListener("click", e => {
+  $("cal-dm").addEventListener("click", e => {
     const text = e.currentTarget.dataset.text;
     if (!text || !navigator.clipboard) return;
     navigator.clipboard.writeText(text).then(() => {
-      document.getElementById("cal-msg").textContent = `「${text}」をコピーしました。DM に貼り付けて送ってください。`;
+      $("cal-msg").textContent = `「${text}」をコピーしました。DM に貼り付けて送ってください。`;
     }).catch(() => {});
   });
+  $("cal-prev").addEventListener("click", () => { shown = new Date(shown.getFullYear(), shown.getMonth() - 1, 1); drawCalendar(); });
+  $("cal-next").addEventListener("click", () => { shown = new Date(shown.getFullYear(), shown.getMonth() + 1, 1); drawCalendar(); });
+  $("cal-updated").textContent = SCHEDULE_UPDATED ? `${SCHEDULE_UPDATED} 時点の空き状況です。` : "";
 
-  document.getElementById("cal-prev").addEventListener("click", () => { shown = new Date(shown.getFullYear(), shown.getMonth() - 1, 1); drawCalendar(); });
-  document.getElementById("cal-next").addEventListener("click", () => { shown = new Date(shown.getFullYear(), shown.getMonth() + 1, 1); drawCalendar(); });
-  document.getElementById("cal-updated").textContent = SCHEDULE_UPDATED ? `${SCHEDULE_UPDATED} 時点の空き状況です。` : "";
-  drawCalendar();
-
-  // 上の帯：読んだ量のバーと、ヒーローを過ぎたら黒く塗る
-  const progress = document.getElementById("progress");
-  const topBar = document.getElementById("bar");
-  const onScroll = () => {
-    const max = document.documentElement.scrollHeight - innerHeight;
-    progress.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`;
-    topBar.classList.toggle("is-solid", scrollY > innerHeight * 0.6);
-  };
-  addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
-
-  // スクロールで出てくる：見出し・写真・[data-reveal] が画面に入ったら is-in を付ける（一度だけ）
-  // data-stagger の子は横に並ぶ順に少しずつ遅らせる
-  document.querySelectorAll("[data-stagger]").forEach(p => {
-    [...p.children].forEach((c, i) => {
-      c.setAttribute("data-reveal", "");
-      c.style.setProperty("--d", `${(i % 4) * 90}ms`);
-    });
-  });
-  document.querySelectorAll(".photos figure").forEach((f, i) => f.style.setProperty("--d", `${(i % 2) * 120}ms`));
+  // ---- スクロールで出てくる：見出し・写真・[data-reveal] が画面に入ったら is-in を付ける（一度だけ） ----
   const reveal = new IntersectionObserver(entries => {
     entries.forEach(en => {
       if (!en.isIntersecting) return;
@@ -587,7 +591,86 @@
       reveal.unobserve(en.target);
     });
   }, { rootMargin: "0px 0px -12% 0px" });
-  document.querySelectorAll(".head, [data-reveal], .photos figure").forEach(el => reveal.observe(el));
+  // data-stagger の子は横に並ぶ順に少しずつ遅らせる。入れ替えた中身にも付け直す
+  const armReveal = () => {
+    document.querySelectorAll("[data-stagger]").forEach(p => {
+      [...p.children].forEach((c, i) => {
+        if (c.hasAttribute("data-reveal")) return;
+        c.setAttribute("data-reveal", "");
+        c.style.setProperty("--d", `${(i % 4) * 90}ms`);
+      });
+    });
+    document.querySelectorAll(".photos figure").forEach((f, i) => f.style.setProperty("--d", `${(i % 2) * 120}ms`));
+    document.querySelectorAll(".head, [data-reveal], .photos figure").forEach(el => {
+      if (!el.classList.contains("is-in")) reveal.observe(el);
+    });
+  };
+
+  // ---- 2人の切り替え ----
+  const replay = el => { el.style.animation = "none"; void el.offsetWidth; el.style.animation = ""; };
+  const render = (first = false) => {
+    const p = PEOPLE[who];
+    const other = PEOPLE[who === "yu" ? "baji" : "yu"];
+    document.title = `${p.name} | バジひな`;
+    document.querySelectorAll(".who__btn").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.p === who)));
+    document.querySelectorAll("[data-dm]").forEach(a => { a.href = `https://ig.me/m/${p.ig}`; });
+    document.querySelectorAll("[data-name]").forEach(el => { el.textContent = p.name; });
+
+    $("hero-img").src = p.hero;
+    $("hero-img").alt = p.name;
+    $("hero-name").innerHTML = `<span><i>${p.jp[0]}</i></span><span><i><em>${p.jp[1]}</em></i></span>`;
+    $("hero-en").textContent = p.en;
+    $("hero-switch").textContent = `${other.name} を見る →`;
+    if (!first) [$("hero-img"), $("hero-en"), ...document.querySelectorAll(".name i")].forEach(replay);
+
+    $("links").innerHTML = [...p.links, ...SHARED_LINKS].filter(l => l.url).map(l => `
+      <li><a href="${esc(l.url)}" target="_blank" rel="noopener">
+        <span class="svc">${esc(l.svc)}</span>
+        <span class="handle"><b>${esc(l.name)}</b>${esc(l.handle)}</span>
+        <span class="open">ひらく</span>
+      </a></li>`).join("");
+
+    $("video-solo").innerHTML = group(`${p.name} が出ている`, VIDEOS.filter(v => v.who.length === 1 && v.who[0] === who));
+
+    const layout = ["p1", "p2", "p3", "p4", "p5"];
+    $("photo-list").innerHTML = p.photos.map(([src, note], i) =>
+      `<figure class="${layout[i]}"><img src="${src}" alt="${esc(note ? `${note}の${p.name}` : p.name)}" loading="lazy"></figure>`).join("");
+
+    $("facts").innerHTML = p.facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("");
+
+    const answered = QUESTIONS.map(q => [q, (ANSWERS[who][q] || "").trim()]).filter(([, a]) => a);
+    $("qa-list").innerHTML = answered.map(([q, a]) => `<div><dt>${esc(q)}</dt><dd>${esc(a)}</dd></div>`).join("");
+    $("qa").hidden = !answered.length;
+
+    picked = null;
+    $("cal-pick").hidden = true;
+    drawCalendar();
+    armReveal();
+  };
+
+  const switchTo = p => {
+    if (p === who) return;
+    who = p;
+    const url = new URL(location.href);
+    if (who === "baji") url.searchParams.set("p", "baji"); else url.searchParams.delete("p");
+    history.replaceState(null, "", url);
+    render();
+  };
+  document.querySelectorAll(".who__btn").forEach(b => b.addEventListener("click", () => switchTo(b.dataset.p)));
+  $("hero-switch").addEventListener("click", () => { switchTo(who === "yu" ? "baji" : "yu"); scrollTo({ top: 0, behavior: "smooth" }); });
+
+  render(true);
+
+  // 上の帯：読んだ量のバーと、ヒーローを過ぎたら黒く塗る
+  const progress = $("progress");
+  const topBar = $("bar");
+  const onScroll = () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    progress.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`;
+    topBar.classList.toggle("is-solid", scrollY > innerHeight * 0.6);
+  };
+  addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
 </script>
 </body>
 </html>

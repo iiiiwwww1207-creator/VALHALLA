@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""朝日奈優が出ている YouTube の回を、公式 API（YouTube Data API v3）で洗い出す。
+"""朝日奈優・場地圭介が出ている YouTube の回を、公式 API（YouTube Data API v3）で洗い出す。
 
 各チャンネルの全動画のタイトル・概要欄を読み、名前などが入っている回を一覧にする。
+[yu] / [baji] / [yu+baji] で、誰の名前が書かれていたかを出す。
 名前がどこにも書かれていない「映っているだけの回」は見つけられない。
 
 API キーはチャットやリポジトリに置かない。kazuma が自分で次のファイルに入れる:
@@ -33,9 +34,11 @@ CHANNELS = [
     {"name": "ゆっきーTV -桜威優希斗-", "id": "UCTNUTlMgMT2fIRBruz-etQw"},
 ]
 
-# 本人だと言える手がかり（強い）と、本人の可能性がある手がかり（弱い）
-STRONG = re.compile(r"朝日奈|あさひなゆう|valhalla_yuu|ばじひな|バジひな")
-WEAK = re.compile(r"場地")
+# 本人だと言える手がかり。「ばじひな」は2人のコンビ名なので両方に入る
+PEOPLE = {
+    "yu": re.compile(r"朝日奈|あさひなゆう|valhalla_yuu|ばじひな|バジひな"),
+    "baji": re.compile(r"場地|ばじひな|バジひな"),
+}
 
 
 def load_key():
@@ -104,15 +107,12 @@ def main():
         for v in all_videos(pl, key):
             n += 1
             text = v["title"] + "\n" + v["description"]
-            if STRONG.search(text):
-                level = "確定"
-            elif WEAK.search(text):
-                level = "要確認"
-            else:
+            who = [k for k, rx in PEOPLE.items() if rx.search(text)]
+            if not who:
                 continue
-            hit = (STRONG.search(text) or WEAK.search(text)).group(0)
-            where = "タイトル" if re.search(re.escape(hit), v["title"]) else "概要欄"
-            found.append({"channel": ch["name"], "level": level, "hit": f"{where}に「{hit}」",
+            hits = list(dict.fromkeys(PEOPLE[k].search(text).group(0) for k in who))
+            where = "タイトル" if any(h in v["title"] for h in hits) else "概要欄"
+            found.append({"channel": ch["name"], "who": who, "hit": f"{where}に「{'・'.join(hits)}」",
                           "id": v["id"], "published": v["published"], "title": v["title"]})
         summary.append(f"{ch['name']}: {n}本を確認")
 
@@ -120,7 +120,7 @@ def main():
     print("\n".join(summary))
     print()
     for f in found:
-        print(f"[{f['level']}] {f['published']} {f['channel']} | {f['id']} | {f['hit']} | {f['title']}")
+        print(f"[{'+'.join(f['who'])}] {f['published']} {f['channel']} | {f['id']} | {f['hit']} | {f['title']}")
     if "--json" in sys.argv:
         out = sys.argv[sys.argv.index("--json") + 1]
         Path(out).write_text(json.dumps(found, ensure_ascii=False, indent=2))
