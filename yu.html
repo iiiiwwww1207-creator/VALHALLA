@@ -143,27 +143,6 @@
     .p3,.p5{margin-top:36px}
   }
 
-  /* ---- 物語（写真は止めたまま、文章が流れてきたら場面が変わる） ---- */
-  .story{position:relative;background:#000;margin-top:clamp(96px,14vw,160px)}
-  .story__stage{position:sticky;top:0;height:100svh;overflow:hidden}
-  .story__stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%;opacity:0;transform:scale(1.08);transition:opacity 1.1s ease,transform 2.2s var(--ease);filter:saturate(.8)}
-  .story__stage img.is-on{opacity:1;transform:scale(1)}
-  .story__stage::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.2) 40%,rgba(0,0,0,.88) 100%),linear-gradient(90deg,rgba(120,8,26,.28),transparent 60%)}
-  .story__count{position:absolute;right:var(--gutter);top:72px;z-index:1;font-family:var(--display);font-size:14px;letter-spacing:.2em;color:var(--mute)}
-  .story__count span{font-size:44px;font-weight:500;color:var(--crimson-hi);letter-spacing:.02em;margin-right:6px}
-  .story__steps{position:relative;margin-top:-100svh;padding:0 var(--gutter) 30svh}
-  .story__intro{min-height:90svh;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:12svh;max-width:1160px;margin:0 auto}
-  .story__intro .head__big{color:rgba(239,232,230,.16)}
-  .story__intro .head{margin-bottom:12px}
-  .story__intro > p{font-size:13px;color:var(--mute)}
-  .step{max-width:1160px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;justify-content:center}
-  .step > *{max-width:26em}
-  .step__card{background:rgba(11,8,9,.82);border-left:2px solid var(--crimson);padding:22px 24px 24px;opacity:.25;transform:translateX(-18px);transition:opacity .7s ease,transform .9s var(--ease)}
-  .step.is-on .step__card{opacity:1;transform:none}
-  .step__when{font-family:var(--display);font-size:13px;letter-spacing:.3em;color:var(--crimson-hi);text-transform:uppercase}
-  .step h3{font-family:var(--mincho);font-weight:800;font-size:clamp(24px,5vw,34px);line-height:1.5;margin:6px 0 10px}
-  .step__card p:last-child{font-family:var(--mincho);font-size:16px;line-height:2}
-
   /* ---- プロフィール・一問一答・料金の表 ---- */
   dl.facts{border-top:1px solid var(--rule);max-width:760px}
   dl.facts div{display:grid;grid-template-columns:7.5em 1fr;gap:16px;padding:16px 2px;border-bottom:1px solid var(--rule)}
@@ -191,6 +170,44 @@
   .plan--main .plan__sub{color:rgba(255,255,255,.85);font-size:13px}
   .price__info{margin-top:40px}
 
+  /* ---- 空き状況（カレンダー） ---- */
+  .cal__legend{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:12px;color:var(--mute);margin-bottom:24px}
+  .cal__legend span{display:inline-flex;align-items:center;gap:6px}
+  .cal__legend i{font-style:normal;font-family:var(--display);font-size:15px}
+  .cal__nav{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--rule);padding:16px 0}
+  .cal__month{font-family:var(--display);font-weight:500;font-size:clamp(26px,6vw,36px);letter-spacing:.06em}
+  .cal__month small{font-family:var(--mincho);font-size:14px;color:var(--mute);margin-left:10px;letter-spacing:.1em}
+  .cal__btn{all:unset;cursor:pointer;width:44px;height:44px;display:grid;place-items:center;box-shadow:inset 0 0 0 1px var(--rule);font-family:var(--display);font-size:16px;transition:background-color .2s ease}
+  .cal__btn:hover{background:var(--bg-2)}
+  .cal__btn:disabled{opacity:.25;cursor:default;background:none}
+  .cal__btn:focus-visible{outline:2px solid var(--crimson-hi);outline-offset:2px}
+  .cal__grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule)}
+  .cal__wd{background:var(--bg);text-align:center;font-family:var(--display);font-size:11px;letter-spacing:.14em;color:var(--mute);padding:8px 0}
+  .cal__wd:first-child{color:var(--crimson-hi)}
+  .cal__day{all:unset;box-sizing:border-box;background:var(--bg);min-height:62px;padding:8px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:background-color .2s ease}
+  @media (min-width:760px){.cal__day{min-height:84px}}
+  .cal__day:hover{background:var(--bg-2)}
+  .cal__day:focus-visible{outline:2px solid var(--crimson-hi);outline-offset:-2px}
+  .cal__day b{font-family:var(--display);font-weight:500;font-size:16px;line-height:1}
+  .cal__day i{font-style:normal;font-family:var(--display);font-size:17px;line-height:1}
+  .cal__day.is-blank{cursor:default;background:var(--bg)}
+  .cal__day.is-past{cursor:default}
+  .cal__day.is-past b{color:#3D3437}
+  .cal__day.is-today b{color:var(--crimson-hi)}
+  .cal__day.is-sel{background:var(--crimson)}
+  .cal__day.is-sel b,.cal__day.is-sel i{color:#fff}
+  .st-open{color:var(--crimson-hi)}
+  .st-few{color:var(--ink)}
+  .st-full{color:#5C5256}
+  .st-off{color:#5C5256;font-family:var(--mincho)!important;font-size:13px!important}
+  .st-none{color:#4A4044}
+  .cal__pick{margin-top:24px;padding:22px 20px;border-left:2px solid var(--crimson);background:var(--bg-2);display:grid;gap:14px}
+  .cal__pick[hidden]{display:none}
+  .cal__date{font-family:var(--mincho);font-weight:700;font-size:20px;letter-spacing:.06em}
+  .cal__date span{font-family:var(--sans);font-weight:400;font-size:13px;color:var(--mute);margin-left:.8em}
+  .cal__msg{font-size:13px;color:var(--mute)}
+  .cal__updated{font-size:12px;color:var(--mute);margin-top:16px}
+
   /* ---- 会いに来る ---- */
   .shop{display:grid;gap:32px}
   @media (min-width:760px){.shop{grid-template-columns:1fr auto;align-items:end}}
@@ -213,7 +230,6 @@
     .head__sub::after{transform:scaleX(1)}
     .js .photos figure{clip-path:none}
     .js .photos figure img{transform:none}
-    .step__card{opacity:1;transform:none}
   }
 </style>
 <script>document.documentElement.classList.add("js")</script>
@@ -265,52 +281,9 @@
 
 </main>
 
-<!-- 物語：写真は画面に止めたまま、文章のカードが流れてきたら写真を切り替える。文章は仮（kazuma の言葉に差し替える） -->
-<section class="story" id="story" aria-label="朝日奈 優の話">
-  <div class="story__stage" aria-hidden="true">
-    <img src="assets/yu/beach.jpg" alt="" class="is-on" data-scene="0">
-    <img src="assets/yu/hero.jpg" alt="" data-scene="1" loading="lazy">
-    <img src="assets/yu/studio.jpg" alt="" data-scene="2" loading="lazy" style="object-position:38% 20%">
-    <img src="assets/yu/khaki.jpg" alt="" data-scene="3" loading="lazy">
-    <img src="assets/yu/glasses.jpg" alt="" data-scene="4" loading="lazy">
-    <div class="story__count"><span id="story-no">01</span>/ 05</div>
-  </div>
-  <div class="story__steps">
-    <div class="story__intro">
-      <div class="head"><p class="head__big"><span>Story</span></p><p class="head__sub"><b>04</b>俺の話</p></div>
-      <p>スクロールすると、話が進みます。</p>
-    </div>
-    <article class="step" data-scene="0"><div class="step__card">
-      <p class="step__when">2019</p>
-      <h3>何者でもないまま、東京へ</h3>
-      <p>静岡で育って、大学をやめて東京に出てきた。決めていたのは「ここで変わる」ってことだけ。</p>
-    </div></article>
-    <article class="step" data-scene="1"><div class="step__card">
-      <p class="step__when">Kabukicho</p>
-      <h3>右も左も分からないところから</h3>
-      <p>最初は何もできなかった。目の前の一人とちゃんと話す。それだけを毎晩くり返した。</p>
-    </div></article>
-    <article class="step" data-scene="2"><div class="step__card">
-      <p class="step__when">Valhalla</p>
-      <h3>勝った夜も、負けた回も</h3>
-      <p>Group Yggdrasill の VALHALLA で。グループの YouTube の接客バトルにも出た。上の動画に、そのまま残ってる。</p>
-    </div></article>
-    <article class="step" data-scene="3"><div class="step__card">
-      <p class="step__when">Bajihina</p>
-      <h3>相方と、外に出していく</h3>
-      <p>場地圭介と2人で TikTok を始めた。店の中だけじゃ見せられない顔を、ここで出してる。</p>
-    </div></article>
-    <article class="step" data-scene="4"><div class="step__card">
-      <p class="step__when">Next</p>
-      <h3>店の外でも、つくる</h3>
-      <p>夜の仕事を土台にして、自分の手で新しいものをつくり始めてる。その途中も、ここに足していく。</p>
-    </div></article>
-  </div>
-</section>
-
 <div class="wrap">
   <section class="block" id="about">
-    <div class="head"><p class="head__big"><span>Profile</span></p><p class="head__sub"><b>05</b>プロフィール</p></div>
+    <div class="head"><p class="head__big"><span>Profile</span></p><p class="head__sub"><b>04</b>プロフィール</p></div>
     <dl class="facts" data-stagger>
       <div><dt>お店</dt><dd>VALHALLA（Group Yggdrasill）</dd></div>
       <div><dt>好きなもの</dt><dd>ラーメン巡り、競艇、服</dd></div>
@@ -320,13 +293,13 @@
   </section>
 
   <section class="block" id="qa" hidden>
-    <div class="head"><p class="head__big"><span>Q&amp;A</span></p><p class="head__sub"><b>06</b>一問一答</p></div>
+    <div class="head"><p class="head__big"><span>Q&amp;A</span></p><p class="head__sub"><b>05</b>一問一答</p></div>
     <p class="note" data-reveal>初回の席でよく聞かれること、先に答えておきます。</p>
     <dl class="qa" id="qa-list" data-stagger></dl>
   </section>
 
   <section class="block" id="price">
-    <div class="head"><p class="head__big"><span>System</span></p><p class="head__sub"><b>07</b>料金</p></div>
+    <div class="head"><p class="head__big"><span>System</span></p><p class="head__sub"><b>06</b>料金</p></div>
     <p class="note" data-reveal>指名で来てもらうときの料金です。表示はすべてサービス料・税込みです。</p>
     <div class="price" data-stagger>
       <div class="plan plan--main">
@@ -358,6 +331,32 @@
       <div><dt>定休日</dt><dd>火曜日（例外あり）</dd></div>
       <div><dt>持ち物</dt><dd>顔写真つきの身分証を1点（運転免許証・マイナンバーカード・パスポート）</dd></div>
     </dl>
+  </section>
+
+  <section class="block" id="schedule">
+    <div class="head"><p class="head__big"><span>Schedule</span></p><p class="head__sub"><b>07</b>空き状況</p></div>
+    <p class="note" data-reveal>来たい日をタップすると、その日で DM を送れます。</p>
+    <div class="cal__legend" data-reveal>
+      <span><i class="st-open">◎</i>空いてる</span>
+      <span><i class="st-few">△</i>少なめ</span>
+      <span><i class="st-full">×</i>埋まってる</span>
+      <span><i class="st-off">休</i>店休日</span>
+      <span><i class="st-none">・</i>まだ未定（DM で聞いてください）</span>
+    </div>
+    <div class="cal" data-reveal>
+      <div class="cal__nav">
+        <button type="button" class="cal__btn" id="cal-prev" aria-label="前の月">←</button>
+        <p class="cal__month" id="cal-month" aria-live="polite"></p>
+        <button type="button" class="cal__btn" id="cal-next" aria-label="次の月">→</button>
+      </div>
+      <div class="cal__grid" id="cal-grid"></div>
+    </div>
+    <div class="cal__pick" id="cal-pick" hidden>
+      <p class="cal__date" id="cal-date"></p>
+      <p class="cal__msg" id="cal-msg"></p>
+      <div><a class="btn" id="cal-dm" href="https://ig.me/m/valhalla_yuu" target="_blank" rel="noopener">この日で DM を送る →</a></div>
+    </div>
+    <p class="cal__updated" id="cal-updated"></p>
   </section>
 
   <section class="block" id="shop">
@@ -483,20 +482,83 @@
     document.getElementById("qa").hidden = false;
   }
 
-  // 物語：画面の真ん中に来たカードに合わせて、後ろの写真を切り替える
-  const stageImgs = [...document.querySelectorAll(".story__stage img")];
-  const storyNo = document.getElementById("story-no");
-  const steps = [...document.querySelectorAll(".step")];
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(en => {
-      if (!en.isIntersecting) return;
-      const n = en.target.dataset.scene;
-      steps.forEach(s => s.classList.toggle("is-on", s === en.target));
-      stageImgs.forEach(img => img.classList.toggle("is-on", img.dataset.scene === n));
-      storyNo.textContent = String(+n + 1).padStart(2, "0");
-    });
-  }, { rootMargin: "-45% 0px -45% 0px" });
-  steps.forEach(s => io.observe(s));
+  // 空き状況：ここを書き換えればカレンダーに反映される
+  // "YYYY-MM-DD": "open"（空いてる）/ "few"（少なめ）/ "full"（埋まってる）/ "off"（休み）
+  // 書いていない日は「未定」。火曜は店休日だが、ここに書けばその日だけ上書きできる（例外の営業日）
+  const SCHEDULE_UPDATED = "";
+  const SCHEDULE = {
+  };
+  const STATUS = {
+    open: { mark: "◎", label: "空いてる", msg: "この日は空いてます。" },
+    few:  { mark: "△", label: "少なめ", msg: "この日は少し埋まってます。早めに DM ください。" },
+    full: { mark: "×", label: "埋まってる", msg: "この日は埋まってます。" },
+    off:  { mark: "休", label: "店休日", msg: "この日はお休みです。" },
+    none: { mark: "・", label: "未定", msg: "まだ決まってない日です。DM で聞いてください。" },
+  };
+  const WD = ["日", "月", "火", "水", "木", "金", "土"];
+  const pad = n => String(n).padStart(2, "0");
+  const keyOf = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  const statusOf = d => SCHEDULE[keyOf(d)] || (d.getDay() === 2 ? "off" : "none");
+
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const firstMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const MONTHS_AHEAD = 2; // 今月＋2か月先まで見せる
+  let shown = new Date(firstMonth);
+  let picked = null;
+  const grid = document.getElementById("cal-grid");
+
+  const drawCalendar = () => {
+    const y = shown.getFullYear(), m = shown.getMonth();
+    document.getElementById("cal-month").innerHTML = `${y}.${pad(m + 1)}<small>${m + 1}月</small>`;
+    const offset = (y - firstMonth.getFullYear()) * 12 + m - firstMonth.getMonth();
+    document.getElementById("cal-prev").disabled = offset <= 0;
+    document.getElementById("cal-next").disabled = offset >= MONTHS_AHEAD;
+    let html = WD.map(w => `<div class="cal__wd">${w}</div>`).join("");
+    html += '<div class="cal__day is-blank"></div>'.repeat(new Date(y, m, 1).getDay());
+    const last = new Date(y, m + 1, 0).getDate();
+    for (let d = 1; d <= last; d++) {
+      const date = new Date(y, m, d);
+      const past = date < today;
+      const st = statusOf(date);
+      const cls = ["cal__day", past && "is-past", +date === +today && "is-today", picked && +date === +picked && "is-sel"].filter(Boolean).join(" ");
+      html += `<button type="button" class="${cls}" data-key="${keyOf(date)}" ${past ? "disabled" : ""} aria-label="${m + 1}月${d}日 ${STATUS[st].label}">
+        <b>${d}</b><i class="st-${st}">${past ? "" : STATUS[st].mark}</i></button>`;
+    }
+    const filled = new Date(y, m, 1).getDay() + last;
+    html += '<div class="cal__day is-blank"></div>'.repeat((7 - filled % 7) % 7);
+    grid.innerHTML = html;
+  };
+
+  grid.addEventListener("click", e => {
+    const btn = e.target.closest("button[data-key]");
+    if (!btn || btn.disabled) return;
+    const [y, m, d] = btn.dataset.key.split("-").map(Number);
+    picked = new Date(y, m - 1, d);
+    const st = statusOf(picked);
+    const label = `${m}月${d}日（${WD[picked.getDay()]}）`;
+    document.getElementById("cal-date").innerHTML = `${label}<span>${STATUS[st].label}</span>`;
+    document.getElementById("cal-msg").textContent = STATUS[st].msg;
+    const dm = document.getElementById("cal-dm");
+    const canAsk = st !== "off" && st !== "full";
+    dm.parentElement.hidden = !canAsk;
+    dm.dataset.text = `${label}に指名で行きたいです。`;
+    document.getElementById("cal-pick").hidden = false;
+    drawCalendar();
+  });
+
+  // DM には文面を渡せないので、先にコピーしておいて貼り付けてもらう
+  document.getElementById("cal-dm").addEventListener("click", e => {
+    const text = e.currentTarget.dataset.text;
+    if (!text || !navigator.clipboard) return;
+    navigator.clipboard.writeText(text).then(() => {
+      document.getElementById("cal-msg").textContent = `「${text}」をコピーしました。DM に貼り付けて送ってください。`;
+    }).catch(() => {});
+  });
+
+  document.getElementById("cal-prev").addEventListener("click", () => { shown = new Date(shown.getFullYear(), shown.getMonth() - 1, 1); drawCalendar(); });
+  document.getElementById("cal-next").addEventListener("click", () => { shown = new Date(shown.getFullYear(), shown.getMonth() + 1, 1); drawCalendar(); });
+  document.getElementById("cal-updated").textContent = SCHEDULE_UPDATED ? `${SCHEDULE_UPDATED} 時点の空き状況です。` : "";
+  drawCalendar();
 
   // 上の帯：読んだ量のバーと、ヒーローを過ぎたら黒く塗る
   const progress = document.getElementById("progress");
