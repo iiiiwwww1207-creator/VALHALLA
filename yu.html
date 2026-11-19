@@ -166,6 +166,26 @@
   .qa dt::before{content:"Q.";font-family:var(--display);color:var(--crimson-hi);margin-right:.6em}
   .qa dd{font-size:15px;line-height:1.9;color:#D8CFCD}
 
+  /* ---- SHOP（商品・イベント。決済は外のサービスに飛ばす） ---- */
+  .shop-items{display:grid;gap:32px 14px;grid-template-columns:1fr 1fr}
+  @media (min-width:760px){.shop-items{grid-template-columns:repeat(3,1fr);gap:44px 24px}}
+  .shop-group{grid-column:1/-1;font-family:var(--display);font-weight:500;font-size:14px;letter-spacing:.3em;color:var(--mute);padding-left:14px;border-left:2px solid var(--crimson);margin-top:8px}
+  .item{display:flex;flex-direction:column;gap:10px}
+  .item__img{position:relative;aspect-ratio:4/5;background:var(--bg-2);overflow:hidden}
+  .item__img img{width:100%;height:100%;object-fit:cover}
+  .item__who{position:absolute;left:0;top:0;background:var(--crimson);color:#fff;font-family:var(--mincho);font-size:12px;letter-spacing:.1em;padding:5px 10px}
+  .item.is-out .item__img img{filter:grayscale(1) brightness(.5)}
+  .item.is-out .item__img::after{content:"SOLD OUT";position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:clamp(20px,5vw,30px);letter-spacing:.14em;color:#fff}
+  .item__date{font-family:var(--display);font-size:12px;letter-spacing:.16em;color:var(--crimson-hi)}
+  .item__title{font-family:var(--mincho);font-weight:700;font-size:15px;line-height:1.6}
+  .item__desc{font-size:12px;color:var(--mute);line-height:1.7}
+  .item__price{font-family:var(--display);font-weight:500;font-size:22px;letter-spacing:.02em;margin-top:auto}
+  .item__price small{font-family:var(--sans);font-size:11px;color:var(--mute);margin-left:4px;letter-spacing:0}
+  .item .btn{justify-content:center;padding:13px 12px;font-size:13px}
+  .item .btn[aria-disabled="true"]{background:var(--dim);color:var(--mute);pointer-events:none}
+  .shop-legal{font-size:12px;color:var(--mute);margin-top:36px}
+  .shop-legal a{color:var(--ink)}
+
   /* ---- 料金 ---- */
   .price{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);grid-template-columns:1fr 1fr}
   @media (min-width:760px){.price{grid-template-columns:repeat(4,1fr)}}
@@ -273,35 +293,42 @@
 <main class="wrap">
 
   <section class="block" id="follow">
-    <div class="head"><p class="head__big"><span>Follow</span></p><p class="head__sub"><b>01</b>フォローする</p></div>
+    <div class="head"><p class="head__big"><span>Follow</span></p><p class="head__sub"><b></b>フォローする</p></div>
     <ul class="links" id="links" data-stagger></ul>
   </section>
 
   <section class="block" id="videos">
-    <div class="head"><p class="head__big"><span>Movie</span></p><p class="head__sub"><b>02</b>出ている動画</p></div>
+    <div class="head"><p class="head__big"><span>Movie</span></p><p class="head__sub"><b></b>出ている動画</p></div>
     <p class="note" data-reveal>出ている YouTube をまとめた。タップで再生。</p>
     <div class="videos" id="video-pair" data-stagger></div>
     <div class="videos videos--solo" id="video-solo" data-stagger></div>
   </section>
 
   <section class="block" id="photos">
-    <div class="head"><p class="head__big"><span>Photo</span></p><p class="head__sub"><b>03</b>写真</p></div>
+    <div class="head"><p class="head__big"><span>Photo</span></p><p class="head__sub"><b></b>写真</p></div>
     <div class="photos" id="photo-list"></div>
   </section>
 
   <section class="block" id="about">
-    <div class="head"><p class="head__big"><span>Profile</span></p><p class="head__sub"><b>04</b>プロフィール</p></div>
+    <div class="head"><p class="head__big"><span>Profile</span></p><p class="head__sub"><b></b>プロフィール</p></div>
     <dl class="facts" id="facts" data-stagger></dl>
   </section>
 
   <section class="block" id="qa" hidden>
-    <div class="head"><p class="head__big"><span>Q&amp;A</span></p><p class="head__sub"><b>05</b>一問一答</p></div>
+    <div class="head"><p class="head__big"><span>Q&amp;A</span></p><p class="head__sub"><b></b>一問一答</p></div>
     <p class="note" data-reveal>初回の席でよく聞かれること、先に答えておきます。</p>
     <dl class="qa" id="qa-list" data-stagger></dl>
   </section>
 
+  <section class="block" id="store" hidden>
+    <div class="head"><p class="head__big"><span>Shop</span></p><p class="head__sub"><b></b>グッズ・イベント</p></div>
+    <p class="note" data-reveal>買う・予約するボタンから、外部の決済ページに進みます。</p>
+    <div class="shop-items" id="shop-items" data-stagger></div>
+    <p class="shop-legal" id="shop-legal" data-reveal></p>
+  </section>
+
   <section class="block" id="price">
-    <div class="head"><p class="head__big"><span>System</span></p><p class="head__sub"><b>06</b>料金</p></div>
+    <div class="head"><p class="head__big"><span>System</span></p><p class="head__sub"><b></b>料金</p></div>
     <p class="note" data-reveal>指名で来てもらうときの料金です。表示はすべてサービス料・税込みです。</p>
     <div class="price" data-stagger>
       <div class="plan plan--main">
@@ -336,7 +363,7 @@
   </section>
 
   <section class="block" id="schedule">
-    <div class="head"><p class="head__big"><span>Schedule</span></p><p class="head__sub"><b>07</b>空き状況</p></div>
+    <div class="head"><p class="head__big"><span>Schedule</span></p><p class="head__sub"><b></b>空き状況</p></div>
     <p class="note" data-reveal><span data-name></span>の空き状況です。来たい日をタップすると、その日で DM を送れます。</p>
     <div class="cal__legend" data-reveal>
       <span><i class="st-open">◎</i>空いてる</span>
@@ -362,7 +389,7 @@
   </section>
 
   <section class="block" id="shop">
-    <div class="head"><p class="head__big"><span>Access</span></p><p class="head__sub"><b>08</b>会いに来る</p></div>
+    <div class="head"><p class="head__big"><span>Access</span></p><p class="head__sub"><b></b>会いに来る</p></div>
     <div class="shop" data-stagger>
       <div>
         <p class="shop__name">VALHALLA</p>
@@ -467,6 +494,17 @@
     yu: {},   // 例: { "呼び方は？": "ゆう" }
     baji: {},
   };
+
+  // SHOP：商品・イベントを1つ1行で足す。空なら SHOP の欄ごと出さない
+  // who: 誰の物か（["yu"] / ["baji"] / ["yu","baji"]）。2人の物は両方のページに出る
+  // kind: "goods"（グッズ）/ "event"（イベント・予約）
+  // url: Stripe の支払いリンクや BASE の商品ページなど、決済できるページの URL。空なら「準備中」
+  // soldOut: true で売り切れ表示。date はイベントの日付（表示用の文字）
+  const ITEMS = [
+    // { who: ["yu", "baji"], kind: "event", title: "バジひな チェキ会", date: "2026.12.20 SUN", price: 3000, img: "assets/shop/cheki.jpg", desc: "2人とチェキ1枚", url: "" },
+  ];
+  // 物を売るときは特定商取引法の表記が要る。そのページの URL をここに入れる
+  const LEGAL_URL = "";
 
   // 空き状況："YYYY-MM-DD": "open"（空いてる）/ "few"（少なめ）/ "full"（埋まってる）/ "off"（休み）
   // 書いていない日は「未定」。火曜は店休日だが、ここに書けばその日だけ上書きできる（例外の営業日）
@@ -639,6 +677,35 @@
     const answered = QUESTIONS.map(q => [q, (ANSWERS[who][q] || "").trim()]).filter(([, a]) => a);
     $("qa-list").innerHTML = answered.map(([q, a]) => `<div><dt>${esc(q)}</dt><dd>${esc(a)}</dd></div>`).join("");
     $("qa").hidden = !answered.length;
+
+    const KIND = { goods: "GOODS", event: "EVENT" };
+    const items = ITEMS.filter(it => it.who.includes(who));
+    const itemCard = it => {
+      const both = it.who.length > 1;
+      const label = it.kind === "event" ? "予約する" : "買う";
+      const ready = it.url && !it.soldOut;
+      return `<article class="item${it.soldOut ? " is-out" : ""}">
+        <div class="item__img">${it.img ? `<img src="${esc(it.img)}" alt="" loading="lazy">` : ""}<span class="item__who">${both ? "2人" : esc(PEOPLE[it.who[0]].short)}</span></div>
+        ${it.date ? `<p class="item__date">${esc(it.date)}</p>` : ""}
+        <h3 class="item__title">${esc(it.title)}</h3>
+        ${it.desc ? `<p class="item__desc">${esc(it.desc)}</p>` : ""}
+        <p class="item__price">¥${Number(it.price).toLocaleString("ja-JP")}<small>税込</small></p>
+        <a class="btn" ${ready ? `href="${esc(it.url)}" target="_blank" rel="noopener"` : 'aria-disabled="true"'}>${it.soldOut ? "売り切れ" : ready ? `${label} →` : "準備中"}</a>
+      </article>`;
+    };
+    $("shop-items").innerHTML = Object.keys(KIND).map(k => {
+      const list = items.filter(it => it.kind === k);
+      return list.length ? `<h3 class="shop-group">${KIND[k]}</h3>` + list.map(itemCard).join("") : "";
+    }).join("");
+    $("store").hidden = !items.length;
+    $("shop-legal").innerHTML = LEGAL_URL ? `<a href="${esc(LEGAL_URL)}" target="_blank" rel="noopener">特定商取引法に基づく表記</a>` : "";
+
+    // 見出しの番号は、出ている欄だけで 01 から振り直す
+    let no = 0;
+    document.querySelectorAll("section.block").forEach(sec => {
+      const b = sec.querySelector(".head__sub b");
+      if (b && !sec.hidden) b.textContent = String(++no).padStart(2, "0");
+    });
 
     picked = null;
     $("cal-pick").hidden = true;
