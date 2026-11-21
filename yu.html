@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0B0809">
 <meta property="og:title" content="バジひな | 朝日奈 優 × 場地 圭介">
 <meta property="og:description" content="Instagram・TikTok・出演動画をまとめたページ。">
-<meta property="og:image" content="assets/yu/hero.jpg">
+<meta property="og:image" content="assets/yu/k_hero.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&family=Shippori+Mincho:wght@500;700;800&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
@@ -147,11 +147,15 @@
   .p3{grid-column:1/3;aspect-ratio:2/3}
   .p4{grid-column:3/5;aspect-ratio:3/4;margin-top:64px}
   .p5{grid-column:5/7;aspect-ratio:2/3}
+  .pw{grid-column:3/7;aspect-ratio:4/3}
+  [hidden]{display:none !important}
+  .hero__cta{margin-top:24px;animation:fade 1.2s 1.05s both}
   @media (max-width:640px){
     .photos{grid-template-columns:repeat(2,1fr);gap:10px}
     .p1{grid-column:1/-1}
     .p2,.p3,.p4,.p5{grid-column:auto;margin-top:0;aspect-ratio:2/3}
     .p3,.p5{margin-top:36px}
+    .pw{grid-column:1/-1;aspect-ratio:3/2}
   }
 
   /* ---- プロフィール・一問一答・料金の表 ---- */
@@ -271,6 +275,7 @@
   <nav class="who" aria-label="表示する人">
     <button type="button" class="who__btn" data-p="yu" aria-pressed="true">YU</button>
     <button type="button" class="who__btn" data-p="baji" aria-pressed="false">BAJI</button>
+    <button type="button" class="who__btn" data-p="duo" aria-pressed="false">BAJIHINA</button>
   </nav>
   <a class="bar__dm" data-dm href="https://ig.me/m/valhalla_yuu" target="_blank" rel="noopener">DM</a>
   <div class="progress" id="progress" aria-hidden="true"></div>
@@ -284,7 +289,8 @@
     <p class="place">KABUKICHO <b>／</b> VALHALLA</p>
     <h1 class="name" id="hero-name"><span><i>朝日奈</i></span><span><i><em>優</em></i></span></h1>
     <p class="name-en" id="hero-en">YU ASAHINA</p>
-    <p class="lead">初回の短い時間じゃ話しきれないから、<br>ここにまとめておく。</p>
+    <p class="lead" id="hero-lead">初回の短い時間じゃ話しきれないから、<br>ここにまとめておく。</p>
+    <p class="hero__cta" id="hero-cta" hidden><a class="btn" id="hero-cta-a" target="_blank" rel="noopener"></a></p>
     <button type="button" class="hero__switch" id="hero-switch"></button>
   </div>
   <div class="scroll-cue" aria-hidden="true">SCROLL</div>
@@ -398,6 +404,7 @@
       </div>
       <div class="shop__btns">
         <a class="btn" data-dm href="https://ig.me/m/valhalla_yuu" target="_blank" rel="noopener"><span data-name></span>に DM を送る →</a>
+        <a class="btn" id="dm-2" target="_blank" rel="noopener" hidden></a>
         <a class="btn btn--line" href="https://www.google.com/maps/search/?api=1&query=%E6%9D%B1%E4%BA%AC%E9%83%BD%E6%96%B0%E5%AE%BF%E5%8C%BA%E6%AD%8C%E8%88%9E%E4%BC%8E%E7%94%BA2-28-2" target="_blank" rel="noopener">地図をひらく</a>
       </div>
     </div>
@@ -416,10 +423,11 @@
     yu: {
       name: "朝日奈 優", short: "優", jp: ["朝日奈", "優"], en: "YU ASAHINA",
       ig: "valhalla_yuu",
-      hero: "assets/yu/hero.jpg",
+      hero: "assets/yu/k_hero.jpg",
+      // 写真は [ファイル, 説明] の順に p1（横長）→ p2〜p5（縦長）へ入る
       photos: [
-        ["assets/yu/studio.jpg", ""], ["assets/yu/glasses.jpg", "眼鏡"], ["assets/yu/beach.jpg", "海辺"],
-        ["assets/yu/crouch.jpg", ""], ["assets/yu/khaki.jpg", ""],
+        ["assets/yu/k_sofa.jpg", ""], ["assets/yu/k_red.jpg", ""], ["assets/yu/k_fan.jpg", "和装"],
+        ["assets/yu/k_beach.jpg", "海辺"], ["assets/yu/k_china.jpg", ""],
       ],
       links: [
         { svc: "Instagram", name: "朝日奈 優", handle: "@valhalla_yuu", url: "https://www.instagram.com/valhalla_yuu/" },
@@ -436,10 +444,10 @@
     baji: {
       name: "場地 圭介", short: "圭介", jp: ["場地", "圭介"], en: "KEISUKE BAJI",
       ig: "valhalla_baji",
-      hero: "assets/baji/hero.jpg",
+      hero: "assets/baji/k_hero.jpg",
       photos: [
-        ["assets/baji/street.jpg", "横丁"], ["assets/baji/glasses.jpg", "眼鏡"], ["assets/baji/leopard.jpg", ""],
-        ["assets/baji/squat.jpg", ""], ["assets/baji/black.jpg", ""],
+        ["assets/baji/k_temple.jpg", "和装"], ["assets/baji/k_fan.jpg", "和装"], ["assets/baji/k_throne.jpg", ""],
+        ["assets/baji/k_beach.jpg", "海辺"], ["assets/baji/k_alley.jpg", "横丁"],
       ],
       links: [
         { svc: "Instagram", name: "場地 圭介", handle: "@valhalla_baji", url: "https://www.instagram.com/valhalla_baji/" },
@@ -454,7 +462,25 @@
         ["ホストを始めたきっかけ", "コロナショック"],
       ],
     },
+    // 2人（バジひな）の見方。2人の TikTok を宣伝する入口
+    duo: {
+      name: "バジひな", jp: ["バジ", "ひな"], en: "YU ASAHINA × KEISUKE BAJI",
+      lead: "朝日奈 優 × 場地 圭介。<br>2人の TikTok はこちら。",
+      cta: { label: "バジひなの TikTok を見る →", url: "https://www.tiktok.com/@valhalla_0409" },
+      hero: "assets/duo/hero.jpg",
+      photos: [
+        ["assets/duo/sensoji.jpg", "浅草"], ["assets/duo/cave1.jpg", ""], ["assets/duo/cave2.jpg", ""],
+        ["assets/duo/bar.jpg", "", "pw"],
+      ],
+      links: [],
+      facts: [
+        ["コンビ名", "バジひな"],
+        ["メンバー", "朝日奈 優 × 場地 圭介"],
+        ["お店", "VALHALLA（Group Yggdrasill）"],
+      ],
+    },
   };
+  const ORDER = ["yu", "baji", "duo"];
 
   // 2人どちらのページにも出すリンク
   const SHARED_LINKS = [
@@ -518,7 +544,7 @@
 
   const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const $ = id => document.getElementById(id);
-  let who = new URLSearchParams(location.search).get("p") === "baji" ? "baji" : "yu";
+  let who = ORDER.includes(new URLSearchParams(location.search).get("p")) ? new URLSearchParams(location.search).get("p") : "yu";
 
   // サムネだけ先に出して、押されたら YouTube を読み込む（ページを軽く保つため）
   const card = v => `
@@ -560,7 +586,7 @@
   const WD = ["日", "月", "火", "水", "木", "金", "土"];
   const pad = n => String(n).padStart(2, "0");
   const keyOf = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-  const statusOf = d => SCHEDULE[who][keyOf(d)] || (d.getDay() === 2 ? "off" : "none");
+  const statusOf = d => (SCHEDULE[who] || {})[keyOf(d)] || (d.getDay() === 2 ? "off" : "none");
 
   const today = new Date(); today.setHours(0, 0, 0, 0);
   const firstMonth = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -602,7 +628,7 @@
     $("cal-msg").textContent = STATUS[st].msg;
     const dm = $("cal-dm");
     dm.parentElement.hidden = st === "off" || st === "full";
-    dm.dataset.text = `${label}に${PEOPLE[who].short}くんの指名で行きたいです。`;
+    dm.dataset.text = `${label}に${PEOPLE[who].short || PEOPLE[who].name}くんの指名で行きたいです。`;
     $("cal-pick").hidden = false;
     drawCalendar();
   });
@@ -646,11 +672,22 @@
   const replay = el => { el.style.animation = "none"; void el.offsetWidth; el.style.animation = ""; };
   const render = (first = false) => {
     const p = PEOPLE[who];
-    const other = PEOPLE[who === "yu" ? "baji" : "yu"];
-    document.title = `${p.name} | バジひな`;
+    const duo = who === "duo";
+    const next = ORDER[(ORDER.indexOf(who) + 1) % ORDER.length];
+    const other = PEOPLE[next];
+    document.title = duo ? "バジひな | 朝日奈 優 × 場地 圭介" : `${p.name} | バジひな`;
     document.querySelectorAll(".who__btn").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.p === who)));
-    document.querySelectorAll("[data-dm]").forEach(a => { a.href = `https://ig.me/m/${p.ig}`; });
-    document.querySelectorAll("[data-name]").forEach(el => { el.textContent = p.name; });
+    // 2人の見方では、DM は優あて＋圭介あての2つにする
+    const dmPerson = duo ? PEOPLE.yu : p;
+    document.querySelectorAll("[data-dm]").forEach(a => { a.href = `https://ig.me/m/${dmPerson.ig}`; });
+    document.querySelectorAll("[data-name]").forEach(el => { el.textContent = dmPerson.name; });
+    $("dm-2").hidden = !duo;
+    $("dm-2").href = `https://ig.me/m/${PEOPLE.baji.ig}`;
+    $("dm-2").textContent = `${PEOPLE.baji.name}に DM を送る →`;
+    $("schedule").hidden = duo;
+    $("hero-lead").innerHTML = p.lead || "初回の短い時間じゃ話しきれないから、<br>ここにまとめておく。";
+    $("hero-cta").hidden = !p.cta;
+    if (p.cta) { $("hero-cta-a").href = p.cta.url; $("hero-cta-a").textContent = p.cta.label; }
 
     $("hero-img").src = p.hero;
     $("hero-img").alt = p.name;
@@ -659,7 +696,9 @@
     $("hero-switch").textContent = `${other.name} を見る →`;
     if (!first) [$("hero-img"), $("hero-en"), ...document.querySelectorAll(".name i")].forEach(replay);
 
-    $("links").innerHTML = [...p.links, ...SHARED_LINKS].filter(l => l.url).map(l => `
+    // 2人の見方：バジひなの TikTok を一番上に、そのあと2人それぞれのアカウント
+    const linkList = duo ? [...SHARED_LINKS, ...PEOPLE.yu.links, ...PEOPLE.baji.links] : [...p.links, ...SHARED_LINKS];
+    $("links").innerHTML = linkList.filter(l => l.url).map(l => `
       <li><a href="${esc(l.url)}" target="_blank" rel="noopener">
         <span class="svc">${esc(l.svc)}</span>
         <span class="handle"><b>${esc(l.name)}</b>${esc(l.handle)}</span>
@@ -669,12 +708,12 @@
     $("video-solo").innerHTML = group(`${p.name} が出ている`, VIDEOS.filter(v => v.who.length === 1 && v.who[0] === who));
 
     const layout = ["p1", "p2", "p3", "p4", "p5"];
-    $("photo-list").innerHTML = p.photos.map(([src, note], i) =>
-      `<figure class="${layout[i]}"><img src="${src}" alt="${esc(note ? `${note}の${p.name}` : p.name)}" loading="lazy"></figure>`).join("");
+    $("photo-list").innerHTML = p.photos.map(([src, note, cls], i) =>
+      `<figure class="${cls || layout[i]}"><img src="${src}" alt="${esc(note ? `${note}の${p.name}` : p.name)}" loading="lazy"></figure>`).join("");
 
     $("facts").innerHTML = p.facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("");
 
-    const answered = QUESTIONS.map(q => [q, (ANSWERS[who][q] || "").trim()]).filter(([, a]) => a);
+    const answered = QUESTIONS.map(q => [q, ((ANSWERS[who] || {})[q] || "").trim()]).filter(([, a]) => a);
     $("qa-list").innerHTML = answered.map(([q, a]) => `<div><dt>${esc(q)}</dt><dd>${esc(a)}</dd></div>`).join("");
     $("qa").hidden = !answered.length;
 
@@ -717,12 +756,12 @@
     if (p === who) return;
     who = p;
     const url = new URL(location.href);
-    if (who === "baji") url.searchParams.set("p", "baji"); else url.searchParams.delete("p");
+    if (who === "yu") url.searchParams.delete("p"); else url.searchParams.set("p", who);
     history.replaceState(null, "", url);
     render();
   };
   document.querySelectorAll(".who__btn").forEach(b => b.addEventListener("click", () => switchTo(b.dataset.p)));
-  $("hero-switch").addEventListener("click", () => { switchTo(who === "yu" ? "baji" : "yu"); scrollTo({ top: 0, behavior: "smooth" }); });
+  $("hero-switch").addEventListener("click", () => { switchTo(ORDER[(ORDER.indexOf(who) + 1) % ORDER.length]); scrollTo({ top: 0, behavior: "smooth" }); });
 
   render(true);
 
