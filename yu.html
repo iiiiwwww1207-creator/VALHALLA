@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0B0809">
 <meta property="og:title" content="バジひな | 朝日奈 優 × 場地 圭介">
 <meta property="og:description" content="Instagram・TikTok・出演動画をまとめたページ。">
-<meta property="og:image" content="assets/yu/k_hero.jpg">
+<meta property="og:image" content="assets/yu/y26.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&family=Shippori+Mincho:wght@500;700;800&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
@@ -148,6 +148,7 @@
   .p4{grid-column:3/5;aspect-ratio:3/4;margin-top:64px}
   .p5{grid-column:5/7;aspect-ratio:2/3}
   .pw{grid-column:3/7;aspect-ratio:4/3}
+  .ph{grid-column:span 3;aspect-ratio:2/3}
   [hidden]{display:none !important}
   .hero__cta{margin-top:24px;animation:fade 1.2s 1.05s both}
   @media (max-width:640px){
@@ -156,6 +157,7 @@
     .p2,.p3,.p4,.p5{grid-column:auto;margin-top:0;aspect-ratio:2/3}
     .p3,.p5{margin-top:36px}
     .pw{grid-column:1/-1;aspect-ratio:3/2}
+    .ph{grid-column:auto}
   }
 
   /* ---- プロフィール・一問一答・料金の表 ---- */
@@ -283,7 +285,7 @@
 
 <header class="hero" id="top">
   <div class="hero__photo">
-    <img id="hero-img" src="assets/yu/hero.jpg" alt="朝日奈 優" fetchpriority="high">
+    <img id="hero-img" src="assets/yu/y26.jpg" alt="朝日奈 優" fetchpriority="high">
   </div>
   <div class="hero__text">
     <p class="place">KABUKICHO <b>／</b> VALHALLA</p>
@@ -423,11 +425,11 @@
     yu: {
       name: "朝日奈 優", short: "優", jp: ["朝日奈", "優"], en: "YU ASAHINA",
       ig: "valhalla_yuu",
-      hero: "assets/yu/k_hero.jpg",
+      hero: "assets/yu/y26.jpg",
       // 写真は [ファイル, 説明] の順に p1（横長）→ p2〜p5（縦長）へ入る
       photos: [
-        ["assets/yu/k_sofa.jpg", ""], ["assets/yu/k_red.jpg", ""], ["assets/yu/k_fan.jpg", "和装"],
-        ["assets/yu/k_beach.jpg", "海辺"], ["assets/yu/k_china.jpg", ""],
+        ["assets/yu/y8.jpg", ""], ["assets/yu/y19.jpg", ""], ["assets/yu/y20.jpg", ""],
+        ["assets/yu/y7.jpg", ""], ["assets/yu/y29.jpg", ""],
       ],
       links: [
         { svc: "Instagram", name: "朝日奈 優", handle: "@valhalla_yuu", url: "https://www.instagram.com/valhalla_yuu/" },
@@ -444,10 +446,9 @@
     baji: {
       name: "場地 圭介", short: "圭介", jp: ["場地", "圭介"], en: "KEISUKE BAJI",
       ig: "valhalla_baji",
-      hero: "assets/baji/k_hero.jpg",
+      hero: "assets/baji/b52.jpg",
       photos: [
-        ["assets/baji/k_temple.jpg", "和装"], ["assets/baji/k_fan.jpg", "和装"], ["assets/baji/k_throne.jpg", ""],
-        ["assets/baji/k_beach.jpg", "海辺"], ["assets/baji/k_alley.jpg", "横丁"],
+        ["assets/baji/b54.jpg", "", "ph"], ["assets/baji/b19.jpg", "", "ph"],
       ],
       links: [
         { svc: "Instagram", name: "場地 圭介", handle: "@valhalla_baji", url: "https://www.instagram.com/valhalla_baji/" },
@@ -467,10 +468,10 @@
       name: "バジひな", jp: ["バジ", "ひな"], en: "YU ASAHINA × KEISUKE BAJI",
       lead: "朝日奈 優 × 場地 圭介。<br>2人の TikTok はこちら。",
       cta: { label: "バジひなの TikTok を見る →", url: "https://www.tiktok.com/@valhalla_0409" },
-      hero: "assets/duo/hero.jpg",
+      hero: "assets/duo/h11.jpg",
       photos: [
-        ["assets/duo/sensoji.jpg", "浅草"], ["assets/duo/cave1.jpg", ""], ["assets/duo/cave2.jpg", ""],
-        ["assets/duo/bar.jpg", "", "pw"],
+        ["assets/duo/h12.jpg", "浅草"], ["assets/duo/h9.jpg", ""], ["assets/duo/h10.jpg", ""],
+        ["assets/duo/h6.jpg", "", "pw"],
       ],
       links: [],
       facts: [
