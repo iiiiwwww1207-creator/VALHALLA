@@ -293,7 +293,7 @@
     <p class="place">KABUKICHO <b>／</b> VALHALLA</p>
     <h1 class="name" id="hero-name"><span><i>朝日奈</i></span><span><i><em>優</em></i></span></h1>
     <p class="name-en" id="hero-en">YU ASAHINA</p>
-    <p class="lead" id="hero-lead">初回の短い時間じゃ話しきれないから、<br>ここにまとめておく。</p>
+    <p class="lead" id="hero-lead" hidden></p>
     <p class="hero__cta" id="hero-cta" hidden><a class="btn" id="hero-cta-a" target="_blank" rel="noopener"></a></p>
     <button type="button" class="hero__switch" id="hero-switch"></button>
   </div>
@@ -326,7 +326,7 @@
 
   <section class="block" id="qa" hidden>
     <div class="head"><p class="head__big"><span>Q&amp;A</span></p><p class="head__sub"><b></b>一問一答</p></div>
-    <p class="note" data-reveal>初回の席でよく聞かれること、先に答えておきます。</p>
+    <p class="note" data-reveal>よく聞かれること。</p>
     <dl class="qa" id="qa-list" data-stagger></dl>
   </section>
 
@@ -686,7 +686,8 @@
     $("dm-2").href = `https://ig.me/m/${PEOPLE.baji.ig}`;
     $("dm-2").textContent = `${PEOPLE.baji.name}に DM を送る →`;
     $("schedule").hidden = duo;
-    $("hero-lead").innerHTML = p.lead || "初回の短い時間じゃ話しきれないから、<br>ここにまとめておく。";
+    $("hero-lead").innerHTML = p.lead || "";
+    $("hero-lead").hidden = !p.lead;
     $("hero-cta").hidden = !p.cta;
     if (p.cta) { $("hero-cta-a").href = p.cta.url; $("hero-cta-a").textContent = p.cta.label; }
 
