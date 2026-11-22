@@ -30,6 +30,8 @@
     --gutter:clamp(20px,5vw,64px);
     --ease:cubic-bezier(.2,.75,.2,1);
   }
+  /* 場地 圭介の見方だけ、差し色を深い緑にする */
+  :root[data-who="baji"]{--crimson:#1B5E3B;--crimson-hi:#2F8A57}
   *{box-sizing:border-box;margin:0;padding:0}
   html{-webkit-text-size-adjust:100%;background:var(--bg)}
   body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.85;letter-spacing:.02em;overflow-x:hidden}
@@ -678,6 +680,7 @@
   const replay = el => { el.style.animation = "none"; void el.offsetWidth; el.style.animation = ""; };
   const render = (first = false) => {
     const p = PEOPLE[who];
+    document.documentElement.dataset.who = who;
     const duo = who === "duo";
     const next = ORDER[(ORDER.indexOf(who) + 1) % ORDER.length];
     const other = PEOPLE[next];
