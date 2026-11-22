@@ -32,6 +32,16 @@
   }
   /* 場地 圭介の見方だけ、差し色を深い緑にする */
   :root[data-who="baji"]{--crimson:#1B5E3B;--crimson-hi:#2F8A57}
+  /* バジひな（2人）の見方：優＝クリムゾン、バジ＝深い緑を混ぜる */
+  :root{--green:#1B5E3B;--green-hi:#2F8A57}
+  :root[data-who="duo"] .name span:first-child i{color:var(--green-hi)}
+  :root[data-who="duo"] #dm-2{background:var(--green)}
+  :root[data-who="duo"] #dm-2:hover{background:var(--green-hi)}
+  :root[data-who="duo"] .links li.is-baji a::before{background:var(--green)}
+  :root[data-who="duo"] .links li.is-baji .open{color:var(--green-hi)}
+  :root[data-who="duo"] .head__sub.is-green b{color:var(--green-hi)}
+  :root[data-who="duo"] .head__sub.is-green::after{background:var(--green)}
+  :root[data-who="duo"] .progress{background:linear-gradient(90deg,var(--crimson-hi),var(--green-hi))}
   *{box-sizing:border-box;margin:0;padding:0}
   html{-webkit-text-size-adjust:100%;background:var(--bg)}
   body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.85;letter-spacing:.02em;overflow-x:hidden}
@@ -709,7 +719,7 @@
     // 2人の見方：バジひなの TikTok を一番上に、そのあと2人それぞれのアカウント
     const linkList = duo ? [...SHARED_LINKS, ...PEOPLE.yu.links, ...PEOPLE.baji.links] : [...p.links, ...SHARED_LINKS];
     $("links").innerHTML = linkList.filter(l => l.url).map(l => `
-      <li><a href="${esc(l.url)}" target="_blank" rel="noopener">
+      <li${duo && PEOPLE.baji.links.includes(l) ? ' class="is-baji"' : ""}><a href="${esc(l.url)}" target="_blank" rel="noopener">
         <span class="svc">${esc(l.svc)}</span>
         <span class="handle"><b>${esc(l.name)}</b>${esc(l.handle)}</span>
         <span class="open">ひらく</span>
@@ -760,6 +770,9 @@
     $("cal-pick").hidden = true;
     drawCalendar();
     armReveal();
+    // 2人の見方では、見出しの色を赤と緑で交互にする（見えている見出しだけ数える）
+    [...document.querySelectorAll(".head__sub")].filter(h => !h.closest("section").hidden)
+      .forEach((h, k) => h.classList.toggle("is-green", duo && k % 2 === 1));
   };
 
   const switchTo = p => {
