@@ -150,6 +150,7 @@
   .pw{grid-column:3/7;aspect-ratio:4/3}
   .ph{grid-column:span 3;aspect-ratio:2/3}
   .pl{grid-column:span 3;aspect-ratio:3/2}
+  .pt{grid-column:span 2;aspect-ratio:2/3}
   [hidden]{display:none !important}
   .hero__cta{margin-top:24px;animation:fade 1.2s 1.05s both}
   @media (max-width:640px){
@@ -160,6 +161,8 @@
     .pw{grid-column:1/-1;aspect-ratio:3/2}
     .ph{grid-column:auto}
     .pl{grid-column:1/-1}
+    .pt{grid-column:auto}
+    .pt:first-child{grid-column:1/-1}
   }
 
   /* ---- プロフィール・一問一答・料金の表 ---- */
@@ -429,9 +432,9 @@
       name: "朝日奈 優", short: "優", jp: ["朝日奈", "優"], en: "YU ASAHINA",
       ig: "valhalla_yuu",
       hero: "assets/yu/y_main.jpg",
-      // 写真は [ファイル, 説明, 形]。形は ph＝縦長を2枚並べる／pl＝横長を2枚並べる（スマホでは1枚ずつ）
+      // 写真は [ファイル, 説明, 形]。形は ph＝縦長を2枚並べる／pt＝縦長を3枚並べる（スマホでは1枚目を大きく）／pl＝横長を2枚並べる（スマホでは1枚ずつ）
       photos: [
-        ["assets/yu/y19.jpg", "", "ph"], ["assets/yu/y20.jpg", "", "ph"],
+        ["assets/yu/y19.jpg", "", "pt"], ["assets/yu/y20.jpg", "", "pt"], ["assets/yu/y29.jpg", "", "pt"],
       ],
       links: [
         { svc: "Instagram", name: "朝日奈 優", handle: "@valhalla_yuu", url: "https://www.instagram.com/valhalla_yuu/" },
