@@ -34,7 +34,12 @@
   :root[data-who="baji"]{--crimson:#1B5E3B;--crimson-hi:#2F8A57}
   /* バジひな（2人）の見方：優＝クリムゾン、バジ＝深い緑を混ぜる */
   :root{--green:#1B5E3B;--green-hi:#2F8A57}
+  /* シックに：彩度を落とした葡萄酒色と深い森の緑。ボタンは塗りを控える */
+  :root[data-who="duo"]{--crimson:#6B1E2A;--crimson-hi:#A65A63;--green:#22392D;--green-hi:#6E8F7B}
   :root[data-who="duo"] .name span:first-child i{color:var(--green-hi)}
+  :root[data-who="duo"] .hero__cta .btn{background:transparent;border:1px solid var(--ink);color:var(--ink)}
+  :root[data-who="duo"] .hero__cta .btn:hover{background:var(--ink);color:var(--bg)}
+  :root[data-who="duo"] .name i{letter-spacing:.04em}
   :root[data-who="duo"] #dm-2{background:var(--green)}
   :root[data-who="duo"] #dm-2:hover{background:var(--green-hi)}
   :root[data-who="duo"] .links li.is-baji a::before{background:var(--green)}
